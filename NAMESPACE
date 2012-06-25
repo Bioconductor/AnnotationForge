@@ -1,0 +1,45 @@
+#import(methods)
+#import(utils)
+import(Biobase)
+import(DBI)
+import(RSQLite)
+import(BiocGenerics)
+## importFrom(IRanges, metadata)
+
+exportClasses(
+    ## from R/AnnDbPkg-maker.R
+    "AnnDbPkgSeed"
+       
+)
+
+exportMethods(
+    "makeAnnDbPkg"
+)
+
+export(
+    ## from R/AnnDbPkg-maker.R
+    loadAnnDbPkgIndex,
+       
+    ## help functions for making sqlite files
+    populateDB, 
+
+    ## wrapper functions for making chip packages
+    makeDBPackage,
+
+    createSimpleBimap,
+    available.db0pkgs,
+    available.dbschemas, 
+    available.chipdbschemas,
+ 
+    #Convenience function to make the intermediate DB pkgs
+    wrapBaseDBPackages,
+
+    ## This one will make you an org package:
+    makeOrgPackageFromNCBI,
+ 
+    ## from R/makeProbePackage.R
+    getProbeDataAffy,
+    getProbeData_1lq,
+    makeProbePackage
+
+)
