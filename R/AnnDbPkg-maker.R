@@ -254,6 +254,19 @@ setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
             ANNDBIVERSION=ann_dbi_version,
             ORGVERSION=org_version
         )
+        ## TODO:
+        ## 1) Compile all standard NCBI based org and chip packages into a single pair of templates.
+        ## 2) Come in here and add a function so that I can have pre-filtered
+        ## doc_template_names (add a function that knows which man pages go
+        ## with which packages - (perhaps by looking at the
+        ## AnnotationDbi/R/createAnnObjs.*.R files)
+        ## (IOW use things like AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds etc. - this can be
+        ## assembled and compared to a more sparten mapping of man pages  mapped to.  So start with like:
+        ## unlist(lapply(AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds, function(x){return(x$objName)}))
+        ## And then map those values to man pages with a smaller switch etc.)
+        ## 3) find the place where we copy the man dir and filter those using
+        ## the same shorter list.  And from below it really looks like step 3
+        ## is: "there is no step three".
         man_dir <- file.path(template_path, "man")
         if (file.exists(man_dir)) {
             if (!no.man) {
@@ -275,7 +288,8 @@ setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
                       destinationDir=dest_dir,
                       originDir=template_path,
                       symbolValues=symvals)
-        ## rename Rd files
+        ## rename Rd files (prepend the pkg name)
+        ## Here is also where we put the man files into the package (after renaming them)
         if (file.exists(man_dir) && !no.man && length(doc_template_names) != 0) {
             doc_path <- file.path(dest_dir, x@Package, "man")
             from_doc_names <- paste(doc_path, doc_template_names, sep=.Platform$file.sep)
