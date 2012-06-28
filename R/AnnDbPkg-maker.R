@@ -203,6 +203,17 @@ loadAnnDbPkgIndex <- function(file)
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+### Helpers for filtering out innapropriate manual pages from a template.
+### 
+
+filterTemplates <- function(PkgTemplate){
+  
+  
+}
+
+
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ### The "makeAnnDbPkg" new generic.
 ###
 
@@ -218,7 +229,7 @@ setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
         dbfile_basename <- basename(dbfile)
         if (dbfile_basename != paste(x@AnnObjPrefix, ".sqlite", sep=""))
             stop("'", dbfile, "': File name doesn't match 'x@AnnObjPrefix' (", x@AnnObjPrefix, ")")
-        if (!grepl("^/", x@PkgTemplate)[1]) { 
+        if (!grepl("^/", x@PkgTemplate)[1]) { ##TODO: this regex seems hacky?
           template_path <- system.file("AnnDbPkg-templates",
                                        x@PkgTemplate,
                                        package="AnnotationForge")
@@ -255,7 +266,8 @@ setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
             ORGVERSION=org_version
         )
         ## TODO:
-        ## 1) Compile all standard NCBI based org and chip packages into a single pair of templates.
+        ## 1) Compile all standard NCBI based org and chip packages into a single pair of templates. - Done.
+        ## 1.5) don't change contents of PkgTemplate, but translate it (when appropriate) so that we point to the more generic templates by changing the template_path to be something else (above).        
         ## 2) Come in here and add a function so that I can have pre-filtered
         ## doc_template_names (add a function that knows which man pages go
         ## with which packages - (perhaps by looking at the
@@ -267,6 +279,7 @@ setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
         ## 3) find the place where we copy the man dir and filter those using
         ## the same shorter list.  And from below it really looks like step 3
         ## is: "there is no step three".
+        ## 4) Add new manual page for select that details all the fields.
         man_dir <- file.path(template_path, "man")
         if (file.exists(man_dir)) {
             if (!no.man) {
