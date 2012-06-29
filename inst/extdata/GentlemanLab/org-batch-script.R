@@ -28,6 +28,6 @@ sqlitefiles <- list.files(srcdir, pattern="^org")
 sqlitefiles <- sqlitefiles[!(sqlitefiles %in% exclude)]
 pkgs <- paste(substr(sqlitefiles, 1, nchar(sqlitefiles)-7), ".db", sep="")
 
-library(AnnotationDbi)
+library(AnnotationForge)
 makeAnnDbPkg(pkgs)
 
