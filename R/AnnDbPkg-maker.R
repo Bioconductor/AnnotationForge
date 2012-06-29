@@ -211,6 +211,11 @@ filterTemplates <- function(PkgTemplate){
   
 }
 
+## library(AnnotationForge)
+## debug(AnnotationForge:::.makeAnnDbPkg)
+## debug(AnnotationForge:::.makeAnnDbPkgs)
+## debug(AnnotationForge:::.makeAnnDbPkgList)
+## source("~/proj/Rpacks/AnnotationForge/inst/extdata/GentlemanLab/org-batch-script.R")
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -221,120 +226,121 @@ setGeneric("makeAnnDbPkg", signature="x",
     function(x, dbfile, dest_dir=".", no.man=FALSE, ...) standardGeneric("makeAnnDbPkg")
 )
 
-setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
-    function(x, dbfile, dest_dir=".", no.man=FALSE, ...)
-    {
-        x <- initWithDbMetada(x, dbfile)
-        x <- initComputedSlots(x)
-        dbfile_basename <- basename(dbfile)
-        if (dbfile_basename != paste(x@AnnObjPrefix, ".sqlite", sep=""))
-            stop("'", dbfile, "': File name doesn't match 'x@AnnObjPrefix' (", x@AnnObjPrefix, ")")
-        if (!grepl("^/", x@PkgTemplate)[1]) { ##TODO: this regex seems hacky?
-          template_path <- system.file("AnnDbPkg-templates",
-                                       x@PkgTemplate,
-                                       package="AnnotationForge")
-        } else {
-          template_path <- x@PkgTemplate
-        }
-        ann_dbi_version <- installed.packages()['AnnotationDbi','Version']
-	## only define 'org_version' if we are making a chipDb package.
-	## Otherwise it will only cause trouble.
-	
-	con1 <- dbConnect(dbDriver("SQLite"), dbfile)
-	type <- dbGetQuery(con1, 
-	     	           "SELECT value FROM metadata WHERE name='Db type'")
-        if(type=="ChipDb"){
-            org_version <- installed.packages()['org.Hs.eg.db','Version']
-	}else{org_version <- "no org version date" }
-        symvals <- list(
-            DBSCHEMA=x@DBschema,
-            PKGTITLE=x@Title,
-            ANNOBJPREFIX=x@AnnObjPrefix,
-            ANNOBJTARGET=x@AnnObjTarget,
-            ORGANISM=x@organism,
-            SPECIES=x@species,
-            MANUF=x@manufacturer,
-            CHIPNAME=x@chipName,
-            MANUFURL=x@manufacturerUrl,
-            AUTHOR=x@Author,
-            MAINTAINER=x@Maintainer,
-            PKGVERSION=x@Version,
-            LIC=x@License,
-            BIOCVIEWS=x@biocViews,
-            DBFILE=dbfile_basename,
-            ANNDBIVERSION=ann_dbi_version,
-            ORGVERSION=org_version
-        )
-        ## TODO:
-        ## 1) Compile all standard NCBI based org and chip packages into a single pair of templates. - Done.
-        ## 1.5) don't change contents of PkgTemplate, but translate it (when appropriate) so that we point to the more generic templates by changing the template_path to be something else (above).        
-        ## 2) Come in here and add a function so that I can have pre-filtered
-        ## doc_template_names (add a function that knows which man pages go
-        ## with which packages - (perhaps by looking at the
-        ## AnnotationDbi/R/createAnnObjs.*.R files)
-        ## (IOW use things like AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds etc. - this can be
-        ## assembled and compared to a more sparten mapping of man pages  mapped to.  So start with like:
-        ## unlist(lapply(AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds, function(x){return(x$objName)}))
-        ## And then map those values to man pages with a smaller switch etc.)
-        ## 3) find the place where we copy the man dir and filter those using
-        ## the same shorter list.  And from below it really looks like step 3
-        ## is: "there is no step three".
-        ## 4) Add new manual page for select that details all the fields.
-        man_dir <- file.path(template_path, "man")
-        if (file.exists(man_dir)) {
-            if (!no.man) {
-                doc_template_names <- list.files(man_dir, "\\.Rd$")
-                #is_static <- doc_template_names %in% c("_dbconn.Rd", "_dbfile.Rd")
-                #doc_template_names <- doc_template_names[!is_static]
-                map_names <- sub("\\.Rd$", "", doc_template_names)
-                if (length(map_names) != 0)
-                    symvals <- c(symvals, getSymbolValuesForManPages(map_names, dbfile))
-            } else {
-                unlink(man_dir, recursive=TRUE)
-            }
-        }
-        if (any(duplicated(names(symvals)))) {
-            str(symvals)
-            stop("'symvals' contains duplicated symbols (see above)")
-        }
-        createPackage(x@Package,
-                      destinationDir=dest_dir,
-                      originDir=template_path,
-                      symbolValues=symvals)
-        ## rename Rd files (prepend the pkg name)
-        ## Here is also where we put the man files into the package (after renaming them)
-        if (file.exists(man_dir) && !no.man && length(doc_template_names) != 0) {
-            doc_path <- file.path(dest_dir, x@Package, "man")
-            from_doc_names <- paste(doc_path, doc_template_names, sep=.Platform$file.sep)
-            to_doc_names <- paste(x@AnnObjPrefix, doc_template_names, sep="")
-            to_doc_names <- paste(doc_path, to_doc_names, sep=.Platform$file.sep)
-            mapply(file.rename, from_doc_names, to_doc_names)
-        }
 
-        dest_db_dir <- file.path(dest_dir, x@Package, "inst", "extdata")
-        if (!file.exists(dest_db_dir)
-            && !dir.create(dest_db_dir, recursive=TRUE))
-          stop("unable to create dest db dir ", dest_db_dir)
-	dest_dbfile <- file.path(dest_db_dir, dbfile_basename)
-        if (!file.copy(dbfile, dest_dbfile))
-            stop("cannot copy file '", dbfile, "' to '", dest_dbfile, "'")
-        if(.Platform$OS.type != 'windows'){
-            command <- paste("chmod 444", dest_dbfile)
-            if (system(command) != 0)
-              warning(command, " failed")
-        }
-        return(invisible(TRUE))
+.makeAnnDbPkg <- function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
+  x <- initWithDbMetada(x, dbfile)
+  x <- initComputedSlots(x)
+  dbfile_basename <- basename(dbfile)
+  if (dbfile_basename != paste(x@AnnObjPrefix, ".sqlite", sep=""))
+    stop("'", dbfile, "': File name doesn't match 'x@AnnObjPrefix' (", x@AnnObjPrefix, ")")
+  if (!grepl("^/", x@PkgTemplate)[1]) { ##TODO: this regex seems hacky?
+    template_path <- system.file("AnnDbPkg-templates",
+                                 x@PkgTemplate,
+                                 package="AnnotationForge")
+  } else {
+    template_path <- x@PkgTemplate
+  }
+  ann_dbi_version <- installed.packages()['AnnotationDbi','Version']
+  ## only define 'org_version' if we are making a chipDb package.
+  ## Otherwise it will only cause trouble.
+  
+  con1 <- dbConnect(dbDriver("SQLite"), dbfile)
+  type <- dbGetQuery(con1, 
+                     "SELECT value FROM metadata WHERE name='Db type'")
+  if(type=="ChipDb"){
+    org_version <- installed.packages()['org.Hs.eg.db','Version']
+  }else{org_version <- "no org version date" }
+  symvals <- list(
+                  DBSCHEMA=x@DBschema,
+                  PKGTITLE=x@Title,
+                  ANNOBJPREFIX=x@AnnObjPrefix,
+                  ANNOBJTARGET=x@AnnObjTarget,
+                  ORGANISM=x@organism,
+                  SPECIES=x@species,
+                  MANUF=x@manufacturer,
+                  CHIPNAME=x@chipName,
+                  MANUFURL=x@manufacturerUrl,
+                  AUTHOR=x@Author,
+                  MAINTAINER=x@Maintainer,
+                  PKGVERSION=x@Version,
+                  LIC=x@License,
+                  BIOCVIEWS=x@biocViews,
+                  DBFILE=dbfile_basename,
+                  ANNDBIVERSION=ann_dbi_version,
+                  ORGVERSION=org_version
+                  )
+  ## TODO:
+  ## 1) Compile all standard NCBI based org and chip packages into a single pair of templates. - Done.
+  ## 1.5) don't change contents of PkgTemplate, but translate it (when appropriate) so that we point to the more generic templates by changing the template_path to be something else (above).        
+  ## 2) Come in here and add a function so that I can have pre-filtered
+  ## doc_template_names (add a function that knows which man pages go
+  ## with which packages - (perhaps by looking at the
+  ## AnnotationDbi/R/createAnnObjs.*.R files)
+  ## (IOW use things like AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds etc. - this can be
+  ## assembled and compared to a more sparten mapping of man pages  mapped to.  So start with like:
+  ## unlist(lapply(AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds, function(x){return(x$objName)}))
+  ## And then map those values to man pages with a smaller switch etc.)
+  ## 3) find the place where we copy the man dir and filter those using
+  ## the same shorter list.  And from below it really looks like step 3
+  ## is: "there is no step three".
+  ## 4) Add new manual page for select that details all the fields.
+  man_dir <- file.path(template_path, "man")
+  if (file.exists(man_dir)) {
+    if (!no.man) {
+      doc_template_names <- list.files(man_dir, "\\.Rd$")
+      #is_static <- doc_template_names %in% c("_dbconn.Rd", "_dbfile.Rd")
+      #doc_template_names <- doc_template_names[!is_static]
+      map_names <- sub("\\.Rd$", "", doc_template_names)
+      if (length(map_names) != 0)
+        symvals <- c(symvals, getSymbolValuesForManPages(map_names, dbfile))
+    } else {
+      unlink(man_dir, recursive=TRUE)
     }
-)
+  }
+  if (any(duplicated(names(symvals)))) {
+    str(symvals)
+    stop("'symvals' contains duplicated symbols (see above)")
+  }
+  createPackage(x@Package,
+                destinationDir=dest_dir,
+                originDir=template_path,
+                symbolValues=symvals)
+  ## rename Rd files (prepend the pkg name)
+  ## Here is also where we put the man files into the package (after renaming them)
+  if (file.exists(man_dir) && !no.man && length(doc_template_names) != 0) {
+    doc_path <- file.path(dest_dir, x@Package, "man")
+    from_doc_names <- paste(doc_path, doc_template_names, sep=.Platform$file.sep)
+    to_doc_names <- paste(x@AnnObjPrefix, doc_template_names, sep="")
+    to_doc_names <- paste(doc_path, to_doc_names, sep=.Platform$file.sep)
+    mapply(file.rename, from_doc_names, to_doc_names)
+  }
+  
+  dest_db_dir <- file.path(dest_dir, x@Package, "inst", "extdata")
+  if (!file.exists(dest_db_dir)
+      && !dir.create(dest_db_dir, recursive=TRUE))
+    stop("unable to create dest db dir ", dest_db_dir)
+  dest_dbfile <- file.path(dest_db_dir, dbfile_basename)
+  if (!file.copy(dbfile, dest_dbfile))
+    stop("cannot copy file '", dbfile, "' to '", dest_dbfile, "'")
+  if(.Platform$OS.type != 'windows'){
+    command <- paste("chmod 444", dest_dbfile)
+    if (system(command) != 0)
+      warning(command, " failed")
+  }
+  return(invisible(TRUE))
+}
 
-setMethod("makeAnnDbPkg", "list",
-    function(x, dbfile, dest_dir=".", no.man=FALSE, ...)
-    {
-        x$Class <- "AnnDbPkgSeed"
-        y <- do.call(new, x)
-        makeAnnDbPkg(y, dbfile, dest_dir, no.man)
-    }
-)
+setMethod("makeAnnDbPkg", "AnnDbPkgSeed", .makeAnnDbPkg)
+        
+
+.makeAnnDbPkgList <- function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
+  x$Class <- "AnnDbPkgSeed"
+  y <- do.call(new, x)
+  makeAnnDbPkg(y, dbfile, dest_dir, no.man)
+}
+
+setMethod("makeAnnDbPkg", "list", .makeAnnDbPkgList)
+
 
 ### 'x' can be a regular expression.
 ### Typical use:
@@ -344,45 +350,49 @@ setMethod("makeAnnDbPkg", "list",
 ###   > makeAnnDbPkg(".*") # a character vector of length 1 is treated as a
 ###                        # regular expression
 ###
-setMethod("makeAnnDbPkg", "character",
-    function(x, dbfile, dest_dir=".", no.man=FALSE, ...)
-    {
-        if (missing(dbfile)) {
-            dbfile <- system.file("extdata", "GentlemanLab", "ANNDBPKG-INDEX.TXT",
-                                   package="AnnotationDbi")
-        }
-        index <- loadAnnDbPkgIndex(dbfile)
-        if (length(x) != 1) {
-            ii <- match(x, index[ , "Package"])
-            if (any(is.na(ii)))
-                stop("packages ", paste(x[is.na(ii)], collapse=", "), " not in ", dbfile)
-            index <- index[ii, , drop=FALSE]
-        } else if (!is.na(x) && x != "") {
-            pkgname <- paste("^", x, "$", sep="")
-            ii <- grep(pkgname, index[ , "Package"])
-            index <- index[ii, , drop=FALSE]
-        }
-        filter <- list(...)
-        for (j in seq_len(length(filter))) {
-            colname <- names(filter)[j]
-            if (!(colname %in% colnames(index)))
-                stop("unknown field '", colname, "'")
-            colvals <- filter[[j]]
-            if (!is.character(colvals))
-                stop("extra arg values must be of type character")
-            index <- index[index[ , colname] %in% colvals, , drop=FALSE]
-        }
-        pkgnames_in1string <- paste(index[, "Package"], collapse=", ")
-        cat(nrow(index), " package(s) to make: ", pkgnames_in1string, "\n", sep="")
-        for (i in seq_len(nrow(index))) {
-            y <- index[i, ]
-            y <- as.list(y[!is.na(y)])
-            cat("[", i, "/", nrow(index), "] making package ", y[["Package"]], ": ", sep="")
-            dbfile <- y[["DBfile"]]
-            y <- y[names(y) != "DBfile"]
-            makeAnnDbPkg(y, dbfile, dest_dir, no.man)
-        }
-        cat("DONE (", nrow(index), " package(s) made under the ", dest_dir, " directory)\n", sep="")
-    }
-)
+
+.makeAnnDbPkgs <- function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
+  if (missing(dbfile)) {
+    dbfile <- system.file("extdata", "GentlemanLab", "ANNDBPKG-INDEX.TXT",
+                          package="AnnotationDbi")
+  }
+  index <- loadAnnDbPkgIndex(dbfile)
+  if (length(x) != 1) {
+    ii <- match(x, index[ , "Package"])
+    if (any(is.na(ii)))
+      stop("packages ", paste(x[is.na(ii)], collapse=", "),
+           " not in ", dbfile)
+    index <- index[ii, , drop=FALSE]
+  } else if (!is.na(x) && x != "") {
+    pkgname <- paste("^", x, "$", sep="")
+    ii <- grep(pkgname, index[ , "Package"])
+    index <- index[ii, , drop=FALSE]
+  }
+  filter <- list(...)
+  for (j in seq_len(length(filter))) {
+    colname <- names(filter)[j]
+    if (!(colname %in% colnames(index)))
+      stop("unknown field '", colname, "'")
+    colvals <- filter[[j]]
+    if (!is.character(colvals))
+      stop("extra arg values must be of type character")
+    index <- index[index[ , colname] %in% colvals, , drop=FALSE]
+  }
+  pkgnames_in1string <- paste(index[, "Package"], collapse=", ")
+  cat(nrow(index), " package(s) to make: ",
+      pkgnames_in1string, "\n", sep="")
+  for (i in seq_len(nrow(index))) {
+    y <- index[i, ]
+    y <- as.list(y[!is.na(y)])
+    cat("[", i, "/", nrow(index), "] making package ",
+        y[["Package"]], ": ", sep="")
+    dbfile <- y[["DBfile"]]
+    y <- y[names(y) != "DBfile"]
+    makeAnnDbPkg(y, dbfile, dest_dir, no.man)
+  }
+  cat("DONE (", nrow(index), " package(s) made under the ",
+      dest_dir, " directory)\n", sep="")
+}
+
+setMethod("makeAnnDbPkg", "character", .makeAnnDbPkgs)
 
