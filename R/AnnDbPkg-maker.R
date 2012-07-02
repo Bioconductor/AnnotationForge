@@ -212,9 +212,9 @@ filterTemplates <- function(PkgTemplate){
 }
 
 ## library(AnnotationForge)
-## debug(AnnotationForge:::.makeAnnDbPkg)
-## debug(AnnotationForge:::.makeAnnDbPkgs) ## This one is called
-## debug(AnnotationForge:::.makeAnnDbPkgList)
+## debug(AnnotationForge:::.makeAnnDbPkg) ## this one is always called ??
+## debug(AnnotationForge:::.makeAnnDbPkgs) ## This one is called 1st?
+## debug(AnnotationForge:::.makeAnnDbPkgList) ## WTH?  None of these are called?
 ## source("~/proj/Rpacks/AnnotationForge/inst/extdata/GentlemanLab/org-batch-script.R")
 
 
@@ -330,7 +330,11 @@ setGeneric("makeAnnDbPkg", signature="x",
   return(invisible(TRUE))
 }
 
-setMethod("makeAnnDbPkg", "AnnDbPkgSeed", .makeAnnDbPkg)
+setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
+          function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
+            .makeAnnDbPkg(x, dbfile, dest_dir=".", no.man=FALSE, ...)
+          }
+          )
         
 
 .makeAnnDbPkgList <- function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
@@ -339,7 +343,11 @@ setMethod("makeAnnDbPkg", "AnnDbPkgSeed", .makeAnnDbPkg)
   makeAnnDbPkg(y, dbfile, dest_dir, no.man)
 }
 
-setMethod("makeAnnDbPkg", "list", .makeAnnDbPkgList)
+setMethod("makeAnnDbPkg", "list",
+          function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
+            .makeAnnDbPkgList(x, dbfile, dest_dir=".", no.man=FALSE, ...)
+          }
+          )
 
 
 ### 'x' can be a regular expression.
@@ -394,5 +402,9 @@ setMethod("makeAnnDbPkg", "list", .makeAnnDbPkgList)
       dest_dir, " directory)\n", sep="")
 }
 
-setMethod("makeAnnDbPkg", "character", .makeAnnDbPkgs)
+setMethod("makeAnnDbPkg", "character",
+          function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
+            .makeAnnDbPkgs(x, dbfile, dest_dir=".", no.man=FALSE, ...)
+          }
+          )
 
