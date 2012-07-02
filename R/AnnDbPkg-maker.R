@@ -189,7 +189,7 @@ loadAnnDbPkgIndex <- function(file)
 {
     if (missing(file)) {
         file <- system.file("extdata", "GentlemanLab", "ANNDBPKG-INDEX.TXT",
-                            package="AnnotationDbi")
+                            package="AnnotationForge")
     } else {
         if (!is.character(file) || length(file) != 1 || is.na(file))
             stop("'file' must be a character string naming a file")
@@ -213,7 +213,7 @@ filterTemplates <- function(PkgTemplate){
 
 ## library(AnnotationForge)
 ## debug(AnnotationForge:::.makeAnnDbPkg)
-## debug(AnnotationForge:::.makeAnnDbPkgs)
+## debug(AnnotationForge:::.makeAnnDbPkgs) ## This one is called
 ## debug(AnnotationForge:::.makeAnnDbPkgList)
 ## source("~/proj/Rpacks/AnnotationForge/inst/extdata/GentlemanLab/org-batch-script.R")
 
@@ -354,7 +354,7 @@ setMethod("makeAnnDbPkg", "list", .makeAnnDbPkgList)
 .makeAnnDbPkgs <- function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
   if (missing(dbfile)) {
     dbfile <- system.file("extdata", "GentlemanLab", "ANNDBPKG-INDEX.TXT",
-                          package="AnnotationDbi")
+                          package="AnnotationForge")
   }
   index <- loadAnnDbPkgIndex(dbfile)
   if (length(x) != 1) {

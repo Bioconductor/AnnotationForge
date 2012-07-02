@@ -13,7 +13,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.15",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_human.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_human.sqlite",sep="")
@@ -32,7 +32,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.15",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_mouse.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_mouse.sqlite",sep="")
@@ -51,7 +51,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.15",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_rat.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_rat.sqlite",sep="")
@@ -70,7 +70,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.15",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_fly.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_fly.sqlite",sep="")
@@ -89,7 +89,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.15",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_yeast.sqlite",sep="")
 #  chipMapSrcFile = paste(dbPath,"chipmapsrc_yeast.sqlite",sep="")
@@ -109,7 +109,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.15",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_arabidopsis.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_arabidopsis.sqlite",sep="")
@@ -128,7 +128,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.28",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_malaria.sqlite",sep="")
   chipMapSrcFile = NULL
@@ -147,7 +147,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.28",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_zebrafish.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_zebrafish.sqlite",sep="")
@@ -166,7 +166,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.28",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_canine.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_canine.sqlite",sep="")
@@ -185,7 +185,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.28",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_bovine.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_bovine.sqlite",sep="")
@@ -205,7 +205,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.28",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_ecoliK12.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_ecoliK12.sqlite",sep="")
@@ -224,7 +224,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.28",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_ecoliSakai.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_ecoliSakai.sqlite",sep="")
@@ -243,7 +243,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.28",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_worm.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_worm.sqlite",sep="")
@@ -261,7 +261,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.28",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_pig.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_pig.sqlite",sep="")
@@ -279,7 +279,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.1.28",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_chicken.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_chicken.sqlite",sep="")
@@ -298,7 +298,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
 ##                ANNDBIVERSION="1.1.28",
 ##                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
 ##   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-##   template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+##   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
 ##   chipSrcFile = paste(dbPath,"chipsrc_yeastNCBI.sqlite",sep="")
 ##   chipMapSrcFile = paste(dbPath,"chipmapsrc_yeastNCBI.sqlite",sep="")
@@ -317,7 +317,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.7.0",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_chimp.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_chimp.sqlite",sep="")
@@ -336,7 +336,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.7.0",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_rhesus.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_rhesus.sqlite",sep="")
@@ -356,7 +356,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.7.0",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_anopheles.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_anopheles.sqlite",sep="")
@@ -374,7 +374,7 @@ wrapBaseDBPackages <- function (dbPath = "/mnt/cpb_anno/mcarlson/proj/mcarlson/s
                ANNDBIVERSION="1.7.0",
                MAINTAINER="Biocore Team c/o BioC user list <bioconductor@stat.math.ethz.ch>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
-  template=paste(system.file(package = "AnnotationDbi"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
+  template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
 
   chipSrcFile = paste(dbPath,"chipsrc_xenopus.sqlite",sep="")
   chipMapSrcFile = paste(dbPath,"chipmapsrc_xenopus.sqlite",sep="")
