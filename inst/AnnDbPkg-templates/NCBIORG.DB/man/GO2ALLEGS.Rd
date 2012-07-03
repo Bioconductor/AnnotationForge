@@ -48,7 +48,7 @@
   Gene Ontology terms and other information are available in a separate
   data package named GO.  
   
-  Mappings were based on data provided by: @GO2ALLEGSSOURCE@
+  Mappings were based on data provided by: @GOSOURCE@
 }
 \references{
 \url{ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/}

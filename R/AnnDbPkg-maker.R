@@ -34,7 +34,7 @@ setClass(
     prototype(
         Title=as.character(NA),
         License="Artistic-2.0",
-        Author="Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+        Author="Marc Carlson",
         Maintainer="Biocore Data Team <biocannotation@lists.fhcrc.org>",
         DBschema=as.character(NA),
         AnnObjPrefix=as.character(NA),
@@ -202,20 +202,110 @@ loadAnnDbPkgIndex <- function(file)
 }
 
 
+## TODO:
+## 1) Compile all standard NCBI based org and chip packages into a single pair
+## of templates. - Done.
+## 1.5) don't change contents of PkgTemplate, but translate it (when
+## appropriate) so that we point to the more generic templates by changing the
+## template_path to be something else (above). - DONE:(but done a better way).
+## This function is almost certainly a bad idea (and unnecessary), instead I
+## should just replace all the "HUMAN.DB" with "NCBIORG.DB" etc. in
+## ANNDBPKG-INDEX.TXT and then rely on the x@DBschema to do the next step.
+## I also needed to change the way that I call
+## AnnotationForge:::.makeHUMANCHIP_DB etc.  Basically, I need to change all
+## the relevant PkgTemplates in .makeHUMANCHIP_DB and company.
+
+
+## 2) Come in here and add a function so that I can have pre-filtere
+## doc_template_names (add a function that knows which man pages go with which
+## packages - (perhaps by looking at the AnnotationDbi/R/createAnnObjs.*.R
+## files) (IOW use things like
+## AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds etc. - this can be
+## assembled and compared to a more sparten mapping of man pages mapped to.
+## So start with like:
+## unlist(lapply(AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds,
+## function(x){return(x$objName)})) And then map those values to man pages
+## with a smaller switch etc.)
+## 3) find the place where we copy the man dir and filter those using the
+## same shorter list.  And from below it really looks like step 3 is: "there
+## is no step three".
+## 4) Add new manual page for select that details all the fields.
+
+
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ### Helpers for filtering out innapropriate manual pages from a template.
 ### 
 
-filterTemplates <- function(PkgTemplate){
-  
-  
+## BUT: I do need a helper that converts "HUMAN_DB" down to ID extra manual
+## pages based on the bimaps available.
+
+## The DBschema is coming in from the DB metadata itself, and so I should be
+## able to rely on that for translating to the bimaps (and thus filtering out
+## unwanted manual pages)
+
+
+## This function takes the seed and lists the Mappings
+listMappings <- function(x){
+  ## define seeds based on x@DBschama  (use eval and parse etc.)
+  seeds <- eval(parse(text=paste("AnnotationDbi:::",x@DBschema,
+                        "_AnnDbBimap_seeds", sep="")))
+  ## Then names are like:
+  unlist(lapply(seeds, function(x){return(x$objName)}))
 }
 
+
+## This function will translate the from the actual mappings to the requisite
+## man pages.  The whole point is to get rid of things like flybase from
+## humans etc.
+
+## ALSO problematic: CHRLENGTHS.Rd, GO2ALLEGS.Rd UCSCGENES.Rd
+
+filterManPages <- function(doc_template_names, maps){
+  docs <- sub("\\.Rd$", "", doc_template_names)
+  docs <- docs[docs %in% maps]
+  docs <- c(docs, "_dbconn" ,"BASE","ORGANISM","MAPCOUNTS","CHRLENGTHS",
+            "GO2ALLEGS")
+  paste(docs, ".Rd", sep="")
+}
+
+## And I need a wrapper function to help me filter out things that are not in
+## the manList when I call createPackage.
+
+.createAnnotPackage <-function(pkgname,destinationDir,originDir,symbolValues,
+                              manList, unlink=FALSE, quiet=FALSE){
+  
+  #tdir <- "./TEMP" #tempdir()
+  tdir <- tempdir()
+  file.copy(from = dir(originDir, full.names = TRUE),
+            to = file.path(tdir),
+            recursive = TRUE)
+  
+  ## Then unlink unwanted man pages from tdir
+  manDir <- file.path(tdir, "man")
+  manFiles <- dir(manDir)
+  rmFiles <- manFiles[!(manFiles %in% manList)]
+  rmFiles <- file.path(manDir, rmFiles)
+  unlink(rmFiles)
+  
+  ## Then call createPackage
+  createPackage(pkgname=pkgname,
+                destinationDir=destinationDir,
+                originDir=tdir,
+                symbolValues=symbolValues,
+                unlink=unlink,
+                quiet=quiet)
+}
+
+
+
+## TESTING:
 ## library(AnnotationForge)
-## debug(AnnotationForge:::.makeAnnDbPkg) ## this one is always called ??
-## debug(AnnotationForge:::.makeAnnDbPkgs) ## This one is called 1st?
-## debug(AnnotationForge:::.makeAnnDbPkgList) ## WTH?  None of these are called?
+## debug(AnnotationForge:::.createAnnotPackage)
+## debug(AnnotationForge:::.makeAnnDbPkg) ## this one is always called.
+## debug(AnnotationForge:::.makeAnnDbPkgs) ## This one is called 1st for mine
+## debug(AnnotationForge:::.makeAnnDbPkgList) ## called for others
 ## source("~/proj/Rpacks/AnnotationForge/inst/extdata/GentlemanLab/org-batch-script.R")
+
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -269,28 +359,21 @@ setGeneric("makeAnnDbPkg", signature="x",
                   ANNDBIVERSION=ann_dbi_version,
                   ORGVERSION=org_version
                   )
-  ## TODO:
-  ## 1) Compile all standard NCBI based org and chip packages into a single pair of templates. - Done.
-  ## 1.5) don't change contents of PkgTemplate, but translate it (when appropriate) so that we point to the more generic templates by changing the template_path to be something else (above).        
-  ## 2) Come in here and add a function so that I can have pre-filtered
-  ## doc_template_names (add a function that knows which man pages go
-  ## with which packages - (perhaps by looking at the
-  ## AnnotationDbi/R/createAnnObjs.*.R files)
-  ## (IOW use things like AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds etc. - this can be
-  ## assembled and compared to a more sparten mapping of man pages  mapped to.  So start with like:
-  ## unlist(lapply(AnnotationDbi:::CHICKENCHIP_DB_AnnDbBimap_seeds, function(x){return(x$objName)}))
-  ## And then map those values to man pages with a smaller switch etc.)
-  ## 3) find the place where we copy the man dir and filter those using
-  ## the same shorter list.  And from below it really looks like step 3
-  ## is: "there is no step three".
-  ## 4) Add new manual page for select that details all the fields.
   man_dir <- file.path(template_path, "man")
   if (file.exists(man_dir)) {
     if (!no.man) {
       doc_template_names <- list.files(man_dir, "\\.Rd$")
       #is_static <- doc_template_names %in% c("_dbconn.Rd", "_dbfile.Rd")
       #doc_template_names <- doc_template_names[!is_static]
-      map_names <- sub("\\.Rd$", "", doc_template_names)
+
+##       map_names <- sub("\\.Rd$", "", doc_template_names)
+
+      ## extract the map_names from the bimap definitions
+      map_names <- listMappings(x)
+      ## now use this info to filter to relevant mappings
+      doc_template_names <- filterManPages(doc_template_names,maps=map_names)
+      
+      
       if (length(map_names) != 0)
         symvals <- c(symvals, getSymbolValuesForManPages(map_names, dbfile))
     } else {
@@ -301,10 +384,11 @@ setGeneric("makeAnnDbPkg", signature="x",
     str(symvals)
     stop("'symvals' contains duplicated symbols (see above)")
   }
-  createPackage(x@Package,
-                destinationDir=dest_dir,
-                originDir=template_path,
-                symbolValues=symvals)
+  .createAnnotPackage(x@Package,
+                     destinationDir=dest_dir,
+                     originDir=template_path,
+                     symbolValues=symvals,
+                     manList=doc_template_names)
   ## rename Rd files (prepend the pkg name)
   ## Here is also where we put the man files into the package (after renaming them)
   if (file.exists(man_dir) && !no.man && length(doc_template_names) != 0) {

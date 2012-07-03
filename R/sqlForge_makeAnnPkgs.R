@@ -55,6 +55,16 @@ makeRHESUSCHIP_DB <- function(...){
     makeDBPackage("RHESUSCHIP_DB", ...)    
 }
 
+
+
+
+
+
+
+
+
+
+
 .makeHUMANCHIP_DB <- function(affy,
                              prefix,
                              fileName,
@@ -67,7 +77,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -95,7 +105,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="HUMANCHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -116,7 +126,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -144,7 +154,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="MOUSECHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -165,7 +175,7 @@ makeRHESUSCHIP_DB <- function(...){
                            manufacturer = "Manufacturer not specified",
                            chipName = "ChipName not specified",
                            manufacturerUrl = "Manufacturer Url not specified",
-                           author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                           author = "Marc Carlson",
                            maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -193,7 +203,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="RATCHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -215,7 +225,7 @@ makeRHESUSCHIP_DB <- function(...){
                            manufacturer = "Manufacturer not specified",
                            chipName = "ChipName not specified",
                            manufacturerUrl = "Manufacturer Url not specified",
-                           author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                           author = "Marc Carlson",
                            maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -243,7 +253,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="FLYCHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -263,7 +273,7 @@ makeRHESUSCHIP_DB <- function(...){
                                    manufacturer = "Manufacturer not specified",
                                    chipName = "ChipName not specified",
                                    manufacturerUrl = "Manufacturer Url not specified",
-                                   author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                                   author = "Marc Carlson",
                                    maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -307,7 +317,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -354,7 +364,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -382,7 +392,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="ZEBRAFISHCHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -404,7 +414,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -432,7 +442,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="ECOLICHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -455,7 +465,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -483,7 +493,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="CANINECHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -505,7 +515,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -533,7 +543,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="BOVINECHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -555,7 +565,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -583,7 +593,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="WORMCHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -604,7 +614,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -632,7 +642,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="PIGCHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -653,7 +663,7 @@ makeRHESUSCHIP_DB <- function(...){
                              manufacturer = "Manufacturer not specified",
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
-                             author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                             author = "Marc Carlson",
                              maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -681,7 +691,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="CHICKENCHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -702,7 +712,7 @@ makeRHESUSCHIP_DB <- function(...){
                             manufacturer = "Manufacturer not specified",
                             chipName = "ChipName not specified",
                             manufacturerUrl = "Manufacturer Url not specified",
-                            author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                            author = "Marc Carlson",
                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -730,7 +740,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="XENOPUSCHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 
@@ -751,7 +761,7 @@ makeRHESUSCHIP_DB <- function(...){
                            manufacturer = "Manufacturer not specified",
                            chipName = "ChipName not specified",
                            manufacturerUrl = "Manufacturer Url not specified",
-                           author = "Marc Carlson, Seth Falcon, Herve Pages, Nianhua Li",
+                           author = "Marc Carlson",
                            maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
@@ -779,7 +789,7 @@ makeRHESUSCHIP_DB <- function(...){
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="RHESUSCHIP.DB",
+                PkgTemplate="NCBICHIP.DB",
                 AnnObjPrefix=prefix
                 )
 

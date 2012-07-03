@@ -50,7 +50,7 @@
   
   Mappings were based on data provided by:
 
-  @GO2ALLPROBESSOURCE@
+  @GOSOURCE@
   
 }
 \references{

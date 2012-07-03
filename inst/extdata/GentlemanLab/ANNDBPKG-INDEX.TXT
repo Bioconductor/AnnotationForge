@@ -16,7 +16,7 @@
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: HUMANCHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -34,7 +34,7 @@
 
 Package: hcg110.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hcg110.sqlite
 AnnObjPrefix: hcg110
 species: Human
@@ -42,7 +42,7 @@ manufacturer: Affymetrix
 
 Package: hgfocus.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgfocus.sqlite
 AnnObjPrefix: hgfocus
 species: Human
@@ -50,7 +50,7 @@ manufacturer: Affymetrix
 
 Package: hgu133a2.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu133a2.sqlite
 AnnObjPrefix: hgu133a2
 species: Human
@@ -58,7 +58,7 @@ manufacturer: Affymetrix
 
 Package: hgu133a.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu133a.sqlite
 AnnObjPrefix: hgu133a
 species: Human
@@ -66,7 +66,7 @@ manufacturer: Affymetrix
 
 Package: hgu133b.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu133b.sqlite
 AnnObjPrefix: hgu133b
 species: Human
@@ -74,7 +74,7 @@ manufacturer: Affymetrix
 
 Package: hgu133plus2.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu133plus2.sqlite
 AnnObjPrefix: hgu133plus2
 species: Human
@@ -82,7 +82,7 @@ manufacturer: Affymetrix
 
 Package: hgu219.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu219.sqlite
 AnnObjPrefix: hgu219
 species: Human
@@ -90,7 +90,7 @@ manufacturer: Affymetrix
 
 Package: hgu95a.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95a.sqlite
 AnnObjPrefix: hgu95a
 species: Human
@@ -98,7 +98,7 @@ manufacturer: Affymetrix
 
 Package: hgu95av2.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95av2.sqlite
 AnnObjPrefix: hgu95av2
 species: Human
@@ -106,7 +106,7 @@ manufacturer: Affymetrix
 
 Package: hgu95b.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95b.sqlite
 AnnObjPrefix: hgu95b
 species: Human
@@ -114,7 +114,7 @@ manufacturer: Affymetrix
 
 Package: hgu95c.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95c.sqlite
 AnnObjPrefix: hgu95c
 species: Human
@@ -122,7 +122,7 @@ manufacturer: Affymetrix
 
 Package: hgu95d.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95d.sqlite
 AnnObjPrefix: hgu95d
 species: Human
@@ -130,7 +130,7 @@ manufacturer: Affymetrix
 
 Package: hgu95e.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95e.sqlite
 AnnObjPrefix: hgu95e
 species: Human
@@ -138,7 +138,7 @@ manufacturer: Affymetrix
 
 Package: hu35ksuba.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu35ksuba.sqlite
 AnnObjPrefix: hu35ksuba
 species: Human
@@ -146,7 +146,7 @@ manufacturer: Affymetrix
 
 Package: hu35ksubb.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu35ksubb.sqlite
 AnnObjPrefix: hu35ksubb
 species: Human
@@ -154,7 +154,7 @@ manufacturer: Affymetrix
 
 Package: hu35ksubc.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu35ksubc.sqlite
 AnnObjPrefix: hu35ksubc
 species: Human
@@ -162,7 +162,7 @@ manufacturer: Affymetrix
 
 Package: hu35ksubd.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu35ksubd.sqlite
 AnnObjPrefix: hu35ksubd
 species: Human
@@ -170,7 +170,7 @@ manufacturer: Affymetrix
 
 Package: hthgu133a.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hthgu133a.sqlite
 AnnObjPrefix: hthgu133a
 species: Human
@@ -178,7 +178,7 @@ manufacturer: Affymetrix
 
 Package: hthgu133b.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hthgu133b.sqlite
 AnnObjPrefix: hthgu133b
 species: Human
@@ -186,7 +186,7 @@ manufacturer: Affymetrix
 
 Package: hu6800.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu6800.sqlite
 AnnObjPrefix: hu6800
 species: Human
@@ -194,7 +194,7 @@ manufacturer: Affymetrix
 
 Package: u133x3p.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/u133x3p.sqlite
 AnnObjPrefix: u133x3p
 species: Human
@@ -205,7 +205,7 @@ manufacturer: Affymetrix
 
 Package: hgug4100a.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4100a.sqlite
 AnnObjPrefix: hgug4100a
 species: Human
@@ -213,7 +213,7 @@ manufacturer: Agilent
 
 Package: hgug4101a.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4101a.sqlite
 AnnObjPrefix: hgug4101a
 species: Human
@@ -221,7 +221,7 @@ manufacturer: Agilent
 
 Package: hgug4110b.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4110b.sqlite
 AnnObjPrefix: hgug4110b
 species: Human
@@ -229,7 +229,7 @@ manufacturer: Agilent
 
 Package: hgug4111a.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4111a.sqlite
 AnnObjPrefix: hgug4111a
 species: Human
@@ -237,7 +237,7 @@ manufacturer: Agilent
 
 Package: hgug4112a.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4112a.sqlite
 AnnObjPrefix: hgug4112a
 species: Human
@@ -245,7 +245,7 @@ manufacturer: Agilent
 
 Package: HsAgilentDesign026652.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/HsAgilentDesign026652.sqlite
 AnnObjPrefix: HsAgilentDesign026652
 species: Human
@@ -256,7 +256,7 @@ manufacturer: Agilent
 
 Package: hguatlas13k.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hguatlas13k.sqlite
 AnnObjPrefix: hguatlas13k
 species: Human
@@ -267,7 +267,7 @@ manufacturer: Clontech
 
 Package: hguqiagenv3.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hguqiagenv3.sqlite
 AnnObjPrefix: hguqiagenv3
 species: Human
@@ -278,7 +278,7 @@ manufacturer: Qiagen
 
 Package: hgubeta7.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgubeta7.sqlite
 AnnObjPrefix: hgubeta7
 species: Human
@@ -286,7 +286,7 @@ biocViews: AnnotationData, CustomArray, Homo_sapiens
 
 Package: hguDKFZ31.db
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hguDKFZ31.sqlite
 AnnObjPrefix: hguDKFZ31
 species: Human
@@ -295,7 +295,7 @@ biocViews: AnnotationData, CustomArray, Homo_sapiens
 Package: HuO22.db
 Title: FHCRC Genomics Shared Resource HuO22 Annotation Data (HuO22)
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/HuO22.sqlite
 AnnObjPrefix: HuO22
 species: Human
@@ -304,7 +304,7 @@ manufacturer: FHCRC Genomics Shared Resource
 Package: JazaeriMetaData.db
 Title: A data package containing annotation data for JazaeriMetaData
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/JazaeriMetaData.sqlite
 AnnObjPrefix: JazaeriMetaData
 species: Human
@@ -313,7 +313,7 @@ manufacturer: National Cancer Institute
 Package: Norway981.db
 Title: Norway981 http://genome-www5.stanford.edu/ Annotation Data (Norway981)
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Norway981.sqlite
 AnnObjPrefix: Norway981
 species: Human
@@ -322,7 +322,7 @@ manufacturer: Stanford Microarray Database
 Package: OperonHumanV3.db
 Title: FHCRC Nelson Lab OperonHumanV3 Annotation Data (OperonHumanV3)
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/OperonHumanV3.sqlite
 AnnObjPrefix: OperonHumanV3
 species: Human
@@ -331,7 +331,7 @@ manufacturer: FHCRC Nelson Lab
 Package: PartheenMetaData.db
 Title: PartheenMetaData http://swegene.onk.lu.se Annotation Data (PartheenMetaData)
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/PartheenMetaData.sqlite
 AnnObjPrefix: PartheenMetaData
 species: Human
@@ -340,7 +340,7 @@ manufacturer: Swegene DNA Microarray Resource Centre, Lund, Sweden
 Package: pedbarrayv9.db
 Title: FHCRC Nelson Lab pedbarrayv9 Annotation Data (pedbarrayv9)
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/pedbarrayv9.sqlite
 AnnObjPrefix: pedbarrayv9
 species: Human
@@ -349,7 +349,7 @@ manufacturer: FHCRC Nelson Lab
 Package: pedbarrayv10.db
 Title: FHCRC Nelson Lab pedbarrayv10 Annotation Data (pedbarrayv10)
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/pedbarrayv10.sqlite
 AnnObjPrefix: pedbarrayv10
 species: Human
@@ -358,7 +358,7 @@ manufacturer: FHCRC Nelson Lab
 Package: Roberts2005Annotation.db
 Title: Roberts2005Annotation Annotation Data (Roberts2005Annotation)
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Roberts2005Annotation.sqlite
 AnnObjPrefix: Roberts2005Annotation
 species: Human
@@ -367,7 +367,7 @@ manufacturer: Roberts2005Annotation
 Package: SHDZ.db
 Title: SHDZ http://genome-www5.stanford.edu/ Annotation Data (SHDZ)
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/SHDZ.sqlite
 AnnObjPrefix: SHDZ
 species: Human
@@ -376,7 +376,7 @@ manufacturer: Stanford Microarray Database
 Package: POCRCannotation.db
 Title: A package containing metadata for POCRC arrays
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/POCRCannotation.sqlite
 AnnObjPrefix: POCRCannotation
 species: Human
@@ -385,7 +385,7 @@ manufacturer: CUSTOM
 Package: Hs6UG171.db
 Title: A package containing metadata for Hs6UG171 arrays
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Hs6UG171.sqlite
 AnnObjPrefix: Hs6UG171
 species: Human
@@ -394,7 +394,7 @@ manufacturer: CUSTOM
 Package: LAPOINTE.db
 Title: A package containing metadata for LAPOINTE arrays
 Version: 2.7.3
-PkgTemplate: HUMANCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/LAPOINTE.sqlite
 AnnObjPrefix: LAPOINTE
 species: Human
@@ -408,7 +408,7 @@ manufacturer: CUSTOM
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: MOUSECHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -426,7 +426,7 @@ manufacturer: CUSTOM
 
 Package: mgu74a.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74a.sqlite
 AnnObjPrefix: mgu74a
 species: Mouse
@@ -434,7 +434,7 @@ manufacturer: Affymetrix
 
 Package: mgu74av2.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74av2.sqlite
 AnnObjPrefix: mgu74av2
 species: Mouse
@@ -442,7 +442,7 @@ manufacturer: Affymetrix
 
 Package: mgu74b.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74b.sqlite
 AnnObjPrefix: mgu74b
 species: Mouse
@@ -450,7 +450,7 @@ manufacturer: Affymetrix
 
 Package: mgu74bv2.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74bv2.sqlite
 AnnObjPrefix: mgu74bv2
 species: Mouse
@@ -458,7 +458,7 @@ manufacturer: Affymetrix
 
 Package: mgu74c.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74c.sqlite
 AnnObjPrefix: mgu74c
 species: Mouse
@@ -466,7 +466,7 @@ manufacturer: Affymetrix
 
 Package: mgu74cv2.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74cv2.sqlite
 AnnObjPrefix: mgu74cv2
 species: Mouse
@@ -474,7 +474,7 @@ manufacturer: Affymetrix
 
 Package: moe430a.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/moe430a.sqlite
 AnnObjPrefix: moe430a
 species: Mouse
@@ -482,7 +482,7 @@ manufacturer: Affymetrix
 
 Package: moe430b.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/moe430b.sqlite
 AnnObjPrefix: moe430b
 species: Mouse
@@ -490,7 +490,7 @@ manufacturer: Affymetrix
 
 Package: mouse4302.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mouse4302.sqlite
 AnnObjPrefix: mouse4302
 species: Mouse
@@ -498,7 +498,7 @@ manufacturer: Affymetrix
 
 Package: mouse430a2.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mouse430a2.sqlite
 AnnObjPrefix: mouse430a2
 species: Mouse
@@ -506,7 +506,7 @@ manufacturer: Affymetrix
 
 Package: mu11ksuba.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu11ksuba.sqlite
 AnnObjPrefix: mu11ksuba
 species: Mouse
@@ -514,7 +514,7 @@ manufacturer: Affymetrix
 
 Package: mu11ksubb.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu11ksubb.sqlite
 AnnObjPrefix: mu11ksubb
 species: Mouse
@@ -522,7 +522,7 @@ manufacturer: Affymetrix
 
 Package: mu19ksuba.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu19ksuba.sqlite
 AnnObjPrefix: mu19ksuba
 species: Mouse
@@ -530,7 +530,7 @@ manufacturer: Affymetrix
 
 Package: mu19ksubb.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu19ksubb.sqlite
 AnnObjPrefix: mu19ksubb
 species: Mouse
@@ -538,7 +538,7 @@ manufacturer: Affymetrix
 
 Package: mu19ksubc.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu19ksubc.sqlite
 AnnObjPrefix: mu19ksubc
 species: Mouse
@@ -549,7 +549,7 @@ manufacturer: Affymetrix
 
 Package: mgug4104a.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgug4104a.sqlite
 AnnObjPrefix: mgug4104a
 species: Mouse
@@ -557,7 +557,7 @@ manufacturer: Agilent
 
 Package: mgug4120a.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgug4120a.sqlite
 AnnObjPrefix: mgug4120a
 species: Mouse
@@ -565,7 +565,7 @@ manufacturer: Agilent
 
 Package: mgug4121a.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgug4121a.sqlite
 AnnObjPrefix: mgug4121a
 species: Mouse
@@ -573,7 +573,7 @@ manufacturer: Agilent
 
 Package: mgug4122a.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgug4122a.sqlite
 AnnObjPrefix: mgug4122a
 species: Mouse
@@ -581,7 +581,7 @@ manufacturer: Agilent
 
 Package: MmAgilentDesign026655.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/MmAgilentDesign026655.sqlite
 AnnObjPrefix: MmAgilentDesign026655
 species: Mouse
@@ -592,7 +592,7 @@ manufacturer: Agilent
 
 Package: mguatlas5k.db
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mguatlas5k.sqlite
 AnnObjPrefix: mguatlas5k
 species: Mouse
@@ -604,7 +604,7 @@ manufacturer: Clontech
 Package: mpedbarray.db
 Title: FHCRC Nelson Lab mpedbarray Annotation Data (mpedbarray)
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mpedbarray.sqlite
 AnnObjPrefix: mpedbarray
 species: Mouse
@@ -613,7 +613,7 @@ manufacturer: FHCRC Nelson Lab
 Package: Mu15v1.db
 Title: FHCRC Genomics Shared Resource Mu15v1 Annotation Data (Mu15v1)
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Mu15v1.sqlite
 AnnObjPrefix: Mu15v1
 species: Mouse
@@ -622,7 +622,7 @@ manufacturer: FHCRC Genomics Shared Resource
 Package: Mu22v3.db
 Title: FHCRC Genomics Shared Resource Mu22v3 Annotation Data (Mu22v3)
 Version: 2.7.3
-PkgTemplate: MOUSECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Mu22v3.sqlite
 AnnObjPrefix: Mu22v3
 species: Mouse
@@ -636,7 +636,7 @@ manufacturer: FHCRC Genomics Shared Resource
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: RATCHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -654,7 +654,7 @@ manufacturer: FHCRC Genomics Shared Resource
 
 Package: rae230a.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rae230a.sqlite
 AnnObjPrefix: rae230a
 species: Rat
@@ -662,7 +662,7 @@ manufacturer: Affymetrix
 
 Package: rae230b.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rae230b.sqlite
 AnnObjPrefix: rae230b
 species: Rat
@@ -670,7 +670,7 @@ manufacturer: Affymetrix
 
 Package: rat2302.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rat2302.sqlite
 AnnObjPrefix: rat2302
 species: Rat
@@ -678,7 +678,7 @@ manufacturer: Affymetrix
 
 Package: rgu34a.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgu34a.sqlite
 AnnObjPrefix: rgu34a
 species: Rat
@@ -686,7 +686,7 @@ manufacturer: Affymetrix
 
 Package: rgu34b.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgu34b.sqlite
 AnnObjPrefix: rgu34b
 species: Rat
@@ -694,7 +694,7 @@ manufacturer: Affymetrix
 
 Package: rgu34c.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgu34c.sqlite
 AnnObjPrefix: rgu34c
 species: Rat
@@ -702,7 +702,7 @@ manufacturer: Affymetrix
 
 Package: rnu34.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rnu34.sqlite
 AnnObjPrefix: rnu34
 species: Rat
@@ -710,7 +710,7 @@ manufacturer: Affymetrix
 
 Package: rtu34.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rtu34.sqlite
 AnnObjPrefix: rtu34
 species: Rat
@@ -721,7 +721,7 @@ manufacturer: Affymetrix
 
 Package: rgug4105a.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgug4105a.sqlite
 AnnObjPrefix: rgug4105a
 species: Rat
@@ -729,7 +729,7 @@ manufacturer: Agilent
 
 Package: rgug4130a.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgug4130a.sqlite
 AnnObjPrefix: rgug4130a
 species: Rat
@@ -737,7 +737,7 @@ manufacturer: Agilent
 
 Package: rgug4131a.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgug4131a.sqlite
 AnnObjPrefix: rgug4131a
 species: Rat
@@ -745,7 +745,7 @@ manufacturer: Agilent
 
 Package: RnAgilentDesign028282.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/RnAgilentDesign028282.sqlite
 AnnObjPrefix: RnAgilentDesign028282
 species: Rat
@@ -756,7 +756,7 @@ manufacturer: Agilent
 
 Package: rguatlas4k.db
 Version: 2.7.3
-PkgTemplate: RATCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rguatlas4k.sqlite
 AnnObjPrefix: rguatlas4k
 species: Rat
@@ -770,7 +770,7 @@ manufacturer: Clontech
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: FLYCHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -785,7 +785,7 @@ manufacturer: Clontech
 
 Package: drosgenome1.db
 Version: 2.7.3
-PkgTemplate: FLYCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/drosgenome1.sqlite
 AnnObjPrefix: drosgenome1
 species: Fly
@@ -793,7 +793,7 @@ manufacturer: Affymetrix
 
 Package: drosophila2.db
 Version: 2.7.3
-PkgTemplate: FLYCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/drosophila2.sqlite
 AnnObjPrefix: drosophila2
 species: Fly
@@ -801,7 +801,7 @@ manufacturer: Affymetrix
 
 Package: indac.db
 Version: 2.7.3
-PkgTemplate: FLYCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/indac.sqlite
 AnnObjPrefix: indac
 species: Fly
@@ -902,7 +902,7 @@ manufacturer: Affymetrix
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: ZEBRAFISHCHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -917,7 +917,7 @@ manufacturer: Affymetrix
 
 Package: zebrafish.db
 Version: 2.7.3
-PkgTemplate: ZEBRAFISHCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/zebrafish.sqlite
 AnnObjPrefix: zebrafish
 species: Zebrafish
@@ -932,7 +932,7 @@ manufacturer: Affymetrix
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: CANINECHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -947,7 +947,7 @@ manufacturer: Affymetrix
 
 Package: canine.db
 Version: 2.7.3
-PkgTemplate: CANINECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/canine.sqlite
 AnnObjPrefix: canine
 species: Canine
@@ -955,7 +955,7 @@ manufacturer: Affymetrix
 
 Package: canine2.db
 Version: 2.7.3
-PkgTemplate: CANINECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/canine2.sqlite
 AnnObjPrefix: canine2
 species: Canine
@@ -970,7 +970,7 @@ manufacturer: Affymetrix
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: WORMCHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -985,7 +985,7 @@ manufacturer: Affymetrix
 
 Package: celegans.db
 Version: 2.7.3
-PkgTemplate: WORMCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/celegans.sqlite
 AnnObjPrefix: celegans
 species: Worm
@@ -1000,7 +1000,7 @@ manufacturer: Affymetrix
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: CHICKENCHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -1015,7 +1015,7 @@ manufacturer: Affymetrix
 
 Package: chicken.db
 Version: 2.7.3
-PkgTemplate: CHICKENCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/chicken.sqlite
 AnnObjPrefix: chicken
 species: Chicken
@@ -1030,7 +1030,7 @@ manufacturer: Affymetrix
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: BOVINECHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -1045,7 +1045,7 @@ manufacturer: Affymetrix
 
 Package: bovine.db
 Version: 2.7.3
-PkgTemplate: BOVINECHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/bovine.sqlite
 AnnObjPrefix: bovine
 species: Bovine
@@ -1061,7 +1061,7 @@ manufacturer: Affymetrix
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: PIGCHIP_DB
+###     PkgTemplate: NCBICHIP_DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -1076,7 +1076,7 @@ manufacturer: Affymetrix
 
 Package: porcine.db
 Version: 2.7.3
-PkgTemplate: PIGCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/porcine.sqlite
 AnnObjPrefix: porcine
 species: Pig
@@ -1092,7 +1092,7 @@ manufacturer: Affymetrix
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: XENOPUSCHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -1107,7 +1107,7 @@ manufacturer: Affymetrix
 
 Package: xlaevis.db
 Version: 2.7.3
-PkgTemplate: XENOPUSCHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/xlaevis.sqlite
 AnnObjPrefix: xlaevis
 species: Xenopus
@@ -1122,7 +1122,7 @@ manufacturer: Affymetrix
 ###     Package (*)
 ###     Title
 ###     Version (*)
-###     PkgTemplate: ECOLICHIP.DB
+###     PkgTemplate: NCBICHIP.DB
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
@@ -1137,7 +1137,7 @@ manufacturer: Affymetrix
 
 Package: ecoli2.db
 Version: 2.7.3
-PkgTemplate: ECOLICHIP.DB
+PkgTemplate: NCBICHIP.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/ecoli2.sqlite
 AnnObjPrefix: ecoli2
 species: Escherichia coli
@@ -1169,7 +1169,7 @@ manufacturer: Affymetrix
 
 Package: org.Hs.eg.db
 Version: 2.7.3
-PkgTemplate: HUMAN.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Hs.eg.sqlite
 AnnObjPrefix: org.Hs.eg
 AnnObjTarget: Human
@@ -1187,7 +1187,7 @@ biocViews: AnnotationData, Plasmodium_falciparum
 
 Package: org.Mm.eg.db
 Version: 2.7.3
-PkgTemplate: MOUSE.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Mm.eg.sqlite
 AnnObjPrefix: org.Mm.eg
 AnnObjTarget: Mouse
@@ -1196,7 +1196,7 @@ biocViews: AnnotationData, Mus_musculus, mouseLLMappings
 
 Package: org.Rn.eg.db
 Version: 2.7.3
-PkgTemplate: RAT.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Rn.eg.sqlite
 AnnObjPrefix: org.Rn.eg
 AnnObjTarget: Rat
@@ -1205,7 +1205,7 @@ biocViews: AnnotationData, Rattus_norvegicus, ratLLMappings
 
 Package: org.Dm.eg.db
 Version: 2.7.3
-PkgTemplate: FLY.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Dm.eg.sqlite
 AnnObjPrefix: org.Dm.eg
 AnnObjTarget: Fly
@@ -1223,7 +1223,7 @@ biocViews: AnnotationData, Saccharomyces_cerevisiae
 
 Package: org.Dr.eg.db
 Version: 2.7.3
-PkgTemplate: ZEBRAFISH.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Dr.eg.sqlite
 AnnObjPrefix: org.Dr.eg
 AnnObjTarget: Zebrafish
@@ -1232,7 +1232,7 @@ biocViews: AnnotationData, Danio_rerio
 
 Package: org.EcK12.eg.db
 Version: 2.7.3
-PkgTemplate: ECOLI.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.EcK12.eg.sqlite
 AnnObjPrefix: org.EcK12.eg
 AnnObjTarget: E coli
@@ -1241,7 +1241,7 @@ biocViews: AnnotationData, Escherichia_coli
 
 Package: org.EcSakai.eg.db
 Version: 2.7.3
-PkgTemplate: ECOLI.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.EcSakai.eg.sqlite
 AnnObjPrefix: org.EcSakai.eg
 AnnObjTarget: E coli
@@ -1250,7 +1250,7 @@ biocViews: AnnotationData, Escherichia_coli
 
 Package: org.Cf.eg.db
 Version: 2.7.3
-PkgTemplate: CANINE.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Cf.eg.sqlite
 AnnObjPrefix: org.Cf.eg
 AnnObjTarget: Canine
@@ -1259,7 +1259,7 @@ biocViews: AnnotationData, Canis_familiaris
 
 Package: org.Bt.eg.db
 Version: 2.7.3
-PkgTemplate: BOVINE.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Bt.eg.sqlite
 AnnObjPrefix: org.Bt.eg
 AnnObjTarget: Bovine
@@ -1268,7 +1268,7 @@ biocViews: AnnotationData, Bos_taurus
 
 Package: org.Ce.eg.db
 Version: 2.7.3
-PkgTemplate: WORM.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Ce.eg.sqlite
 AnnObjPrefix: org.Ce.eg
 AnnObjTarget: Worm
@@ -1277,7 +1277,7 @@ biocViews: AnnotationData, Caenorhabditis_elegans
 
 Package: org.Ss.eg.db
 Version: 2.7.3
-PkgTemplate: PIG.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Ss.eg.sqlite
 AnnObjPrefix: org.Ss.eg
 AnnObjTarget: Pig
@@ -1286,7 +1286,7 @@ biocViews: AnnotationData, Sus_scrofa
 
 Package: org.Gg.eg.db
 Version: 2.7.3
-PkgTemplate: CHICKEN.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Gg.eg.sqlite
 AnnObjPrefix: org.Gg.eg
 AnnObjTarget: Chicken
@@ -1315,7 +1315,7 @@ biocViews: AnnotationData, Saccharomyces_cerevisiae
 
 Package: org.Pt.eg.db
 Version: 2.7.3
-PkgTemplate: CHIMP.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Pt.eg.sqlite
 AnnObjPrefix: org.Pt.eg
 AnnObjTarget: Chimp
@@ -1324,7 +1324,7 @@ biocViews: AnnotationData, Pan_troglodytes
 
 Package: org.Mmu.eg.db
 Version: 2.7.3
-PkgTemplate: RHESUS.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Mmu.eg.sqlite
 AnnObjPrefix: org.Mmu.eg
 AnnObjTarget: Rhesus
@@ -1342,7 +1342,7 @@ biocViews: AnnotationData, Arabidopsis_thaliana
 
 Package: org.Ag.eg.db
 Version: 2.7.3
-PkgTemplate: ANOPHELES.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Ag.eg.sqlite
 AnnObjPrefix: org.Ag.eg
 AnnObjTarget: Anopheles
@@ -1351,7 +1351,7 @@ biocViews: AnnotationData, Anopheles_gambiae
 
 Package: org.Xl.eg.db
 Version: 2.7.3
-PkgTemplate: XENOPUS.DB
+PkgTemplate: NCBIORG.DB
 DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Xl.eg.sqlite
 AnnObjPrefix: org.Xl.eg
 AnnObjTarget: Xenopus
@@ -1551,41 +1551,5 @@ AnnObjTarget: Human
 species: Human
 biocViews: AnnotationData
 
-
-### =========================================================================
-### AFFYHUEX_DB schema
-### ------------------
-###   Fields:
-###     Package
-###     Title
-###     Version
-###     PkgTemplate: AFFYHUEX.DB
-###     DBfile
-###     DBschema
-###     AnnObjPrefix
-###     AnnObjTarget
-###     organism
-###     species
-###     manufacturer
-###     chipName
-###     manufacturerUrl
-###     biocViews
-
-### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-### Affymetrix chips
-
-Package: huex10stv2.db
-Version: 1.17.0
-PkgTemplate: AFFYHUEX.DB
-DBfile:
-DBschema: AFFYHUEX_DB
-AnnObjPrefix: huex10stv2
-AnnObjTarget: exon array HuEx-1_0-st-v2
-organism: Homo sapiens
-species: Human
-manufacturer: Affymetrix
-chipName: HuEx-1_0-st-v2
-manufacturerUrl: NA
-biocViews: AnnotationData, AffymetrixChip, Homo_sapiens, huex10stv2
 
 
