@@ -276,7 +276,7 @@ filterManPages <- function(doc_template_names, maps){
   
   tdir <- file.path("TEMPANNOTPACKAGEDIRFORFILTERING")
   dir.create(tdir)
-  #tdir <- tempdir() ## tempdir() causes strange errors...  :(
+#  tdir <- file.path(tempdir()) ## tempdir() causes strange errors...  :(
   file.copy(from = dir(originDir, full.names = TRUE),
             to = tdir,
             recursive = TRUE)
@@ -297,6 +297,8 @@ filterManPages <- function(doc_template_names, maps){
                 quiet=quiet)
   ## Then remove our terrible temp dir
   unlink(tdir, recursive=TRUE)
+  ## Will need to return to tempdir() if we ever want to be able to do more
+  ## than one at a time...  :(
 }
 
 
@@ -308,7 +310,7 @@ filterManPages <- function(doc_template_names, maps){
 ## debug(AnnotationForge:::.makeAnnDbPkgs) ## This one is called 1st for mine
 ## debug(AnnotationForge:::.makeAnnDbPkgList) ## called for others
 ## source("~/proj/Rpacks/AnnotationForge/inst/extdata/GentlemanLab/org-batch-script.R")
-
+## source("~/proj/Rpacks/AnnotationForge/inst/extdata/GentlemanLab/chip-batch-script.R")
 
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
