@@ -274,10 +274,11 @@ filterManPages <- function(doc_template_names, maps){
 .createAnnotPackage <-function(pkgname,destinationDir,originDir,symbolValues,
                               manList, unlink=FALSE, quiet=FALSE){
   
-  #tdir <- "./TEMP" #tempdir()
-  tdir <- tempdir()
+  tdir <- file.path("TEMPANNOTPACKAGEDIRFORFILTERING")
+  dir.create(tdir)
+  #tdir <- tempdir() ## tempdir() causes strange errors...  :(
   file.copy(from = dir(originDir, full.names = TRUE),
-            to = file.path(tdir),
+            to = tdir,
             recursive = TRUE)
   
   ## Then unlink unwanted man pages from tdir
@@ -294,6 +295,8 @@ filterManPages <- function(doc_template_names, maps){
                 symbolValues=symbolValues,
                 unlink=unlink,
                 quiet=quiet)
+  ## Then remove our terrible temp dir
+  unlink(tdir, recursive=TRUE)
 }
 
 
