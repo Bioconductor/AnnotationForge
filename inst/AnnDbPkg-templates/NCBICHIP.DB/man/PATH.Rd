@@ -1,11 +1,17 @@
 \name{@ANNOBJPREFIX@PATH}
 \alias{@ANNOBJPREFIX@PATH}
+\alias{@ANNOBJPREFIX@PATH2PROBE}
 \title{Mappings between probe identifiers and KEGG pathway identifiers}
 \description{
   KEGG (Kyoto Encyclopedia of Genes and Genomes) maintains pathway data
-  for various organisms. @ANNOBJPREFIX@PATH maps probe identifiers to the
-  identifiers used by KEGG for pathways in which the genes represented
-  by the probe identifiers are involved
+  for various organisms.
+
+  @ANNOBJPREFIX@PATH maps probe identifiers to the identifiers used by
+  KEGG for pathways in which the genes represented by the probe
+  identifiers are involved
+
+  @ANNOBJPREFIX@PATH2PROBE is an R object that provides mappings between
+  KEGG identifiers and manufacturer identifiers.  
 }
 \details{
   Each KEGG pathway has a name and identifier. Pathway name for a given pathway
@@ -24,17 +30,26 @@
   \url{http://www.genome.ad.jp/kegg/}
 }
 \examples{
-        x <- @ANNOBJPREFIX@PATH
-        # Get the probe identifiers that are mapped to a KEGG pathway ID
-        mapped_probes <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_probes])
-        if(length(xx) > 0) {
-          # Get the PATH for the first five probes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+    x <- @ANNOBJPREFIX@PATH
+    # Get the probe identifiers that are mapped to a KEGG pathway ID
+    mapped_probes <- mappedkeys(x)
+    # Convert to a list
+    xx <- as.list(x[mapped_probes])
+    if(length(xx) > 0) {
+      # Get the PATH for the first five probes
+      xx[1:5]
+      # Get the first one
+      xx[[1]]
+    }
+
+    # Now convert the @ANNOBJPREFIX@PATH2PROBE object to a list
+    xx <- as.list(@ANNOBJPREFIX@PATH2PROBE)
+    if(length(xx) > 0){
+        # Get the probe identifiers for the first two pathway identifiers
+        xx[1:2]
+        # Get the first one
+        xx[[1]]
+    } 
 }
 \keyword{datasets}
 

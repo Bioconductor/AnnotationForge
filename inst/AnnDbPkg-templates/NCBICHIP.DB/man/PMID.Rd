@@ -1,17 +1,30 @@
 \name{@ANNOBJPREFIX@PMID}
 \alias{@ANNOBJPREFIX@PMID}
-\title{Map between Manufacturer Identifiers and PubMed Identifiers}
+\alias{@ANNOBJPREFIX@PMID2PROBE}
+\title{Maps between Manufacturer Identifiers and PubMed Identifiers}
 \description{
    @ANNOBJPREFIX@PMID is an R object that provides mappings between
    manufacturer identifiers and PubMed identifiers.
+   @ANNOBJPREFIX@PMID2PROBE is an R object that provides mappings between
+  PubMed identifiers and manufacturer identifiers.
 }
 \details{
-  Each manufacturer identifier is mapped to a named vector of PubMed identifiers. The
-  name associated with each vector corresponds to the manufacturer
-  identifier. The length of the vector may be one or greater, depending on how
-  many PubMed identifiers a given manufacturer identifier is mapped to. An \code{NA} is
-  reported for any manufacturer identifier that cannot be mapped to a PubMed identifier.
-
+  When @ANNOBJPREFIX@PMID is viewed as a list each manufacturer
+  identifier is mapped to a named vector of PubMed identifiers. The name
+  associated with each vector corresponds to the manufacturer
+  identifier. The length of the vector may be one or greater, depending
+  on how many PubMed identifiers a given manufacturer identifier is
+  mapped to. An \code{NA} is reported for any manufacturer identifier
+  that cannot be mapped to a PubMed identifier.
+  
+  When @ANNOBJPREFIX@PMID2PROBE is viewed as a list each PubMed
+  identifier is mapped to a named vector of manufacturer
+  identifiers. The name represents the PubMed identifier and the vector
+  contains all manufacturer identifiers that are represented by that
+  PubMed identifier. The length of the vector may be one or longer,
+  depending on how many manufacturer identifiers are mapped to a given
+  PubMed identifier.
+  
   Titles, abstracts, and possibly full texts of articles can be obtained
   from PubMed by providing a valid PubMed identifier. The pubmed function of
   annotate can also be used for the same purpose.
@@ -39,6 +52,21 @@
             xmls <- pubmed(xx[[1]], disp = "data")
             # View article information using a browser
             pubmed(xx[[1]], disp = "browser")
+        }
+    }
+
+    # Now convert the reverse map object @ANNOBJPREFIX@PMID2PROBE to a list
+    xx <- as.list(@ANNOBJPREFIX@PMID2PROBE)
+    if(length(xx) > 0){
+        # Get the probe identifiers for the first two PubMed identifiers
+        xx[1:2]
+        # Get the first one
+        xx[[1]]
+        if(interactive() && require(annotate)){
+            # Get article information as XML files for a PubMed id
+            xmls <- pubmed(names(xx)[1], disp = "data")
+            # View article information using a browser
+            pubmed(names(xx)[1], disp = "browser")
         }
     }
 }

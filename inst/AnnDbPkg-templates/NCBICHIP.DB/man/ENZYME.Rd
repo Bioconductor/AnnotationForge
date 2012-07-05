@@ -1,15 +1,24 @@
 \name{@ANNOBJPREFIX@ENZYME}
 \alias{@ANNOBJPREFIX@ENZYME}
-\title{Map between Manufacturer IDs and Enzyme Commission (EC) Numbers}
+\alias{@ANNOBJPREFIX@ENZYME2PROBE}
+\title{Maps between Manufacturer IDs and Enzyme Commission (EC) Numbers}
 \description{ 
   @ANNOBJPREFIX@ENZYME is an R object that provides mappings between
-  manufacturer identifiers and EC numbers. 
+  manufacturer identifiers and EC numbers.
+  @ANNOBJPREFIX@ENZYME2PROBE is an R object that maps Enzyme Commission
+  (EC) numbers to manufacturer identifiers.
 }
 \details{
-  Each manufacturer identifier maps to a named vector containing the EC number that
-  corresponds to the enzyme produced by that gene. The name corresponds
-  to the manufacturer identifier. If this information is unknown, the vector
-  will contain an \code{NA}.
+  When the @ANNOBJPREFIX@ENZYME maping viewed as a list, each
+  manufacturer identifier maps to a named vector containing the EC
+  number that corresponds to the enzyme produced by that gene. The names
+  corresponds to the manufacturer identifiers. If this information is
+  unknown, the vector will contain an \code{NA}.
+
+  For the @ANNOBJPREFIX@ENZYME2PROBE, each EC number maps to a named
+  vector containing all of the manufacturer identifiers that correspond
+  to the gene that produces that enzyme. The name of the vector
+  corresponds to the EC number.
   
   Enzyme Commission numbers are assigned by the Nomenclature Committee
   of the International Union of Biochemistry and Molecular Biology
@@ -48,17 +57,27 @@
 \url{ftp://ftp.genome.ad.jp/pub/kegg/pathways}
 }
 \examples{
-        x <- @ANNOBJPREFIX@ENZYME
-        # Get the probe identifiers that are mapped to an EC number 
-        mapped_probes <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_probes])
-        if(length(xx) > 0) {
-          # Get the ENZYME for the first five probes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+    x <- @ANNOBJPREFIX@ENZYME
+    # Get the probe identifiers that are mapped to an EC number 
+    mapped_probes <- mappedkeys(x)
+    # Convert to a list
+    xx <- as.list(x[mapped_probes])
+    if(length(xx) > 0) {
+      # Get the ENZYME for the first five probes
+      xx[1:5]
+      # Get the first one
+      xx[[1]]
+    }
+
+    # Now convert @ANNOBJPREFIX@ENZYME2PROBE to a list to see inside
+    xx <- as.list(@ANNOBJPREFIX@ENZYME2PROBE)
+    if(length(xx) > 0){
+       # Get the probe identifiers for the first five enzyme
+       #commission numbers
+       xx[1:5]
+       # Get the first one
+       xx[[1]]
+    }
 }
 \keyword{datasets}
 
