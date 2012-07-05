@@ -1,30 +1,37 @@
 \name{@ANNOBJPREFIX@GO}
 \alias{@ANNOBJPREFIX@GO}
 \alias{@ANNOBJPREFIX@GO2EG}
-\title{Map between Entrez Gene IDs and Gene Ontology (GO)}
+\alias{@ANNOBJPREFIX@GO2ALLEGS}
+\title{Maps between Entrez Gene IDs and Gene Ontology (GO) IDs}
 \description{
   @ANNOBJPREFIX@GO is an R object that provides mappings between
   entrez gene identifiers and the GO identifiers that they are 
   directly associated with. This mapping and its reverse mapping do NOT
   associate the child terms from the GO ontology with the gene.  Only
   the directly evidenced terms are represented here.
+
+  @ANNOBJPREFIX@GO2ALLEGS is an R object that provides mappings between
+  a given GO identifier and all of the Entrez Gene identifiers annotated
+  at that GO term OR TO ONE OF IT'S CHILD NODES in the GO ontology.
+  Thus, this mapping is much larger and more inclusive than
+  @ANNOBJPREFIX@GO2EG.
 }
 \details{
-     Each Entrez Gene identifier is mapped to a list of lists.  The names on
-     the outer list are GO identifiers.  Each inner list consists of three
-     named elements: GOID, Ontology, and Evidence.
+  If @ANNOBJPREFIX@GO is cast as a list, each Entrez Gene identifier is
+  mapped to a list of lists.  The names on the outer list are GO
+  identifiers.  Each inner list consists of three named elements: GOID,
+  Ontology, and Evidence.
 
-     The GOID element matches the GO identifier named in the outer list and is
-     included for convenience when processing the data using 'lapply'.
+  The GOID element matches the GO identifier named in the outer list and
+  is included for convenience when processing the data using 'lapply'.
 
-     The Ontology element indicates which of the three Gene Ontology
-     categories this identifier belongs to.  The categories are
-     biological process (BP), cellular component (CC), and molecular
-     function (MF).
-
-     The Evidence element contains a code indicating what kind of
-     evidence supports the association of the GO identifier to the Entrez Gene
-     id. The evidence codes in use include:
+  The Ontology element indicates which of the three Gene Ontology
+  categories this identifier belongs to.  The categories are biological
+  process (BP), cellular component (CC), and molecular function (MF).
+     
+  The Evidence element contains a code indicating what kind of evidence
+  supports the association of the GO identifier to the Entrez Gene
+  id. The evidence codes in use include:
 
   IMP: inferred from mutant phenotype  
 
@@ -47,21 +54,27 @@
   ND: no biological data available  
 
   IC: inferred by curator
+    
+    
+  If @ANNOBJPREFIX@GO2ALLEGS or @ANNOBJPREFIX@GO2EG is cast as a list,
+  each GO term maps to a named vector of entrez gene identifiers and
+  evidence codes. A GO identifier may be mapped to the same entrez gene
+  identifier more than once but the evidence code can be
+  different. Mappings between Gene Ontology identifiers and Gene
+  Ontology terms and other information are available in a separate data
+  package named GO.
   
-  Mappings between entrez gene identifiers and GO information were obtained through
-  their mappings to Entrez Gene identifiers. NAs are assigned to entrez gene identifiers
-  that can not be mapped to any Gene Ontology information. Mappings
-  between Gene Ontology identifiers an Gene Ontology terms and other information
-  are available in a separate data package named GO.
+  Whenever any of these mappings are cast as a data.frame, all the
+  results will be output in an appropriate tabular form.
   
-  Mappings were based on data provided by: @GOSOURCE@
-
-  For the reverse map GO2EG, each GO term maps to a named vector of
-  entrez gene identifiers. A GO identifier may be mapped to the same
-  entrez gene identifier more than once but the evidence code can be
-  different. Mappings between Gene Ontology identifiers and Gene Ontology
-  terms and other information are available in a separate data package
-  named GO.
+  Mappings between entrez gene identifiers and GO information were
+  obtained through their mappings to Entrez Gene identifiers. NAs are
+  assigned to entrez gene identifiers that can not be mapped to any Gene
+  Ontology information. Mappings between Gene Ontology identifiers an
+  Gene Ontology terms and other information are available in a separate
+  data package named GO.
+  
+  All mappings were based on data provided by: @GOSOURCE@
 }
 \seealso{
   \code{\link{@ANNOBJPREFIX@GO2ALLEGS}}.
@@ -89,6 +102,16 @@
         # Gets the entrez gene ids for the top 2nd and 3nd GO identifiers
         goids <- xx[2:3]
         # Gets the entrez gene ids for the first element of goids
+        goids[[1]]
+        # Evidence code for the mappings
+        names(goids[[1]])
+    }
+    # For @ANNOBJPREFIX@GO2ALLEGS
+    xx <- as.list(@ANNOBJPREFIX@GO2ALLEGS)
+    if(length(xx) > 0){
+        # Gets the Entrez Gene identifiers for the top 2nd and 3nd GO identifiers
+        goids <- xx[2:3]
+        # Gets all the Entrez Gene identifiers for the first element of goids
         goids[[1]]
         # Evidence code for the mappings
         names(goids[[1]])
