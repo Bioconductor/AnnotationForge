@@ -131,91 +131,24 @@ Since each organism will have different kinds of data available, the
 schemas that will be needed for each organism will also
 change. SQLForge provides support functions for each of the model
 organisms that will create a sqlite database that complies with a
-specified database schema.  To make an annotation package, these
-database populating functions are called along with additional code to
-wrap the database into a complete annotation package.
+specified database schema.  The following helper function will list
+supported Schemas.
 
-For each combination of organism and database schema, there must be a
-database populating function.  As an example, the schema that defines
-chip packages for Homo sapiens is called HUMANCHIP\_DB and the
-database populating function for that schema is called
-\Rfunction{popHUMANCHIPDB()}.  Most of the metadata that is required
-by a database populating function is provided internally and is
-ultimately derived from the intermediate databases.  But some
-information has to be supplied by the user such as the manufacturer
-etc.  Additionally, the database populating functions have an option
-to output the schema that they use in the form of the SQL create
-statements that were declared internally.  This allows the schema
-definitions to be kept synchronized with the code that generates the
-databases.
-
-The following example will not only generate a database, but at the
-same time will also output a .sql file that will correspond to the
-HUMANCHIP\_DB database schema.  We will begin by getting an example
-file that we have included in the AnnotationDbi package and then
-setting up the metadata to be passed in to the
-\Rfunction{popHUMANCHIP()} function.
-
-<<PopulateSetup>>=
-hcg110_IDs = system.file("extdata",
-                           "hcg110_ID",
-                           package="AnnotationDbi")
-
-myMeta = c("DBSCHEMA"="HUMANCHIP_DB",
-           "ORGANISM"="Homo sapiens",
-           "SPECIES"="Human",
-           "MANUFACTURER"="Affymetrix",
-           "CHIPNAME"="Human Cancer G110 Array ",
-           "MANUFACTURERURL"="http://www.affymetrix.com")
+<<list Schemas>>=
+available.dbschemas()
 @ 
 
-For illustration purposes I will write this example to put the sqlite
-database into a temporary directory.  I will also specify the type of
-the primary ID that is to be used by the databases populating function
-with the baseMapType parameter.  In this case, "gb" is used to
-indicate genbank accesssions, but it could also have been "ug" for
-unigene, "eg" for Entrez gene, or "refseq" for refseq accessions.
-Additional details can be found in the man pages for these functions.
-
-
-<<TempDirPopulate, keep.source=TRUE, results=hide>>=
+<<TempDir, echo=FALSE, results=hide>>=
 tmpout = tempdir()
-##To see what chip packages are available:
-available.chipdbschemas()
-##Then you can make a DB using that schema.
-populateDB("HUMANCHIP_DB", affy = FALSE, prefix = "hcg110Test",
-    fileName = hcg110_IDs, metaDataSrc = myMeta,
-    baseMapType = "gb", outputDir = tmpout)
-@
+@ 
 
-
-The preceeding code has generated a file in the working directory
-called hcg110.sqlite, which can be wrapped into an annotation
-package with the following:
-
-<<MakeAnnDbPkg, results=hide>>=
-seed <- new("AnnDbPkgSeed",             
-            Package = "hcg110Test.db",
-            Version = "1.0.0",
-            PkgTemplate = "HUMANCHIP.DB",
-            AnnObjPrefix = "hcg110Test")
-
-makeAnnDbPkg(seed,
-             file.path(tmpout, "hcg110Test.sqlite"),
-             dest_dir = tmpout)
-@
-<<cleanup, echo=FALSE, results=hide>>=
-file.remove(file.path(tmpout, "hcg110Test.sqlite"))
-file.rename(file.path(tmpout, "hcg110Test.db"),file.path(tmpout, "fooTest.db"))
-@
-
-
-Of course, most of the time you only want to make an annotation
-package for a particular chip.  So we have made some wrapper functions
-to combine all of the previous steps.  The following shows how you
-could make the same exact package as above but with a lot less hassle:
+The following shows an example of how to make a chip package:
 
 <<SQLForge, keep.source=TRUE, results=hide>>=
+hcg110_IDs = system.file("extdata",
+                          "hcg110_ID",
+                          package="AnnotationDbi")
+
 makeDBPackage("HUMANCHIP_DB",
               affy=FALSE,            
               prefix="hcg110",
@@ -258,6 +191,7 @@ Of course, you still have to type the path to your source directory
 correctly as the 1st argument.  It is recommended that you use the
 autocomplete feature in R as you enter it so that you get the path
 specified correctly.
+
 
 
 
