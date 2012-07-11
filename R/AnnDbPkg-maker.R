@@ -345,13 +345,16 @@ setGeneric("makeAnnDbPkg", signature="x",
       #is_static <- doc_template_names %in% c("_dbconn.Rd", "_dbfile.Rd")
       #doc_template_names <- doc_template_names[!is_static]
 
-##       map_names <- sub("\\.Rd$", "", doc_template_names)
 
-      ## extract the map_names from the bimap definitions
-      map_names <- listMappings(x, type)
-      ## now use this info to filter to relevant mappings
-      doc_template_names <- filterManPages(doc_template_names,maps=map_names)
-      
+      ## Do this only if your schema is an NCBI* one.
+      if(grepl("NCBI",x@PkgTemplate)){
+        ## extract the map_names from the bimap definitions
+        map_names <- listMappings(x, type)
+        ## now use this info to filter to relevant mappings
+        doc_template_names <- filterManPages(doc_template_names,maps=map_names)
+      }else{## if old school, just use the man pages in template
+        map_names <- sub("\\.Rd$", "", doc_template_names)        
+      }
       
       if (length(map_names) != 0)
         symvals <- c(symvals, getSymbolValuesForManPages(map_names, dbfile))
