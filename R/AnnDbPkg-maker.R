@@ -210,15 +210,16 @@ loadAnnDbPkgIndex <- function(file)
 ### 
 
 ## This function takes the seed and lists the Mappings
-listMappings <- function(x, type, orgDbName){
+listMappings <- function(x, type){
   ## get seeds
 ##   seeds <- eval(parse(text=paste("AnnotationDbi:::",x@DBschema,
 ##                         "_AnnDbBimap_seeds", sep="")))
-  schema <- x@DBschema ## schema will be fooCHIP_DB or not (depending)
+  schema <- x@DBschema ## schema will be like "HUMANCHIP_DB" or "HUMAN_DB"
   if(type=="ChipDb"){
-    allSeeds <- NCBICHIP_DB_SeedGenerator(orgDbName) ## I need this value!
+    orgDbName <- AnnotationDbi:::getOrgPkgForSchema(schema)
+    allSeeds <- AnnotationDbi:::NCBICHIP_DB_SeedGenerator(orgDbName)
   }else if(type=="OrgDb"){
-    allSeeds <- NCBIORG_DB_SeedGenerator()
+    allSeeds <- AnnotationDbi:::NCBIORG_DB_SeedGenerator()
   }
   seeds <- AnnotationDbi:::.filterSeeds(allSeeds, schema, type)
   ## Then get the names
@@ -347,7 +348,7 @@ setGeneric("makeAnnDbPkg", signature="x",
 ##       map_names <- sub("\\.Rd$", "", doc_template_names)
 
       ## extract the map_names from the bimap definitions
-      map_names <- listMappings(x, type, orgDbName)
+      map_names <- listMappings(x, type)
       ## now use this info to filter to relevant mappings
       doc_template_names <- filterManPages(doc_template_names,maps=map_names)
       
