@@ -14,16 +14,19 @@
   \url{http://www.ensembl.org/biomart/martview/}
   \url{ftp://ftp.ncbi.nlm.nih.gov/gene/DATA}
 
-  This mapping is a combination of manufacturer to ensembl IDs from BOTH
-  NCBI and ensembl.  Users who wish to only use mappings from NCBI are
-  encouraged to see the ncbi2ensembl table in the appropriate organism
-  package.  Users who wish to only use mappings from ensembl are
-  encouraged to see the ensembl2ncbi table which is also found in the
-  appropriate organism packages.  These mappings are based upon the
-  ensembl table which is contains data from BOTH of these sources in an
-  effort to maximize the chances that you will find a match.
+  For most species, this mapping is a combination of manufacturer to
+  ensembl IDs from BOTH NCBI and ensembl.  Users who wish to only use
+  mappings from NCBI are encouraged to see the ncbi2ensembl table in the
+  appropriate organism package.  Users who wish to only use mappings
+  from ensembl are encouraged to see the ensembl2ncbi table which is
+  also found in the appropriate organism packages.  These mappings are
+  based upon the ensembl table which is contains data from BOTH of these
+  sources in an effort to maximize the chances that you will find a
+  match.
 
-  Mappings were based on data provided by: @ENSEMBLSOURCE@
+  For worms and flies however, this mapping is based only on sources
+  from ensembl, as these organisms do not have ensembl to entrez gene
+  mapping data at NCBI.
 }
 
 \examples{

@@ -10,7 +10,9 @@
   This object is a simple mapping of manufacturer identifiers  to Uniprot
   Accessions.
 
-  Mappings were based on data provided by: @UNIPROTSOURCE@
+  Mappings were based on data provided by NCBI (link above) with an
+  exception for fly, which required retrieving the data from ensembl
+  \url{http://www.ensembl.org/biomart/martview/}
 }
 
 \examples{

@@ -10,7 +10,9 @@
   \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to Uniprot
   Accession Numbers.
 
-  Mappings were based on data provided by: @UNIPROTSOURCE@
+  Mappings were based on data provided by NCBI (link above) with an
+  exception for fly, which required retrieving the data from ensembl
+  \url{http://www.ensembl.org/biomart/martview/}
 }
 
 \examples{
