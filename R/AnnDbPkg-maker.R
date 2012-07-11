@@ -233,11 +233,14 @@ listMappings <- function(x, type){
 
 ## ALSO problematic: CHRLENGTHS.Rd, GO2ALLEGS.Rd UCSCGENES.Rd
 
-filterManPages <- function(doc_template_names, maps){
+filterManPages <- function(doc_template_names, maps, x){
   docs <- sub("\\.Rd$", "", doc_template_names)
   docs <- docs[docs %in% maps]
   ## Add things that will always be needed but are not themselves really bimaps
-  docs <- c(docs, "_dbconn" ,"BASE","ORGANISM","MAPCOUNTS","CHRLENGTHS") 
+  docs <- c(docs, "_dbconn" ,"BASE","ORGANISM","MAPCOUNTS")  
+  if(!grepl("ECOLI",x@DBschema)){ ## also add CHRLENGTHS: IF NOT ECOLI
+    docs <- c(docs, "CHRLENGTHS")
+  }
   paste(docs, ".Rd", sep="")
 }
 
@@ -351,7 +354,8 @@ setGeneric("makeAnnDbPkg", signature="x",
         ## extract the map_names from the bimap definitions
         map_names <- listMappings(x, type)
         ## now use this info to filter to relevant mappings
-        doc_template_names <- filterManPages(doc_template_names,maps=map_names)
+        doc_template_names <- filterManPages(doc_template_names,
+                                             maps=map_names,x)
       }else{## if old school, just use the man pages in template
         map_names <- sub("\\.Rd$", "", doc_template_names)        
       }
