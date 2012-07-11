@@ -1,17 +1,16 @@
 Package: AnnotationForge
-Title: Annotation Database Interface
-Description: Provides user interface and database connection code
-    for annotation data packages using SQLite data storage.
+Title: Code for Building Annotation Database Packages
+Description: Provides code for generating Annotation packages and
+	     their databases.  Packages produced are intended to be
+	     used with AnnotationDbi.
 Version: 0.99.6
 Author: Marc Carlson, Herve Pages
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 Depends: R (>= 2.7.0), methods, utils, BiocGenerics (>= 0.1.13),
          Biobase (>= 1.17.0), AnnotationDbi (>= 1.19.15)
-Imports: methods, utils, DBI, RSQLite, BiocGenerics, Biobase, IRanges
-Suggests: DBI (>= 0.2-4), RSQLite (>= 0.6-4), hgu95av2.db, GO.db, human.db0,
-          hgu95av2cdf, org.Sc.sgd.db, org.At.tair.db, affy, KEGG.db, XML, 
-          RCurl, RUnit, TxDb.Hsapiens.UCSC.hg19.knownGene, hom.Hs.inp.db,
-          org.Hs.eg.db, seqnames.db, reactome.db
+Imports: methods, utils, DBI, RSQLite, BiocGenerics, Biobase
+Suggests: DBI (>= 0.2-4), RSQLite (>= 0.6-4), hgu95av2.db, GO.db,
+          human.db0, affy, XML, RCurl, org.Hs.eg.db
 Collate: AnnDbPkg-maker.R
 	 sqlForge_utils.R
 	 sqlForge_baseMapBuilder.R
