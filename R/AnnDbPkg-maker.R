@@ -238,7 +238,8 @@ filterManPages <- function(doc_template_names, maps, x){
   docs <- docs[docs %in% maps]
   ## Add things that will always be needed but are not themselves really bimaps
   docs <- c(docs, "_dbconn" ,"BASE","ORGANISM","MAPCOUNTS")  
-  if(!grepl("ECOLI",x@DBschema)){ ## also add CHRLENGTHS: IF NOT ECOLI
+  if(!any(c("ECOLI_DB","XENOPUS_DB","ECOLICHIP_DB","XENOPUSCHIP_DB")
+          %in% x@DBschema)){
     docs <- c(docs, "CHRLENGTHS")
   }
   paste(docs, ".Rd", sep="")
