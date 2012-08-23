@@ -178,7 +178,7 @@ popMOUSECHIPDB <- function(affy,
     appendGeneInfo(db, subStrs=subStrs, printSchema=printSchema)
 
     appendChromosomes(db, subStrs=subStrs, printSchema=printSchema)
-    appendCytogenicLocs(db, subStrs=subStrs, printSchema=printSchema)
+##     appendCytogenicLocs(db, subStrs=subStrs, printSchema=printSchema)
     appendRefseq(db, subStrs=subStrs, printSchema=printSchema)
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
@@ -230,7 +230,7 @@ popMOUSEDB <- function(prefix,
 
     appendChromosomes(db, subStrs=subStrs, printSchema=printSchema)
     appendAccessions(db, subStrs=subStrs, printSchema=printSchema)
-    appendCytogenicLocs(db, subStrs=subStrs, printSchema=printSchema)
+##     appendCytogenicLocs(db, subStrs=subStrs, printSchema=printSchema)
     appendRefseq(db, subStrs=subStrs, printSchema=printSchema)
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
@@ -249,7 +249,7 @@ popMOUSEDB <- function(prefix,
     appendEnsemblProt(db, subStrs=subStrs, printSchema=printSchema)
     appendEnsemblTrans(db, subStrs=subStrs, printSchema=printSchema)
     appendUniprot(db, subStrs=subStrs, printSchema=printSchema)
-    appendUCSCGenes(db, subStrs=subStrs, printSchema=printSchema)
+##     appendUCSCGenes(db, subStrs=subStrs, printSchema=printSchema)
     appendMGI(db, subStrs=subStrs, printSchema=printSchema)
     makeGOViews(db)
     
@@ -310,7 +310,7 @@ popRATCHIPDB <- function(affy,
     appendGeneInfo(db, subStrs=subStrs, printSchema=printSchema)
 
     appendChromosomes(db, subStrs=subStrs, printSchema=printSchema)
-    appendCytogenicLocs(db, subStrs=subStrs, printSchema=printSchema)
+##     appendCytogenicLocs(db, subStrs=subStrs, printSchema=printSchema)
     appendRefseq(db, subStrs=subStrs, printSchema=printSchema)
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
@@ -360,7 +360,7 @@ popRATDB <- function(prefix,
 
     appendChromosomes(db, subStrs=subStrs, printSchema=printSchema)
     appendAccessions(db, subStrs=subStrs, printSchema=printSchema)
-    appendCytogenicLocs(db, subStrs=subStrs, printSchema=printSchema)
+##     appendCytogenicLocs(db, subStrs=subStrs, printSchema=printSchema)
     appendRefseq(db, subStrs=subStrs, printSchema=printSchema)
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
