@@ -7,4 +7,4 @@ Description: This package was automatically created by @CREATOR@. @DATASOURCE@
 Maintainer: @MAINTAINER@
 Depends: R (>= 1.6), AnnotationDbi (>= @ANNOTATIONDBIVERSION@)
 License:  LGPL
-biocViews: AnnotationData, AffymetrixChip, @ARRAYTYPE@, @SPECIES@
+biocViews: AnnotationData, AffymetrixChip, probe, @ARRAYTYPE@, @SPECIES@

@@ -9,4 +9,4 @@ Imports: methods, AnnotationDbi
 License: @LIC@
 organism: @ORGANISM@
 species: @SPECIES@
-biocViews: @BIOCVIEWS@
+biocViews: db0, @BIOCVIEWS@

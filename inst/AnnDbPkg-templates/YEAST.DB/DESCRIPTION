@@ -10,5 +10,5 @@ Imports: methods, AnnotationDbi
 License: @LIC@
 organism: @ORGANISM@
 species: @SPECIES@
-biocViews: @BIOCVIEWS@
+biocViews: OrgDb, @BIOCVIEWS@
 

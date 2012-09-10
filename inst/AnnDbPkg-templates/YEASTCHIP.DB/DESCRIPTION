@@ -13,5 +13,5 @@ species: @SPECIES@
 manufacturer: @MANUF@
 chipName: @CHIPNAME@
 manufacturerUrl: @MANUFURL@
-biocViews: @BIOCVIEWS@
+biocViews: ChipDb, @BIOCVIEWS@
 
