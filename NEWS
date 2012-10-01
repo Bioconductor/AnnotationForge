@@ -1,0 +1,15 @@
+ 	**************************************************
+	*						 *
+	*	        1.0.0 SERIES NEWS		 *
+	*						 *
+	**************************************************
+
+
+		AnnotationForge VERSION 1.0.0
+
+
+PKG FEATURES
+
+    o	All of the code that used to live in AnnotationDbi but was
+        primarily involved in the creation of new annotation packages
+        now lives here.
