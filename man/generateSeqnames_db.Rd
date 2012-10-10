@@ -7,7 +7,7 @@
 \description{
   This function is used to generate the seqnames.db package and it's
   database from the csv files contained in the template for this package
-  within AnnotationDbi.  The csv files are converted into database
+  within AnnotationForge.  The csv files are converted into database
   tables, and the DB is packaged into a new seqnames.db package.
 }
 
@@ -24,18 +24,18 @@
 \details{
   The \code{generateSeqnames.db} function allows users to regenerate the
   seqnames.db package from csv sources contained in the currently
-  installed AnnotationDbi package.  It is expected that the typical user
+  installed AnnotationForge package.  It is expected that the typical user
   will not need to use this at all, but in case they do, we have made it
   available.  We expect that the more common use case is someone who
   wants to make some new chromosome conventions available for the world.
   It is expected that this person will more typicalyl be charitable and
   want to share their conventions, so they could share their .csv files
-  with us and we would add them to AnnotationDbi, install the updated
+  with us and we would add them to AnnotationForge, install the updated
   package and then run this function to make a new package.
 
   The .csv files need to be formatted the same as the ones that are
-  currently in the template in AnnotationDbi.  Examples of these .csv
-  files can be found in AnnotationDbi in the
+  currently in the template in AnnotationForge.  Examples of these .csv
+  files can be found in AnnotationForge in the
   "inst/seqnames-template/inst/extdata/dataFiles/" directory.  Each file
   must be named after it's corresponding genus and species with an
   underscore separator and a .csv file extension.  The 1st line of each
@@ -60,12 +60,12 @@
 
   
   Once you have your file ready your only need to place it in the same
-  dir in AnnoationDbi (with the other files), install AnnotationDbi, and
+  dir in AnnoationDbi (with the other files), install AnnotationForge, and
   then run this function to generate a new seqnames.db package.  Of
   course, if you have a useful set of conventions or species to
   contribute, it would be best if you gave your .csv files to the
   Bioconductor core team so that we can add these files to the official
-  version of AnnotationDbi and so that they can occur in the official
+  version of AnnotationForge and so that they can occur in the official
   seqnames.db package.
 }
 
