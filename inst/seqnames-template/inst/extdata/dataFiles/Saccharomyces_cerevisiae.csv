@@ -1,19 +1,19 @@
-"UCSC","NCBI","ensembl"
-"chrI","I","I"
-"chrII","III","III"
-"chrIII","III","III"
-"chrIV","IV","IV"
-"chrV","V","V"
-"chrVI","VI","VI"
-"chrVII","VII","VII"
-"chrVIII","VIII","VIII"
-"chrIX","IX","IX"
-"chrX","X","X"
-"chrXI","XI","XI"
-"chrXII","XII","XII"
-"chrXIII","XIII","XIII"
-"chrXIV","XIV","XIV"
-"chrXV","XV","XV"
-"chrXVI","XVI","XVI"
-"chrM","MT","Mito"
-"2micron","2 micron","undefined"
+NCBI	UCSC	Ensembl
+I	chrI	I
+II	chrII	II
+III	chrIII	III
+IV	chrIV	IV
+V	chrV	V
+VI	chrVI	VI
+VII	chrVII	VII
+VIII	chrVIII	VIII
+IX	chrIX	IX
+X	chrX	X
+XI	chrXI	XI
+XII	chrXII	XII
+XIII	chrXIII	XIII
+XIV	chrXIV	XIV
+XV	chrXV	XV
+XVI	chrXVI	XVI
+MT	chrM	Mito
+2uM	2micron	NA

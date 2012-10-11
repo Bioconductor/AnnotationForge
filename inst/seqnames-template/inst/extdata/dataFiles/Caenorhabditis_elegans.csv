@@ -1,8 +1,8 @@
-"UCSC","NCBI","ensembl"
-"chrI","I","I"
-"chrII","III","III"
-"chrIII","III","III"
-"chrIV","IV","IV"
-"chrV","V","V"
-"chrM","MT","MtDNA"
-"chrX","X","X"
+NCBI	UCSC	Ensembl
+I	chrI	I
+II	chrII	II
+III	chrIII	III
+IV	chrIV	IV
+V	chrV	V
+X	chrX	X
+MT	chrM	MtDNA

@@ -39,7 +39,9 @@ writeTable <- function(specString, con){
   }
   df <- system.file("seqnames-template","inst","extdata","dataFiles",
                      package="AnnotationForge")
-  data <- read.csv(file.path(df, paste(specString,".csv",sep="")))
+  data <- read.table(file.path(df, paste(specString,".csv",sep="")),
+                     header=TRUE, sep="\t",
+                     colClasses="character", check.names=FALSE)
   message("Creating table: ",specString)
   sqliteWriteTable(con, specString, value = data, row.names = FALSE)
 }
