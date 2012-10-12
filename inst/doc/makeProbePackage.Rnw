@@ -1,5 +1,5 @@
 %\VignetteIndexEntry{Creating probe packages}
-%\VignetteDepends{Biobase, AnnotationDbi}
+%\VignetteDepends{Biobase, AnnotationForge}
 %\VignetteKeywords{annotation}
 %\VignettePackage{AnnotationDbi}
 
@@ -51,7 +51,7 @@ package from the reporter sequence information of a particular chip.
 Probe packages are a convenient way for distributing and storing the 
 probe sequences and related information. 
 
-First, let us load the \Rpackage{AnnotationDbi} package.
+First, let us load the \Rpackage{AnnotationForge} package.
 %
 <<startup,results=hide>>=
 library("AnnotationForge")
@@ -66,11 +66,11 @@ Affymetrix genechips from the tabulator-separated sequence files that
 can be obtained from the vendor (at
 \url{http://www.affymetrix.com/support}). As an example, the file
 \Rfile{HG-U95Av2\_probe\_tab.gz} is provided in the \Rfile{extdata}
-subdirectory of the \Rpackage{AnnotationDbi} package.
+subdirectory of the \Rpackage{AnnotationForge} package.
 
 <<makeprobepackage>>=
 filename <- system.file("extdata", "HG-U95Av2_probe_tab.gz", 
-                          package="AnnotationDbi")
+                          package="AnnotationForge")
 outdir   <- tempdir()
 me       <- "Wolfgang Huber <w.huber@dkfz.de>"
 species  <- "Homo_sapiens"
@@ -99,7 +99,7 @@ can be adapted from this prototype.
 The help pages and R code contained in the produced packages are
 derived from a template directory that obeys the usual R package
 conventions~\cite{RExt}. A prototype for such a directory is provided
-within the package \Rpackage{AnnotationDbi}.  To facilitate the
+within the package \Rpackage{AnnotationForge}.  To facilitate the
 automated production of large numbers of similar packages, we provide
 a text substitution mechanism similar to the one used in the GNU
 \Rfunction{configure} system.
