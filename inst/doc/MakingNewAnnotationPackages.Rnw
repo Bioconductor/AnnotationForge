@@ -1,5 +1,5 @@
 %\VignetteIndexEntry{AnnotationForge: Creating select Interfaces for custom Annotation resources}
-%\VignetteDepends{org.Hs.eg.db,hom.Hs.inp.db}
+%\VignetteDepends{Homo.sapiens,hom.Hs.inp.db}
 
 \documentclass[11pt]{article}
 
@@ -31,6 +31,10 @@
   \index{#1 (package)}}
 \newcommand\Biocdatapkg[1]{%
   {\href{http://bioconductor.org/packages/devel/data/experiment/html/#1.html}%
+    {\textsl{#1}}}%
+  \index{#1 (package)}}
+\newcommand\Biocannopkg[1]{%
+  {\href{http://bioconductor.org/packages/release/data/annotation/html/#1.html}%
     {\textsl{#1}}}%
   \index{#1 (package)}}
 \newcommand\Robject[1]{{\small\texttt{#1}}}
@@ -67,110 +71,316 @@
 
 
 
+\section{Introduction}
+The most common interface for retrieving data in \Bioconductor{} is
+now the \Rmethod{select} method.  The interface provides a simple way
+of extracting data.  
+
+There are really 4 methods that work together to allow a
+\Rmethod{select} interface.  The 1st one is \Rmethod{cols}, which
+tells you about what kinds of values you can retrieve as columns in
+the final result.
+
+<<Homo.sapiens>>=
+library(Homo.sapiens)
+cols(Homo.sapiens)
+@ 
+
+The next method is \Rmethod{keytypes} which tells you the kinds of
+things that can be used as keys.
+
+<<Homo.sapiens>>=
+keytypes(Homo.sapiens) 
+@ 
+
+The third method is \Rmethod{keys} which is used to retrieve all the
+viable keys of a particular type.
+
+<<Homo.sapiens>>=
+k <- head(keys(Homo.sapiens,keytype="ENTREZID"))
+k
+@ 
+
+And finally there is \Rmethod{select}, which extracts data by using
+values supplied by the other method.
+
+<<Homo.sapiens>>=
+result <- select(Homo.sapiens, keys=k, 
+                 cols=c("TXNAME","TXSTART","TXSTRAND"), 
+                 keytype="ENTREZID")
+head(result)
+@ 
+
+
+But why would we want to implement these specific methods?  It's a
+fair question. Why would we want to write a select interface for our
+annotation data?  Why not just save a .rda file to the data directory
+and be done with it?  There are basically two reasons for this.  The
+1st reason is convenience for end users.  When your end users can
+access your data using the same four methods that they use everywhere
+else, they will have a more effortless time retrieving their data.
+And things that benefit your users benefit you.
+
+The second reason is that by enabling a consistent interface across
+all annotation resources, we allow for things to be used in a
+programmatic manner.  By implementing a select interface, we are
+creating a universal API for the whole project.  
+
+Lets look again at the example I described above and think about what
+is happening.  The \Biocannopkg{Homo.sapiens} package is able to
+integrate data from many different resources largely because the
+separate resources all implemented a select method.  This allows the
+\Biocpkg{OrganismDbi} package to pull together resources from
+\Biocannopkg{org.Hs.eg.db}, \Biocannopkg{GO.db} and
+\Biocannopkg{TxDb.Hsapiens.UCSC.hg19.knownGene}.  
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.75\textwidth]{Homo_sapiens.pdf}
+\caption{Packages and relationships represented by the Homo.sapiens package}
+\label{fig:dbtypes}
+\end{figure}
+
+
+If these packages all exposed different interfaces for retrieving the
+data, then it would be a lot more challenging to retrieve it, and
+writing general code that retrieved the appropriate data would be a
+lost cause.  So implementing a set of select methods is a way to
+convert your package from a data file into an actual resource.
+
+
 \section{Creating other kinds of Annotation packages}
 
+A few more automated options already exist for generating specific
+kinds of annotation packages. For users who seek to make custom chip
+packages, users should see the \emph{SQLForge: An easy way to create a
+new annotation package with a standard database schema.} in the
+\Biocpkg{AnnotationForge} package.  And, for users who seek to make a
+probe package, there is another vignette called \emph{Creating probe
+packages} that is also in the \Biocpkg{AnnotationForge} package. And
+finally, for custom organism packages users should look at the manual
+page for \Rfunction{makeOrgPackageFromNCBI}.  This function will
+attempt to make you an simplified organism package from NCBI
+resources.  However, this function is not meant as a way to refresh
+annotation packages between releases.  It is only meant for people who
+are working on less popular model organisms (so that annotations can
+be made available in this format).
 
-A few options already exist for generating various kinds of annotation
-packages.For users who seek to make custom chip packages, users should
-see the \emph{SQLForge: An easy way to create a new annotation package
-with a standard database schema.} in the \Rpackage{AnnotationDbi}
-package.  And, for users who seek to make a probe package, there is
-another vignette called \emph{Creating probe packages} that is also in
-the AnnotationDbi package. And finally, for custom organism packages
-users should look at the manual page for
-\Rfunction{makeOrgPackageFromNCBI}.  This function will attempt to
-make you an simplified organism package from NCBI resources.  However,
-this function is not meant as a way to refresh annotation packages
-between releases.  It is only meant for people who are working on less
-popular model organisms (so that annotations can be made available in
-this format).
-
-
-But what if you had another kind of database resource and you wanted
-to expose it to the world using something like this new
+But what if you had another kind of web resource or database and you
+wanted to expose it to the world using something like this new
 \Rmethod{select} method interface?  How could you go about this?
 
 
-The 1st step would be to make a package that contains a SQLite
-database.  For the sake of expediency, lets look at an existing example
-of this in the \Rpackage{hom.Hs.inp.db} package.  If you download this
-tarball from the website you can see that it contains a .sqlite
-database inside of the inst/extdata directory.  There are a couple of
-important details though about this database.  The 1st is that we
-recommend that the database have the same name as the package, but end
-with the extension .sqlite.  The second detail is that we recommend
-that the metadata table contain some important fields.  This is the
-metadata from the current \Rpackage{hom.Hs.inp.db} package.
 
-<<getMetadata, echo=FALSE>>=
-library(hom.Hs.inp.db)
-hom.Hs.inp_dbInfo()
+\section{Retrieving data from a web resource}
+
+If you choose to expose a web resource, then you will need to learn
+some skills for retrieving that data from the web.  The \R{}
+programming language has tools that can help you interact with web
+resources, pulling down files that are tab delimited or formatted as
+XML etc.  There are also packages that can help you parse what you
+retrieve.  In this section we will describe some of these resources in
+the context of the uniprot web service, and give examples to
+demonstrate how you can expose resources like this for your own
+purposes.
+
+These days many web services are exposed using a representational
+state transfer or RESTful interface.  An example of this are the
+services offered at Uniprot.  Starting with the uniprot base URI you
+can add details to simply indicate what it is that you wish to
+retrieve.
+
+So in the case of Uniprot the base URI for the service we want today is this:
+
+\begin{verbatim}
+    http://www.uniprot.org/uniprot/
+\end{verbatim}
+
+This URI can be extended to retrieve individual uniprot records by
+specifying a query argument like this:
+
+\begin{verbatim}
+    http://www.uniprot.org/uniprot/?query=P13368
+\end{verbatim}
+
+We can then request multiple records like this:
+
+\begin{verbatim}
+    http://www.uniprot.org/uniprot/?query=P13368+or+Q6GZX4
+\end{verbatim}
+
+And we can ask that the records be returned to us in tabular form by
+adding another argument like this.
+
+\begin{verbatim}
+    http://www.uniprot.org/uniprot/?query=P13368+or+Q6GZX4&format=tab
+\end{verbatim}
+
+As you might guess, each RESTful interface is a little different, but
+you can easily see how once you read the documentation for a given
+RESTful interface, you can start to retrieve the data in \R.  Here is
+an example.
+
+<<URI Example>>=
+   uri <- 'http://www.uniprot.org/uniprot/?query='
+   ids <- c('P13368', 'Q6GZX4')
+   idStr <- paste(ids, collapse="+or+")
+   format <- '&format=tab'
+   fullUri <- paste0(uri,idStr,format)
+   read.delim(fullUri)
 @ 
 
-As you can see there are a number of very useful fields stored in the
-metadata table and if you list the equivalent table for other packages
-you will find even more useful information than you find here.  But
-the most important fields here are actually the ones called "package"
-and "Db type".  Those fields specify both the name of the package with
-the expected class definition, and also the name of the object that
-this database is expected to be represented by in the R session
-respectively. If you fail to include this information in your metadata
-table, then \Rmethod{loadDb} will not know what to do with the
-database when it is called.  In this case, the class definition has
-been stored in the \Rpackage{AnnotationDbi} package, but it could live
-anywhere you need it too.  By specifying the metadata field, you
-enable \Rmethod{loadDb} to find it.
+\begin{Exercise}
+If you use the columns argument you can also specify which columns you
+want returned.  So for example, you can choose to only have the
+sequence and id columns returned like this:
 
+\begin{verbatim}
+    http://www.uniprot.org/uniprot/?query=P13368+or+Q6GZX4&format=tab&columns=id,sequence
+\end{verbatim}
 
+Use this detail about the uniprot web service along with what was
+learned above to write a function that takes a character vector of
+uniprot IDs and another character vector of columns arguments and then
+returns the appropriate values.  Be careful to filter out any extra
+records that the service returns.
 
-Once you have set up the metadata you will need to create a class for
-your package that extends the \Rclass{AnnotationDb} class.  In the
-case of the hom.Hs.inp.db package, the class is defined to be a
-\Rclass{InparanoidDb} class. This code is inside of
-\Rpackage{AnnotationDbi}.
+\end{Exercise}
+\begin{Solution}
+<<web service code>>=
+getUniprotGoodies  <- function(query, cols)
+{
+    ## query and cols start as a character vectors
+    qstring <- paste(query, collapse="+or+")
+    cstring <- paste(cols, collapse=",")
+    uri <- 'http://www.uniprot.org/uniprot/?query='
+    fullUri <- paste0(uri,qstring,'&format=tab&columns=',cstring)
+    dat <- read.delim(fullUri, stringsAsFactors=FALSE)
+    ## now remove things that were not in the specific original query...
+    dat <- dat[dat[,1] %in% query,]
+    dat
+}
+@
+\end{Solution}
 
-<<referenceClass,eval=FALSE>>=
-.InparanoidDb <-
-    setRefClass("InparanoidDb", contains="AnnotationDb")
+% Val: This would probably be a good place to discuss XML parsing (if
+% you have time and inclination)
+
+\section{Setting up a package to expose a web service}
+
+In order to expose a web service using select, you will need to create
+an object that will be loaded at the time when the package is loaded.
+Unlike with a database, the purpose of this object is pretty much
+purely for dispatch.  We just need \Rmethod{select} and it's friends
+to know which select method to call
+
+The first step is to create an object.  Creating an object is simple
+enough:
+
+<<WebServiceObject>>=
+setClass("uniprot", representation(name="character"),
+         prototype(name="uniprot"))
+@
+
+Once you have a class defined, all you need is to make an instance of
+this class.  Making an instance is easy enough:
+
+<<makeInstanceWebServiceObj>>=
+    uniprot <- new("uniprot")
 @ 
 
-Finally the \Rfunction{.onLoad} call for your package will have to
-contain code that will call the \Rmethod{loadDb} method.  This is what
-it currently looks like in the Rpackage{hom.Hs.inp.db} package.
+But of course it's a little more complicated because one of these
+objects will need to be spawned up whenever our package loads. This is
+acclomplished by calling the \Rfunction{.onLoad} function in the zzz.R
+file.  The following code will create an object, and then assign it to
+the package namespace as the package loads.
 
-<<onLoad,eval=FALSE>>=
-sPkgname <- sub(".db$","",pkgname)
-db <- loadDb(system.file("extdata", paste(sPkgname,
-               ".sqlite",sep=""), package=pkgname, lib.loc=libname),
-               packageName=pkgname)
-dbNewname <- AnnotationDbi:::dbObjectName(pkgname,"InparanoidDb")
-ns <- asNamespace(pkgname)
-assign(dbNewname, db, envir=ns)
-namespaceExport(ns, dbNewname)
+<<onLoad2,eval=FALSE>>=
+.onLoad <- function(libname, pkgname)
+{
+    ns <- asNamespace(pkgname)
+    uniprot <- new("uniprot")
+    assign("uniprot", uniprot, envir=ns)
+    namespaceExport(ns, "uniprot")
+}
 @ 
 
 
-When the code above is run (at load time) the name of the package (AKA
-"pkgname", which is a parameter that will be passed into
-\Rfunction{.onLoad}) is then used to derive the name for the object.
-Then that name, is used by \Rmethod{onload} to create an
-\Rclass{InparanoidDb} object.  This object is then assigned to the
-namespace for this package so that it will be loaded for the user.
+\section{Creating package accessors for a web service}
+
+At this point you have all that you need to know in order to implement
+\Rmethod{keytype},\Rmethod{cols},\Rmethod{keys} and \Rmethod{select}
+for your package.  In this section we will explore how you could
+implement some of these if you were making a package that exposed
+uniprot.
+
+\subsection{Example: creating \Rmethod{keytypes} and \Rmethod{cols} methods}
+
+The \Rmethod{keytype} and \Rmethod{cols} methods are always the 1st
+ones you should implement.  They are the easiest, and their existence
+is required to be able to use \Rmethod{keys} or \Rmethod{select}.  In
+this simple case we only have one value that can be used as a keytype,
+and that is a UNIPROT ID.
+
+<<keytypeUniprot>>=
+setMethod("keytypes", "uniprot",function(x){return("UNIPROT")})
+uniprot <- new("uniprot")
+keytypes(uniprot)
+@ 
+
+So what about cols?  Well it's not a whole lot more complicated in
+this case since we are limited to things that we can return from the
+web service.  Since this is just an example, lets limit it to the
+following fields: "ID", "SEQUENCE", "ORGANISM". 
+%%
+<<keytypeUniprot>>=
+setMethod("cols", "uniprot", 
+          function(x){return(c("ID", "SEQUENCE", "ORGANISM"))})
+cols(uniprot)
+@
+%%
+Also, notice how for both \Rmethod{keytypes} and \Rmethod{cols} I am
+using all capital letters.  This is a style adopted throughout the
+project.
+
+\subsection{Example 2: creating a \Rmethod{select} method}
+
+At this point we have enough to be able to make a select method.
 
 
+\begin{Exercise}
+Using what you have learned above, and the helper function from
+earlier, define a select method.  This select method will have a
+default \Rfunarg{keytype} of "UNIPROT".
+\end{Exercise}
+\begin{Solution}
+<<webServiceSelect>>=
+.select <- function(x, keys, cols){
+    colsTranslate <- c(id='ID', sequence='SEQUENCE', organism='ORGANISM')
+    cols <- names(colsTranslate)[colsTranslate %in% cols]
+    getUniprotGoodies(query=keys, cols=cols)
+}
+setMethod("select", "uniprot", 
+    function(x, keys, cols, keytype)
+{
+    .select(keys=keys, cols=cols)
+})
+select(uniprot, keys=c("P13368","P20806"), cols=c("ID","ORGANISM"))
+@
+\end{Solution}
 
 \section{Retrieving data from a database resource}
-If your package is retrieving data frma database, then there are some
+
+If your package is retrieving data from a database, then there are some
 additional skills you will need to be able to interface with this
-database from R.  This section will introduce you to those skills.
-
-
+database from \R.  This section will introduce you to those skills.
 
 \subsection{Getting a connection}
 
 If all you know is the name of the SQLite database, then to get a DB
 connection you need to do something like this:
-
+%%
 <<classicConn,results=hide>>=
 drv <- SQLite()
 library("org.Hs.eg.db")
@@ -179,15 +389,17 @@ con <- dbConnect(drv, dbname=system.file("extdata", "org.Hs.eg.sqlite",
 con
 dbDisconnect(con)
 @
-
-But in our case the connection is already here as part of the object:
-
+%%
+But in our case the connection has already been created here as part
+of the object that was generated when the package was loaded:
+%%
 <<ourConn>>=
+require(hom.Hs.inp.db)
 str(hom.Hs.inp.db)
 @
-
+%%
 So we can do something like below:
-
+%%
 <<ourConn2>>=
 hom.Hs.inp.db$conn
 ## or better we can use a helper function to wrap this:
@@ -197,161 +409,149 @@ AnnotationDbi:::dbConn(hom.Hs.inp.db)
 hom.Hs.inp_dbconn()
 @
 
-
 \subsection{Getting data out}
 
 Now we just need to get our data out of the DB.  There are several
-useful functions for doing this.  Most of these come from the RSQLite
-or DBI packages.  For the sake of simplicity, I will only discuss
-those that are immediately useful for exploring and extracting data
-from a database in this vignette.  One pair of useful methods are the
-\Rmethod{dbListTables} and \Rmethod{dbListFields} which are useful for
-exploring the schema of a database.
+useful functions for doing this.  Most of these come from the
+\Rpackage{RSQLite} or \Rpackage{DBI} packages.  For the sake of
+simplicity, I will only discuss those that are immediately useful for
+exploring and extracting data from a database in this vignette.  One
+pair of useful methods are the \Rmethod{dbListTables} and
+\Rmethod{dbListFields} which are useful for exploring the schema of a
+database.
 
 <<dbListTables>>=
 con <- AnnotationDbi:::dbConn(hom.Hs.inp.db)
 head(dbListTables(con))
 dbListFields(con, "Mus_musculus")
 @ 
-
-And for actually executing SQL to retrieve data, you probably want to
+%%
+For actually executing SQL to retrieve data, you probably want to
 use something like \Rmethod{dbGetQuery}.  The only caveat is that this
 will actually require you to know a little SQL.
-
+%%
 <<dbGetQuery>>=
 dbGetQuery(con, "SELECT * FROM metadata")
 @ 
-
 
 \subsection{Some basic SQL}
 
 The good news is that SQL is pretty easy to learn.  Especially if you
 are primarily interested in just retrieving data from an existing
 database.  Here is a quick run-down to get you started on writing
-simple SELECT statements.  Consider a table that looks like this:\\
+simple SELECT statements.  Consider a table that looks like this:
+%%
+\begin{table}[h]
+  \begin{tabular}{cc}
+    \multicolumn{2}{l}{Table sna} \\
+    foo & bar \\\hline
+    1   & baz \\
+    2   & boo \\
+  \end{tabular}
+\end{table}
 
-Table sna:
-\begin{tabular}{cc}
-foo & bar \\\hline
-1   & baz \\
-2   & boo \\
-\end{tabular}\\
+\noindent This statement:
+\begin{verbatim}
+    SELECT bar FROM sna;
+\end{verbatim}
+Tells SQL to get the "bar" field from the "foo" table.  If we wanted
+the other field called "sna" in addition to "bar", we could
+have written it like this:
+\begin{verbatim}
+    SELECT foo, bar FROM sna;
+\end{verbatim}
+Or even this (* is a wildcard character here)
+\begin{verbatim}
+    SELECT * FROM sna;
+\end{verbatim}
+Now lets suppose that we wanted to filter the results.  We could also
+have said something like this:
+\begin{verbatim}
+    SELECT * FROM sna WHERE bar='boo';
+\end{verbatim}
+That query will only retrieve records from foo that match the criteria
+for bar.  But there are two other things to notice.  First notice that
+a single = was used for testing equality.  Second notice that I used
+single quotes to demarcate the string.  I could have also used double
+quotes, but when working in \R{} this will prove to be less convenient as
+the whole SQL statement itself will frequently have to be wrapped as a
+string.
 
-\noindent This statement:\\
+What if we wanted to be more general?  Then you can use LIKE.  Like
+this:
+\begin{verbatim}
+    SELECT * FROM sna WHERE bar LIKE 'boo\%';
+\end{verbatim}
+That query will only return records where bar starts with "boo", (the
+\% character is acting as another kind of wildcard in this context).
 
-SELECT bar FROM sna;\\
-
-\noindent Tells SQL to get the "bar" field from the "foo" table.  If
-we wanted the other field called "sna" in addition to "bar", we could
-have written it like this:\\
-
-SELECT foo, bar FROM sna;\\
-
-\noindent Or even this (* is a wildcard character here)\\
-
-SELECT * FROM sna;\\
-
-\noindent Now lets suppose that we wanted to filter the results.  We could also
-have said something like this:\\
-
-SELECT * FROM sna where bar='boo';\\
-
-\noindent That query will only retrieve records from foo that match
-the criteria for bar.  But there are two other things to notice.
-First notice that a single = was used for testing equality.  Second
-notice that I used single quotes to demarcate the string.  I could
-have also used double quotes, but when working in R this will prove to
-be less convenient as the whole SQL statement itself will frequently
-have to be wrapped as a string. \\
-
-\noindent What if we wanted to be more general?  Then you can use LIKE.  Like
-this:\\
-
-SELECT * FROM sna where bar LIKE 'boo\%';\\
-
-\noindent That query will only return records where bar starts with "boo", (the
-\% character is acting as another kind of wildcard in this context)\\
-
-\noindent You will often find that you need to get things from two or
-more different tables at once.  Or, you may even find that you need to
+You will often find that you need to get things from two or more
+different tables at once.  Or, you may even find that you need to
 combine the results from two different queries.  Sometimes these two
 queries may even come from the same table.  In any of these cases, you
 want to do a join.  The simplest and most common kind of join is an
-inner join.  Lets suppose that we have two tables:\\
-
-Table sna:
-\begin{tabular}{cc}
-foo & bar \\\hline
-1   & baz \\
-2   & boo \\
-\end{tabular}\\ \\
-
-Table fu:
-\begin{tabular}{cc}
-foo & bo \\\hline
-1   & hi \\
-2   & ca \\
-\end{tabular}\\
+inner join.  Lets suppose that we have two tables:
+\begin{table}[h]
+  \begin{tabular}{ccc@{\hspace{2em}}ccc}
+    \multicolumn{2}{c}{Table sna} & & & \multicolumn{2}{c}{Table fu} \\
+    foo & bar & & & foo & bo \\\cline{1-2}\cline{5-6}
+    1   & baz & & & 1   & hi \\
+    2   & boo & & & 2   & ca \\
+  \end{tabular}
+\end{table}
 
 \noindent And we want to join them where the records match in their
-corresponding "foo" columns.  We can do this query to join them:\\
-
-SELECT * FROM sna,fu WHERE sna.foo=fu.foo;\\
-
-\noindent Something else we can do is tidy this up by using aliases like so:\\
-
-SELECT * FROM sna AS s,fu AS f WHERE s.foo=f.foo;\\
-
-\noindent This last trick is not very useful in this particular
+corresponding "foo" columns.  We can do this query to join them:
+\begin{verbatim}
+    SELECT * FROM sna,fu WHERE sna.foo=fu.foo;
+\end{verbatim}
+Something else we can do is tidy this up by using aliases like so:
+\begin{verbatim}
+    SELECT * FROM sna AS s,fu AS f WHERE s.foo=f.foo;
+\end{verbatim}
+This last trick is not very useful in this particular
 example since the query ended up being longer than we started with,
 but is still great for other cases where queries can become really
 long.
 
-
-\subsection{Exploring the SQLite database from R}
+\subsection{Exploring the SQLite database from \R}
 
 Now that we know both some SQL and also about some of the methods in
 \Rpackage{DBI} and \Rpackage{RSQLite} we can begin to explore the
-underlying database from R.  How should we go about this?  Well the
+underlying database from \R.  How should we go about this?  Well the
 1st thing we always want to know are what tables are present.  We
 already know how to learn this:
-
 <<dbListTables2>>=
 head(dbListTables(con))
 @ 
-
 And we also know that once we have a table we are curious about, we
 can then look up it's fields using \Rmethod{dbListFields}
-
 <<dbListFields2>>=
 dbListFields(con, "Apis_mellifera")
 @ 
-
 And once we know something about which fields are present in a table,
 we can compose a SQL query.  perhaps the most straightforward query is
 just to get all the results from a given table.  We know that the SQL
-for that should look like: \\
-
-SELECT * FROM Apis\_mellifera; \\
-
-\noindent So we can now call a query like that from R by using \Rmethod{dbGetQuery}: 
-
+for that should look like:
+\begin{verbatim}
+    SELECT * FROM Apis_mellifera;
+\end{verbatim}
+So we can now call a query like that from R by using \Rmethod{dbGetQuery}: 
 <<dbGetQuery2>>=
 head(dbGetQuery(con, "SELECT * FROM Apis_mellifera"))
 @ 
 
-
-
 \begin{Exercise}
-Now use what you have learned to explore the \Rpackage{hom.Hs.inp.db}
-database.  The formal scientific name for one of the mosquitos that
-carry the malaria parasite is Anopheles gambiae.  Now find the table
-for that organism in the \Rpackage{hom.Hs.inp.db} database and extract
-it into R.  How many species are present in this table?  Inparanoid
-uses a five letter designation for each species that is composed of
-the 1st 2 letters of the genus followed by the 1st 3 letters of the
-species.  Using this fact, write a SQL query that will retrieve only
-records from this table that are from humans (Homo sapiens).
+  Now use what you have learned to explore the
+  \Biocannopkg{hom.Hs.inp.db} database.  The formal scientific name for
+  one of the mosquitoes that carry the malaria parasite is Anopheles
+  gambiae.  Now find the table for that organism in the
+  \Biocannopkg{hom.Hs.inp.db} database and extract it into R.  How many
+  species are present in this table?  Inparanoid uses a five letter
+  designation for each species that is composed of the 1st 2 letters
+  of the genus followed by the 1st 3 letters of the species.  Using
+  this fact, write a SQL query that will retrieve only records from
+  this table that are from humans (Homo sapiens).
 \end{Exercise}
 \begin{Solution}
 <<Anopheles,eval=FALSE>>=
@@ -363,8 +563,71 @@ dbDisconnect(con)
 @
 \end{Solution}
 
+\section{Setting up a package to expose a SQLite database object}
 
-\section{Creating package accessors}
+For the sake of simplicity, lets look at an existing example of this
+in the \Biocannopkg{hom.Hs.inp.db} package.  If you download this
+tarball from the website you can see that it contains a .sqlite
+database inside of the inst/extdata directory.  There are a couple of
+important details though about this database.  The 1st is that we
+recommend that the database have the same name as the package, but end
+with the extension .sqlite.  The second detail is that we recommend
+that the metadata table contain some important fields.  This is the
+metadata from the current \Biocannopkg{hom.Hs.inp.db} package.
+
+<<getMetadata, echo=FALSE>>=
+library(hom.Hs.inp.db)
+hom.Hs.inp_dbInfo()
+@
+
+As you can see there are a number of very useful fields stored in the
+metadata table and if you list the equivalent table for other packages
+you will find even more useful information than you find here.  But
+the most important fields here are actually the ones called "package"
+and "Db type".  Those fields specify both the name of the package with
+the expected class definition, and also the name of the object that
+this database is expected to be represented by in the R session
+respectively. If you fail to include this information in your metadata
+table, then \Rmethod{loadDb} will not know what to do with the
+database when it is called.  In this case, the class definition has
+been stored in the \Biocpkg{AnnotationDbi} package, but it could live
+anywhere you need it too.  By specifying the metadata field, you
+enable \Rmethod{loadDb} to find it.
+
+Once you have set up the metadata you will need to create a class for
+your package that extends the \Rclass{AnnotationDb} class.  In the
+case of the hom.Hs.inp.db package, the class is defined to be a
+\Rclass{InparanoidDb} class. This code is inside of
+\Biocpkg{AnnotationDbi}.
+
+<<referenceClass,eval=FALSE>>=
+.InparanoidDb <-
+    setRefClass("InparanoidDb", contains="AnnotationDb")
+@
+
+Finally the \Rfunction{.onLoad} call for your package will have to
+contain code that will call the \Rmethod{loadDb} method.  This is what
+it currently looks like in the \Biocannopkg{hom.Hs.inp.db} package.
+
+<<onLoad,eval=FALSE>>=
+sPkgname <- sub(".db$","",pkgname)
+db <- loadDb(system.file("extdata", paste(sPkgname,
+               ".sqlite",sep=""), package=pkgname, lib.loc=libname),
+               packageName=pkgname)
+dbNewname <- AnnotationDbi:::dbObjectName(pkgname,"InparanoidDb")
+ns <- asNamespace(pkgname)
+assign(dbNewname, db, envir=ns)
+namespaceExport(ns, dbNewname)
+@
+
+When the code above is run (at load time) the name of the package (AKA
+"pkgname", which is a parameter that will be passed into
+\Rfunction{.onLoad}) is then used to derive the name for the object.
+Then that name, is used by \Rmethod{onload} to create an
+\Rclass{InparanoidDb} object.  This object is then assigned to the
+namespace for this package so that it will be loaded for the user.
+
+\section{Creating package accessors for databases}
 
 At this point, all that remains is to create the means for accessing
 the data in the database.  This should prove a lot less difficult than
@@ -379,7 +642,7 @@ experience when retrieving data from the database.  But other kinds of
 accessors (such as those provided for the \Rclass{TranscriptDb}
 objects) may also be warranted.
 
-\subsection{Example: creating a cols method}
+\subsection{Examples: creating a \Rmethod{cols} and \Rmethod{keytypes} method}
 
 Now lets suppose that we want to define a \Rmethod{cols} method for
 our \Rclass{hom.Hs.inp.db} object. And lets also suppose that we want
@@ -387,16 +650,17 @@ is for it to tell us about the actual organisms for which we can
 extract identifiers.  How could we do that?
 
 <<cols,eval=FALSE>>=
-.cols <- function(x){
-  con <- AnnotationDbi:::dbConn(x)
-  list <- dbListTables(con)
-  ## drop unwanted tables
-  unwanted <- c("map_counts","map_metadata","metadata")
-  list <- list[!list %in% unwanted]
-  ## Then just to format things in the usual way
-  list <- toupper(list)
-  dbDisconnect(con)
-  list
+.cols <- function(x)
+{
+    con <- AnnotationDbi:::dbConn(x)
+    list <- dbListTables(con)
+    ## drop unwanted tables
+    unwanted <- c("map_counts","map_metadata","metadata")
+    list <- list[!list %in% unwanted]
+    ## Then just to format things in the usual way
+    list <- toupper(list)
+    dbDisconnect(con)
+    list
 }
 
 ## Then make this into a method
@@ -405,19 +669,18 @@ setMethod("cols", "InparanoidDb", .cols(x))
 cols(hom.Hs.inp.db)
 @
 
-Notice how I formatted the output to all uppercase characters?  This
-is just done to make the interface look consistent with what has been
-done before for the other \Rmethod{select} interfaces.  But doing this
-means that we will have to do a tiny bit of extra work when we
+Notice again how I formatted the output to all uppercase characters?
+This is just done to make the interface look consistent with what has
+been done before for the other \Rmethod{select} interfaces.  But doing
+this means that we will have to do a tiny bit of extra work when we
 implement out other methods.
 
-
 \begin{Exercise}
-Now use what you have learned to try and define a method for
-\Rmethod{keytypes} on \Rclass{hom.Hs.inp.db}.  The keytypes method
-should return the same results as cols (in this case).  What if you
-needed to translate back to the lowercase table names?  Also write an
-quick helper function to do that.
+  Now use what you have learned to try and define a method for
+  \Rmethod{keytypes} on \Rclass{hom.Hs.inp.db}.  The keytypes method
+  should return the same results as cols (in this case).  What if you
+  needed to translate back to the lowercase table names?  Also write
+  an quick helper function to do that.
 \end{Exercise}
 \begin{Solution}
 <<keytypes,eval=FALSE>>=
@@ -426,55 +689,60 @@ setMethod("keytypes", "InparanoidDb", .cols(x))
 keytypes(hom.Hs.inp.db)
 
 ## refactor of .cols
-.getLCcolnames <- function(x){
-  con <- AnnotationDbi:::dbConn(x)
-  list <- dbListTables(con)
-  ## drop unwanted tables
-  unwanted <- c("map_counts","map_metadata","metadata")
-  list <- list[!list %in% unwanted]
-  dbDisconnect(con)
-  list
+.getLCcolnames <- function(x)
+{
+    con <- AnnotationDbi:::dbConn(x)
+    list <- dbListTables(con)
+    ## drop unwanted tables
+    unwanted <- c("map_counts","map_metadata","metadata")
+    list <- list[!list %in% unwanted]
+    dbDisconnect(con)
+    list
 }
-.cols <- function(x){
-  list <- .getLCcolnames(x)
-  ## Then just to format things in the usual way
-  toupper(list)
+.cols <- function(x)
+{
+    list <- .getLCcolnames(x)
+    ## Then just to format things in the usual way
+    toupper(list)
 }
 ## Test:
 cols(hom.Hs.inp.db)
 
 ## new helper function:
-.getTableNames <- function(x){
-  LC <- .getLCcolnames(x)
-  UC <- .cols(x)
-  names(UC) <- LC
-  UC
+.getTableNames <- function(x)
+{
+    LC <- .getLCcolnames(x)
+    UC <- .cols(x)
+    names(UC) <- LC
+    UC
 }
 .getTableNames(hom.Hs.inp.db)
 @
 \end{Solution}
 
+\subsection{Example: creating a \Rmethod{keys} method}
 
 \begin{Exercise}
-Now define a method for \Rmethod{keys} on \Rclass{hom.Hs.inp.db}.  The
-keys method should return the keys from a given organism based on the
-appropriate keytype.  Since each table has rows that correspond to
-both human and non-human IDs, it will be necessary to filter out the
-human rows from the result
+  Now define a method for \Rmethod{keys} on \Rclass{hom.Hs.inp.db}.
+  The keys method should return the keys from a given organism based
+  on the appropriate keytype.  Since each table has rows that
+  correspond to both human and non-human IDs, it will be necessary to
+  filter out the human rows from the result
 \end{Exercise}
 \begin{Solution}
 <<keys,eval=FALSE>>=
-.keys <- function(x, keytype){
-  ## translate keytype back to table name
-  tabNames <- .getTableNames(x)
-  lckeytype <- names(tabNames[tabNames %in% keytype])
-  ## get a connection
-  con <- AnnotationDbi:::dbConn(x)
-  sql <- paste("SELECT inp_id FROM",lckeytype, "WHERE species!='HOMSA'")
-  res <- dbGetQuery(con, sql)
-  res <- as.vector(t(res))
-  dbDisconnect(con)
-  res
+.keys <- function(x, keytype)
+{
+    ## translate keytype back to table name
+    tabNames <- .getTableNames(x)
+    lckeytype <- names(tabNames[tabNames %in% keytype])
+    ## get a connection
+    con <- AnnotationDbi:::dbConn(x)
+    sql <- paste("SELECT inp_id FROM",lckeytype, "WHERE species!='HOMSA'")
+    res <- dbGetQuery(con, sql)
+    res <- as.vector(t(res))
+    dbDisconnect(con)
+    res
 }
 
 setMethod("keys", "InparanoidDb", .keys(x, keytype))
@@ -484,21 +752,136 @@ keys(hom.Hs.inp.db, "TRICHOPLAX_ADHAERENS")
 \end{Solution}
 
 
+\section{Creating a database resource from available data}
+Sometimes you may have a lot of data that you want to organize into a
+database.  Or you may have another existing database that you wish to
+convert into a SQLite database.  This section will deal with some
+simple things you can do to create and import a SQLite database of
+your own.
 
-%% I will only have 45 minutes.
+
+\subsection{Making a new connection}
+
+First, lets close the connection to our other DB:
+<<dbDisconnect>>=
+   dbDisconnect(con)
+@ 
+
+Then lets make a new database.  Notice that we specify the database
+name with "dbname" This allows it to be written to disc instead of
+just memory.
+
+<<makeNewDb>>=
+drv <- dbDriver("SQLite")
+dbname <- file.path(tempdir(), "myNewDb.sqlite")
+con <- dbConnect(drv, dbname=dbname)
+@ 
 
 
-%% I need to now intro some basic SQL and some helpful functions like getDBQuery() and dbListTables, dbListFields etc.
-%% Then I need to do an example by doing cols() for people
+\subsection{Importing data}
+
+Imagine that we want to reate a database and then put a table in it
+called genePheno to store the genes mutated and a phenotypes
+associated with each.  Plan for genePheno to hold the following gene
+IDs and phenotypes (as a toy example):
+
+<<exampleFrame>>=
+data = data.frame(id=c(1,2,9),
+                  string=c("Blue",
+                           "Red",
+                           "Green"),
+                  stringsAsFactors=FALSE)
+@
+
+Making the table is very simple, and just involves a create table
+statement.  
+
+\begin{verbatim}
+    CREATE Table genePheno (id INTEGER, string TEXT);
+\end{verbatim}  
+
+The SQL create table statement just indicates what the table is to be
+called, as well as the different fields that will be present and the
+type of data each field is expected to contain.
+
+<<exercise2>>=
+dbGetQuery(con, "CREATE Table genePheno (id INTEGER, string TEXT)")
+@ 
+
+But putting the data into the database is a little bit more delicate.
+We want to take control over which columns we want to insert from our
+\Robject{data.frame}.  Fortunately, the RSQLite package provides these
+facilities for us.
+
+<<LabelledPreparedQueries>>=
+names(data) <- c("id","string")
+sql <- "INSERT INTO genePheno VALUES ($id, $string)"
+dbBeginTransaction(con)
+dbGetPreparedQuery(con, sql, bind.data = data)
+dbCommit(con)
+@ 
+
+Please notice that we want to use strings instead of factors in our
+data.frame.  If you insert the data as factors, you may not be happy
+with what ends up in the DB.
 
 
-The version number of R and packages loaded for generating the vignette were:
+% TODO: exercise idea: have them verify the contents of this table after inserting the data into it...
+
+
+\subsection{Attaching other database resources}
+
+In SQLite it is possible to attach another database to your session
+and then query across both resources as if they were the same DB.
+
+
+The SQL what we want looks quite simple:
+
+\begin{verbatim}
+    ATTACH "TxDb.Hsapiens.UCSC.hg19.knownGene.sqlite" AS db;
+\end{verbatim}  
+
+So in R we need to do something similar to this:
+
+<<ATTACH>>=
+db <- system.file("extdata", "TxDb.Hsapiens.UCSC.hg19.knownGene.sqlite", 
+                  package="TxDb.Hsapiens.UCSC.hg19.knownGene")
+dbGetQuery(con, sprintf("ATTACH '%s' AS db",db))
+@ 
+
+Here we have attached a DB from one of the packages that this vignette
+required you to have installed, but we could have attached any SQLite
+database that we provided a path to.
+
+
+Once we have attached the database, we can join to it's tables as if
+they were in our own database.  All that is required is a prefix, and
+some knowledge about how to do joins in SQL.  In the end the SQL to
+take advantage of the attached database looks like this:
+
+\begin{verbatim}
+    SELECT * FROM db.gene AS dbg, genePheno AS gp 
+    WHERE dbg.gene_id=gp.id;
+\end{verbatim}  
+
+  Then in R:
+<<ATTACHJoin>>=
+  sql <- "SELECT * FROM db.gene AS dbg, 
+          genePheno AS gp WHERE dbg.gene_id=gp.id"
+  res <- dbGetQuery(con, sql)
+  res
+@ 
+
+
+%% TODO: another exercise would be to have the group think of two different ways that they could implement getting the transcript IDs from the attached DB into their DB (attaching/depending vs. just creating another table in the DB).  
+
+
+The version number of R and packages loaded for generating the
+vignette were:
 
 <<SessionInfo, echo=FALSE>>=
 sessionInfo()
 @
-
-
 
 
 \end{document}
