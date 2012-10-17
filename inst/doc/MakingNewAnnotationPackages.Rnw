@@ -264,8 +264,128 @@ getUniprotGoodies  <- function(query, cols)
 @
 \end{Solution}
 
-% Val: This would probably be a good place to discuss XML parsing (if
-% you have time and inclination)
+\subsection{Parsing XML}
+
+Data for the previous example were downloaded from Uniprot in
+tab-delimited format. This is a convienent output to work with
+but unfortunately not always available. XML is still very
+common and it is useful to have some familiarity with parsing
+it. In this section we give a brief overview to using the
+\Rpackage{XML} package for navigating XML data.
+
+The \Rpackage{XML} package provides functions to parse XML in
+both the tree-based DOM (document object model) or the event-driven
+SAX (Simple API for XML). We will use the DOM approach. The XML is
+first parsed into a tree-structure where the different elements
+of the data are nodes. The elements are processed by traversing the
+tree and generating a user-level representation of the nodes. XPath
+syntax is used to traverse the nodes. A detailed description of
+XPath can be found at \url{http://www.w3.org/xml}.
+
+\paragraph{Retrieve the data:}
+Data will be retrieved for the same id's as in the previous example.
+Unlike tab-delimited, the XML queries cannot be subset by column
+so the full record will be returned for each id. Details for what
+is possible with each type of data retrieval are found at
+\url{http://www.uniprot.org/faq/28}.
+
+Parse the XML into a tree structure with \Rfunction{xmlTreeParse}.
+When \Rcode{useInternalNodes=TRUE} and no \Rcode{handlers}
+are specified the return value is a reference to C-level nodes.
+This storage mode allows us to traverse the tree of data in C
+instead of R objects.
+
+<<xml_tree>>=
+library(XML)
+uri <- "http://www.uniprot.org/uniprot/?query=P13368+or+Q6GZX4&format=xml"
+xml <- xmlTreeParse(uri, useInternalNodes=TRUE)
+@
+
+\paragraph{XML namespace:}
+XML pages can have namespaces which facilatate the use of
+different XML vocabularies by resolving conflicts arrising
+from identical tags. Namepaces are represented by a uri
+pointing to an XML schema page. When a namespace is defined
+on a node in an XML document it must be included in the XPath
+expression.
+
+Use the \Rfunction{xmlNamespaceDefinitions} function to check
+if the XML has a namespace.
+
+<<xml_namespace>>=
+defs <- xmlNamespaceDefinitions(xml, recurisve=TRUE)
+defs
+@
+
+The presence of uri's confirm there is a namespace.
+Alternatively we could have looked at the XML nodes for 
+declarstions of the form
+\Rcode{xmlns:myNamespace="http://www.namspace.org"}.
+We organize the namespaces and will use them directly
+in parsing.
+
+<<xml_namespace_struct>>=
+ns <- structure(sapply(defs, function(x) x$uri), names=names(defs))
+@
+
+\paragraph{Parsing with XPath:}
+
+There are two high level 'entry' nodes which represent
+the two id's requested in the original query.
+<<xml_namespace>>=
+entry <- getNodeSet(xml, "//ns:entry", "ns")
+xmlSize(entry)
+@
+
+To get an idea of the data structure we first list the
+attributes of the top nodes and extract the names.
+<<xml_xmlAttrs>>=
+nms <- xpathSApply(xml, "//ns:entry/ns:name", xmlValue, namespaces="ns")
+attrs <- xpathApply(xml, "//ns:entry", xmlAttrs, namespaces="ns")
+names(attrs) <- nms
+attrs
+@
+
+Next, inspect the direct children of each node.
+<<xml_xmlChildren>>=
+fun1 <- function(elt) unique(names(xmlChildren(elt)))
+xpathApply(xml, "//ns:entry", fun1, namespaces="ns")
+@
+
+Query Q6GZX4 has 2 'feature' nodes and query P13368 has 48.
+<<xml_feature_type>>=
+Q6GZX4 <- "//ns:entry[ns:accession='Q6GZX4']/ns:feature"
+xmlSize(getNodeSet(xml, Q6GZX4, namespaces="ns"))
+
+P13368 <- "//ns:entry[ns:accession='P13368']/ns:feature"
+xmlSize(getNodeSet(xml, P13368, namespaces="ns"))
+@
+
+List all possible values for the 'type' attribute of the
+'feature' nodes.
+<<xml_feature_type>>=
+path <- "//ns:feature"
+unique(xpathSApply(xml, path, xmlGetAttr, "type", namespaces="ns"))
+@
+
+XPath allows the construction of complex queries to pull out
+specific subsets of data. Here we extract the features with 
+`type=sequence conflict' for query P13368.
+<<xml_feature_type_Q6GZX4>>=
+path <- "//ns:entry[ns:accession='P13368']/ns:feature[@type='sequence conflict']"
+data.frame(t(xpathSApply(xml, path, xmlAttrs, namespaces="ns")))
+@
+
+Put the sequences in an AAStringSet and add the names.
+<<xml_sequence>>=
+library(Biostrings)
+path <- "//ns:entry/ns:sequence"
+seqs <- xpathSApply(xml, path, xmlValue, namespaces="ns")
+aa <- AAStringSet(unlist(lapply(seqs, function(elt) gsub("\n", "", elt)),
+    use.names=FALSE))
+names(aa) <- nms
+aa
+@
 
 \section{Setting up a package to expose a web service}
 
