@@ -371,7 +371,7 @@ unique(xpathSApply(xml, path, xmlGetAttr, "type", namespaces="ns"))
 XPath allows the construction of complex queries to pull out
 specific subsets of data. Here we extract the features with 
 `type=sequence conflict' for query P13368.
-<<xml_feature_type_Q6GZX4>>=
+<<xml_feature_type_P13368>>=
 path <- "//ns:entry[ns:accession='P13368']/ns:feature[@type='sequence conflict']"
 data.frame(t(xpathSApply(xml, path, xmlAttrs, namespaces="ns")))
 @
