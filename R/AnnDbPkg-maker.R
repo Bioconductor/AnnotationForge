@@ -322,7 +322,11 @@ setGeneric("makeAnnDbPkg", signature="x",
                      "SELECT value FROM metadata WHERE name='Db type'")
   if(type=="ChipDb"){
     org_version <- installed.packages()['org.Hs.eg.db','Version']
-  }else{org_version <- "no org version date" }
+    org_pkg <- paste0(AnnotationDbi:::getOrgPkgForSchema(x@DBschema),".db")
+  }else{
+    org_version <- "no org version date"
+    org_pkg <- "no org pkg required"
+  }
   symvals <- list(
                   DBSCHEMA=x@DBschema,
                   PKGTITLE=x@Title,
@@ -340,7 +344,8 @@ setGeneric("makeAnnDbPkg", signature="x",
                   BIOCVIEWS=x@biocViews,
                   DBFILE=dbfile_basename,
                   ANNDBIVERSION=ann_dbi_version,
-                  ORGVERSION=org_version
+                  ORGVERSION=org_version,
+                  ORGPKGDEP=org_pkg
                   )
   man_dir <- file.path(template_path, "man")
   if (file.exists(man_dir)) {
