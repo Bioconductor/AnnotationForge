@@ -138,9 +138,6 @@ supported Schemas.
 available.dbschemas()
 @ 
 
-<<TempDir, echo=FALSE, results=hide>>=
-tmpout = tempdir()
-@ 
 
 The following shows an example of how to make a chip package:
 
@@ -148,6 +145,8 @@ The following shows an example of how to make a chip package:
 hcg110_IDs = system.file("extdata",
                           "hcg110_ID",
                           package="AnnotationDbi")
+
+tmpout = tempdir()
 
 makeDBPackage("HUMANCHIP_DB",
               affy=FALSE,            
