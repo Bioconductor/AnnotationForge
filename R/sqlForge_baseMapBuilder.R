@@ -10,7 +10,7 @@ cleanSrcMap <- function(file) {
     probe <- fileVals[,1]
     id <- fileVals[,2]
     id <- gsub(" ","", id)
-    id <- strsplit(id, split=";", fix=T)
+    id <- strsplit(id, split=";", fixed=TRUE)
     ##Otherwise, the following may remove probes that map to nothing
     id_count <- sapply(id, length)  
     id_probe <- rep(probe, id_count)
@@ -68,7 +68,7 @@ makeBaseMaps <- function(csvFileName,
     rm(csvFile)
     gb <- lapply(unlist(gb), function(x) toupper(strsplit(x,"\\.")[[1]][1]))
     gb <- unlist(gb)
-    eg <- strsplit(eg, split=" /// ", fix=T)
+    eg <- strsplit(eg, split=" /// ", fixed=TRUE)
     eg_count <- sapply(eg, length)
     eg_probe <- rep(probe, eg_count)
     eg <- unlist(eg)

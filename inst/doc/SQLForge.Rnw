@@ -1,4 +1,5 @@
 %\VignetteIndexEntry{SQLForge: An easy way to create a new annotation package with a standard database schema.}
+%\VignetteDepends{org.Hs.eg.db}
 %\VignetteDepends{human.db0}
 %\VignetteKeywords{annotation, database}
 %\VignettePackage{AnnotationDbi}
@@ -8,6 +9,8 @@
 \newcommand{\Robject}[1]{{\texttt{#1}}}
 \newcommand{\Rpackage}[1]{{\textit{#1}}}
 \newcommand{\Rclass}[1]{{\textit{#1}}}
+
+\usepackage{hyperref}
 
 
 \title{Creating a New Annotation Package using SQLForge}
@@ -113,19 +116,45 @@ that database to make custom packages.  To list all the supported organism
   available.db0pkgs()  
 @
 
-Once you know the package name, you can then install the appropriate package
-with biocLite().
 
 
 \section{How to use SQLForge}
 
-To get the latest organism package you should only need to use biocLite.
+Once you know the name of the package that you need, you can get the
+latest .db0 package for your organism by using biocLite() like this.
 
-Lets begin by making sure we have the latest organism package.
 <<GetIntermedDB, eval=FALSE>>=
-  source("http://bioconductor.org/biocLite.R")
-  biocLite("human.db0")
+source("http://bioconductor.org/biocLite.R")
+biocLite("human.db0")
 @
+
+Even if you have installed the .db0 package before, it's a good idea
+to run this again to be sure that you have the latest organism
+package.
+
+Once you have the appropriate .db0 package, you may also need to
+install the appropriate org.* package.  Most users probably have this
+already, because using any chip packages for this organism will
+require it. But if you don't have it yet, you can find a list of these
+packagesit on the web site here:
+
+\url{http://www.bioconductor.org/packages/release/BiocViews.html#___OrgDb}
+
+Once you know the name of the package you need, you can install it like before.
+
+<<GetOrg.db, eval=FALSE>>=
+biocLite("org.Hs.eg.db")
+@
+
+All the supported organisms with a .db0 package, will also have a
+matching org.* package.  The org.* packages are named like this:
+org.<species abbreviation>.<source abbreviation>.db.  The source
+indicates where the data originates from and also which central ID the
+data all connects to, while the species abbreviation indicates which
+organism the data is for.  The web site spells out the species a bit
+more clearly by listing the titles for each package.
+
+
 
 Since each organism will have different kinds of data available, the
 schemas that will be needed for each organism will also
@@ -137,7 +166,6 @@ supported Schemas.
 <<list Schemas>>=
 available.dbschemas()
 @ 
-
 
 The following shows an example of how to make a chip package:
 
