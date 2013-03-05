@@ -7,5 +7,6 @@ Maintainer: @MAINTAINER@
 Depends: R (>= 2.7.0), methods, AnnotationDbi (>= @ANNDBIVERSION@)
 Imports: methods, AnnotationDbi
 License: file LICENSE
+License_restricts_use: yes 
 biocViews: @BIOCVIEWS@
 
