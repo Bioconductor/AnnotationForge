@@ -4,9 +4,13 @@
 \title{Bioconductor annotation data package}
 \description{
 
-  Welcome to the @ANNOBJPREFIX@.db annotation Package.  The purpose of this package
-  is to provide detailed information about the latest version of the
-  KEGG pathway databases.  This package is updated biannually.
+  Welcome to the @ANNOBJPREFIX@.db annotation Package.  The purpose of
+  this package was to provide detailed information about the latest
+  version of the KEGG pathway databases.  But a number of years ago,
+  KEGG changed their policy about sharing their data and so this package
+  is no longer allowed to be current.  Users who are interested in a
+  more current pathway data are encouraged to look at the KEGGREST or
+  reactome.db packages.
   
   You can learn what objects this package supports with the following command:
 

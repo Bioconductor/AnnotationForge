@@ -6,7 +6,11 @@
   
   Welcome to the @ANNOBJPREFIX@.db annotation Package.  The purpose of
   this package is to provide detailed information about the
-  @ANNOBJPREFIX@ platform. This package is updated biannually.
+  @ANNOBJPREFIX@ platform. Bioconductor attempts to update this package
+  biannually with the most recently available inparanoid data, but
+  inparanoid data sources have not historically updated that frequently.
+  Please check inparanoid to learn more about when they have last
+  updated their databases.
   
   You can learn what objects this package supports with the following command:
 

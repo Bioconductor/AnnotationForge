@@ -3,7 +3,7 @@ Title: Code for Building Annotation Database Packages
 Description: Provides code for generating Annotation packages and
 	     their databases.  Packages produced are intended to be
 	     used with AnnotationDbi.
-Version: 1.3.0
+Version: 1.3.1
 Author: Marc Carlson, Herve Pages
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 Depends: R (>= 2.7.0), methods, utils, BiocGenerics (>= 0.1.13),
