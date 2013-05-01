@@ -2306,21 +2306,23 @@ appendYeastRejectORF <- function(db, subStrs, printSchema){
 
 
 
-## Make the Yeast Smart table
+## Make the Yeast gene2systematic table
 appendYeastGene2Systematic <- function(db, subStrs, printSchema){
 
   message(cat("Appending Gene2Systematic"))
     
   sql<- paste("    CREATE TABLE gene2systematic (
-      gene_name VARCHAR(14) NULL,                     -- Yeast gene name
-      systematic_name VARCHAR(14) NULL)               -- Yeast gene systematic name
+      _id INTEGER NOT NULL,
+      gene_name VARCHAR(14) NULL,                -- Yeast gene name
+      systematic_name VARCHAR(14) NULL,          -- Yeast gene systematic name
+      FOREIGN KEY (_id) REFERENCES sgd (_id))
     ;") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
   sqliteQuickSQL(db, sql)
 
   sql<- paste("
     INSERT INTO gene2systematic
-     SELECT gene_name, systematic_name
+     SELECT _id, gene_name, systematic_name
      FROM anno.gene2systematic;
      ") 
   sqliteQuickSQL(db, sql)
