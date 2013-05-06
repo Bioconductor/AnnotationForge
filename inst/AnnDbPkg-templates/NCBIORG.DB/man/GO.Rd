@@ -31,7 +31,7 @@
      
   The Evidence element contains a code indicating what kind of evidence
   supports the association of the GO identifier to the Entrez Gene
-  id. The evidence codes in use include:
+  id. Some of the evidence codes in use include:
 
   IMP: inferred from mutant phenotype  
 
@@ -54,7 +54,12 @@
   ND: no biological data available  
 
   IC: inferred by curator
-    
+  
+  
+  A more complete listing of evidence codes can be found at:
+
+  \url{http://www.geneontology.org/GO.evidence.shtml}
+  
     
   If @ANNOBJPREFIX@GO2ALLEGS or @ANNOBJPREFIX@GO2EG is cast as a list,
   each GO term maps to a named vector of entrez gene identifiers and

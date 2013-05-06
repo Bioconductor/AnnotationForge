@@ -2,19 +2,17 @@
 \alias{@ANNOBJPREFIX@CCOFFSPRING}
 \title{Annotation of GO Identifiers to their Cellular Component Offspring} 
 \description{
-This is an R object mapping GO identifiers to all the GO
-identifiers of their offspring based on the  cellular component (CC) GO terms. Offspring are
-defined as the direct or indirect children/grand children nodes of a
-given node for a GO identifier based on the directed acyclic graph defined by
-Gene Ontology Consortium. GO terms for offspring nodes are more specific
-than that of the parent.
+  This data set describes associations between GO molecular function (MF)
+  terms and their offspring MF terms, based on the directed acyclic
+  graph (DAG) defined by the Gene Ontology Consortium. The format is an R
+  object mapping the GO MF terms to all offspring terms, where an
+  offspring term is a more specific GO term that is preceded
+  by the given GO term in the DAG (in other words, the children and all
+  their children, etc.).
 }
-\details{
-  GO identifiers are keys and the corresponding offspring GO identifiers are
-  values. Values are vectors of GO identifiers for all the offspring of the key
-  GO identifier. GO identifiers that do not have any offspring node are assigned NA as
-  the value. 
-
+\details{  
+  Each GO CC term is mapped to a vector of offspring GO MF terms.
+  
   Cellular component is defined as the subcellular structures,
   locations, and macromolecular complexes; examples include nucleus,
   telomere, and origin recognition complex as defined b y Gene Ontology

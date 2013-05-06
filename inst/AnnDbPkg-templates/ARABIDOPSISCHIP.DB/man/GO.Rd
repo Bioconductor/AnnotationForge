@@ -7,21 +7,21 @@
   directly associated with. 
 }
 \details{
-     Each Entrez Gene identifier is mapped to a list of lists.  The names on
-     the outer list are GO identifiers.  Each inner list consists of three
-     named elements: GOID, Ontology, and Evidence.
+  Each Entrez Gene identifier is mapped to a list of lists.  The names on
+  the outer list are GO identifiers.  Each inner list consists of three
+  named elements: GOID, Ontology, and Evidence.
 
-     The GOID element matches the GO identifier named in the outer list and is
-     included for convenience when processing the data using 'lapply'.
+  The GOID element matches the GO identifier named in the outer list and is
+  included for convenience when processing the data using 'lapply'.
+  
+  The Ontology element indicates which of the three Gene Ontology
+  categories this identifier belongs to.  The categories are
+  biological process (BP), cellular component (CC), and molecular
+  function (MF).
 
-     The Ontology element indicates which of the three Gene Ontology
-     categories this identifier belongs to.  The categories are
-     biological process (BP), cellular component (CC), and molecular
-     function (MF).
-
-     The Evidence element contains a code indicating what kind of
-     evidence supports the association of the GO identifier to the Entrez Gene
-     id. The evidence codes in use include:
+  The Evidence element contains a code indicating what kind of evidence
+  supports the association of the GO identifier to the Entrez Gene
+  id. Some of the evidence codes in use include:
 
   IMP: inferred from mutant phenotype  
 
@@ -44,6 +44,11 @@
   ND: no biological data available  
 
   IC: inferred by curator
+
+  A more complete listing of evidence codes can be found at:
+
+  \url{http://www.geneontology.org/GO.evidence.shtml}
+  
   
   Mappings between probe identifiers and GO information were obtained through
   their mappings to Entrez Gene identifiers. NAs are assigned to probe identifiers

@@ -24,7 +24,7 @@
 
      The Evidence element contains a code indicating what kind of
      evidence supports the association of the GO identifier to the Entrez Gene
-     id. The evidence codes in use include:
+     id. Some of the evidence codes in use include:
 
   IMP: inferred from mutant phenotype  
 
@@ -47,12 +47,18 @@
   ND: no biological data available  
 
   IC: inferred by curator
+
+  A more complete listing of evidence codes can be found at:
+
+  \url{http://www.geneontology.org/GO.evidence.shtml}
   
-  Mappings between entrez gene identifiers and GO information were obtained through
-  their mappings to Entrez Gene identifiers. NAs are assigned to entrez gene identifiers
-  that can not be mapped to any Gene Ontology information. Mappings
-  between Gene Ontology identifiers an Gene Ontology terms and other information
-  are available in a separate data package named GO.
+  
+  Mappings between entrez gene identifiers and GO information were
+  obtained through their mappings to Entrez Gene identifiers. NAs are
+  assigned to entrez gene identifiers that can not be mapped to any Gene
+  Ontology information. Mappings between Gene Ontology identifiers an
+  Gene Ontology terms and other information are available in a separate
+  data package named GO.
   
   Mappings were based on data provided by: @GOSOURCE@
 

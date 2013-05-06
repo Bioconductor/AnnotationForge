@@ -24,7 +24,7 @@
 
      The Evidence element contains a code indicating what kind of
      evidence supports the association of the GO identifier to the TAIR Gene
-     id. The evidence codes in use include:
+     id. Some of the evidence codes in use include:
 
   IMP: inferred from mutant phenotype  
 
@@ -47,6 +47,11 @@
   ND: no biological data available  
 
   IC: inferred by curator
+  
+  A more complete listing of evidence codes can be found at:
+
+  \url{http://www.geneontology.org/GO.evidence.shtml}
+  
   
   Mappings between TAIR gene identifiers and GO information were
   obtained through their mappings to TAIR gene identifiers. NAs are

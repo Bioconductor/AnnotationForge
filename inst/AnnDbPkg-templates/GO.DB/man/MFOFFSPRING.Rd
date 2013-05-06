@@ -6,7 +6,7 @@
   terms and their offspring MF terms, based on the directed acyclic
   graph (DAG) defined by the Gene Ontology Consortium. The format is an R
   object mapping the GO MF terms to all offspring terms, where an
-  ancestor term is a more specific GO term that is preceded
+  offspring term is a more specific GO term that is preceded
   by the given GO term in the DAG (in other words, the children and all
   their children, etc.).
 }
