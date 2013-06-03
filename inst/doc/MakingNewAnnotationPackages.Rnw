@@ -77,13 +77,13 @@ now the \Rmethod{select} method.  The interface provides a simple way
 of extracting data.  
 
 There are really 4 methods that work together to allow a
-\Rmethod{select} interface.  The 1st one is \Rmethod{cols}, which
+\Rmethod{select} interface.  The 1st one is \Rmethod{columns}, which
 tells you about what kinds of values you can retrieve as columns in
 the final result.
 
 <<Homo.sapiens>>=
 library(Homo.sapiens)
-cols(Homo.sapiens)
+columns(Homo.sapiens)
 @ 
 
 The next method is \Rmethod{keytypes} which tells you the kinds of
@@ -106,7 +106,7 @@ values supplied by the other method.
 
 <<Homo.sapiens>>=
 result <- select(Homo.sapiens, keys=k, 
-                 cols=c("TXNAME","TXSTART","TXSTRAND"), 
+                 columns=c("TXNAME","TXSTART","TXSTRAND"), 
                  keytype="ENTREZID")
 head(result)
 @ 
@@ -249,11 +249,11 @@ records that the service returns.
 \end{Exercise}
 \begin{Solution}
 <<web service code>>=
-getUniprotGoodies  <- function(query, cols)
+getUniprotGoodies  <- function(query, columns)
 {
-    ## query and cols start as a character vectors
+    ## query and columns start as a character vectors
     qstring <- paste(query, collapse="+or+")
-    cstring <- paste(cols, collapse=",")
+    cstring <- paste(columns, collapse=",")
     uri <- 'http://www.uniprot.org/uniprot/?query='
     fullUri <- paste0(uri,qstring,'&format=tab&columns=',cstring)
     dat <- read.delim(fullUri, stringsAsFactors=FALSE)
@@ -430,14 +430,14 @@ the package namespace as the package loads.
 \section{Creating package accessors for a web service}
 
 At this point you have all that you need to know in order to implement
-\Rmethod{keytype},\Rmethod{cols},\Rmethod{keys} and \Rmethod{select}
+\Rmethod{keytype},\Rmethod{columns},\Rmethod{keys} and \Rmethod{select}
 for your package.  In this section we will explore how you could
 implement some of these if you were making a package that exposed
 uniprot.
 
-\subsection{Example: creating \Rmethod{keytypes} and \Rmethod{cols} methods}
+\subsection{Example: creating \Rmethod{keytypes} and \Rmethod{columns} methods}
 
-The \Rmethod{keytype} and \Rmethod{cols} methods are always the 1st
+The \Rmethod{keytype} and \Rmethod{columns} methods are always the 1st
 ones you should implement.  They are the easiest, and their existence
 is required to be able to use \Rmethod{keys} or \Rmethod{select}.  In
 this simple case we only have one value that can be used as a keytype,
@@ -449,18 +449,18 @@ uniprot <- new("uniprot")
 keytypes(uniprot)
 @ 
 
-So what about cols?  Well it's not a whole lot more complicated in
+So what about columns?  Well it's not a whole lot more complicated in
 this case since we are limited to things that we can return from the
 web service.  Since this is just an example, lets limit it to the
 following fields: "ID", "SEQUENCE", "ORGANISM". 
 %%
 <<keytypeUniprot>>=
-setMethod("cols", "uniprot", 
+setMethod("columns", "uniprot", 
           function(x){return(c("ID", "SEQUENCE", "ORGANISM"))})
-cols(uniprot)
+columns(uniprot)
 @
 %%
-Also, notice how for both \Rmethod{keytypes} and \Rmethod{cols} I am
+Also, notice how for both \Rmethod{keytypes} and \Rmethod{columns} I am
 using all capital letters.  This is a style adopted throughout the
 project.
 
@@ -476,17 +476,17 @@ default \Rfunarg{keytype} of "UNIPROT".
 \end{Exercise}
 \begin{Solution}
 <<webServiceSelect>>=
-.select <- function(x, keys, cols){
+.select <- function(x, keys, columns){
     colsTranslate <- c(id='ID', sequence='SEQUENCE', organism='ORGANISM')
-    cols <- names(colsTranslate)[colsTranslate %in% cols]
-    getUniprotGoodies(query=keys, cols=cols)
+    columns <- names(colsTranslate)[colsTranslate %in% columns]
+    getUniprotGoodies(query=keys, columns=columns)
 }
 setMethod("select", "uniprot", 
-    function(x, keys, cols, keytype)
+    function(x, keys, columns, keytype)
 {
-    .select(keys=keys, cols=cols)
+    .select(keys=keys, columns=columns)
 })
-select(uniprot, keys=c("P13368","P20806"), cols=c("ID","ORGANISM"))
+select(uniprot, keys=c("P13368","P20806"), columns=c("ID","ORGANISM"))
 @
 \end{Solution}
 
@@ -753,7 +753,7 @@ At this point, all that remains is to create the means for accessing
 the data in the database.  This should prove a lot less difficult than
 it may initially sound.  For the new interface, only the four methods
 that were described earlier are really required:
-\Rmethod{cols},\Rmethod{keytypes},\Rmethod{keys} and \Rmethod{select}.
+\Rmethod{columns},\Rmethod{keytypes},\Rmethod{keys} and \Rmethod{select}.
 
 In order to do this you need to know a small amount of SQL and a few
 tricks for accessing the database from R.  The point of providing
@@ -762,14 +762,14 @@ experience when retrieving data from the database.  But other kinds of
 accessors (such as those provided for the \Rclass{TranscriptDb}
 objects) may also be warranted.
 
-\subsection{Examples: creating a \Rmethod{cols} and \Rmethod{keytypes} method}
+\subsection{Examples: creating a \Rmethod{columns} and \Rmethod{keytypes} method}
 
-Now lets suppose that we want to define a \Rmethod{cols} method for
+Now lets suppose that we want to define a \Rmethod{columns} method for
 our \Rclass{hom.Hs.inp.db} object. And lets also suppose that we want
 is for it to tell us about the actual organisms for which we can
 extract identifiers.  How could we do that?
 
-<<cols,eval=FALSE>>=
+<<columns,eval=FALSE>>=
 .cols <- function(x)
 {
     con <- AnnotationDbi:::dbConn(x)
@@ -784,9 +784,9 @@ extract identifiers.  How could we do that?
 }
 
 ## Then make this into a method
-setMethod("cols", "InparanoidDb", .cols(x))
+setMethod("columns", "InparanoidDb", .cols(x))
 ## Then we can call it
-cols(hom.Hs.inp.db)
+columns(hom.Hs.inp.db)
 @
 
 Notice again how I formatted the output to all uppercase characters?
@@ -798,7 +798,7 @@ implement out other methods.
 \begin{Exercise}
   Now use what you have learned to try and define a method for
   \Rmethod{keytypes} on \Rclass{hom.Hs.inp.db}.  The keytypes method
-  should return the same results as cols (in this case).  What if you
+  should return the same results as columns (in this case).  What if you
   needed to translate back to the lowercase table names?  Also write
   an quick helper function to do that.
 \end{Exercise}
@@ -826,7 +826,7 @@ keytypes(hom.Hs.inp.db)
     toupper(list)
 }
 ## Test:
-cols(hom.Hs.inp.db)
+columns(hom.Hs.inp.db)
 
 ## new helper function:
 .getTableNames <- function(x)
