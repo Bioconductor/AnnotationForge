@@ -80,6 +80,14 @@
   data package named GO.
   
   All mappings were based on data provided by: @GOSOURCE@
+  
+  For GO2ALL style mappings, the intention is to return all the genes
+  that are the same kind of term as the parent term (based on the idea
+  that they are more specific descriptions of the general term).
+  However because of this intent, not all relationship types will be
+  counted as offspring for this mapping.  Only "is a" and "has a" style
+  relationships indicate that the genes from the child terms would be
+  the same kind of thing. 
 }
 \seealso{
   \code{\link{@ANNOBJPREFIX@GO2ALLEGS}}.
