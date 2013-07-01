@@ -152,12 +152,13 @@
 }
 
 .tryDL <- function(url, tmp){
-  for(i in 1:4){
+    times = 4 ## try this many times to DL
+  for(i in 1:times){ 
     ## tryResult <- try( download.file(url, tmp, quiet=TRUE) , silent=TRUE)     
      tryResult <- try( .downloadAndSaveToTemp(url, tmp) , silent=TRUE)     
-     if(is(tryResult,"try-error") && i < 4){
+     if(is(tryResult,"try-error") && i < times){
          Sys.sleep(20)
-     }else if(is(tryResult,"try-error") && i >= 4){
+     }else if(is(tryResult,"try-error") && i >= times){
          msg = paste("After 3 attempts, AnnotationDbi is still not able",
                      "to access the following URL:", url,
                      "You might want to try again later.",
@@ -167,22 +168,26 @@
   }
 }
 
-.downloadData <- function (file, tax_id) {
+.downloadData <- function (file, tax_id, NCBIFilesDir=NULL) {
   colClasses1 <- c("character",rep("NULL", times= length(unlist(file))-1))
   colClasses2 <- c(rep("character", times= length(unlist(file))))
   ## names(file) is something like: "gene2go.gz"
   message(paste("Getting data for ",names(file),sep=""))
   
+  ## Where to DL from
   url <- paste("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/",names(file), sep="")
-  tmp <- tempfile()
-  ##download.file(url, tmp, quiet=TRUE)
-  .tryDL(url, tmp)
   
-## TEMPORARILY, lets work from some local files.
-  ## tmp <- paste("/home/mcarlson/proj/mcarlson/",
-  ##              "2011-May24/",names(file), sep="")
-## end of TEMP stuff
-  
+  if(is.null(NCBIFilesDir)){
+      tmp <- tempfile() 
+      ##download.file(url, tmp, quiet=TRUE)
+      .tryDL(url, tmp)
+  }else{
+      tmp <- paste(NCBIFilesDir, names(file), sep=.Platform$file.sep)
+       if(!file.exists(tmp)){
+           .tryDL(url, tmp)
+       }## otherwise we already have the file saved
+  }
+    
   if("tax_id" %in% unlist(file)){ ## when there is a tax_id we want to subset
     tax_ids <- unlist(read.delim(tmp,header=FALSE,sep="\t",skip=1,
                                  stringsAsFactors=FALSE,
@@ -439,8 +444,8 @@
 
 ## need code to generate a table for each of the
 ## file below is like: files[1] or files[2]
-.createTEMPNCBIBaseTable <- function (con, file, tax_id) {
-  data <- .downloadData(file, tax_id)
+.createTEMPNCBIBaseTable <- function (con, file, tax_id, NCBIFilesDir=NULL) {
+  data <- .downloadData(file, tax_id, NCBIFilesDir=NCBIFilesDir)
   table <- sub(".gz$","",names(file))
   if(is.null(table)) stop("Unable to infer a table name.")
   cols <- .generateCols(file)
@@ -465,9 +470,9 @@
 
 
 ## loop through and make the tables
-.makeBaseDBFromDLs <- function(files, tax_id, con){
+.makeBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir=NULL){
   for(i in seq_len(length(files))){
-    .createTEMPNCBIBaseTable(con, files[i], tax_id)
+    .createTEMPNCBIBaseTable(con, files[i], tax_id, NCBIFilesDir=NCBIFilesDir)
   }
   con
 }
@@ -540,7 +545,7 @@
 ## Generate the database using the helper functions:
 #########################################################################
 
-makeOrgDbFromNCBI <- function(tax_id, genus, species){
+makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
   require(RSQLite)
   require(GO.db)
   dbName <- .generateOrgDbName(genus,species)
@@ -571,7 +576,7 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species){
     "gene2go.gz" = c("tax_id","gene_id","go_id","evidence",
         "go_qualifier", "go_description","pubmed_id","category")
   )
-  .makeBaseDBFromDLs(files, tax_id, con)
+  .makeBaseDBFromDLs(files, tax_id, con, NCBIFilesDir=NCBIFilesDir)
   
   ## Add metadata:
   .addMetadata(con, tax_id, genus, species)
@@ -687,14 +692,16 @@ makeOrgPackageFromNCBI <- function(version,
                                outputDir = ".",
                                tax_id,
                                genus,
-                               species){
+                               species,
+                               NCBIFilesDir=NULL){
 
   if(outputDir!="." && file.access(outputDir)[[1]]!=0){
     stop("Selected outputDir '", outputDir,"' does not exist.")}
 
   ## 'outputDir' is not passed to makeOrgDbFromNCBI(). Hence the db file
   ## is always created in ".". Maybe that could be revisited.
-  makeOrgDbFromNCBI(tax_id=tax_id, genus=genus, species=species)
+  makeOrgDbFromNCBI(tax_id=tax_id, genus=genus, species=species,
+                    NCBIFilesDir=NCBIFilesDir)
   
   dbName <- .generateOrgDbName(genus,species)
   dbfile <- paste(dbName, ".sqlite", sep="")
