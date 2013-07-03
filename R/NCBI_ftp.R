@@ -187,36 +187,50 @@
            .tryDL(url, tmp)
        }## otherwise we already have the file saved
   }
-    
-  if("tax_id" %in% unlist(file)){ ## when there is a tax_id we want to subset
-    tax_ids <- unlist(read.delim(tmp,header=FALSE,sep="\t",skip=1,
-                                 stringsAsFactors=FALSE,
-                                 colClasses = colClasses1))
-    
-    ind <- grep(paste("^",tax_id,"$",sep=""), tax_ids, perl=TRUE)
-    
-    if(length(ind) == 0){## ie there are no matching tax_ids...
-      vals <- data.frame(t(1:length(unlist(file))),stringsAsFactors=FALSE)
-      colnames(vals) <- unlist(file)
-      vals <- vals[FALSE,]
-    }else{
-      vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1+min(ind),
-                         nrows= max(ind) - min(ind) +1,
-                         stringsAsFactors=FALSE,
-                         colClasses = colClasses2)
-    } 
+  ## TODO: this check could be more robust...
+  header <- unlist(strsplit(readLines(tmp, n=1),"\t"))
+  if(all(unlist(file) %in% header)){ ## then we have been here before.
+      message("reading from a pre-processed file")
+      vals <- read.delim(tmp, header=FALSE, sep="\t", 
+                         stringsAsFactors=FALSE)
   }else{
-    vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
-                       stringsAsFactors=FALSE,
-                       colClasses = colClasses2)
-  }
-##   
-  ## The following will just keep unwanted data from our temp DB tables.
-  ## if there is a tax_id,
-  ## then only return the piece that matches the organism in question
-  colnames(vals) <- unlist(file)
-  if(!is.null(vals[["tax_id"]])){
-    vals <- vals[vals[["tax_id"]]==tax_id,]
+      message("discarding data from other organisms")
+      if("tax_id" %in% unlist(file)){ ## when there is a tax_id need to subset
+          tax_ids <- unlist(read.delim(tmp,header=FALSE,sep="\t",skip=1,
+                                       stringsAsFactors=FALSE,
+                                       colClasses = colClasses1))
+          
+          ind <- grep(paste("^",tax_id,"$",sep=""), tax_ids, perl=TRUE)
+          
+          if(length(ind) == 0){## ie there are no matching tax_ids...
+              vals <- data.frame(t(1:length(unlist(file))),
+                                 stringsAsFactors=FALSE)
+              colnames(vals) <- unlist(file)
+              vals <- vals[FALSE,]
+          }else{
+              vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1+min(ind),
+                                 nrows= max(ind) - min(ind) +1,
+                                 stringsAsFactors=FALSE,
+                                 colClasses = colClasses2)
+          }
+      }else{
+          vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
+                             stringsAsFactors=FALSE,
+                             colClasses = colClasses2)
+      }   
+      ## The following will just keep unwanted data from our temp DB tables.
+      ## if there is a tax_id,
+      ## then only return the piece that matches the organism in question
+      colnames(vals) <- unlist(file)
+      if(!is.null(vals[["tax_id"]])){
+          vals <- vals[vals[["tax_id"]]==tax_id,]
+      }
+      ## Remove the following save line if you think there are problems
+      ## with the tx_id filtering above.
+      ## save the processed results ONLY
+      if(!is.null(NCBIFilesDir)){
+          write.table(vals, sep="\t", quote=FALSE, row.names=FALSE, file=tmp)
+      }
   }
   vals
 }
