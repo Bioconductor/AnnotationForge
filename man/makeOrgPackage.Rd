@@ -21,7 +21,8 @@
     outputDir=".",
     tax_id,
     genus,
-    species)
+    species,
+    NCBIFilesDir=NULL)
 }
 
 \arguments{
@@ -34,6 +35,10 @@
   a nice online browser for finding the one you need)}
   \item{genus}{Single string indicating the genus.}
   \item{species}{Single string indicating the species.}
+  \item{NCBIFilesDir}{If you want the files to be saved locally that
+  were used to make your DB, then specify a directory here.  Otherwise
+  leave this NULL.  This argument is mostly useful for troubleshooting
+  since many of the files are large.  Most users should ignore it.}
 }
 
 
