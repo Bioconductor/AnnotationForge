@@ -562,8 +562,9 @@
 makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
   require(RSQLite)
   require(GO.db)
-  dbName <- .generateOrgDbName(genus,species)
-  con <- dbConnect(SQLite(), paste(dbName,".sqlite",sep=""))
+  dbFileName <- paste(.generateOrgDbName(genus,species),".sqlite",sep="")
+  if(file.exists(dbFileName)){ file.remove(dbFileName) }
+  con <- dbConnect(SQLite(), dbFileName)
   .createMetadataTables(con)  ## just makes the tables
   ## I need a list of files, along with their column names 
   ## (needed for schema definitions later)
@@ -593,7 +594,7 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
   .makeBaseDBFromDLs(files, tax_id, con, NCBIFilesDir=NCBIFilesDir)
   
   ## Add metadata:
-  .addMetadata(con, tax_id, genus, species)
+  .addMetadata(con, tax_id, genus, species) 
   ## Add map_metadata:
   .addMapMetadata(con, tax_id, genus, species)
  
