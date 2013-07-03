@@ -27,28 +27,33 @@
 ## fieldNameLens.  TODO: The cols in data have to be named and of equal
 ## length.  indFields is a character vector with the names of fields that we
 ## want indexed.  By default only _id will be indexed.
-.makeSimpleTable <- function(data, table, con, fieldNameLens=25,
-                             indFields="_id"){
-  message(paste("Populating",table,"table:"))
-  ## For temp table, lets do it like this:
-  if(dim(data)[1] == 0){
-    ## if we don't have anything to put into the table, then we don't even
-    ## want to make a table.
-    warning(paste("no values found for table ",table,
-                  " in this data chunk.", sep=""))
-    return()
-  }else{
-    dbWriteTable(con, "temp", data, row.names=FALSE)
-    ## Then we have to create our real table.
-    tableFieldLines <- paste(paste(names(data)[-1]," VARCHAR(",
-                                 fieldNameLens,") NOT NULL,    -- data"),
-                           collapse="\n       ")
+.makeEmptySimpleTable <- function(con, table, tableFieldLines){
     sql<- paste("    CREATE TABLE IF NOT EXISTS",table," (
       _id INTEGER NOT NULL,                         -- REFERENCES genes
       ",tableFieldLines,"
       FOREIGN KEY (_id) REFERENCES genes (_id)
     );") 
     sqliteQuickSQL(con, sql)
+}
+.makeSimpleTable <- function(data, table, con, fieldNameLens=25,
+                             indFields="_id"){
+  message(paste("Populating",table,"table:"))
+  tableFieldLines <- paste(paste(names(data)[-1]," VARCHAR(",
+                                 fieldNameLens,") NOT NULL,    -- data"),
+                           collapse="\n       ")
+  ## For temp table, lets do it like this:
+  if(dim(data)[1] == 0){
+    ## if we don't have anything to put into the table, then we don't even
+    ## want to make a table.
+    warning(paste("no values found for table ",table,
+                  " in this data chunk.", sep=""))
+    ## Create our real table.
+    .makeEmptySimpleTable(con, table, tableFieldLines)
+    return()
+  }else{
+    dbWriteTable(con, "temp", data, row.names=FALSE)
+    ## Create our real table.
+    .makeEmptySimpleTable(con, table, tableFieldLines)
     selFieldLines <- paste(paste("t.",names(data)[-1],sep=""),collapse=",")
     sql<- paste("
     INSERT INTO ",table,"
@@ -191,14 +196,14 @@
   header <- unlist(strsplit(readLines(tmp, n=1),"\t"))
   if(all(unlist(file) %in% header)){ ## then we have been here before.
       message("reading from a pre-processed file")
-      vals <- read.delim(tmp, header=TRUE, sep="\t", 
+      vals <- read.delim(tmp, header=TRUE, sep="\t", quote="",
                          stringsAsFactors=FALSE)
   }else{
       message("discarding data from other organisms")
       if("tax_id" %in% unlist(file)){ ## when there is a tax_id need to subset
           tax_ids <- unlist(read.delim(tmp,header=FALSE,sep="\t",skip=1,
-                                       stringsAsFactors=FALSE,
-                                       colClasses = colClasses1))
+                                       stringsAsFactors=FALSE, quote="",
+                                       colClasses = colClasses1)[,1])
           
           ind <- grep(paste("^",tax_id,"$",sep=""), tax_ids, perl=TRUE)
           
@@ -210,12 +215,12 @@
           }else{
               vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1+min(ind),
                                  nrows= max(ind) - min(ind) +1,
-                                 stringsAsFactors=FALSE,
+                                 stringsAsFactors=FALSE, quote="",
                                  colClasses = colClasses2)
           }
       }else{
           vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
-                             stringsAsFactors=FALSE,
+                             stringsAsFactors=FALSE, quote="",
                              colClasses = colClasses2)
       } 
       ## The following will just keep unwanted data from our temp DB tables.
@@ -325,7 +330,7 @@
   tmp <- tempfile()
   ##download.file(url, tmp, quiet=TRUE)
   .tryDL(url,tmp)
-  vals <- read.delim(unzip(tmp), header=FALSE, sep="\t",
+  vals <- read.delim(unzip(tmp), header=FALSE, sep="\t", quote="",
                      stringsAsFactors=FALSE)
   ## I will need to so extra stuff here to match up categories etc.
   ## (vals has to look like gene2go would, and I have to join to refseq and to
@@ -652,7 +657,7 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
   ug <- sqliteQuickSQL(con,
     "SELECT distinct g.gene_id, u.unigene_id FROM gene2unigene as u,
      gene_info as g WHERE u.gene_id=g.gene_id")
-  .makeSimpleTable(ug, table="unigene", con)
+  .makeSimpleTable(ug, table="unigene", con) 
   
   ## Make the GO tables:
   .makeGOTablesFromNCBI(con) 
