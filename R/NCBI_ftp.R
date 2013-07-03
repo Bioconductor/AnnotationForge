@@ -191,7 +191,7 @@
   header <- unlist(strsplit(readLines(tmp, n=1),"\t"))
   if(all(unlist(file) %in% header)){ ## then we have been here before.
       message("reading from a pre-processed file")
-      vals <- read.delim(tmp, header=FALSE, sep="\t", 
+      vals <- read.delim(tmp, header=TRUE, sep="\t", 
                          stringsAsFactors=FALSE)
   }else{
       message("discarding data from other organisms")
@@ -217,7 +217,7 @@
           vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
                              stringsAsFactors=FALSE,
                              colClasses = colClasses2)
-      }   
+      } 
       ## The following will just keep unwanted data from our temp DB tables.
       ## if there is a tax_id,
       ## then only return the piece that matches the organism in question
@@ -585,7 +585,7 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
     "gene_info.gz" = c("tax_id","gene_id","symbol","locus_tag",
         "synonyms","dbXrefs","chromosome","map_location","description",
         "gene_type","nomenclature_symbol","nomenclature_name",
-        "nomenclature_status","other_designations"),
+        "nomenclature_status","other_designations", "modification_date"),
     ##        "mim2gene.gz" = c("mim_id","gene_id","relation_type"),
     ##        "gene_refseq_uniprotkb_collab.gz" = c("refseq_id","uniprot_id"),
     "gene2go.gz" = c("tax_id","gene_id","go_id","evidence",
@@ -655,7 +655,7 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
   .makeSimpleTable(ug, table="unigene", con)
   
   ## Make the GO tables:
-  .makeGOTablesFromNCBI(con)
+  .makeGOTablesFromNCBI(con) 
   
   ## Drop all the older tables (which will include the original "gene_info").
   .dropOldTables(con,names(files))  
