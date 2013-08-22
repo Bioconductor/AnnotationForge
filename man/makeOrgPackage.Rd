@@ -1,7 +1,7 @@
 \name{makeOrgPackageFromNCBI}
 
 \alias{makeOrgPackageFromNCBI}
-\alias{makeOrgPackageFromBiomart}
+% \alias{makeOrgPackageFromBiomart}
 
 
 \title{
