@@ -19,7 +19,7 @@
 ## What schema? ORGANISM_DB?  We might want to be even less demanding
 ## (and make a new one that has almost nothing in it).  The basic idea
 ## is that we won't have anything in there except support for
-## select().
+## select().  Perhaps NO_SCHEMA? (to indicate no predefined schema)
 
 ## Once we have all the data in a list of data.frames, we will require
 ## very little in terms of tables.  Just two tables and one of them
@@ -62,12 +62,166 @@
 ## data.frame and the names of the tables already passed in, so we
 ## will need a special data.frame for this.
 
+## OR, it could be deduced if the user is required to name their
+## passed in data frames the same as the thing that they want back out
+## at the end.
+
+## SO IOW a table like this (which also has to itself be named in the list):
+
+### GENE_ID  SYMBOL
+### 1        msx2
+### 2        hoxa13
+
+## Would mean that cols would return SYMBOL.  ALSO, we have to
+## standardize on the name of "GENE_ID" (or on 1st column) to be the
+## way the df indicates the primary key for the DB.
+
+## An internally, that table would look like this:
+
+### _id      GENE_ID
+### 1        1
+### 2        2
+
+### _id      SYMBOL
+### 1        msx2
+### 2        hoxa13
+
+## And the 1st table is special.  It just "grows" as more unique
+## GENE_IDs show up
+
+
+
 ## This would all work with the one exception being that if they give
 ## me GO, they have to also give me EVIDENCE and ONTOLOGY (something).
 ## So my code would have to check for that (IOW, if GO is detected,
 ## there should also be a field called ONTOLOGY and one called
-## EVIDENCE, and they should share a table)
+## EVIDENCE, and they should share a table) - but I don't think I
+## should check for that?  Or now I have to since I return GO terms
+## expecting to find those fields as well.
 
+## TODO:
+## OR: make the code that gets those GO terms more permissive (IOW
+## just "try" to get the extra fields - but don't require it).
+
+
+
+## TODO: 
+## check the list of data.frames.
+## The 1st column of each data.frame must be a gene Id (of the same kind).
+## There must be names for each data.frame.
+## there must be valid colnames for each data.frame.
+## none of the list names is allowed to be "genes", "metadata" etc.
+## All the data.frames should NOT be allowed to have missing rows...
+checkData <- function(data){
+
+}
+
+## This makes the special genes table of an EG DB.
+.makeGenesTable <- function(entrez, con){
+  message("Populating genes table:")
+  sql<- paste("    CREATE TABLE IF NOT EXISTS genes (
+      _id INTEGER PRIMARY KEY,
+      GENEID VARCHAR(10) NOT NULL UNIQUE           -- Entrez Gene ID
+    );")
+  sqliteQuickSQL(con, sql)
+
+  geneid <- data.frame(entrez) ## TODO: data.frame() necessary???
+  sql<- paste("INSERT INTO genes(GENEID) VALUES(?);")
+  dbBeginTransaction(con)
+  dbGetPreparedQuery(con, sql, geneid)
+  dbCommit(con)
+  message("genes table filled")
+}
+
+## TODO: clean this function up (some features are probably not needed like
+## fieldNameLens which is updates automagically by the DB...)
+
+## OR TODO: need code to estimate length of varchars and then call by
+## setting proper values for fieldNameLens=c(255,80)
+
+.makeTable <- function(data, table, con, fieldNameLens=25,
+                             indFields="_id"){
+  message(paste("Populating",table,"table:"))
+  tableFieldLines <- paste(paste(names(data)[-1]," VARCHAR(",
+                                 fieldNameLens,") NOT NULL,    -- data"),
+                           collapse="\n       ")
+  ## For temp table, lets do it like this:
+  if(dim(data)[1] == 0){
+    ## if we don't have anything to put into the table, then we don't even
+    ## want to make a table.
+    warning(paste("no values found for table ",table,
+                  " in this data chunk.", sep=""))
+    ## Create our real table.
+    .makeEmptySimpleTable(con, table, tableFieldLines)
+    return()
+  }else{
+    dbWriteTable(con, "temp", data, row.names=FALSE)
+    ## Create our real table.
+    .makeEmptySimpleTable(con, table, tableFieldLines)
+    selFieldLines <- paste(paste("t.",names(data)[-1],sep=""),collapse=",")
+    sql<- paste("
+    INSERT INTO ",table,"
+     SELECT g._id as _id, ",selFieldLines,"
+     FROM genes AS g, temp AS t
+     WHERE g.GENEID=t.GENEID
+     ORDER BY g._id;
+     ", sep="") 
+    sqliteQuickSQL(con, sql)
+
+    ## Add index to all fields in indFields (default is all)
+    for(i in seq_len(length(indFields))){
+    sqliteQuickSQL(con,
+        paste("CREATE INDEX IF NOT EXISTS ",
+              table,"_",indFields[i],"_ind ON ",table,
+              " (",indFields[i],");", sep=""))      
+    }
+    
+    ## drop the temp table
+    sqliteQuickSQL(con, "DROP TABLE temp;")
+  }
+  message(paste(table,"table filled"))
+}
+
+
+## Called for every new data.frame in data:
+## 1) read in the table and call .makeSimpleTable()? (or equiv.)
+## 2) add any missing genes to the "special" genes table (.update CentralTable?)
+.addMoreData <- function(df, name, con){
+    ## 1st make and populate new table
+    AnnotationForge:::.makeTable(df, table=name, con)
+    ## TODO: then grab all GENEIDs and try to enhance the genes table
+    ## findExtraGeneIDs()
+}
+
+## function to put together the database.
+## This takes a named list of data.frames
+makeOrgDbFromDataFrames <- function(data, genus, species, dbFileName){
+
+    ## checkData(data)
+
+    ## set up DB connection 
+    require(RSQLite)
+    if(file.exists(dbFileName)){ file.remove(dbFileName) }
+    con <- dbConnect(SQLite(), dbFileName)
+    AnnotationForge:::.createMetadataTables(con)
+    
+    ## call .makeCentralTable on 1st section of genes to get that started.
+    egs <- data[[1]][,1]
+    AnnotationForge:::.makeGenesTable(egs, con)
+
+    ## do each data.frame in turn
+    mapply(FUN=.addMoreData, data, names(data), MoreArgs=list(con=con))
+
+    
+    ## TODO: Then fill out the metadata etc.
+    
+}
+
+
+## TODO: change the function so it takes ... instead of list (so that
+## the arguments are named).  This can be switched from the list later
+## by just trapping what is in ... and passing it on as a named list.
+## like this:  data <- list(...)
 
 ## function to make the package:
 makeOrgPackage <- function(data,
@@ -78,35 +232,104 @@ makeOrgPackage <- function(data,
                            outputDir = ".",
                            tax_id,
                            genus,
-                           species,
-                           NCBIFilesDir=NULL){
+                           species){
 
   if(outputDir!="." && file.access(outputDir)[[1]]!=0){
     stop("Selected outputDir '", outputDir,"' does not exist.")}
 
-  ## 'outputDir' is not passed to makeOrgDbFromNCBI(). Hence the db file
-  ## is always created in ".". Maybe that could be revisited.
-  makeOrgDbFromDataFrames(data)
-  
+  ## generate name from the genus and species
   dbName <- .generateOrgDbName(genus,species)
-  dbfile <- paste(dbName, ".sqlite", sep="")
+  ## this becomes the file name for the DB
+  dbFileName <- paste(dbName, ".sqlite", sep="")
 
-  seed <- new("AnnDbPkgSeed",
-              Package= paste(dbName,".db",sep=""),
-              Version=version,
-              Author=author,
-              Maintainer=maintainer,
-              PkgTemplate="ORGANISM.DB",
-              AnnObjPrefix=dbName,
-              organism = paste(genus, species),
-              species = paste(genus, species),
-              biocViews = "annotation",
-              manufacturerUrl = "no manufacturer",
-              manufacturer = "no manufacturer",
-              chipName = "no manufacturer")
   
-  makeAnnDbPkg(seed, dbfile, dest_dir=outputDir)
+  ## TODO:
+  ## 'outputDir' is not passed to makeOrgDbFromDataFrames(). Hence the db file
+  ## is always created in ".".
   
-  ## cleanup
-  file.remove(dbfile)
+  makeOrgDbFromDataFrames(data, genus, species, dbFileName)
+  
+
+  
+  ## TODO a separate function should be placed here to take in the DB
+  ## and remove redundant GO terms.
+  ## This will need to be optional since users may not want to have GO terms.
+  ## argument will have to specify where the GO terms are (tablename
+  ## or list element name)
+  
+  ## require(GO.db)
+
+  
+
+
+##   seed <- new("AnnDbPkgSeed",
+##               Package= paste(dbName,".db",sep=""),
+##               Version=version,
+##               Author=author,
+##               Maintainer=maintainer,
+##               PkgTemplate="NOSCHEMA",
+##               AnnObjPrefix=dbName,
+##               organism = paste(genus, species),
+##               species = paste(genus, species),
+##               biocViews = "annotation",
+##               manufacturerUrl = "no manufacturer",
+##               manufacturer = "no manufacturer",
+##               chipName = "no manufacturer")
+  
+##   makeAnnDbPkg(seed, dbfile, dest_dir=outputDir)
+  
+##   ## cleanup
+##   file.remove(dbfile)
 }
+
+
+
+
+
+## ## test data lets load up a couple tab files from /extdata...
+## ## file finch_info.txt now has data I can use (for examples)
+
+## finchFile <- system.file("extdata","finch_info.txt",package="AnnotationForge")
+## finch <- read.table(finchFile,sep="\t")
+
+## ## not that this is how it should always be, but that it *could* be this way.
+## fSym <- finch[,c(2,3,9)]
+## fSym <- fSym[fSym[,2]!="-",]
+## fSym <- fSym[fSym[,3]!="-",]
+## colnames(fSym) <- c("GENEID","SYMBOL","GENENAME")
+
+## fChr <- finch[,c(2,7)]
+## fChr <- fChr[fChr[,2]!="-",]
+## colnames(fChr) <- c("GENEID","CHROMOSOME")
+
+
+## finchGOFile <- system.file("extdata","GO_finch.txt",package="AnnotationForge")
+## fGO <- read.table(finchGOFile,sep="\t")
+## fGO <- fGO[fGO[,2]!="",]
+## fGO <- fGO[fGO[,3]!="",]
+## colnames(fGO) <- c("GENEID","GO","EVIDENCE")
+
+## ## Now make a list
+## data <- list(gene_info=fSym, chromosome=fChr, go=fGO)
+## genus <- "Taeniopygia"
+## species <- "guttata"
+## dbName <- AnnotationForge:::.generateOrgDbName(genus,species)
+## ## this becomes the file name for the DB
+## dbfile <- paste(dbName, ".sqlite", sep="")
+
+
+## ## now test:
+## library(AnnotationForge)
+## AnnotationForge:::makeOrgDbFromDataFrames(data, genus, species, dbfile)
+
+
+## ## or test locally
+## ## makeOrgDbFromDataFrames(data, genus, species, dbfile)
+
+
+
+
+
+
+## NEXT UP: lets make an actual template in AnnotationDbi so that I
+## can start making these things as packages.
