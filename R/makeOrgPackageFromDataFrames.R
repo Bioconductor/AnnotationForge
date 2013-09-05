@@ -121,12 +121,12 @@ checkData <- function(data){
   message("Populating genes table:")
   sql<- paste("    CREATE TABLE IF NOT EXISTS genes (
       _id INTEGER PRIMARY KEY,
-      GENEID VARCHAR(10) NOT NULL UNIQUE           -- Entrez Gene ID
+      GID VARCHAR(10) NOT NULL UNIQUE           -- Entrez Gene ID
     );")
   sqliteQuickSQL(con, sql)
 
   geneid <- data.frame(entrez) ## TODO: data.frame() necessary???
-  sql<- paste("INSERT INTO genes(GENEID) VALUES(?);")
+  sql<- paste("INSERT INTO genes(GID) VALUES(?);")
   dbBeginTransaction(con)
   dbGetPreparedQuery(con, sql, geneid)
   dbCommit(con)
@@ -163,7 +163,7 @@ checkData <- function(data){
     INSERT INTO ",table,"
      SELECT g._id as _id, ",selFieldLines,"
      FROM genes AS g, temp AS t
-     WHERE g.GENEID=t.GENEID
+     WHERE g.GID=t.GID
      ORDER BY g._id;
      ", sep="") 
     sqliteQuickSQL(con, sql)
@@ -189,7 +189,7 @@ checkData <- function(data){
 .addMoreData <- function(df, name, con){
     ## 1st make and populate new table
     AnnotationForge:::.makeTable(df, table=name, con)
-    ## TODO: then grab all GENEIDs and try to enhance the genes table
+    ## TODO: then grab all GIDs and try to enhance the genes table
     ## findExtraGeneIDs()
 }
 
@@ -199,7 +199,7 @@ checkData <- function(data){
             "TAXID",
             "Db type","Supporting package")
   value<- c("2.1","NOSCHEMA_DB",paste(genus,species),paste(genus,species),
-            "GENEID",tax_id,
+            "GID",tax_id,
             "OrgDb","AnnotationDbi")
   AnnotationForge:::.addMeta(con, name, value)
 }

@@ -9,18 +9,18 @@ finch <- read.table(finchFile,sep="\t")
 fSym <- finch[,c(2,3,9)]
 fSym <- fSym[fSym[,2]!="-",]
 fSym <- fSym[fSym[,3]!="-",]
-colnames(fSym) <- c("GENEID","SYMBOL","GENENAME")
+colnames(fSym) <- c("GID","SYMBOL","GENENAME")
 
 fChr <- finch[,c(2,7)]
 fChr <- fChr[fChr[,2]!="-",]
-colnames(fChr) <- c("GENEID","CHROMOSOME")
+colnames(fChr) <- c("GID","CHROMOSOME")
 
 
 finchGOFile <- system.file("extdata","GO_finch.txt",package="AnnotationForge")
 fGO <- read.table(finchGOFile,sep="\t")
 fGO <- fGO[fGO[,2]!="",]
 fGO <- fGO[fGO[,3]!="",]
-colnames(fGO) <- c("GENEID","GO","EVIDENCE")
+colnames(fGO) <- c("GID","GO","EVIDENCE")
 
 ## Now make a list
 data <- list(gene_info=fSym, chromosome=fChr, go=fGO)
