@@ -1,0 +1,500 @@
+59729	751582	SNCA	-	-	-	4	-	synuclein, alpha (non A4 component of amyloid precursor)	protein-coding	-	-	-	alpha-synuclein|putative alpha-synuclein variant 2
+59729	751583	NCALD	-	-	-	2	-	neurocalcin delta	protein-coding	-	-	-	neurocalcin-delta
+59729	751584	BDNF	-	-	Ensembl:ENSTGUG00000004743	5	-	brain-derived neurotrophic factor	protein-coding	-	-	-	-
+59729	751585	CREB1	-	-	Ensembl:ENSTGUG00000010023	7	-	cAMP responsive element binding protein 1	protein-coding	-	-	-	cyclic AMP-responsive element-binding protein 1
+59729	751586	MTNR1A	-	-	Ensembl:ENSTGUG00000006983	4	-	melatonin receptor 1A	protein-coding	-	-	-	melatonin receptor type 1A
+59729	751588	MTNR1B	-	-	-	1	-	melatonin receptor 1B	protein-coding	-	-	-	melatonin receptor type 1B
+59729	751589	UCHL1	-	-	Ensembl:ENSTGUG00000008638	4	-	ubiquitin carboxyl-terminal esterase L1 (ubiquitin thiolesterase)	protein-coding	-	-	-	ubiquitin carboxyl-terminal hydrolase isozyme L1
+59729	751605	SYT1	-	-	Ensembl:ENSTGUG00000007572	1A	-	synaptotagmin I	protein-coding	-	-	-	synaptotagmin-1
+59729	751606	SYT4	-	-	Ensembl:ENSTGUG00000001618	Z	-	synaptotagmin IV	protein-coding	-	-	-	synaptotagmin-4
+59729	751607	CNR1	-	CB-R|CB1	-	3	-	cannabinoid receptor 1 (brain)	protein-coding	-	-	-	CB1 cannabinoid receptor|cannabinoid receptor 1
+59729	751769	FOXP2	-	-	Ensembl:ENSTGUG00000005315	1A	-	forkhead box P2	protein-coding	-	-	-	forkhead box protein P2|transcription factor FoxP2
+59729	751770	HSD3B1	-	-	Ensembl:ENSTGUG00000013351	1	-	hydroxy-delta-5-steroid dehydrogenase, 3 beta- and steroid delta-isomerase 1	protein-coding	-	-	-	3 beta-hydroxysteroid dehydrogenase/Delta 5-->4-isomerase type 1
+59729	751771	ALDH1A2	-	RALDH 2|RALDH(II)|RalDH2|zRalDH	Ensembl:ENSTGUG00000006178	10	-	aldehyde dehydrogenase 1 family, member A2	protein-coding	-	-	-	aldehyde dehydrogenase family 1 member A2|class I aldehyde dehydrogenase|retinal dehydrogenase 2|retinaldehyde-specific dehydrogenase type 2
+59729	751773	ZFAND5	-	-	Ensembl:ENSTGUG00000000824	Z	-	zinc finger, AN1-type domain 5	protein-coding	-	-	-	AN1-type zinc finger protein 5
+59729	751774	AR	-	-	-	4A	-	androgen receptor	protein-coding	-	-	-	androgen receptor (dihydrotestosterone receptor; testicular feminization; spinal and bulbar muscular atrophy; Kennedy disease)
+59729	751775	GRIA2	-	GluR2	-	4	-	glutamate receptor, ionotropic, AMPA 2	protein-coding	-	-	-	glutamate receptor 2
+59729	751776	NR3C2	-	-	Ensembl:ENSTGUG00000002577	4	-	nuclear receptor subfamily 3, group C, member 2	protein-coding	-	-	-	mineralocorticoid receptor
+59729	751777	CYP19A1	-	CYPXIX|P-450AROM	Ensembl:ENSTGUG00000006993	10	-	cytochrome P450, family 19, subfamily A, polypeptide 1	protein-coding	-	-	-	aromatase|cytochrome P-450AROM|cytochrome P450 19A1|estrogen synthase|estrogen synthetase
+59729	751778	NR5A1	-	-	-	17	-	nuclear receptor subfamily 5, group A, member 1	protein-coding	-	-	-	steroidogenic factor 1
+59729	751779	GRIN1	-	NMDAR1	Ensembl:ENSTGUG00000002568	17	-	glutamate receptor, ionotropic, N-methyl D-aspartate 1	protein-coding	-	-	-	glutamate [NMDA] receptor subunit zeta-1
+59729	751780	SCAMP1	-	-	Ensembl:ENSTGUG00000003846	Z	-	secretory carrier membrane protein 1	protein-coding	-	-	-	secretory carrier-associated membrane protein 1
+59729	751952	GRIA1	-	-	Ensembl:ENSTGUG00000000726	13	-	glutamate receptor, ionotropic, AMPA 1	protein-coding	-	-	-	AMPA GluR1
+59729	751953	GRIA3	-	-	Ensembl:ENSTGUG00000003563	4A	-	glutamate receptor, ionotropic, AMPA 3	protein-coding	-	-	-	AMPA GluR3|glutamate receptor, ionotrophic, AMPA 3
+59729	751954	GRIA4	-	-	Ensembl:ENSTGUG00000012676	1	-	glutamate receptor, ionotropic, AMPA 4	protein-coding	-	-	-	AMPA GluR4|glutamate receptor, ionotrophic, AMPA 4
+59729	751955	GRM2	-	-	Ensembl:ENSTGUG00000006595	12	-	glutamate receptor, metabotropic 2	protein-coding	-	-	-	metabotropic GluR2
+59729	751956	GRIN2B	-	NMDAR2B	-	1A	-	glutamate receptor, ionotropic, N-methyl D-aspartate 2B	protein-coding	-	-	-	NMDA type glutamate receptor
+59729	751957	GRIN3A	-	NMDAR3A	Ensembl:ENSTGUG00000000661	Z	-	glutamate receptor, ionotropic, N-methyl-D-aspartate 3A	protein-coding	-	-	-	NMDA type glutamate receptor 3A
+59729	751958	GRIK1	-	Glur5	Ensembl:ENSTGUG00000013459	1	-	glutamate receptor, ionotropic, kainate 1	protein-coding	-	-	-	kainate type glutamate receptor 5
+59729	751959	GRIK5	-	GRIK2|Glur6	-	-	-	glutamate receptor, ionotropic, kainate 5	protein-coding	-	-	-	glutamate receptor, ionotropic, kainate 2|kainate type glutamate receptor 6
+59729	751960	GRIK3	-	Glur7	-	Un	-	glutamate receptor, ionotropic, kainate 3	protein-coding	-	-	-	kainate type glutamate receptor 7
+59729	751961	GRIK5	-	KA2	-	-	-	glutamate receptor, ionotropic, kainate 5	protein-coding	-	-	-	glutamate receptor kainate type 2
+59729	751962	GRM3	-	mGluR3	Ensembl:ENSTGUG00000002399	1A	-	glutamate receptor, metabotropic 3	protein-coding	-	-	-	metabotropic type gluatamate receptor 3
+59729	751963	GRM8	-	mGluR8	-	1A	-	glutamate receptor, metabotropic 8	protein-coding	-	-	-	metabotropic type glutamate receptor 8
+59729	751964	LOC751964	-	-	-	-	-	glutamate receptor AMPA type GluR1 flip	protein-coding	-	-	-	-
+59729	751965	LOC751965	-	-	-	-	-	glutamate receptor AMPA type GluR1 flop	protein-coding	-	-	-	-
+59729	751966	LOC751966	-	-	-	-	-	glutamate receptor AMPA type GluR2 flip	protein-coding	-	-	-	-
+59729	751967	LOC751967	-	-	-	-	-	glutamate receptor AMPA type GluR2 flop	protein-coding	-	-	-	-
+59729	751968	LOC751968	-	-	-	-	-	glutamate receptor AMPA tyep GluR3 flop	protein-coding	-	-	-	-
+59729	751969	LOC751969	-	-	-	-	-	glutamate receptor AMPA type GluR4 flip	protein-coding	-	-	-	-
+59729	751970	LOC751970	-	-	-	-	-	glutamate receptor AMPA type GluR4 flop	protein-coding	-	-	-	-
+59729	751971	RHO	-	-	Ensembl:ENSTGUG00000010528	12	-	rhodopsin	protein-coding	-	-	-	rhodopsin (opsin 2, rod pigment) (retinitis pigmentosa 4, autosomal dominant)
+59729	751972	LOC751972	-	-	Ensembl:ENSTGUG00000001791	26	-	RH2 opsin	protein-coding	-	-	-	-
+59729	751973	LOC751973	-	-	-	-	-	SWS2 opsin	protein-coding	-	-	-	-
+59729	751974	LOC751974	-	-	-	4	-	ankyrin B	protein-coding	-	-	-	-
+59729	751975	ATP5A1	-	-	Ensembl:ENSTGUG00000001582	Z	-	ATP synthase, H+ transporting, mitochondrial F1 complex, alpha subunit 1, cardiac muscle	protein-coding	-	-	-	-
+59729	751976	HINT1	-	-	Ensembl:ENSTGUG00000000395	Z	-	histidine triad nucleotide binding protein 1	protein-coding	-	-	-	PKCI-Z-related protein
+59729	751977	VIT2	-	-	Ensembl:ENSTGUG00000006544	8	-	vitellogenin 2	protein-coding	-	-	-	-
+59729	751978	ACT5C	-	-	-	22	-	beta-actin	protein-coding	-	-	-	-
+59729	751979	LOC751979	-	-	-	4	-	serum albumin	protein-coding	-	-	-	-
+59729	751980	SYN2	-	-	-	12	-	synapsin II	protein-coding	-	-	-	-
+59729	751981	LOC751981	-	-	Ensembl:ENSTGUG00000004494	22	-	NF-M	protein-coding	-	-	-	-
+59729	751982	LOC751982	-	-	Ensembl:ENSTGUG00000006133	3	-	SNAP-25b	protein-coding	-	-	-	-
+59729	751983	SYNPR	-	-	-	12	-	synaptoporin	protein-coding	-	-	-	-
+59729	751984	FOXP1	-	-	-	12	-	forkhead box P1	protein-coding	-	-	-	forkhead box protein P1|transcription factor FoxP1
+59729	751985	NTRK2	-	-	Ensembl:ENSTGUG00000003077	Z	-	neurotrophic tyrosine kinase, receptor, type 2	protein-coding	-	-	-	tyrosine kinase receptor
+59729	751986	RARG	-	-	-	-	-	retinoic acid receptor, gamma	protein-coding	-	-	-	retinoic acid receptor gamma
+59729	751987	LOC751987	-	-	-	4A	-	Mel-1c melatonin receptor	protein-coding	-	-	-	-
+59729	751988	RPL37	-	-	-	Z	-	ribosomal protein L37	protein-coding	-	-	-	60S ribosomal protein L37
+59729	751989	RPL17	-	-	Ensembl:ENSTGUG00000000044	Z	-	ribosomal protein L17	protein-coding	-	-	-	60S ribosomal protein L17
+59729	751990	LOC751990	-	-	Ensembl:ENSTGUG00000001905	Z	-	GPP34/GMX33-like protein	protein-coding	-	-	-	-
+59729	751992	GABRA2	-	-	-	13	-	gamma-aminobutyric acid (GABA) A receptor, alpha 2	protein-coding	-	-	-	GABA-A receptor alpha-1 subunit
+59729	751993	STXBP1	-	-	-	17	-	syntaxin binding protein 1	protein-coding	-	-	-	unc18-1
+59729	751995	SOX3	-	-	-	4A	-	SRY (sex determining region Y)-box 3	protein-coding	-	-	-	SRY box3
+59729	751996	LOC751996	-	-	-	3	-	serotonin 1B receptor	protein-coding	-	-	-	-
+59729	751997	NGF	-	-	-	26	-	nerve growth factor (beta polypeptide)	protein-coding	-	-	-	-
+59729	751998	ESR1	-	ER	Ensembl:ENSTGUG00000011249	3	-	estrogen receptor 1	protein-coding	-	-	-	ER-alpha|estradiol receptor|estrogen receptor|nuclear receptor subfamily 3 group A member 1
+59729	751999	GRM1	-	-	-	3	-	glutamate receptor, metabotropic 1	protein-coding	-	-	-	metabotropic GluR1
+59729	752000	GRIN2D	-	-	-	-	-	glutamate receptor, ionotropic, N-methyl D-aspartate 2D	protein-coding	-	-	-	NMDAR2D protein
+59729	752001	ARC	-	-	-	2	-	activity-regulated cytoskeleton-associated protein	protein-coding	-	-	-	-
+59729	752002	DCX	-	-	-	4A	-	doublecortin	protein-coding	-	-	-	doublecortex; lissencephaly, X-linked (doublecortin)
+59729	752003	HTR7	-	-	-	4	-	5-hydroxytryptamine (serotonin) receptor 7, adenylate cyclase-coupled	protein-coding	-	-	-	5-HT7-like serotonin receptor|5-hydroxytryptamine (serotonin) receptor 7 (adenylate cyclase-coupled)
+59729	752004	LOC752004	-	-	-	-	-	LWS opsin	protein-coding	-	-	-	-
+59729	752006	GRM4	-	-	-	26	-	glutamate receptor, metabotropic 4	protein-coding	-	-	-	metabotropic GluR4
+59729	752007	KA1	-	-	-	-	-	glutamate receptor kainate type 1	protein-coding	-	-	-	-
+59729	752008	MGLUR5	-	GRM5	Ensembl:ENSTGUG00000012900	1	-	metabotropic type glutamate receptor 5	protein-coding	-	-	-	-
+59729	752009	LOC752009	-	-	-	-	-	glutamate receptor AMPA type GluR3 flip	protein-coding	-	-	-	-
+59729	752011	VT3	-	-	-	12	-	vasotocin receptor 3	protein-coding	-	-	-	mesotocin receptor
+59729	752013	OPN1SW	-	-	-	1A	-	opsin 1 (cone pigments), short-wave-sensitive	protein-coding	-	-	-	SWS1 opsin|blue-sensitive opsin|opsin 1 (cone pigments), short-wave-sensitive (color blindness, tritan)
+59729	778440	GRIN2A	-	NMDAR2A	Ensembl:ENSTGUG00000004747	14	-	glutamate receptor, ionotropic, N-methyl D-aspartate 2A	protein-coding	-	-	-	-
+59729	778441	GRIN2C	-	NMDAR2C	-	18	-	glutamate receptor, ionotropic, N-methyl D-aspartate 2C	protein-coding	-	-	-	-
+59729	778442	GAD1	-	GAD67	-	7	-	glutamate decarboxylase 1 (brain, 67kDa)	protein-coding	-	-	-	-
+59729	778443	CHD1W	-	-	-	W	-	chromo-helicase DNA-binding protein	protein-coding	-	-	-	-
+59729	778444	CHD1Z	-	-	Ensembl:ENSTGUG00000001185	Z	-	chromo-helicase DNA-binding protein	protein-coding	-	-	-	-
+59729	778445	LOC778445	-	-	-	Un	-	retinoic acid receptor alpha	protein-coding	-	-	-	-
+59729	778446	RARB	-	-	Ensembl:ENSTGUG00000003374	2	-	retinoic acid receptor, beta	protein-coding	-	-	-	retinoic acid receptor beta
+59729	778447	GAD1	-	GAD|GAD2	-	2	-	glutamate decarboxylase 1 (brain, 67kDa)	protein-coding	-	-	-	glutamate decarboxylase 2 (pancreatic islets and brain, 65kDa)|glutamic acid decarboxylase 65-like protein
+59729	3950790	ND1	-	-	-	MT	-	NADH dehydrogenase subunit 1	protein-coding	-	-	-	-
+59729	3950791	ND2	-	-	-	MT	-	NADH dehydrogenase subunit 2	protein-coding	-	-	-	-
+59729	3950792	COX1	-	-	-	MT	-	cytochrome c oxidase subunit I	protein-coding	-	-	-	-
+59729	3950793	COX2	-	-	-	MT	-	cytochrome c oxidase subunit II	protein-coding	-	-	-	-
+59729	3950794	ATP8	-	-	-	MT	-	ATP synthase F0 subunit 8	protein-coding	-	-	-	-
+59729	3950795	ATP6	-	-	-	MT	-	ATP synthase F0 subunit 6	protein-coding	-	-	-	-
+59729	3950796	COX3	-	-	-	MT	-	cytochrome c oxidase subunit III	protein-coding	-	-	-	-
+59729	3950797	ND3	-	-	-	MT	-	NADH dehydrogenase subunit 3	protein-coding	-	-	-	-
+59729	3950798	ND4L	-	-	-	MT	-	NADH dehydrogenase subunit 4L	protein-coding	-	-	-	-
+59729	3950799	ND4	-	-	-	MT	-	NADH dehydrogenase subunit 4	protein-coding	-	-	-	-
+59729	3950800	ND5	-	-	-	MT	-	NADH dehydrogenase subunit 5	protein-coding	-	-	-	-
+59729	3950801	CYTB	-	-	-	MT	-	cytochrome b	protein-coding	-	-	-	-
+59729	3950802	ND6	-	-	-	MT	-	NADH dehydrogenase subunit 6	protein-coding	-	-	-	-
+59729	4357609	NEWENTRY	-	-	-	-	-	Record to support submission of GeneRIFs for a gene not in Gene (Poephila guttata; Taenopygia guttata; zebra finch).	other	-	-	-	-
+59729	100008579	EGR1	-	EGR-1|zenk	-	13	-	early growth response 1	protein-coding	-	-	-	early growth response protein 1|zinc finger protein ZENK|zinc-finger transcriptional protein
+59729	100008580	FNTM2	-	-	-	13	-	fibronectin type III and transmembrane containing protein 2	protein-coding	-	-	-	-
+59729	100008581	FNTM1	-	-	-	1	-	fibronectin type III and transmembrane containing protein 1	protein-coding	-	-	-	-
+59729	100008583	NR3C1	-	-	Ensembl:ENSTGUG00000000140	13	-	nuclear receptor subfamily 3, group C, member 1 (glucocorticoid receptor)	protein-coding	-	-	-	-
+59729	100008584	KANK1	-	ANKRD15|DMRT1	-	Z	-	KN motif and ankyrin repeat domains 1	protein-coding	-	-	-	ankyrin repeat domain 15
+59729	100038817	SHFM1	-	-	-	2	-	split hand/foot malformation (ectrodactyly) type 1	protein-coding	-	-	-	-
+59729	100038820	TRPV1	-	-	-	19	-	transient receptor potential cation channel, subfamily V, member 1	protein-coding	-	-	-	-
+59729	100038821	NPVF	-	gnih	-	2	-	neuropeptide VF precursor	protein-coding	-	-	-	FMRFamide-related peptides|gonadotropin-inhibitory hormone
+59729	100049550	UBE2R2	-	-	Ensembl:ENSTGUG00000001683	Z	-	ubiquitin-conjugating enzyme E2R 2	protein-coding	-	-	-	-
+59729	100101449	TUBB2C	-	-	-	17	-	tubulin, beta 4B class IVb	protein-coding	-	-	-	tubulin beta-2C chain|tubulin, beta 2C
+59729	100134846	CKS1B	-	-	-	-	-	CDC28 protein kinase regulatory subunit 1B	protein-coding	-	-	-	cyclin-dependent kinases regulatory subunit 1
+59729	100135420	C13orf1	-	-	Ensembl:ENSTGUG00000012117	1	-	SPRY domain containing 7	protein-coding	-	-	-	chronic lymphocytic leukemia deletion region gene 6 protein
+59729	100144430	PGR	-	-	Ensembl:ENSTGUG00000012778	1	-	progesterone receptor	protein-coding	-	-	-	-
+59729	100144431	LOC100144431	-	-	-	4A	-	GABA-A receptor gamma4 subunit	protein-coding	-	-	-	-
+59729	100144433	KCNC1	-	-	-	5	-	potassium voltage-gated channel, Shaw-related subfamily, member 1	protein-coding	-	-	-	potassium channel Kv3.1
+59729	100151694	CYP17A1	-	-	-	-	-	steroidogenic enzyme cytochrome P450 17a-hydroxylase/17,20 lyase	protein-coding	-	-	-	-
+59729	100151695	CYP11A1	-	-	-	Un	-	cytochrome P450, family 11, subfamily A, polypeptide 1	protein-coding	-	-	-	cholesterol side-chain cleavage enzyme, mitochondrial|mitochondrial cytochrome P450 chlolesterol side chain cleavage
+59729	100151697	RAP1A	-	-	-	26	-	RAP1A, member of RAS oncogene family	protein-coding	-	-	-	ras-related protein Rap-1A
+59729	100187703	LOC100187703	-	-	-	9	-	uncharacterized LOC100187703	protein-coding	-	-	-	-
+59729	100187704	REEP5	-	-	-	Z	-	receptor accessory protein 5	protein-coding	-	-	-	receptor expression-enhancing protein 5
+59729	100187705	SLC7A6OS	-	-	Ensembl:ENSTGUG00000006907	11	-	solute carrier family 7, member 6 opposite strand	protein-coding	-	-	-	protein SLC7A6OS
+59729	100187706	CYBASC3	-	-	Ensembl:ENSTGUG00000006507	5	-	cytochrome b, ascorbate dependent 3	protein-coding	-	-	-	cytochrome b ascorbate-dependent protein 3
+59729	100187707	NUS1	-	-	-	3	-	nuclear undecaprenyl pyrophosphate synthase 1 homolog (S. cerevisiae)	protein-coding	-	-	-	nogo-B receptor
+59729	100189932	UOX	-	-	Ensembl:ENSTGUG00000006616	8	-	urate oxidase, pseudogene	protein-coding	-	-	-	-
+59729	100189933	SI	-	-	-	1A	-	sucrase-isomaltase (alpha-glucosidase)	protein-coding	-	-	-	-
+59729	100189934	MGAM	-	MG	Ensembl:ENSTGUG00000011092	9	-	maltase-glucoamylase (alpha-glucosidase)	protein-coding	-	-	-	-
+59729	100189935	LOC100189935	-	-	-	15	-	sodium/glucose cotransporter	protein-coding	-	-	-	-
+59729	100189936	LOC100189936	-	-	-	Un	-	40S ribosomal protein S9-like	protein-coding	-	-	-	putative 40S ribosomal protein S9
+59729	100189937	LOC100189937	-	-	-	2	-	transmembrane protein 14C-like	protein-coding	-	-	-	putative transmembrane protein 14C
+59729	100189938	LOC100189938	-	-	-	-	-	UPF0687 protein C20orf27 homolog	protein-coding	-	-	-	-
+59729	100189939	LOC100189939	-	-	Ensembl:ENSTGUG00000008299	3	-	uncharacterized LOC100189939	protein-coding	-	-	-	uncharacterized protein LOC100189939
+59729	100189940	LOC100189940	-	-	-	-	-	protein kinase C inhibitor/ASWZ-like	protein-coding	-	-	-	putative protein kinase C inhibitor/ASWZ variant 6
+59729	100189941	LOC100189941	-	-	-	1	-	potassium channel tetramerisation domain containing 4-like	protein-coding	-	-	-	putative potassium channel tetramerisation domain containing 4
+59729	100189942	LOC100189942	-	-	-	Z	-	autophagy-related 12	protein-coding	-	-	-	-
+59729	100189943	CCDC58	-	-	-	1	-	coiled-coil domain containing 58	protein-coding	-	-	-	coiled-coil domain-containing protein 58
+59729	100189944	LOC100189944	-	-	-	-	-	Dolichyl-phosphate beta-D-mannosyltransferase subunit 3-like	protein-coding	-	-	-	putative Dolichyl-phosphate beta-D-mannosyltransferase subunit 3
+59729	100189945	LOC100189945	-	-	-	-	-	DNA directed RNA polymerase II polypeptide E-like	protein-coding	-	-	-	putative DNA directed RNA polymerase II polypeptide E
+59729	100189946	LOC100189946	-	-	-	15	-	uncharacterized LOC100189946	protein-coding	-	-	-	uncharacterized protein LOC100189946
+59729	100189947	LOC100189947	-	-	Ensembl:ENSTGUG00000005335	12	-	cdna MGC75753-like	protein-coding	-	-	-	putative cdna MGC75753
+59729	100189948	LOC100189948	-	-	-	1	-	ribosomal protein L31-like	protein-coding	-	-	-	putative ribosomal protein L31
+59729	100189949	LOC100189949	-	-	-	Un	-	mitochondrial ribosomal protein S36-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein S36
+59729	100189950	WASF1	-	-	Ensembl:ENSTGUG00000012072	3	-	WAS protein family, member 1	protein-coding	-	-	-	putative Wiskott-Aldrich syndrome protein family member 1 variant 1
+59729	100189951	LOC100189951	-	-	Ensembl:ENSTGUG00000001952	27	-	uncharacterized LOC100189951	protein-coding	-	-	-	uncharacterized protein LOC100189951
+59729	100189952	LOC100189952	-	-	Ensembl:ENSTGUG00000005006	20	-	uncharacterized hypothalamus protein HSMNP1-like	protein-coding	-	-	-	putative uncharacterized hypothalamus protein HSMNP1|uncharacterized protein LOC100189952
+59729	100189954	HBE1	-	-	-	1B	-	hemoglobin, epsilon 1	protein-coding	-	-	-	hemoglobin subunit epsilon|putative hemoglobin beta chain
+59729	100189955	LOC100189955	-	-	Ensembl:ENSTGUG00000013093	5	-	cornichon homolog	protein-coding	-	-	-	-
+59729	100189956	LOC100189956	-	-	-	Un	-	CGI-105 protein-like	protein-coding	-	-	-	putative CGI-105 protein
+59729	100189957	LOC100189957	-	-	-	4A	-	RNA polymerase I 16 kDa polypeptide-like	protein-coding	-	-	-	putative RNA polymerase I 16 kDa polypeptide
+59729	100189958	LOC100189958	-	-	-	2	-	death-associated protein 1-like	protein-coding	-	-	-	putative death-associated protein 1 variant 1
+59729	100189959	LOC100189959	-	-	-	-	-	retinoic acid receptor responder (tazarotene induced) 2-like	protein-coding	-	-	-	putative retinoic acid receptor responder (tazarotene induced) 2
+59729	100189960	LOC100189960	-	-	-	1A	-	nudix (nucleoside diphosphate linked moiety)-like	protein-coding	-	-	-	putative nudix (nucleoside diphosphate linked moiety)
+59729	100189961	LOC100189961	-	-	-	24	-	40S ribosomal protein S25-like	protein-coding	-	-	-	putative 40S ribosomal protein S25 variant 1
+59729	100189962	LOC100189962	-	-	-	27	-	uncharacterized LOC100189962	protein-coding	-	-	-	uncharacterized protein LOC100189962
+59729	100189963	LOC100189963	-	-	Ensembl:ENSTGUG00000005317	12	-	scotin protein-like	protein-coding	-	-	-	putative scotin protein
+59729	100189964	LOC100189964	-	-	Ensembl:ENSTGUG00000000582	1B	-	ribosomal protein S11-like	protein-coding	-	-	-	putative ribosomal protein S11
+59729	100189965	LOC100189965	-	-	-	17	-	frequenin-like	protein-coding	-	-	-	putative frequenin
+59729	100189966	LOC100189966	-	-	-	25	-	S-100 protein alpha chain-like	protein-coding	-	-	-	putative S-100 protein alpha chain
+59729	100189967	LOC100189967	-	-	-	-	-	fracture callus 1-like	protein-coding	-	-	-	putative fracture callus 1
+59729	100189968	RNF113A2	-	-	-	27	-	zinc finger protein 183-like	protein-coding	-	-	-	putative zinc finger protein 183
+59729	100189969	LOC100189969	-	-	-	-	-	fatty acid-binding protein-like	protein-coding	-	-	-	putative fatty acid-binding protein
+59729	100189970	LOC100189970	-	-	Ensembl:ENSTGUG00000001208	2	-	COMM domain containing 3-like	protein-coding	-	-	-	putative COMM domain containing 3
+59729	100189971	MED7	-	-	-	13	-	mediator complex subunit 7	protein-coding	-	-	-	mediator of RNA polymerase II transcription subunit 7|putative cofactor required for Sp1 transcriptional activation subunit 9
+59729	100189972	LOC100189972	-	-	-	-	-	exosome component 5-like	protein-coding	-	-	-	putative exosome component 5
+59729	100189973	LOC100189973	-	-	Ensembl:ENSTGUG00000008242	6	-	stromal cell derived factor 1-like	protein-coding	-	-	-	putative stromal cell derived factor 1
+59729	100189974	DBX2	-	-	Ensembl:ENSTGUG00000006020	1A	-	developing brain homeobox 2	protein-coding	-	-	-	homeobox protein DBX2|putative homeobox protein DBX1
+59729	100189975	LOC100189975	-	-	Ensembl:ENSTGUG00000003296	4	-	eukaryotic translation initiation factor 4E (eIF4E)-like	protein-coding	-	-	-	putative eukaryotic translation initiation factor 4E (eIF4E)
+59729	100189976	LOC100189976	-	-	Ensembl:ENSTGUG00000013473	1	-	uncharacterized LOC100189976	protein-coding	-	-	-	uncharacterized protein LOC100189976
+59729	100189977	LYRM5	-	-	-	1A	-	LYR motif containing 5	protein-coding	-	-	-	LYR motif-containing protein 5|putative growth hormone-inducible soluble protein
+59729	100189978	LOC100189978	-	-	-	8	-	Phosphohistidine phosphatase 1-like	protein-coding	-	-	-	putative Phosphohistidine phosphatase 1
+59729	100189979	LOC100189979	-	-	-	3	-	microcephalin-like	protein-coding	-	-	-	microcephaly, primary autosomal recessive 1|putative microcephalin
+59729	100189980	LOC100189980	-	-	-	12	-	ribonuclease P 14 kDa-like	protein-coding	-	-	-	putative ribonuclease P 14 kDa
+59729	100189981	SEPT3	-	-	Ensembl:ENSTGUG00000009729	1A	-	septin 3	protein-coding	-	-	-	putative septin 3 variant 1
+59729	100189982	LOC100189982	-	-	-	-	-	peptidylprolyl isomerase-like 1-like	protein-coding	-	-	-	putative peptidylprolyl isomerase-like 1
+59729	100189983	LOC100189983	-	-	Ensembl:ENSTGUG00000006618	1A	-	transmembrane BAX inhibitor motif containing 4-like	protein-coding	-	-	-	putative transmembrane BAX inhibitor motif containing 4 variant 1
+59729	100189985	LOC100189985	-	-	-	Z	-	uncharacterized LOC100189985	protein-coding	-	-	-	-
+59729	100189986	LOC100189986	-	-	-	-	-	ribosomal protein S18-like	protein-coding	-	-	-	putative ribosomal protein S18
+59729	100189987	LOC100189987	-	-	-	24	-	Rho/Cdc42/Rac GTPase-activating protein RICS-like	protein-coding	-	-	-	Rho/Cdc42/Rac GTPase-activating protein RICS
+59729	100189988	B3GNT7	-	-	-	9	-	UDP-GlcNAc:betaGal beta-1,3-N-acetylglucosaminyltransferase 7	protein-coding	-	-	-	putative beta13-N-acetylglucosaminyltransferase
+59729	100189989	LOC100189989	-	-	-	23	-	uncharacterized LOC100189989	protein-coding	-	-	-	uncharacterized protein LOC100189989
+59729	100189990	LOC100189990	-	-	Ensembl:ENSTGUG00000005853	Z	-	basic transcription factor 3-like	protein-coding	-	-	-	putative basic transcription factor 3
+59729	100189991	LOC100189991	-	-	-	1	-	transcription factor Dp 1-like	protein-coding	-	-	-	putative transcription factor Dp 1
+59729	100189992	SAMD12	-	-	-	2	-	sterile alpha motif domain containing 12	protein-coding	-	-	-	putative sterile alpha motif domain containing 12|sterile alpha motif domain-containing protein 12
+59729	100189993	TAGLN	-	-	-	24	-	transgelin	protein-coding	-	-	-	putative transgelin
+59729	100189994	LOC100189994	-	-	Ensembl:ENSTGUG00000011899	1A	-	CD9 antigen-like	protein-coding	-	-	-	putative CD9 antigen variant 1
+59729	100189995	COMMD9	-	-	Ensembl:ENSTGUG00000010117	5	-	COMM domain containing 9	protein-coding	-	-	-	COMM domain-containing protein 9|putative COMM domain containing 9
+59729	100189996	LOC100189996	-	-	-	21	-	uncharacterized LOC100189996	protein-coding	-	-	-	uncharacterized protein LOC100189996
+59729	100189997	LOC100189997	-	-	Ensembl:ENSTGUG00000003308	10	-	recombination protein REC14-like	protein-coding	-	-	-	putative recombination protein REC14
+59729	100189998	C11orf75	-	-	-	1	-	chromosome 11 open reading frame 75	protein-coding	-	-	-	UPF0443 protein C11orf75 homolog|putative FN5 protein
+59729	100189999	LOC100189999	-	-	Ensembl:ENSTGUG00000011976	5	-	proteasome subunit alpha type 6-like	protein-coding	-	-	-	putative proteasome subunit alpha type 6
+59729	100190000	LOC100190000	-	-	-	27	-	ribosomal protein L23-like	protein-coding	-	-	-	putative ribosomal protein L23
+59729	100190001	LOC100190001	-	-	Ensembl:ENSTGUG00000012430	1A	-	aldo-keto reductase-like	protein-coding	-	-	-	putative aldo-keto reductase
+59729	100190002	LOC100190002	-	-	-	4A	-	ubiquitin specific protease 12-like	protein-coding	-	-	-	putative ubiquitin specific protease 12
+59729	100190003	LOC100190003	-	-	-	-	-	C35 protein cDNA-like	protein-coding	-	-	-	putative C35 protein cDNA
+59729	100190004	LOC100190004	-	-	-	2	-	Ras family small GTP binding protein RALA-like	protein-coding	-	-	-	putative Ras family small GTP binding protein RALA
+59729	100190005	LOC100190005	-	-	-	2	-	ribosomal protein L14-like	protein-coding	-	-	-	putative ribosomal protein L14
+59729	100190006	LOC100190006	-	-	-	6	-	DPCD protein-like	protein-coding	-	-	-	putative DPCD protein
+59729	100190007	LOC100190007	-	-	Ensembl:ENSTGUG00000011485	6	-	BRCA2 and CDKN1A-interacting protein-like	protein-coding	-	-	-	putative BRCA2 and CDKN1A-interacting protein
+59729	100190008	LOC100190008	-	-	-	Z	-	complexin 1-like	protein-coding	-	-	-	putative complexin 1
+59729	100190009	LOC100190009	-	-	Ensembl:ENSTGUG00000008327	12	-	sm like protein U6 snRNA-associated Sm-like protein-like	protein-coding	-	-	-	putative sm like protein U6 snRNA-associated Sm-like protein
+59729	100190010	PACSIN3	-	-	-	5	-	protein kinase C and casein kinase substrate in neurons 3	protein-coding	-	-	-	protein kinase C and casein kinase substrate in neurons protein 3|putative protein kinase C and casein kinase substrate in neurons 3 variant 1
+59729	100190011	LOC100190011	-	-	-	1A	-	uncharacterized LOC100190011	protein-coding	-	-	-	uncharacterized protein LOC100190011
+59729	100190012	LOC100190012	-	-	Ensembl:ENSTGUG00000003734	22	-	annexin A4-like	protein-coding	-	-	-	putative annexin A4 variant 2
+59729	100190013	LOC100190013	-	-	-	Un	-	protein phosphatase 1 catalytic subunit alpha-like	protein-coding	-	-	-	putative protein phosphatase 1 catalytic subunit alpha
+59729	100190014	LOC100190014	-	-	Ensembl:ENSTGUG00000004785	4A	-	ribosomal protein S4-like	protein-coding	-	-	-	putative ribosomal protein S4
+59729	100190015	TM6SF1	-	-	Ensembl:ENSTGUG00000007727	10	-	transmembrane 6 superfamily member 1	protein-coding	-	-	-	putative transmembrane 6 superfamily member 1
+59729	100190016	LOC100190016	-	-	-	9	-	RNA polymerase II polypeptide H-like	protein-coding	-	-	-	putative RNA polymerase II polypeptide H
+59729	100190017	LOC100190017	-	-	-	-	-	oxytocin-like	protein-coding	-	-	-	putative oxytocin
+59729	100190018	LOC100190018	-	-	Ensembl:ENSTGUG00000005642	9	-	evectin-2 pleckstrin homology domain containing family B member 2-like	protein-coding	-	-	-	putative evectin-2 pleckstrin homology domain containing family B member 2
+59729	100190019	AKIRIN2	-	-	-	3	-	akirin 2	protein-coding	-	-	-	akirin-2
+59729	100190020	MYCT1	-	-	-	3	-	myc target 1	protein-coding	-	-	-	myc target protein 1|putative myc target 1
+59729	100190021	LOC100190021	-	-	-	12	-	coiled-coil-helix-coiled-coil-helix domain containing 6-like	protein-coding	-	-	-	coiled-coil-helix-coiled-coil-helix domain containing 6|putative coiled-coil-helix-coiled-coil-helix domain containing 6
+59729	100190022	LOC100190022	-	-	Ensembl:ENSTGUG00000005076	17	-	cofactor required for Sp1 transcriptional activation subunit 8-like	protein-coding	-	-	-	putative cofactor required for Sp1 transcriptional activation subunit 8
+59729	100190023	LOC100190023	-	-	-	Z	-	guanine nucleotide binding protein (G protein) gamma 10-like	protein-coding	-	-	-	putative guanine nucleotide binding protein (G protein) gamma 10
+59729	100190024	LOC100190024	-	-	-	1	-	phosphate cytidylyltransferase 1 choline beta isoform-like	protein-coding	-	-	-	putative phosphate cytidylyltransferase 1 choline beta isoform
+59729	100190025	STRBP	-	-	-	17	-	spermatid perinuclear RNA binding protein	protein-coding	-	-	-	putative spermatid perinuclear RNA binding protein|spermatid perinuclear RNA-binding protein
+59729	100190026	LOC100190026	-	-	-	19	-	p32 subunit of splicing factor SF2-like	protein-coding	-	-	-	complement component 1, q subcomponent binding protein|putative p32 subunit of splicing factor SF2
+59729	100190027	LOC100190027	-	-	Ensembl:ENSTGUG00000003338	4A	-	malignant T cell amplified 1-like	protein-coding	-	-	-	putative malignant T cell amplified 1 variant 1
+59729	100190028	LOC100190028	-	-	-	5	-	translocase of inner mitochondrial membrane 10-like	protein-coding	-	-	-	putative translocase of inner mitochondrial membrane 10|translocase of inner mitochondrial membrane 10 homolog
+59729	100190029	LOC100190029	-	-	Ensembl:ENSTGUG00000006033	Z	-	TGF beta-inducible nuclear protein 1-like	protein-coding	-	-	-	putative TGF beta-inducible nuclear protein 1
+59729	100190030	LOC100190030	-	-	-	-	-	ATP synthase H+ transporting mitochondrial F0 complex subunit c-like	protein-coding	-	-	-	putative ATP synthase H+ transporting mitochondrial F0 complex subunit c
+59729	100190031	LOC100190031	-	-	-	Z	-	putative dimethyladenosine transferase-like	protein-coding	-	-	-	putative putative dimethyladenosine transferase
+59729	100190032	LOC100190032	-	-	-	-	-	amyloid beta precursor protein-binding-like	protein-coding	-	-	-	putative amyloid beta precursor protein-binding variant 1
+59729	100190033	LOC100190033	-	-	Ensembl:ENSTGUG00000009621	15	-	uncharacterized LOC100190033	protein-coding	-	-	-	uncharacterized protein LOC100190033
+59729	100190035	LOC100190035	-	-	-	-	-	thioredoxin-like 2-like	protein-coding	-	-	-	putative thioredoxin-like 2 variant 3
+59729	100190036	LOC100190036	-	-	-	6	-	thioredoxin-like 2-like	protein-coding	-	-	-	putative thioredoxin-like 2 variant 2
+59729	100190037	MRPL9	-	-	-	-	-	mitochondrial ribosomal protein L9	protein-coding	-	-	-	39S ribosomal protein L9, mitochondrial|putative mitochondrial ribosomal protein L9 variant 2
+59729	100190038	LOC100190038	-	-	Ensembl:ENSTGUG00000012725	1	-	uncharacterized LOC100190038	protein-coding	-	-	-	uncharacterized protein LOC100190038
+59729	100190039	TRAPPC2L	-	-	-	-	-	trafficking protein particle complex 2-like	protein-coding	-	-	-	hematopoietic stem/progenitor cells 176-like|putative hematopoietic stem/progenitor cells 176|trafficking protein particle complex subunit 2-like protein
+59729	100190040	CMC2	-	C16orf61	-	11	-	COX assembly mitochondrial protein 2 homolog	protein-coding	-	-	-	putative DC13 protein
+59729	100190041	LOC100190041	-	-	Ensembl:ENSTGUG00000009527	10	-	uncharacterized LOC100190041	protein-coding	-	-	-	uncharacterized protein LOC100190041
+59729	100190042	LOC100190042	-	-	Ensembl:ENSTGUG00000008272	1A	-	mitochondrial ribosomal protein L42-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein L42
+59729	100190043	LOC100190043	-	-	Ensembl:ENSTGUG00000002998	27	-	defender against cell death 1-like	protein-coding	-	-	-	putative defender against cell death 1
+59729	100190044	LOC100190044	-	-	Ensembl:ENSTGUG00000009710	15	-	uncharacterized LOC100190044	protein-coding	-	-	-	uncharacterized protein LOC100190044
+59729	100190045	LOC100190045	-	-	Ensembl:ENSTGUG00000007038	20	-	stathmin-like 3-like	protein-coding	-	-	-	putative stathmin-like 3
+59729	100190046	LOC100190046	-	-	Ensembl:ENSTGUG00000012703	1A	-	cyclin-dependent kinase inhibitor 1B-like	protein-coding	-	-	-	putative cyclin-dependent kinase inhibitor 1B
+59729	100190047	HBAD	-	-	-	14	-	hemoglobin, alpha 2	protein-coding	-	-	-	putative hemoglobin alpha-D chain
+59729	100190048	LOC100190048	-	-	Ensembl:ENSTGUG00000008978	7	-	metaxin 2-like	protein-coding	-	-	-	putative metaxin 2
+59729	100190049	LOC100190049	-	-	-	27	-	hexamethylene bisacetamide-inducible protein 1-like	protein-coding	-	-	-	putative hexamethylene bisacetamide-inducible protein 1
+59729	100190050	LOC100190050	-	-	-	14	-	postmeiotic segregation increased 2-like 6-like	protein-coding	-	-	-	putative postmeiotic segregation increased 2-like 6
+59729	100190051	LOC100190051	-	-	Ensembl:ENSTGUG00000000316	13	-	BCL2/adenovirus E1B 19kD interacting protein 1-like	protein-coding	-	-	-	putative BCL2/adenovirus E1B 19kD interacting protein 1
+59729	100190052	LOC100190052	-	-	-	17	-	phosphohistidine phosphatase 1-like	protein-coding	-	-	-	putative phosphohistidine phosphatase 1
+59729	100190053	ALYREF	-	THOC4|Tho4	-	18	-	disulfide-isomerase-like	protein-coding	-	-	-	THO complex subunit 4|aly/REF export factor|putative disulfide-isomerase
+59729	100190054	NR2F2	-	-	-	10	-	nuclear receptor subfamily 2, group F, member 2	protein-coding	-	-	-	COUP transcription factor 2
+59729	100190055	LOC100190055	-	-	-	-	-	6-phosphogluconolactonase-like	protein-coding	-	-	-	putative 6-phosphogluconolactonase
+59729	100190056	LOC100190056	-	-	-	1A	-	ribosomal protein S16-like	protein-coding	-	-	-	putative ribosomal protein S16
+59729	100190057	LOC100190057	-	-	Ensembl:ENSTGUG00000011060	3	-	cytoplasmic dynein light chain (T-complex testis-specific protein 1 homolog)-like	protein-coding	-	-	-	putative cytoplasmic dynein light chain (T-complex testis-specific protein 1 homolog)
+59729	100190058	LOC100190058	-	-	-	21	-	aldo-keto reductase family 7 member A2-like	protein-coding	-	-	-	putative aldo-keto reductase family 7 member A2 variant 1
+59729	100190059	LOC100190059	-	-	-	-	-	U3 snoRNP protein 4-like	protein-coding	-	-	-	putative U3 snoRNP protein 4
+59729	100190060	LOC100190060	-	-	-	1	-	uncharacterized LOC100190060	protein-coding	-	-	-	uncharacterized protein LOC100190060
+59729	100190061	NTHL1	-	-	-	14	-	nth endonuclease III-like 1 (E. coli)	protein-coding	-	-	-	endonuclease III-like protein 1|putative Endonuclease III-like protein 1
+59729	100190062	LOC100190062	-	-	-	Un	-	nucleolar protein family A-like	protein-coding	-	-	-	putative nucleolar protein family A
+59729	100190063	LOC100190063	-	-	Ensembl:ENSTGUG00000009827	10	-	uncharacterized LOC100190063	protein-coding	-	-	-	uncharacterized protein LOC100190063
+59729	100190064	NDUFC2	-	-	-	-	-	NADH dehydrogenase (ubiquinone) 1, subcomplex unknown, 2, 14.5kDa	protein-coding	-	-	-	NADH dehydrogenase [ubiquinone] 1 subunit C2
+59729	100190065	LOC100190065	-	-	Ensembl:ENSTGUG00000010121	4	-	GrpE-like 1 mitochondrial precusor-like	protein-coding	-	-	-	putative GrpE-like 1 mitochondrial precusor variant 2
+59729	100190066	LOC100190066	-	-	Ensembl:ENSTGUG00000012508	1A	-	ATPase H+ transporting lysosomal 31 kDa V1 subunit E-like	protein-coding	-	-	-	putative ATPase H+ transporting lysosomal 31 kDa V1 subunit E
+59729	100190067	LAMR	-	37LRP|67LR|LBP/p40|LRP/LR|RPSA	Ensembl:ENSTGUG00000004584	2	-	laminin receptor 1	protein-coding	-	-	-	37 kDa laminin receptor|37/67 kDa laminin receptor|40S ribosomal protein SA|67 kDa laminin receptor|Laminin-binding protein precursor p40|putative laminin receptor 1
+59729	100190068	LOC100190068	-	-	-	2	-	preproenkephalin 1-like	protein-coding	-	-	-	putative preproenkephalin 1
+59729	100190069	LOC100190069	-	-	-	-	-	prefoldin 2-like	protein-coding	-	-	-	putative prefoldin 2
+59729	100190070	LOC100190070	-	MOCS2|MOCS2B	Ensembl:ENSTGUG00000002421	Z	-	molybdopterin synthase large subunit MOCS2B-like	protein-coding	-	-	-	Molybdenum cofactor synthesis protein 2 large subunit|Molybdenum cofactor synthesis protein 2B|molybdopterin synthase catalytic subunit|putative molybdopterin synthase large subunit MOCS2B
+59729	100190071	LOC100190071	-	-	Ensembl:ENSTGUG00000011258	7	-	S100 calcium binding protein beta (neural)-like	protein-coding	-	-	-	putative S100 calcium binding protein beta (neural) variant 1
+59729	100190073	LOC100190073	-	-	-	28	-	ribosomal protein L36-like	protein-coding	-	-	-	putative ribosomal protein L36
+59729	100190074	LOC100190074	-	-	Ensembl:ENSTGUG00000011278	7	-	mitotic phosphoprotein 44-like	protein-coding	-	-	-	putative mitotic phosphoprotein 44
+59729	100190075	JMJD8	-	-	-	14	-	jumonji domain containing 8	protein-coding	-	-	-	jmjC domain-containing protein 8
+59729	100190076	CCDC25	-	-	-	Un	-	coiled-coil domain containing 25	protein-coding	-	-	-	coiled-coil domain-containing protein 25
+59729	100190077	LOC100190077	-	-	-	Un	-	somatostatin precursor pro-2-like	protein-coding	-	-	-	putative somatostatin precursor pro-2
+59729	100190078	LOC100190078	-	-	Ensembl:ENSTGUG00000002638	17	-	CDC26 subunit of anaphase promoting complex-like	protein-coding	-	-	-	putative CDC26 subunit of anaphase promoting complex
+59729	100190079	LOC100190079	-	-	Ensembl:ENSTGUG00000003425	10	-	Proteasome subunit alpha type 4-like	protein-coding	-	-	-	putative Proteasome subunit alpha type 4
+59729	100190080	LOC100190080	-	-	Ensembl:ENSTGUG00000000865	28	-	ribosomal protein S15-like	protein-coding	-	-	-	putative ribosomal protein S15
+59729	100190081	LOC100190081	-	-	Ensembl:ENSTGUG00000001662	26	-	peripheral myelin protein 22-like	protein-coding	-	-	-	putative peripheral myelin protein 22
+59729	100190082	LOC100190082	-	-	Ensembl:ENSTGUG00000009034	2	-	thioesterase superfamily member 2-like	protein-coding	-	-	-	putative thioesterase superfamily member 2
+59729	100190083	IER3IP1	-	-	-	Z	-	immediate early response 3 interacting protein 1	protein-coding	-	-	-	immediate early response 3-interacting protein 1
+59729	100190084	LOC100190084	-	-	-	Un	-	ADP-ribosylation factor-like 10C-like	protein-coding	-	-	-	putative ADP-ribosylation factor-like 10C
+59729	100190085	LOC100190085	-	-	Ensembl:ENSTGUG00000012141	3	-	sorting nexin 3-like	protein-coding	-	-	-	putative sorting nexin 3
+59729	100190086	DECR1	-	-	-	2	-	2,4-dienoyl CoA reductase 1, mitochondrial	protein-coding	-	-	-	2,4-dienoyl-CoA reductase, mitochondrial|putative 24-dienoyl CoA reductase 1 mitochondrial
+59729	100190087	LOC100190087	-	-	Ensembl:ENSTGUG00000010829	5	-	NADH dehydrogenase 1 alpha subcomplex-like	protein-coding	-	-	-	putative NADH dehydrogenase 1 alpha subcomplex
+59729	100190088	MZT1	-	C13orf37	Ensembl:ENSTGUG00000012494	1	-	mitotic spindle organizing protein 1	protein-coding	-	-	-	UPF0582 protein|mitotic-spindle organizing protein 1|mitotic-spindle organizing protein associated with a ring of gamma-tubulin 1
+59729	100190089	LOC100190089	-	-	Ensembl:ENSTGUG00000002212	21	-	phosphopantothenate cysteine ligase-like	protein-coding	-	-	-	putative phosphopantothenate cysteine ligase
+59729	100190090	LOC100190090	-	-	-	1A	-	chaperonin containing TCP1 subunit 2 (beta)-like	protein-coding	-	-	-	putative chaperonin containing TCP1 subunit 2 (beta) variant 1
+59729	100190092	LOC100190092	-	-	Ensembl:ENSTGUG00000010035	1A	-	RBX1 protein-like	protein-coding	-	-	-	putative RBX1 protein
+59729	100190093	TMEM189	-	-	-	20	-	transmembrane protein 189	protein-coding	-	-	-	-
+59729	100190094	LOC100190094	-	-	-	11	-	metallothionein-I-like	protein-coding	-	-	-	putative metallothionein-I
+59729	100190095	LOC100190095	-	-	-	-	-	dynactin 6-like	protein-coding	-	-	-	putative dynactin 6
+59729	100190096	LOC100190096	-	-	-	-	-	mitochondrial ribosomal protein L21-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein L21
+59729	100190097	LOC100190097	-	-	-	13	-	putative hypothetical protein MGC2198	protein-coding	-	-	-	uncharacterized protein LOC100190097
+59729	100190098	LOC100190098	-	-	Ensembl:ENSTGUG00000012129	5	-	HESB like domain containing 1-like	protein-coding	-	-	-	putative HESB like domain containing 1
+59729	100190099	LOC100190099	-	-	Ensembl:ENSTGUG00000007575	2	-	U11/U12 snRNP 48K-like	protein-coding	-	-	-	putative U11/U12 snRNP 48K variant 2
+59729	100190100	LOC100190100	-	-	-	7	-	solute carrier family 40 member 1-like	protein-coding	-	-	-	putative solute carrier family 40 member 1|solute carrier family 40 (iron-regulated transporter), member 1
+59729	100190101	ARFRP1	-	-	Ensembl:ENSTGUG00000007096	20	-	ADP-ribosylation factor related protein 1	protein-coding	-	-	-	ADP-ribosylation factor-related protein 1|putative ADP-ribosylation factor related protein 1 variant 1
+59729	100190102	SFT2D1	-	-	Ensembl:ENSTGUG00000009460	3	-	SFT2 domain containing 1	protein-coding	-	-	-	vesicle transport protein SFT2A
+59729	100190103	LOC100190103	-	-	Ensembl:ENSTGUG00000004058	4	-	ribosomal protein L34-like	protein-coding	-	-	-	putative ribosomal protein L34
+59729	100190104	LOC100190104	-	-	-	15	-	cyclin-dependent kinase 2-associated protein 1-like	protein-coding	-	-	-	putative cyclin-dependent kinase 2-associated protein 1
+59729	100190105	LOC100190105	-	-	-	7	-	alpha-aspartyl dipeptidase-like	protein-coding	-	-	-	putative alpha-aspartyl dipeptidase variant 1
+59729	100190106	LOC100190106	-	-	-	4	-	LSM6 homolog U6 small nuclear RNA associated-like	protein-coding	-	-	-	putative LSM6 homolog U6 small nuclear RNA associated
+59729	100190107	LOC100190107	-	-	Ensembl:ENSTGUG00000010465	8	-	N-acetyltransferase 5-like	protein-coding	-	-	-	putative N-acetyltransferase 5
+59729	100190108	LOC100190108	-	-	-	4	-	macrophage erythroblast attacher-like	protein-coding	-	-	-	putative macrophage erythroblast attacher variant 3
+59729	100190109	LOC100190109	-	-	-	-	-	ribosomal protein L37-like	protein-coding	-	-	-	putative ribosomal protein L37 variant 1
+59729	100190110	LOC100190110	-	-	-	28	-	ring finger protein 126-like	protein-coding	-	-	-	putative ring finger protein 126 variant 1
+59729	100190111	LOC100190111	-	-	Ensembl:ENSTGUG00000002555	4A	-	high-mobility group nucleosome binding domain 1-like	protein-coding	-	-	-	putative high-mobility group nucleosome binding domain 1
+59729	100190112	LOC100190112	-	-	-	-	-	MAD2 mitotic arrest deficient-like 2-like	protein-coding	-	-	-	putative MAD2 mitotic arrest deficient-like 2 variant 1
+59729	100190113	LOC100190113	-	-	Ensembl:ENSTGUG00000013029	5	-	translocase of inner mitochondrial membrane 9/10 homolog-like	protein-coding	-	-	-	putative translocase of inner mitochondrial membrane 9/10 homolog
+59729	100190114	LOC100190114	-	-	-	13	-	vacuolar proton-ATPase subunit ATP6H-like	protein-coding	-	-	-	putative vacuolar proton-ATPase subunit ATP6H variant 3
+59729	100190115	LOC100190115	-	-	Ensembl:ENSTGUG00000004220	25	-	signal sequence receptor beta-like	protein-coding	-	-	-	putative signal sequence receptor beta variant 2
+59729	100190116	LOC100190116	-	-	-	2	-	PAK1 interacting protein 1-like	protein-coding	-	-	-	putative PAK1 interacting protein 1 variant 1
+59729	100190117	LOC100190117	-	-	-	8	-	Di-Ras2-like	protein-coding	-	-	-	putative Di-Ras2 variant 2
+59729	100190118	LOC100190118	-	-	Ensembl:ENSTGUG00000010226	3	-	translocase of outer mitochondrial membrane 20-like	protein-coding	-	-	-	putative translocase of outer mitochondrial membrane 20 variant 3
+59729	100190119	LOC100190119	-	-	Ensembl:ENSTGUG00000012034	3	-	Brix domain containing protein 1-like	protein-coding	-	-	-	putative Brix domain containing protein 1 variant 2
+59729	100190120	LOC100190120	-	-	-	1A	-	RAB member of RAS oncogene family-like 2B-like	protein-coding	-	-	-	putative RAB member of RAS oncogene family-like 2B variant 2
+59729	100190121	LOC100190121	-	-	-	-	-	maternal G10-like	protein-coding	-	-	-	putative maternal G10
+59729	100190122	LOC100190122	-	-	-	14	-	ATP synthase H+ transporting mitochondrial F0 complex subunit f-like	protein-coding	-	-	-	putative ATP synthase H+ transporting mitochondrial F0 complex subunit f variant 2
+59729	100190123	LOC100190123	-	-	-	2	-	myosin regulatory light chain isoform L20-B-like	protein-coding	-	-	-	putative myosin regulatory light chain isoform L20-B variant 1
+59729	100190124	C9orf16	-	-	Ensembl:ENSTGUG00000003849	17	-	chromosome 9 open reading frame 16	protein-coding	-	-	-	UPF0184 protein C9orf16 homolog
+59729	100190125	LOC100190125	-	-	-	10	-	dUTP pyrophosphatase-like	protein-coding	-	-	-	putative dUTP pyrophosphatase
+59729	100190126	LOC100190126	-	-	Ensembl:ENSTGUG00000000585	2	-	Ras homolog enriched in brain-like	protein-coding	-	-	-	putative Ras homolog enriched in brain variant 1
+59729	100190127	LOC100190127	-	-	-	-	-	Ribosomal protein L35a-like	protein-coding	-	-	-	putative Ribosomal protein L35a
+59729	100190128	LOC100190128	-	-	-	Un	-	sperm associated antigen 7-like	protein-coding	-	-	-	putative sperm associated antigen 7 variant 2
+59729	100190129	LOC100190129	-	-	-	13	-	zinc finger protein 346-like	protein-coding	-	-	-	putative zinc finger protein 346 variant 3
+59729	100190130	LOC100190130	-	-	-	19	-	suppressor of Ty 4-like	protein-coding	-	-	-	putative suppressor of Ty 4
+59729	100190131	LOC100190131	-	-	-	-	-	glycine N-methyltransferase-like	protein-coding	-	-	-	putative glycine N-methyltransferase
+59729	100190132	LOC100190132	-	-	Ensembl:ENSTGUG00000004334	Z	-	ribosomal protein S6-like	protein-coding	-	-	-	putative ribosomal protein S6
+59729	100190133	LOC100190133	-	-	-	-	-	cdna MGC42090-like	protein-coding	-	-	-	putative cdna MGC42090 variant 2
+59729	100190134	LOC100190134	-	-	-	17	-	NADH dehydrogenase 1 alpha subcomplex 8-like	protein-coding	-	-	-	putative NADH dehydrogenase 1 alpha subcomplex 8 variant 2
+59729	100190135	LOC100190135	-	-	Ensembl:ENSTGUG00000012732	2	-	stem cell antigen 2-like	protein-coding	-	-	-	putative stem cell antigen 2 variant 2
+59729	100190136	LOC100190136	-	-	Ensembl:ENSTGUG00000007822	2	-	MGC89063 protein-like	protein-coding	-	-	-	putative MGC89063 protein variant 2
+59729	100190137	LOC100190137	-	-	-	4	-	alcohol dehydrogenase 5 (class III)-like	protein-coding	-	-	-	putative alcohol dehydrogenase 5 (class III)
+59729	100190138	LOC100190138	-	-	-	1	-	ribosomal protein L24-like	protein-coding	-	-	-	putative ribosomal protein L24 variant 2
+59729	100190139	AHSA2	-	-	Ensembl:ENSTGUG00000006674	3	-	AHA1, activator of heat shock 90kDa protein ATPase homolog 2 (yeast)	protein-coding	-	-	-	activator of 90 kDa heat shock protein ATPase homolog 2
+59729	100190140	LOC100190140	-	-	-	10	-	inhibitor-1 of protein phosphatase type 2A-like	protein-coding	-	-	-	putative inhibitor-1 of protein phosphatase type 2A variant 2
+59729	100190141	LYRM1	-	-	Ensembl:ENSTGUG00000009197	14	-	LYR motif containing 1	protein-coding	-	-	-	LYR motif-containing protein 1
+59729	100190142	RRP7A	-	-	Ensembl:ENSTGUG00000009647	1A	-	ribosomal RNA processing 7 homolog A (S. cerevisiae)	protein-coding	-	-	-	ribosomal RNA-processing protein 7 homolog A
+59729	100190143	LOC100190143	-	-	-	15	-	macrophage migration inhibitory factor (MIF)-like	protein-coding	-	-	-	putative macrophage migration inhibitory factor (MIF) variant 1
+59729	100190144	LOC100190144	-	-	-	Un	-	ribosomal protein S26-like	protein-coding	-	-	-	putative ribosomal protein S26 variant 1
+59729	100190145	LOC100190145	-	-	Ensembl:ENSTGUG00000003318	4A	-	solute carrier family 25 member 5-like	protein-coding	-	-	-	putative solute carrier family 25 member 5 variant 1
+59729	100190146	LOC100190146	-	-	Ensembl:ENSTGUG00000010711	1	-	solute carrier family 25 member 6-like	protein-coding	-	-	-	putative solute carrier family 25 member 6 variant 1
+59729	100190147	LOC100190147	-	-	Ensembl:ENSTGUG00000001201	23	-	thioredoxin family Trp26-like	protein-coding	-	-	-	putative thioredoxin family Trp26 variant 1
+59729	100190148	LOC100190148	-	-	-	-	-	uncharacterized LOC100190148	protein-coding	-	-	-	uncharacterized protein LOC100190148
+59729	100190149	LOC100190149	-	-	-	4A	-	uncharacterized LOC100190149	protein-coding	-	-	-	uncharacterized protein LOC100190149
+59729	100190150	LOC100190150	-	-	Ensembl:ENSTGUG00000002920	4A	-	motile sperm domain containing 1-like	protein-coding	-	-	-	putative motile sperm domain containing 1 variant 2
+59729	100190151	LOC100190151	-	-	-	-	-	signal recognition particle 14 kDa-like	protein-coding	-	-	-	putative signal recognition particle 14 kDa variant 4
+59729	100190152	UCK2	-	-	-	8	-	uridine-cytidine kinase 2	protein-coding	-	-	-	putative uridine-cytidine kinase 2 variant 2
+59729	100190153	LOC100190153	-	-	Ensembl:ENSTGUG00000002616	4A	-	PDZ domain containing 11-like	protein-coding	-	-	-	putative PDZ domain containing 11
+59729	100190154	ALDH3A2	-	-	-	19	-	aldehyde dehydrogenase 3 family, member A2	protein-coding	-	-	-	aldehyde dehydrogenase 3 A2|fatty aldehyde dehydrogenase|putative aldehyde dehydrogenase family 3 subfamily A2 variant 2
+59729	100190155	LOC100190155	-	-	Ensembl:ENSTGUG00000012986	1	-	uncharacterized LOC100190155	protein-coding	-	-	-	uncharacterized protein LOC100190155
+59729	100190156	LOC100190156	-	-	-	12	-	ninjurin 1-like	protein-coding	-	-	-	putative ninjurin 1 variant 2
+59729	100190158	LOC100190158	-	-	-	9	-	presenilin associated rhomboid-like	protein-coding	-	-	-	putative presenilin associated rhomboid-like variant 1
+59729	100190159	LOC100190159	-	-	Ensembl:ENSTGUG00000005155	Z	-	Adenylate kinase 3 alpha like 1-like	protein-coding	-	-	-	putative Adenylate kinase 3 alpha like 1 variant 1
+59729	100190160	LOC100190160	-	-	Ensembl:ENSTGUG00000002950	18	-	uncharacterized LOC100190160	protein-coding	-	-	-	uncharacterized protein LOC100190160
+59729	100190161	LOC100190161	-	-	-	14	-	proteasome assembling chaperone 3-like	protein-coding	-	-	-	putative proteasome assembling chaperone 3
+59729	100190162	LOC100190162	-	-	-	15	-	RAN member RAS oncogene family-like	protein-coding	-	-	-	putative RAN member RAS oncogene family variant 1
+59729	100190163	LOC100190163	-	-	Ensembl:ENSTGUG00000011919	5	-	uncharacterized LOC100190163	protein-coding	-	-	-	uncharacterized protein LOC100190163
+59729	100190164	LOC100190164	-	-	-	Z	-	clathrin light polypeptide variant 1a-like	protein-coding	-	-	-	putative clathrin light polypeptide variant 1a
+59729	100190165	LOC100190165	-	-	Ensembl:ENSTGUG00000008389	5	-	LIM domain only 1-like	protein-coding	-	-	-	putative LIM domain only 1 variant 2
+59729	100190166	LOC100190166	-	-	Ensembl:ENSTGUG00000000529	1B	-	transmembrane protein 50B-like	protein-coding	-	-	-	putative transmembrane protein 50B variant 2
+59729	100190167	LOC100190167	-	-	-	1	-	myelin protein zero-like 1-like	protein-coding	-	-	-	putative myelin protein zero-like 1 variant 1
+59729	100190168	LOC100190168	-	-	-	10	-	ribosomal protein S27-like	protein-coding	-	-	-	-
+59729	100190169	LOC100190169	-	-	-	-	-	regulatory factor X-associated ankyrin-containing protein-like	protein-coding	-	-	-	putative regulatory factor X-associated ankyrin-containing protein variant 1
+59729	100190170	LOC100190170	-	-	-	5	-	zinc binding alcohol dehydrogenase domain containing 1-like	protein-coding	-	-	-	putative zinc binding alcohol dehydrogenase domain containing 1 variant 1
+59729	100190171	LOC100190171	-	-	-	9	-	adaptor-related protein complex 2 mu 1 subunit-like	protein-coding	-	-	-	putative adaptor-related protein complex 2 mu 1 subunit variant 2
+59729	100190172	LOC100190172	-	-	Ensembl:ENSTGUG00000007207	5	-	transmembrane protein 80-like	protein-coding	-	-	-	putative transmembrane protein 80 variant 1
+59729	100190173	LOC100190173	-	-	-	Un	-	cytokine induced protein-like	protein-coding	-	-	-	putative cytokine induced protein
+59729	100190174	APITD1	-	-	-	21	-	apoptosis-inducing, TAF9-like domain 1	protein-coding	-	-	-	centromere protein S
+59729	100190175	LOC100190175	-	-	Ensembl:ENSTGUG00000004831	3	-	mitochondrial ribosomal protein L2-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein L2
+59729	100190177	LOC100190177	-	-	-	20	-	ribosomal protein S21-like	protein-coding	-	-	-	putative ribosomal protein S21 variant 1
+59729	100190178	LOC100190178	-	-	Ensembl:ENSTGUG00000005463	17	-	ribosomal protein L7a-like	protein-coding	-	-	-	putative ribosomal protein L7a
+59729	100190179	LOC100190179	-	-	-	Z	-	mitochondrial ribosomal protein L17-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein L17 variant 1
+59729	100190180	LOC100190180	-	-	Ensembl:ENSTGUG00000000178	Z	-	ATP synthase e chain mitochondrial-like	protein-coding	-	-	-	putative ATP synthase e chain mitochondrial variant 1
+59729	100190181	TAF13	-	-	Ensembl:ENSTGUG00000013420	1	-	TAF13 RNA polymerase II, TATA box binding protein (TBP)-associated factor, 18kDa	protein-coding	-	-	-	transcription initiation factor TFIID subunit 13
+59729	100190183	LOC100190183	-	-	-	2	-	DNA directed RNA polymerase II polypeptide K-like	protein-coding	-	-	-	putative DNA directed RNA polymerase II polypeptide K variant 1
+59729	100190184	LOC100190184	-	-	Ensembl:ENSTGUG00000011245	9	-	signal sequence receptor gamma-like	protein-coding	-	-	-	putative signal sequence receptor gamma variant 1|signal sequence receptor, gamma (translocon-associated protein gamma)
+59729	100190185	LOC100190185	-	-	Ensembl:ENSTGUG00000008862	4	-	ribosomal protein L9-like	protein-coding	-	-	-	putative ribosomal protein L9 variant 2
+59729	100190186	LOC100190186	-	-	-	-	-	ubiquitin-like 5-like	protein-coding	-	-	-	putative ubiquitin-like 5 variant 1
+59729	100190187	LOC100190187	-	-	-	Z	-	activated RNA polymerase II transcription cofactor 4-like	protein-coding	-	-	-	putative activated RNA polymerase II transcription cofactor 4 variant 1
+59729	100190188	LOC100190188	-	-	-	2	-	JUN activation binding protein-like	protein-coding	-	-	-	putative JUN activation binding protein variant 2
+59729	100190189	SNCB	-	-	-	13	-	synuclein, beta	protein-coding	-	-	-	beta-synuclein|putative beta-synuclein variant 1
+59729	100190190	LOC100190190	-	-	-	11	-	calretinin-like	protein-coding	-	-	-	putative calretinin
+59729	100190191	LOC100190191	-	-	Ensembl:ENSTGUG00000006601	20	-	p53 and DNA damage-regulated protein-like	protein-coding	-	-	-	putative p53 and DNA damage-regulated protein
+59729	100190192	LOC100190192	-	-	-	5	-	dickkopf homolog 3-like	protein-coding	-	-	-	putative dickkopf homolog 3
+59729	100190193	FSCN2	-	-	-	14	-	fascin homolog 2, actin-bundling protein, retinal (Strongylocentrotus purpuratus)	protein-coding	-	-	-	fascin-2|putative fascin 1
+59729	100190194	LOC100190194	-	-	Ensembl:ENSTGUG00000012320	5	-	AHA1 activator of heat shock 90 protein ATPase homolog 1-like	protein-coding	-	-	-	putative AHA1 activator of heat shock 90 protein ATPase homolog 1 variant 1
+59729	100190195	LOC100190195	-	-	Ensembl:ENSTGUG00000010911	2	-	ubiquitin-conjugating enzyme E2 transcript variant 2A-like	protein-coding	-	-	-	putative ubiquitin-conjugating enzyme E2 transcript variant 2A
+59729	100190196	LOC100190196	-	-	-	14	-	hydroxyacyl glutathione hydrolase-like	protein-coding	-	-	-	putative hydroxyacyl glutathione hydrolase
+59729	100190197	COX19	-	-	-	14	-	COX19 cytochrome c oxidase assembly homolog (S. cerevisiae)	protein-coding	-	-	-	cytochrome c oxidase assembly protein COX19
+59729	100190198	LOC100190198	-	-	Ensembl:ENSTGUG00000018129	1A	-	NADH dehydrogenase 1 alpha subcomplex 5-like	protein-coding	-	-	-	putative NADH dehydrogenase 1 alpha subcomplex 5
+59729	100190199	LOC100190199	-	-	-	-	-	biphenyl hydrolase-like protein-like	protein-coding	-	-	-	putative biphenyl hydrolase-like protein variant 1
+59729	100190200	LOC100190200	-	-	Ensembl:ENSTGUG00000000161	13	-	Nedd4 family interacting protein 1-like	protein-coding	-	-	-	putative Nedd4 family interacting protein 1 variant 1
+59729	100190201	SYF2	-	-	-	-	-	SYF2 homolog, RNA splicing factor (S. cerevisiae)	protein-coding	-	-	-	pre-mRNA-splicing factor SYF2|putative GCIP-interacting protein p29 variant 1
+59729	100190202	LOC100190202	-	-	-	1A	-	WW domain binding protein 2-like	protein-coding	-	-	-	putative WW domain binding protein 2 variant 2
+59729	100190203	LOC100190203	-	-	-	8	-	vesicle-associated membrane protein 4-like	protein-coding	-	-	-	putative vesicle-associated membrane protein 4 variant 2
+59729	100190204	LOC100190204	-	-	Ensembl:ENSTGUG00000012882	3	-	glutathione S-transferase class-alpha-like	protein-coding	-	-	-	putative glutathione S-transferase class-alpha variant 2
+59729	100190205	LOC100190205	-	-	Ensembl:ENSTGUG00000008708	12	-	actin related protein 2/3 complex subunit 4-like	protein-coding	-	-	-	putative actin related protein 2/3 complex subunit 4
+59729	100190206	LOC100190206	-	-	-	17	-	MIZIP protein-like	protein-coding	-	-	-	putative MIZIP protein
+59729	100190207	NTPCR	-	C1orf57	Ensembl:ENSTGUG00000010136	3	-	nucleoside-triphosphatase, cancer-related	protein-coding	-	-	-	nucleoside-triphosphatase C1orf57|putative ribosomal protein S21 variant 2
+59729	100190208	LOC100190208	-	-	-	15	-	IscU iron-sulfur cluster scaffold-like	protein-coding	-	-	-	putative IscU iron-sulfur cluster scaffold variant 1
+59729	100190209	LOC100190209	-	-	-	1B	-	mitochondrial ribosomal protein S6-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein S6
+59729	100190210	LOC100190210	-	-	Ensembl:ENSTGUG00000007796	15	-	phosphatidylinositol transfer protein beta-like	protein-coding	-	-	-	putative phosphatidylinositol transfer protein beta
+59729	100190211	LOC100190211	-	-	Ensembl:ENSTGUG00000012004	2	-	ribosomal protein L30-like	protein-coding	-	-	-	putative ribosomal protein L30
+59729	100190212	LOC100190212	-	-	Ensembl:ENSTGUG00000012661	2	-	60S acidic ribosomal protein P1-like	protein-coding	-	-	-	putative 60S acidic ribosomal protein P1
+59729	100190213	LOC100190213	-	-	-	-	-	churchill protein-like	protein-coding	-	-	-	putative churchill protein
+59729	100190214	LAMTOR2	-	mapbpip|robld3	Ensembl:ENSTGUG00000003670	25	-	late endosomal/lysosomal adaptor, MAPK and MTOR activator 2	protein-coding	-	-	-	Mitogen-activated protein-binding protein-interacting protein|Roadblock domain-containing protein 3|late endosomal/lysosomal adaptor and MAPK and MTOR activator 2|putative mitogen-activated protein-binding protein-interacting protein|ragulator complex protein LAMTOR2
+59729	100190215	LOC100190215	-	-	Ensembl:ENSTGUG00000003886	6	-	embryogenesis protein H beta 58 homolog-like	protein-coding	-	-	-	putative embryogenesis protein H beta 58 homolog
+59729	100190216	CLYBL	-	-	Ensembl:ENSTGUG00000010925	1	-	citrate lyase beta like	protein-coding	-	-	-	citrate lyase subunit beta-like protein, mitochondrial|putative citrate lyase beta like
+59729	100190217	LOC100190217	-	-	-	2	-	aspartate beta-hydroxylase-like	protein-coding	-	-	-	putative aspartate beta-hydroxylase variant 2
+59729	100190218	LOC100190218	-	-	Ensembl:ENSTGUG00000005900	19	-	DNA polymerase delta interacting protein 2-like	protein-coding	-	-	-	putative DNA polymerase delta interacting protein 2
+59729	100190219	LOC100190219	-	-	-	-	-	uncharacterized LOC100190219	protein-coding	-	-	-	uncharacterized protein LOC100190219
+59729	100190220	LOC100190220	-	-	Ensembl:ENSTGUG00000004682	2	-	preprocholecystokinin-like	protein-coding	-	-	-	putative preprocholecystokinin variant 2
+59729	100190221	LOC100190221	-	-	Ensembl:ENSTGUG00000001462	26	-	ATP synthase subunit b-like	protein-coding	-	-	-	putative ATP synthase subunit b
+59729	100190222	LOC100190222	-	-	-	-	-	mitochondrial ribosomal protein L12-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein L12 variant 4
+59729	100190223	LOC100190223	-	-	-	7	-	uncharacterized LOC100190223	protein-coding	-	-	-	uncharacterized protein LOC100190223
+59729	100190224	LOC100190224	-	-	Ensembl:ENSTGUG00000005773	9	-	DNA directed RNA polymerase II polypeptide D-like	protein-coding	-	-	-	putative DNA directed RNA polymerase II polypeptide D
+59729	100190225	CCDC23	-	-	-	-	-	coiled-coil domain containing 23	protein-coding	-	-	-	coiled-coil domain-containing protein 23|putative coiled-coil domain containing 23 protein
+59729	100190226	LOC100190226	-	-	Ensembl:ENSTGUG00000004071	22	-	uncharacterized LOC100190226	protein-coding	-	-	-	uncharacterized protein LOC100190226
+59729	100190227	LOC100190227	-	-	-	17	-	TruB pseudouridine synthase 2-like	protein-coding	-	-	-	putative TruB pseudouridine synthase 2 variant 1
+59729	100190228	PYCR2	-	-	-	18	-	pyrroline-5-carboxylate reductase family, member 2	protein-coding	-	-	-	putative pyrroline-5-carboxylate reductase family member 2 variant 1|pyrroline-5-carboxylate reductase 2
+59729	100190229	LOC100190229	-	-	-	8	-	uncharacterized LOC100190229	protein-coding	-	-	-	uncharacterized protein LOC100190229
+59729	100190230	LOC100190230	-	-	-	6	-	kelch domain containing 3-like	protein-coding	-	-	-	putative kelch domain containing 3
+59729	100190231	LOC100190231	-	-	-	3	-	splicing factor arginine/serine-rich 7-like	protein-coding	-	-	-	putative splicing factor arginine/serine-rich 7 variant 2
+59729	100190232	LOC100190232	-	-	Ensembl:ENSTGUG00000010141	7	-	ubiquitin-like 1-like	protein-coding	-	-	-	putative ubiquitin-like 1
+59729	100190233	LOC100190233	-	-	Ensembl:ENSTGUG00000001213	23	-	palmitoyl-protein thioesterase-like	protein-coding	-	-	-	putative palmitoyl-protein thioesterase variant 1
+59729	100190234	COQ9	-	-	-	-	-	coenzyme Q9 homolog (S. cerevisiae)	protein-coding	-	-	-	ubiquinone biosynthesis protein COQ9, mitochondrial
+59729	100190235	ENY2	-	-	-	Un	-	enhancer of yellow 2 homolog (Drosophila)	protein-coding	-	-	-	enhancer of yellow 2 transcription factor homolog|putative e(y)2 protein
+59729	100190236	LOC100190236	-	-	Ensembl:ENSTGUG00000004996	11	-	DNA directed RNA polymerase II polypeptide C-like	protein-coding	-	-	-	putative DNA directed RNA polymerase II polypeptide C
+59729	100190237	LOC100190237	-	-	-	13	-	uncharacterized LOC100190237	protein-coding	-	-	-	-
+59729	100190238	LOC100190238	-	-	-	15	-	actin related protein 2/3 complex subunit 3-like	protein-coding	-	-	-	putative actin related protein 2/3 complex subunit 3
+59729	100190239	LOC100190239	-	-	-	2	-	engulfment and cell motility 1-like	protein-coding	-	-	-	putative engulfment and cell motility 1 variant 1
+59729	100190240	LOC100190240	-	-	Ensembl:ENSTGUG00000008873	2	-	protein transport protein SEC61 beta subunit-like	protein-coding	-	-	-	Sec61 beta subunit|putative protein transport protein SEC61 beta subunit variant 1
+59729	100190241	HPCAL1	-	-	-	3	-	hippocalcin-like 1	protein-coding	-	-	-	hippocalcin-like protein 1|putative hippocalcin-like 1 protein
+59729	100190242	LOC100190242	-	-	Ensembl:ENSTGUG00000005112	1	-	high-mobility group nucleosome binding domain 1-like	protein-coding	-	-	-	putative high-mobility group nucleosome binding domain 1 variant 1
+59729	100190243	LOC100190243	-	-	-	Un	-	uncharacterized LOC100190243	miscRNA	-	-	-	-
+59729	100190245	LOC100190245	-	-	-	5	-	uncharacterized LOC100190245	protein-coding	-	-	-	uncharacterized protein LOC100190245
+59729	100190246	LOC100190246	-	-	Ensembl:ENSTGUG00000005826	1	-	U2 snRNP auxiliary factor small subunit-like	protein-coding	-	-	-	putative U2 snRNP auxiliary factor small subunit variant 1
+59729	100190247	LOC100190247	-	-	-	-	-	solution structure of the Bola-Like protein chain A-like	protein-coding	-	-	-	putative solution structure of the Bola-Like protein chain A variant 1
+59729	100190248	LOC100190248	-	-	-	9	-	protein phosphatase 1 regulatory subunit 7-like	protein-coding	-	-	-	putative protein phosphatase 1 regulatory subunit 7 variant 1
+59729	100190249	LOC100190249	-	-	-	1	-	parathymosin-like	protein-coding	-	-	-	putative parathymosin variant 1
+59729	100190250	LOC100190250	-	-	-	1	-	C10 protein-like	protein-coding	-	-	-	putative C10 protein
+59729	100190251	LOC100190251	-	-	Ensembl:ENSTGUG00000004811	5	-	uncharacterized LOC100190251	protein-coding	-	-	-	uncharacterized protein LOC100190251
+59729	100190252	LYRM4	-	-	-	2	-	LYR motif containing 4	protein-coding	-	-	-	LYR motif-containing protein 4
+59729	100190253	LOC100190253	-	-	-	22	-	small nuclear ribonucleoprotein polypeptide G-like	protein-coding	-	-	-	putative small nuclear ribonucleoprotein polypeptide G
+59729	100190254	LOC100190254	-	-	Ensembl:ENSTGUG00000002733	4A	-	Yip1 domain family member 6-like	protein-coding	-	-	-	putative Yip1 domain family member 6 variant 2
+59729	100190255	LOC100190255	-	-	-	11	-	thymidine kinase 2 mitochondrial-like	protein-coding	-	-	-	putative thymidine kinase 2 mitochondrial variant 1
+59729	100190256	LOC100190256	-	-	Ensembl:ENSTGUG00000008394	8	-	ATP synthase mitochondrial F1 complex assembly factor 1-like	protein-coding	-	-	-	putative ATP synthase mitochondrial F1 complex assembly factor 1 variant 1
+59729	100190257	LOC100190257	-	-	-	-	-	ATP synthase H+ transporting mitochondrial F1 complex delta subunit-like	protein-coding	-	-	-	putative ATP synthase H+ transporting mitochondrial F1 complex delta subunit
+59729	100190258	LOC100190258	-	-	-	-	-	ubiquitously-expressed-like	protein-coding	-	-	-	putative ubiquitously-expressed
+59729	100190259	LOC100190259	-	-	Ensembl:ENSTGUG00000004447	25	-	RNA-binding protein 8A-like	protein-coding	-	-	-	putative RNA-binding protein 8A
+59729	100190260	LOC100190260	-	-	-	-	-	40S ribosomal protein S29-like	protein-coding	-	-	-	putative 40S ribosomal protein S29
+59729	100190261	LOC100190261	-	-	-	1	-	growth-related translationally controlled tumor protein-like	protein-coding	-	-	-	putative growth-related translationally controlled tumor protein
+59729	100190262	DERL3	-	-	Ensembl:ENSTGUG00000010283	15	-	derlin 3	protein-coding	-	-	-	Der1-like domain family, member 3|derlin-3|putative carcinoma related gene variant 3
+59729	100190263	LOC100190263	-	-	-	-	-	optic atrophy 3 protein-like	protein-coding	-	-	-	putative optic atrophy 3 protein
+59729	100190264	LOC100190264	-	-	Ensembl:ENSTGUG00000011645	5	-	uncharacterized LOC100190264	protein-coding	-	-	-	uncharacterized protein LOC100190264
+59729	100190265	LOC100190265	-	-	-	5	-	ribosomal protein S13-like	protein-coding	-	-	-	putative ribosomal protein S13 variant 1
+59729	100190266	LOC100190266	-	-	-	14	-	syndesmos-like	protein-coding	-	-	-	putative syndesmos variant 1
+59729	100190267	LOC100190267	-	-	Ensembl:ENSTGUG00000012823	1	-	fetal globin-inducing factor-like	protein-coding	-	-	-	putative fetal globin-inducing factor variant 1
+59729	100190268	LOC100190268	-	-	-	5	-	glutaredoxin 5-like	protein-coding	-	-	-	putative glutaredoxin 5 variant 2
+59729	100190269	LOC100190269	-	-	-	28	-	growth arrest and DNA-damage-inducible beta-like	protein-coding	-	-	-	putative growth arrest and DNA-damage-inducible beta variant 1|putative growth arrest and DNA-damage-inducible beta variant 2|putative growth arrest and DNA-damage-inducible beta variant 3
+59729	100190270	LOC100190270	-	-	Ensembl:ENSTGUG00000012452	5	-	26S ATPase complex subunit 4-like	protein-coding	-	-	-	putative 26S ATPase complex subunit 4
+59729	100190271	LOC100190271	-	-	-	23	-	DnaJ subfamily C member 8-like	protein-coding	-	-	-	putative DnaJ subfamily C member 8
+59729	100190272	SELS	-	-	Ensembl:ENSTGUG00000008949	10	-	selenoprotein S	protein-coding	-	-	-	-
+59729	100190273	LMAN2L	-	-	Ensembl:ENSTGUG00000000376	13	-	lectin, mannose-binding 2-like	protein-coding	-	-	-	VIP36-like protein|putative lectin mannose-binding 2 variant 1
+59729	100190274	LOC100190274	-	-	-	1	-	mitochondrial ribosomal protein L30-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein L30
+59729	100190275	LOC100190275	-	-	-	2	-	NADH dehydrogenase 1 beta subcomplex 9-like	protein-coding	-	-	-	putative NADH dehydrogenase 1 beta subcomplex 9
+59729	100190276	LOC100190276	-	-	-	13	-	NADH dehydrogenase 1 alpha subcomplex 2-like	protein-coding	-	-	-	putative NADH dehydrogenase 1 alpha subcomplex 2 variant 1
+59729	100190277	LOC100190277	-	-	Ensembl:ENSTGUG00000008735	18	-	hematological and neurological expressed sequence 1-like	protein-coding	-	-	-	hematological and neurological expressed 1|putative hematological and neurological expressed sequence 1
+59729	100190278	ITPA	-	-	-	8	-	inosine triphosphatase (nucleoside triphosphate pyrophosphatase)	protein-coding	-	-	-	inosine triphosphate pyrophosphatase
+59729	100190279	LOC100190279	-	-	-	20	-	dynein light chain 2A cytoplasmic-like	protein-coding	-	-	-	putative dynein light chain 2A cytoplasmic
+59729	100190280	LOC100190280	-	-	Ensembl:ENSTGUG00000002797	27	-	proteaseome (prosome macropain) 28 subunit 3-like	protein-coding	-	-	-	putative proteaseome (prosome macropain) 28 subunit 3
+59729	100190281	LOC100190281	-	-	Ensembl:ENSTGUG00000002707	27	-	proteasome 26S subunit ATPase 3 interacting protein-like	protein-coding	-	-	-	putative proteasome 26S subunit ATPase 3 interacting protein variant 1
+59729	100190282	MEAF6	-	-	Ensembl:ENSTGUG00000001560	23	-	MYST/Esa1-associated factor 6	protein-coding	-	-	-	chromatin modification-related protein MEAF6
+59729	100190283	LOC100190283	-	-	Ensembl:ENSTGUG00000003860	22	-	iron-sulfur cluster scaffold protein Nfu-like	protein-coding	-	-	-	putative iron-sulfur cluster scaffold protein Nfu variant 3
+59729	100190284	LOC100190284	-	-	-	1	-	ribosomal protein S3-like	protein-coding	-	-	-	putative ribosomal protein S3
+59729	100190285	LOC100190285	-	-	-	18	-	growth factor receptor-bound protein 2-like	protein-coding	-	-	-	putative growth factor receptor-bound protein 2
+59729	100190286	LOC100190286	-	-	-	3	-	brain protein 44-like	protein-coding	-	-	-	putative brain protein 44-like variant 2
+59729	100190288	RPS3A	-	-	Ensembl:ENSTGUG00000004926	4	-	ribosomal protein S3A	protein-coding	-	-	-	40S ribosomal protein S3a
+59729	100190289	LOC100190289	-	-	-	2	-	NADH dehydrogenase Fe-S protein 6-like	protein-coding	-	-	-	NADH dehydrogenase (ubiquinone) Fe-S protein 6, 13kDa (NADH-coenzyme Q reductase)|putative NADH dehydrogenase Fe-S protein 6
+59729	100190290	LOC100190290	-	-	Ensembl:ENSTGUG00000006668	7	-	26S proteasome-associated pad1-like	protein-coding	-	-	-	putative 26S proteasome-associated pad1 variant 1
+59729	100190291	LOC100190291	-	-	-	Z	-	21 kDa signal peptidase subunit-like	protein-coding	-	-	-	putative 21 kDa signal peptidase subunit variant 1
+59729	100190292	MMAB	-	-	Ensembl:ENSTGUG00000007359	15	-	methylmalonic aciduria (cobalamin deficiency) cblB type	protein-coding	-	-	-	cob(I)yrinic acid a,c-diamide adenosyltransferase, mitochondrial|putative methylmalonic aciduria (cobalamin deficiency) type B variant 2
+59729	100190293	LOC100190293	-	-	Ensembl:ENSTGUG00000008142	3	-	mitochondrial ribosomal protein S18A-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein S18A
+59729	100190294	LOC100190294	-	-	Ensembl:ENSTGUG00000004793	22	-	U6 snRNA-associated Sm-like protein LSm1-like	protein-coding	-	-	-	putative U6 snRNA-associated Sm-like protein LSm1 variant 1
+59729	100190295	LOC100190295	-	-	-	12	-	arginine-rich mutated in early stage tumors-like	protein-coding	-	-	-	putative arginine-rich mutated in early stage tumors
+59729	100190296	LOC100190296	-	-	Ensembl:ENSTGUG00000008645	20	-	dolichol-phosphate mannosyltransferase-like	protein-coding	-	-	-	putative dolichol-phosphate mannosyltransferase variant 2
+59729	100190297	LOC100190297	-	-	Ensembl:ENSTGUG00000009076	11	-	programmed cell death 5-like	protein-coding	-	-	-	putative programmed cell death 5 variant 1
+59729	100190299	LOC100190299	-	-	Ensembl:ENSTGUG00000009577	14	-	ubiquitin-conjugating enzyme E2I cluster 2-like	protein-coding	-	-	-	putative ubiquitin-conjugating enzyme E2I cluster 2
+59729	100190300	LOC100190300	-	-	Ensembl:ENSTGUG00000001557	23	-	axonemal dynein light chain-like	protein-coding	-	-	-	putative axonemal dynein light chain
+59729	100190301	LOC100190301	-	-	-	1	-	MID1 interacting G12-like protein-like	protein-coding	-	-	-	putative MID1 interacting G12-like protein variant 2
+59729	100190302	LOC100190302	-	-	-	-	-	neuronal protein 22-like	protein-coding	-	-	-	putative neuronal protein 22 variant 1
+59729	100190303	LOC100190303	-	DDX48|EIF4A3|eIF4A-III	Ensembl:ENSTGUG00000002132	3	-	DEAD box polypeptide 48-like	protein-coding	-	-	-	ATP-dependent RNA helicase DDX48|ATP-dependent RNA helicase eIF4A-3|DEAD box protein 48|Eukaryotic translation initiation factor 4A|eIF-4A-III|eukaryotic initiation factor 4A-III|putative DEAD box polypeptide 48
+59729	100190304	TMEM188	-	-	-	11	-	CTD nuclear envelope phosphatase 1 regulatory subunit 1	protein-coding	-	-	-	transmembrane protein 188
+59729	100190305	RPUSD4	-	-	-	24	-	RNA pseudouridylate synthase domain containing 4	protein-coding	-	-	-	RNA pseudouridylate synthase domain-containing protein 4
+59729	100190306	LOC100190306	-	-	Ensembl:ENSTGUG00000007973	4	-	ovarian carcinoma immunoreactive antigen-like	protein-coding	-	-	-	putative ovarian carcinoma immunoreactive antigen
+59729	100190307	LOC100190307	-	-	Ensembl:ENSTGUG00000006672	19	-	uncharacterized LOC100190307	protein-coding	-	-	-	uncharacterized protein LOC100190307
+59729	100190308	LOC100190308	-	-	-	19	-	mitochondrial ribosomal protein S17-like	protein-coding	-	-	-	putative mitochondrial ribosomal protein S17 variant 1
+59729	100190309	LOC100190309	-	-	-	20	-	p53-related protein kinase-like	protein-coding	-	-	-	putative p53-related protein kinase
+59729	100190310	LOC100190310	-	-	-	15	-	ectonucleotide pyrophosphatase/phosphodiesterase 2-like	protein-coding	-	-	-	putative ectonucleotide pyrophosphatase/phosphodiesterase 2 variant 1
+59729	100190311	LOC100190311	-	-	-	19	-	tyrosine 3-monooxgenase/tryptophan 5-monooxgenase activation protein gamma polypeptide-like	protein-coding	-	-	-	putative tyrosine 3-monooxgenase/tryptophan 5-monooxgenase activation protein gamma polypeptide variant 1
+59729	100190312	SELK	-	-	Ensembl:ENSTGUG00000006957	12	-	selenoprotein K	protein-coding	-	-	-	-
+59729	100190313	NUDCD2	-	-	-	Un	-	NudC domain containing 2	protein-coding	-	-	-	nudC domain-containing protein 2
+59729	100190314	LOC100190314	-	-	-	14	-	uncharacterized LOC100190314	protein-coding	-	-	-	uncharacterized protein LOC100190314
+59729	100190315	LOC100190315	-	-	-	-	-	complexin 2-like	protein-coding	-	-	-	putative complexin 2
+59729	100190316	LOC100190316	-	-	-	-	-	ribosomal protein L26-like	protein-coding	-	-	-	putative ribosomal protein L26 variant 3
+59729	100190317	LOC100190317	-	-	-	13	-	ribosomal protein L26-like	protein-coding	-	-	-	putative ribosomal protein L26 variant 2
+59729	100190318	SEP15	-	-	-	8	-	15 kDa selenoprotein	protein-coding	-	-	-	-
+59729	100190319	LOC100190319	-	-	-	-	-	TAF10 RNA polymerase II-like	protein-coding	-	-	-	putative TAF10 RNA polymerase II

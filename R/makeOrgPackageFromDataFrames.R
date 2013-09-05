@@ -193,9 +193,21 @@ checkData <- function(data){
     ## findExtraGeneIDs()
 }
 
+## helper to add most basic of metadata
+.addEssentialMetadata <- function(con, tax_id, genus, species){
+  name <- c("DBSCHEMAVERSION","DBSCHEMA","ORGANISM","SPECIES","CENTRALID",
+            "TAXID",
+            "Db type","Supporting package")
+  value<- c("2.1","NOSCHEMA_DB",paste(genus,species),paste(genus,species),
+            "GENEID",tax_id,
+            "OrgDb","AnnotationDbi")
+  AnnotationForge:::.addMeta(con, name, value)
+}
+
+
 ## function to put together the database.
 ## This takes a named list of data.frames
-makeOrgDbFromDataFrames <- function(data, genus, species, dbFileName){
+makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, dbFileName){
 
     ## checkData(data)
 
@@ -212,9 +224,13 @@ makeOrgDbFromDataFrames <- function(data, genus, species, dbFileName){
     ## do each data.frame in turn
     mapply(FUN=.addMoreData, data, names(data), MoreArgs=list(con=con))
 
+
     
-    ## TODO: Then fill out the metadata etc.
-    
+    ## Add metadata but keep it very basic
+    AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species) 
+
+    ## And no map counts because: no maps!
+
 }
 
 
@@ -225,7 +241,7 @@ makeOrgDbFromDataFrames <- function(data, genus, species, dbFileName){
 
 ## function to make the package:
 makeOrgPackage <- function(data,
-                           fields,
+                          ## fields,
                            version,
                            maintainer,
                            author,
@@ -247,7 +263,7 @@ makeOrgPackage <- function(data,
   ## 'outputDir' is not passed to makeOrgDbFromDataFrames(). Hence the db file
   ## is always created in ".".
   
-  makeOrgDbFromDataFrames(data, genus, species, dbFileName)
+  makeOrgDbFromDataFrames(data, tax_id, genus, species, dbFileName)
   
 
   
@@ -262,74 +278,28 @@ makeOrgPackage <- function(data,
   
 
 
-##   seed <- new("AnnDbPkgSeed",
-##               Package= paste(dbName,".db",sep=""),
-##               Version=version,
-##               Author=author,
-##               Maintainer=maintainer,
-##               PkgTemplate="NOSCHEMA",
-##               AnnObjPrefix=dbName,
-##               organism = paste(genus, species),
-##               species = paste(genus, species),
-##               biocViews = "annotation",
-##               manufacturerUrl = "no manufacturer",
-##               manufacturer = "no manufacturer",
-##               chipName = "no manufacturer")
+  seed <- new("AnnDbPkgSeed",
+              Package= paste(dbName,".db",sep=""),
+              Version=version,
+              Author=author,
+              Maintainer=maintainer,
+              PkgTemplate="NOSCHEMA.DB",
+              AnnObjPrefix=dbName,
+              organism = paste(genus, species),
+              species = paste(genus, species),
+              biocViews = "annotation",
+              manufacturerUrl = "no manufacturer",
+              manufacturer = "no manufacturer",
+              chipName = "no manufacturer")
   
-##   makeAnnDbPkg(seed, dbfile, dest_dir=outputDir)
+  makeAnnDbPkg(seed, dbFileName, dest_dir=outputDir)
   
-##   ## cleanup
-##   file.remove(dbfile)
+  ## cleanup
+  message("Now deleting temporary database file")
+  file.remove(dbfile)
 }
 
 
 
 
 
-## ## test data lets load up a couple tab files from /extdata...
-## ## file finch_info.txt now has data I can use (for examples)
-
-## finchFile <- system.file("extdata","finch_info.txt",package="AnnotationForge")
-## finch <- read.table(finchFile,sep="\t")
-
-## ## not that this is how it should always be, but that it *could* be this way.
-## fSym <- finch[,c(2,3,9)]
-## fSym <- fSym[fSym[,2]!="-",]
-## fSym <- fSym[fSym[,3]!="-",]
-## colnames(fSym) <- c("GENEID","SYMBOL","GENENAME")
-
-## fChr <- finch[,c(2,7)]
-## fChr <- fChr[fChr[,2]!="-",]
-## colnames(fChr) <- c("GENEID","CHROMOSOME")
-
-
-## finchGOFile <- system.file("extdata","GO_finch.txt",package="AnnotationForge")
-## fGO <- read.table(finchGOFile,sep="\t")
-## fGO <- fGO[fGO[,2]!="",]
-## fGO <- fGO[fGO[,3]!="",]
-## colnames(fGO) <- c("GENEID","GO","EVIDENCE")
-
-## ## Now make a list
-## data <- list(gene_info=fSym, chromosome=fChr, go=fGO)
-## genus <- "Taeniopygia"
-## species <- "guttata"
-## dbName <- AnnotationForge:::.generateOrgDbName(genus,species)
-## ## this becomes the file name for the DB
-## dbfile <- paste(dbName, ".sqlite", sep="")
-
-
-## ## now test:
-## library(AnnotationForge)
-## AnnotationForge:::makeOrgDbFromDataFrames(data, genus, species, dbfile)
-
-
-## ## or test locally
-## ## makeOrgDbFromDataFrames(data, genus, species, dbfile)
-
-
-
-
-
-
-## NEXT UP: lets make an actual template in AnnotationDbi so that I
-## can start making these things as packages.
