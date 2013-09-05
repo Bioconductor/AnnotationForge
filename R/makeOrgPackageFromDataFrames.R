@@ -117,15 +117,15 @@ checkData <- function(data){
 }
 
 ## This makes the special genes table of an EG DB.
-.makeGenesTable <- function(entrez, con){
+.makeGenesTable <- function(genes, con){
   message("Populating genes table:")
   sql<- paste("    CREATE TABLE IF NOT EXISTS genes (
       _id INTEGER PRIMARY KEY,
-      GID VARCHAR(10) NOT NULL UNIQUE           -- Entrez Gene ID
+      GID VARCHAR(10) NOT NULL UNIQUE           -- Gene ID
     );")
   sqliteQuickSQL(con, sql)
 
-  geneid <- data.frame(entrez) ## TODO: data.frame() necessary???
+  geneid <- data.frame(genes) ## TODO: data.frame() necessary???
   sql<- paste("INSERT INTO genes(GID) VALUES(?);")
   dbBeginTransaction(con)
   dbGetPreparedQuery(con, sql, geneid)
@@ -206,11 +206,14 @@ checkData <- function(data){
 
 
 ## function to put together the database.
-## This takes a named list of data.frames
+## This takes a named list of data.frames.
 makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, dbFileName){
 
+    ## Data has to meet some strict criteria.  the 1st col must always
+    ## be named the same and be the same type (for example)
+    
     ## checkData(data)
-
+    
     ## set up DB connection 
     require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
@@ -218,19 +221,19 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, dbFileName){
     AnnotationForge:::.createMetadataTables(con)
     
     ## call .makeCentralTable on 1st section of genes to get that started.
-    egs <- data[[1]][,1]
-    AnnotationForge:::.makeGenesTable(egs, con)
-
+    genes <- data[[1]][,1]
+    AnnotationForge:::.makeGenesTable(genes, con)
+    
     ## do each data.frame in turn
     mapply(FUN=.addMoreData, data, names(data), MoreArgs=list(con=con))
-
-
+    
+    
     
     ## Add metadata but keep it very basic
-    AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species) 
-
+    AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species)
+    
     ## And no map counts because: no maps!
-
+    
 }
 
 
