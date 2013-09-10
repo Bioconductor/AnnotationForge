@@ -55,3 +55,27 @@ AnnotationForge:::makeOrgPackage(data=data,
 
 ## NEXT UP: lets make an actual template in AnnotationDbi so that I
 ## can start making these things as packages.
+library(org.Tguttata.eg.db)
+#debug(AnnotationDbi:::.noSchemaCols)
+columns(org.Tguttata.eg.db)
+## so that change will also work for keytypes
+keytypes(org.Tguttata.eg.db)
+
+## Now for keys I need to read carefully.
+## I want to do the same thing for .keys that I did for
+library(org.Tguttata.eg.db)
+# debug(AnnotationDbi:::.noSchemaKeys)
+keys(org.Tguttata.eg.db, "CHROMOSOME")
+
+head(keys(org.Tguttata.eg.db, "GID"))
+
+head(keys(org.Tguttata.eg.db, "SYMBOL", pattern="BDNF"))
+
+## TODO: check for column argument once select is up and running
+## head(keys(org.Tguttata.eg.db, "SYMBOL", pattern="BD", column="GID"))
+
+
+## Now I just need select() to work...
+library(org.Tguttata.eg.db)
+# debug(AnnotationDbi:::.noSchemaSelect)
+select(org.Tguttata.eg.db, keys=100008579, columns="SYMBOL", keytype="GID")
