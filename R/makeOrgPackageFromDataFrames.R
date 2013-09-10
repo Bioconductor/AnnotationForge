@@ -242,6 +242,9 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, dbFileName){
 ## by just trapping what is in ... and passing it on as a named list.
 ## like this:  data <- list(...)
 
+## TODO: this should return the path to the created dir so that the
+## user can just call install.packages(on that filepath).
+
 ## function to make the package:
 makeOrgPackage <- function(data,
                           ## fields,
@@ -279,10 +282,8 @@ makeOrgPackage <- function(data,
   ## require(GO.db)
 
   
-
-
   seed <- new("AnnDbPkgSeed",
-              Package= paste(dbName,".db",sep=""),
+              Package= paste0(dbName,".db"),
               Version=version,
               Author=author,
               Maintainer=maintainer,
@@ -300,6 +301,8 @@ makeOrgPackage <- function(data,
   ## cleanup
   message("Now deleting temporary database file")
   file.remove(dbfile)
+  ## return the path to the dir that was just created.
+  file.path(outputDir,paste0(dbName,".db"))
 }
 
 

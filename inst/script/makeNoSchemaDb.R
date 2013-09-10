@@ -49,8 +49,8 @@ AnnotationForge:::makeOrgPackage(data=data,
                                  species=species)
 
 
-
-
+## then you can install on the return value
+install.packages("./org.Tguttata.eg.db", repos=NULL)
 
 
 ## NEXT UP: lets make an actual template in AnnotationDbi so that I
@@ -71,11 +71,24 @@ head(keys(org.Tguttata.eg.db, "GID"))
 
 head(keys(org.Tguttata.eg.db, "SYMBOL", pattern="BDNF"))
 
-## TODO: check for column argument once select is up and running
-## head(keys(org.Tguttata.eg.db, "SYMBOL", pattern="BD", column="GID"))
+head(keys(org.Tguttata.eg.db, "GID", pattern="BDNF", column="SYMBOL"))
+
+head(keys(org.Tguttata.eg.db, "SYMBOL", column="GID"))
+
 
 
 ## Now I just need select() to work...
 library(org.Tguttata.eg.db)
-# debug(AnnotationDbi:::.noSchemaSelect)
-select(org.Tguttata.eg.db, keys=100008579, columns="SYMBOL", keytype="GID")
+## debug(AnnotationDbi:::.noSchemaSelect)
+
+## TODO: add check to the keys argument to make sure its a character()
+select(org.Tguttata.eg.db, keys="100008579", columns="SYMBOL", keytype="GID")
+## 
+select(org.Tguttata.eg.db, keys="100008579", columns=c("SYMBOL","CHROMOSOME"), keytype="GID")
+## This one should warn about the number or rows - it does
+select(org.Tguttata.eg.db, keys="100008579", columns="GO", keytype="GID")
+## now fixed
+select(org.Tguttata.eg.db, keys="100008579", columns=c("GO","EVIDENCE"), keytype="GID")
+## What if there is only one table to visit?
+select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
+
