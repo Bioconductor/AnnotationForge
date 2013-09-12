@@ -51,6 +51,16 @@ AnnotationForge:::makeOrgPackage(data=data,
                                  species=species)
 
 
+AnnotationForge:::makeOrgPackage(data=data,
+                                 version="0.1",
+                                 maintainer="Some One <so@someplace.org>",
+                                 author="Some One <so@someplace.org>",
+                                 outputDir = ".",
+                                 tax_id="59729",
+                                 genus=genus,
+                                 species=species,
+                                 goTable="go")
+
 ## then you can install on the return value
 install.packages("./org.Tguttata.eg.db", repos=NULL)
 
@@ -102,9 +112,20 @@ select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
 ## TODO:
 ## 1) Add checks for all arguments (especially data) - DONE
 ## 2) Add code to look for and extract ALL extra GIDs - DONE
-## 3) Add code to filter GO IDs
-## 4) Add unit tests for new helpers
-## 5) Add manual page 
-## 6) Add vignette for makeOrgPackage() and for makeOrgPackageFromNCBI()
+
+## 3) Add code to filter GO IDs :
+   ## A - add arg to function to say which table should get GO treatment.
+   ## B - add special checks for GO frame (special checker)
+       ## - only three cols required (GID, GO, EVIDENCE)
+       ## - those cols must have names: GID, GO, EVIDENCE
+   ## C - add function to drop old go table, and make 2 new ones:
+   ## D - use .filterGOFrame to remove stuff that's too new from go->populate
+   ## E - make newer .expandGOFRAME to make a go_all table
+       ## - (GID, GOALL, EVIDENCEALL, ONTOLOGYALL)
+       ## - require(GO.db); select(GO.db, go$GO, "ONTOLOGY")
+## 4) Add indexing to relevant fields (_id, go_id and all others)
+## 5) Add unit tests for new helpers
+## 6) Add manual page 
+## 7) Add vignette for makeOrgPackage() and for makeOrgPackageFromNCBI()
 
 

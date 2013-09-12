@@ -89,8 +89,6 @@
 ## And the 1st table is special.  It just "grows" as more unique
 ## GENE_IDs show up
 
-
-
 ## This would all work with the one exception being that if they give
 ## me GO, they have to also give me EVIDENCE and ONTOLOGY (something).
 ## So my code would have to check for that (IOW, if GO is detected,
@@ -105,47 +103,7 @@
 
 
 
-## data checking for data
-checkData <- function(data){
-    ## check that it's a list of data.frames.
-    dataClasses <- unique(sapply(data, class))
-    if(!is.list(data) || dataClasses!="data.frame")
-        stop("'data' must be a named list of data.frame objects")
 
-    ## There must be unique names for each data.frame. (
-    if(length(unique(names(data))) != length(data))
-        stop("All elements of 'data' must be a named")
-
-    ## None of the list names is allowed to be "genes", "metadata" 
-    blackListedNames <- c("genes","metadata")
-    if(any(names(data) %in% blackListedNames))
-       stop("'genes' and 'metadata' are reserved.  Please choose different names for elements of 'data'.")
-
-    ## The data.frames should NOT be allowed to have missing/redundant rows...
-    lengthsUni <- sapply(data, function(x){dim(unique(x))[1]})
-    lengthsRaw <- sapply(data, function(x){dim(x)[1]})
-    if(any(lengthsUni != lengthsRaw))
-        stop("'data' should not contain redundant rows")
-    
-    ## There must be colnames for each data.frame.(they must each be
-    ## unique)
-    .noGID <- function(x){x[!(x %in% "GID")]}
-    colnamesUni <- unique(.noGID(unlist(sapply(data, colnames))))
-    colnamesAll <- .noGID(unlist(sapply(data, colnames)))
-    names(colnamesAll) <- NULL
-    if(any(colnamesUni != colnamesAll))
-        stop("data.frames in 'data' should have unique names for all fields that are not the primary gene id 'GID'")
-
-    ## The 1st column of each data.frame must be a gene ID  (GID)
-    colnameGIDs <- sapply(data, function(x){colnames(x)[1]})
-    if(any(colnameGIDs != "GID"))
-        stop("The 1st column must always be the gene ID 'GID'")
-    
-    ## The GID columns all have to be the same type.
-    GIDCols <- unique(sapply(data, function(x){class(x[["GID"]])}))
-    if(length(GIDCols) >1)
-        stop("The type of data in the 'GID' columns must be the same for all data.frames")
-}
 
 ## This makes the special genes table of an EG DB.
 .makeGenesTable <- function(genes, con){
@@ -161,15 +119,20 @@ checkData <- function(data){
   dbBeginTransaction(con)
   dbGetPreparedQuery(con, sql, geneid)
   dbCommit(con)
+  sqliteQuickSQL(con,
+                 "CREATE INDEX IF NOT EXISTS genes__id_ind ON genes (_id)")    
+  sqliteQuickSQL(con,
+                 "CREATE INDEX IF NOT EXISTS genes_GID_ind ON genes (GID)")
   message("genes table filled")
 }
 
 
 
-.makeTable <- function(data, table, con, fieldNameLens=25,
-                             indFields="_id"){
-  message(paste("Populating",table,"table:"))
-  tableFieldLines <- paste(paste(names(data)[-1]," VARCHAR(",
+.makeTable <- function(data, table, con, fieldNameLens=25){
+    ## indFields tracks the things to index (not GID but _id, plus the rest)
+    indFields <- c(names(data)[!(names(data) %in% "GID")],"_id")
+    message(paste("Populating",table,"table:"))
+    tableFieldLines <- paste(paste(names(data)[-1]," VARCHAR(",
                                  fieldNameLens,") NOT NULL,    -- data"),
                            collapse="\n       ")
   ## For temp table, lets do it like this:
@@ -209,15 +172,6 @@ checkData <- function(data){
 }
 
 
-## Called for every new data.frame in data:
-## 1) read in the table and call .makeSimpleTable()? (or equiv.)
-## 2) add any missing genes to the "special" genes table (.update CentralTable?)
-.addMoreData <- function(df, name, con){
-    ## 1st make and populate new table
-    AnnotationForge:::.makeTable(df, table=name, con)
-    ## TODO: then grab all GIDs and try to enhance the genes table
-    ## findExtraGeneIDs()
-}
 
 ## helper to add most basic of metadata
 .addEssentialMetadata <- function(con, tax_id, genus, species){
@@ -230,11 +184,33 @@ checkData <- function(data){
   AnnotationForge:::.addMeta(con, name, value)
 }
 
+## helper to prepare/filter data for two GO tables.
+.makeNewGOTables <- function(con, goTable, goData){
+    ## So 1st drop the old go table
+    sqliteQuickSQL(con, paste0("DROP TABLE ",goTable,";"))
+    ## And then make the new ones.
+    require(GO.db)
+    goOnts <- select(GO.db, as.character(goData$GO), "ONTOLOGY")
+    if(dim(goOnts)[1] == dim(goData)[1]){
+        goData <- cbind(goData, goOnts)
+    }else{stop("Ontology should be 1:1 with GOIDs")}
+    ## and re-shuffle
+    goData <- goData[,c("GID","GO","EVIDENCE","ONTOLOGY")]
+    ## now filter that for terms that are "too new"
+    message("Dropping GO IDs that are too new for the current GO.db")
+    goData <- goData[goData[["GO"]] %in% Lkeys(GOTERM),]
+    ## Then make the 1st table
+    .makeTable(goData, names(goData), con=con)
+     
+    
+    
+}
+
 
 ## function to put together the database.
 ## This takes a named list of data.frames.
 makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, 
-                                    dbFileName){    
+                                    dbFileName, goTable){    
     ## set up DB connection 
     require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
@@ -244,20 +220,27 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
 #    sqliteQuickSQL(con, "DROP TABLE map_counts;")
 #    sqliteQuickSQL(con, "DROP TABLE map_metadata;")
     
-    ## call .makeCentralTable on 1st section of genes to get that started.
+    ## gather all GIDs together and make the genes table
     genes <- unique(unlist(unname(lapply(data, "[", 'GID'))))
     AnnotationForge:::.makeGenesTable(genes, con)
     
-    ## do each data.frame in turn
-    mapply(FUN=.addMoreData, data, names(data), MoreArgs=list(con=con))
+    ## Then do each data.frame in turn
+    mapply(FUN=.makeTable, data, names(data), MoreArgs=list(con=con))
     
     
     
     ## Add metadata but keep it very basic
     AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species)
-    
-    ## And no map counts because: no maps!
-    
+        
+    ## when we have a goTable, we make special GO tables
+    if(goTable %in% names(data)){
+        ## An extra check for go table (when specified)
+        goData <- data[[goTable]]
+        if(!all(names(goData) == c("GID", "GO", "EVIDENCE")))
+      stop("'goTable' must have three columns called 'GID','GO' and 'EVIDENCE'")
+        .makeNewGOTables(con, goTable, goData)
+    }
+
 }
 
 
@@ -272,6 +255,10 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
 .isSingleString <- function(x){
     is.atomic(x) && length(x) == 1L && is.character(x)
 }
+.isSingleStringOrNA <- function(x)
+{
+    is.atomic(x) && length(x) == 1L && (is.character(x) || is.na(x))
+}
 
 
 ## function to make the package:
@@ -282,63 +269,92 @@ makeOrgPackage <- function(data,
                            outputDir = ".",
                            tax_id,
                            genus,
-                           species){
+                           species,
+                           goTable=NA){
 
-  ## Data has to meet some strict criteria.
-  checkData(data)
-
-  if(!.isSingleString(version))
-      stop("'version' must be a single string")
-  if(!.isSingleString(maintainer))
-      stop("'maintainer' must be a single string")
-  if(!.isSingleString(author))
-      stop("'author' must be a single string")
-  if(outputDir!="." && file.access(outputDir)[[1]]!=0){
-      stop("Selected outputDir '", outputDir,"' does not exist.")}
-  if(!.isSingleString(tax_id))
-      stop("'tax_id' must be a single string")
-  if(!.isSingleString(genus))
-      stop("'genus' must be a single string")
-  if(!.isSingleString(species))
-      stop("'species' must be a single string")
+    ## Data has to meet some strict criteria.
+    ## check that it's a list of data.frames.
+    dataClasses <- unique(sapply(data, class))
+    if(!is.list(data) || dataClasses!="data.frame")
+        stop("'data' must be a named list of data.frame objects")
+    ## There must be unique names for each data.frame. (
+    if(length(unique(names(data))) != length(data))
+        stop("All elements of 'data' must be a named")
+    ## None of the list names is allowed to be "genes", "metadata" 
+    blackListedNames <- c("genes","metadata")
+    if(any(names(data) %in% blackListedNames))
+       stop("'genes' and 'metadata' are reserved.  Please choose different names for elements of 'data'.")
+    ## The data.frames should NOT be allowed to have missing/redundant rows...
+    lengthsUni <- sapply(data, function(x){dim(unique(x))[1]})
+    lengthsRaw <- sapply(data, function(x){dim(x)[1]})
+    if(any(lengthsUni != lengthsRaw))
+        stop("'data' should not contain redundant rows")
+    ## There must be colnames for each data.frame.(they must each be
+    ## unique)
+    .noGID <- function(x){x[!(x %in% "GID")]}
+    colnamesUni <- unique(.noGID(unlist(sapply(data, colnames))))
+    colnamesAll <- .noGID(unlist(sapply(data, colnames)))
+    names(colnamesAll) <- NULL
+    if(any(colnamesUni != colnamesAll))
+        stop("data.frames in 'data' should have unique names for all fields that are not the primary gene id 'GID'")
+    ## The 1st column of each data.frame must be a gene ID  (GID)
+    colnameGIDs <- sapply(data, function(x){colnames(x)[1]})
+    if(any(colnameGIDs != "GID"))
+        stop("The 1st column must always be the gene ID 'GID'")
+    ## The GID columns all have to be the same type.
+    GIDCols <- unique(sapply(data, function(x){class(x[["GID"]])}))
+    if(length(GIDCols) >1)
+        stop("The type of data in the 'GID' columns must be the same for all data.frames")
+    ## check other arguments
+    if(!.isSingleString(version))
+        stop("'version' must be a single string")
+    if(!.isSingleString(maintainer))
+        stop("'maintainer' must be a single string")
+    if(!.isSingleString(author))
+        stop("'author' must be a single string")
+    if(outputDir!="." && file.access(outputDir)[[1]]!=0){
+        stop("Selected outputDir '", outputDir,"' does not exist.")}
+    if(!.isSingleString(tax_id))
+        stop("'tax_id' must be a single string")
+    if(!.isSingleString(genus))
+        stop("'genus' must be a single string")
+    if(!.isSingleString(species))
+        stop("'species' must be a single string")
+    if(!.isSingleStringOrNA(goTable))
+        stop("'goTable' argument needs to be a single string or NA")
+    if(!is.na(goTable) && !(goTable %in% names(data)))
+        stop("When definined, 'goTable' needs to be a table name from 'data'")
+    
+    
+    ## generate name from the genus and species
+    dbName <- .generateOrgDbName(genus,species)
+    ## this becomes the file name for the DB
+    dbFileName <- file.path(outputDir,paste0(dbName, ".sqlite"))
+    ## Then make the DB
+    makeOrgDbFromDataFrames(data, tax_id, genus, species, dbFileName, goTable)
+        
   
-
-  ## generate name from the genus and species
-  dbName <- .generateOrgDbName(genus,species)
-  ## this becomes the file name for the DB
-  dbFileName <- file.path(outputDir,paste0(dbName, ".sqlite"))
-  ## Then make the DB
-  makeOrgDbFromDataFrames(data, tax_id, genus, species, dbFileName)
-  
-  ## TODO a separate function should be placed here to take in the DB
-  ## and remove redundant GO terms.
-  ## This will need to be optional since users may not want to have GO terms.
-  ## argument will have to specify where the GO terms are (tablename
-  ## or list element name)
-  ## require(GO.db)
-
-  
-  seed <- new("AnnDbPkgSeed",
-              Package= paste0(dbName,".db"),
-              Version=version,
-              Author=author,
-              Maintainer=maintainer,
-              PkgTemplate="NOSCHEMA.DB",
-              AnnObjPrefix=dbName,
-              organism = paste(genus, species),
-              species = paste(genus, species),
-              biocViews = "annotation",
-              manufacturerUrl = "no manufacturer",
-              manufacturer = "no manufacturer",
-              chipName = "no manufacturer")
-  
-  makeAnnDbPkg(seed, dbFileName, dest_dir=outputDir)
-  
-  ## cleanup
-  message("Now deleting temporary database file")
-  file.remove(dbfile)
-  ## return the path to the dir that was just created.
-  file.path(outputDir,paste0(dbName,".db"))
+    seed <- new("AnnDbPkgSeed",
+                Package= paste0(dbName,".db"),
+                Version=version,
+                Author=author,
+                Maintainer=maintainer,
+                PkgTemplate="NOSCHEMA.DB",
+                AnnObjPrefix=dbName,
+                organism = paste(genus, species),
+                species = paste(genus, species),
+                biocViews = "annotation",
+                manufacturerUrl = "no manufacturer",
+                manufacturer = "no manufacturer",
+                chipName = "no manufacturer")
+    
+    makeAnnDbPkg(seed, dbFileName, dest_dir=outputDir)
+    
+    ## cleanup
+    message("Now deleting temporary database file")
+    file.remove(dbfile)
+    ## return the path to the dir that was just created.
+    file.path(outputDir,paste0(dbName,".db"))
 }
 
 
