@@ -126,6 +126,7 @@ select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
 ## 4) Add indexing to relevant fields (_id, go_id and all others) - DONE
 
 
+
 ## 5) Add unit tests for new helpers
 ## 6) Add manual page 
 ## 7) Add vignette for makeOrgPackage() and for makeOrgPackageFromNCBI()
