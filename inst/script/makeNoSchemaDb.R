@@ -127,7 +127,9 @@ select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
 
 
 
-## 5) Add unit tests for new helpers
+## 5) Add unit tests for new helpers  - Need some help
+
+
 ## 6) Add manual page 
 ## 7) Add vignette for makeOrgPackage() and for makeOrgPackageFromNCBI()
 

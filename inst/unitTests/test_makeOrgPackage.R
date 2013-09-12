@@ -76,6 +76,8 @@ test_makeOrgPackage <- function(){
                                        species=species,
                                        goTable="go")
 
+## TODO:  Why can't I install from tempdir()???
+    
     ## Then install it?
 #    install.packages(res, repos=NULL)
 
