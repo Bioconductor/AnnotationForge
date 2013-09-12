@@ -245,9 +245,7 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
     
     ## Then do each data.frame in turn
     mapply(FUN=.makeTable, data, names(data), MoreArgs=list(con=con))
-    
-    
-    
+        
     ## Add metadata but keep it very basic
     AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species)
         
@@ -367,11 +365,11 @@ makeOrgPackage <- function(data,
                 manufacturer = "no manufacturer",
                 chipName = "no manufacturer")
     
-    makeAnnDbPkg(seed, dbFileName, dest_dir=outputDir)
+    makeAnnDbPkg(seed, dbFileName, dest_dir=paste0(outputDir,dbFileName))
     
     ## cleanup
     message("Now deleting temporary database file")
-    file.remove(dbfile)
+    file.remove(dbFileName)
     ## return the path to the dir that was just created.
     file.path(outputDir,paste0(dbName,".db"))
 }
