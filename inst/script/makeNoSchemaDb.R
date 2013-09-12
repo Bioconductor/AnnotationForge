@@ -100,10 +100,11 @@ select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
 
 
 ## TODO:
-## 1) Add checks for all arguments (especially data) 
-## 2) Add code to filter GO IDs
-## 3) Add code to look for and extract get extra GIDs
+## 1) Add checks for all arguments (especially data) - DONE
+## 2) Add code to look for and extract ALL extra GIDs - DONE
+## 3) Add code to filter GO IDs
 ## 4) Add unit tests for new helpers
 ## 5) Add manual page 
 ## 6) Add vignette for makeOrgPackage() and for makeOrgPackageFromNCBI()
+
 

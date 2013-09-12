@@ -245,7 +245,7 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
 #    sqliteQuickSQL(con, "DROP TABLE map_metadata;")
     
     ## call .makeCentralTable on 1st section of genes to get that started.
-    genes <- data[[1]][,1]
+    genes <- unique(unlist(unname(lapply(data, "[", 'GID'))))
     AnnotationForge:::.makeGenesTable(genes, con)
     
     ## do each data.frame in turn
@@ -309,7 +309,6 @@ makeOrgPackage <- function(data,
   dbFileName <- file.path(outputDir,paste0(dbName, ".sqlite"))
   ## Then make the DB
   makeOrgDbFromDataFrames(data, tax_id, genus, species, dbFileName)
-  
   
   ## TODO a separate function should be placed here to take in the DB
   ## and remove redundant GO terms.
