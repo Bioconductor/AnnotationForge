@@ -38,6 +38,8 @@ dbfile <- paste(dbName, ".sqlite", sep="")
 # debug(AnnotationForge:::.makeAnnDbPkg)
 # debug(AnnotationForge:::.createAnnotPackage)
 
+
+
 ## or test pkg building
 AnnotationForge:::makeOrgPackage(data=data,
                                  version="0.1",
@@ -51,6 +53,8 @@ AnnotationForge:::makeOrgPackage(data=data,
 
 ## then you can install on the return value
 install.packages("./org.Tguttata.eg.db", repos=NULL)
+
+
 
 
 ## NEXT UP: lets make an actual template in AnnotationDbi so that I
@@ -91,4 +95,15 @@ select(org.Tguttata.eg.db, keys="100008579", columns="GO", keytype="GID")
 select(org.Tguttata.eg.db, keys="100008579", columns=c("GO","EVIDENCE"), keytype="GID")
 ## What if there is only one table to visit?
 select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
+
+
+
+
+## TODO:
+## 1) Add checks for all arguments (especially data) 
+## 2) Add code to filter GO IDs
+## 3) Add code to look for and extract get extra GIDs
+## 4) Add unit tests for new helpers
+## 5) Add manual page 
+## 6) Add vignette for makeOrgPackage() and for makeOrgPackageFromNCBI()
 

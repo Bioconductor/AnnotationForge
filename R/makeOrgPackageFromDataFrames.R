@@ -105,15 +105,46 @@
 
 
 
-## TODO: 
-## check the list of data.frames.
-## The 1st column of each data.frame must be a gene Id (of the same kind).
-## There must be names for each data.frame.
-## there must be valid colnames for each data.frame.
-## none of the list names is allowed to be "genes", "metadata" etc.
-## All the data.frames should NOT be allowed to have missing rows...
+## data checking for data
 checkData <- function(data){
+    ## check that it's a list of data.frames.
+    dataClasses <- unique(sapply(data, class))
+    if(!is.list(data) || dataClasses!="data.frame")
+        stop("'data' must be a named list of data.frame objects")
 
+    ## There must be unique names for each data.frame. (
+    if(length(unique(names(data))) != length(data))
+        stop("All elements of 'data' must be a named")
+
+    ## None of the list names is allowed to be "genes", "metadata" 
+    blackListedNames <- c("genes","metadata")
+    if(any(names(data) %in% blackListedNames))
+       stop("'genes' and 'metadata' are reserved.  Please choose different names for elements of 'data'.")
+
+    ## The data.frames should NOT be allowed to have missing/redundant rows...
+    lengthsUni <- sapply(data, function(x){dim(unique(x))[1]})
+    lengthsRaw <- sapply(data, function(x){dim(x)[1]})
+    if(any(lengthsUni != lengthsRaw))
+        stop("'data' should not contain redundant rows")
+    
+    ## There must be colnames for each data.frame.(they must each be
+    ## unique)
+    .noGID <- function(x){x[!(x %in% "GID")]}
+    colnamesUni <- unique(.noGID(unlist(sapply(data, colnames))))
+    colnamesAll <- .noGID(unlist(sapply(data, colnames)))
+    names(colnamesAll) <- NULL
+    if(any(colnamesUni != colnamesAll))
+        stop("data.frames in 'data' should have unique names for all fields that are not the primary gene id 'GID'")
+
+    ## The 1st column of each data.frame must be a gene ID  (GID)
+    colnameGIDs <- sapply(data, function(x){colnames(x)[1]})
+    if(any(colnameGIDs != "GID"))
+        stop("The 1st column must always be the gene ID 'GID'")
+    
+    ## The GID columns all have to be the same type.
+    GIDCols <- unique(sapply(data, function(x){class(x[["GID"]])}))
+    if(length(GIDCols) >1)
+        stop("The type of data in the 'GID' columns must be the same for all data.frames")
 }
 
 ## This makes the special genes table of an EG DB.
@@ -133,11 +164,7 @@ checkData <- function(data){
   message("genes table filled")
 }
 
-## TODO: clean this function up (some features are probably not needed like
-## fieldNameLens which is updates automagically by the DB...)
 
-## OR TODO: need code to estimate length of varchars and then call by
-## setting proper values for fieldNameLens=c(255,80)
 
 .makeTable <- function(data, table, con, fieldNameLens=25,
                              indFields="_id"){
@@ -159,21 +186,20 @@ checkData <- function(data){
     ## Create our real table.
     .makeEmptySimpleTable(con, table, tableFieldLines)
     selFieldLines <- paste(paste("t.",names(data)[-1],sep=""),collapse=",")
-    sql<- paste("
+    sql<- paste0("
     INSERT INTO ",table,"
      SELECT g._id as _id, ",selFieldLines,"
      FROM genes AS g, temp AS t
      WHERE g.GID=t.GID
-     ORDER BY g._id;
-     ", sep="") 
+     ORDER BY g._id;")
     sqliteQuickSQL(con, sql)
 
     ## Add index to all fields in indFields (default is all)
     for(i in seq_len(length(indFields))){
     sqliteQuickSQL(con,
-        paste("CREATE INDEX IF NOT EXISTS ",
+        paste0("CREATE INDEX IF NOT EXISTS ",
               table,"_",indFields[i],"_ind ON ",table,
-              " (",indFields[i],");", sep=""))      
+              " (",indFields[i],");"))    
     }
     
     ## drop the temp table
@@ -207,18 +233,16 @@ checkData <- function(data){
 
 ## function to put together the database.
 ## This takes a named list of data.frames.
-makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, dbFileName){
-
-    ## Data has to meet some strict criteria.  the 1st col must always
-    ## be named the same and be the same type (for example)
-    
-    ## checkData(data)
-    
+makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, 
+                                    dbFileName){    
     ## set up DB connection 
     require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
     con <- dbConnect(SQLite(), dbFileName)
     AnnotationForge:::.createMetadataTables(con)
+    ## TODO: why can't I drop these (investigate)
+#    sqliteQuickSQL(con, "DROP TABLE map_counts;")
+#    sqliteQuickSQL(con, "DROP TABLE map_metadata;")
     
     ## call .makeCentralTable on 1st section of genes to get that started.
     genes <- data[[1]][,1]
@@ -245,9 +269,13 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, dbFileName){
 ## TODO: this should return the path to the created dir so that the
 ## user can just call install.packages(on that filepath).
 
+.isSingleString <- function(x){
+    is.atomic(x) && length(x) == 1L && is.character(x)
+}
+
+
 ## function to make the package:
 makeOrgPackage <- function(data,
-                          ## fields,
                            version,
                            maintainer,
                            author,
@@ -256,29 +284,38 @@ makeOrgPackage <- function(data,
                            genus,
                            species){
 
+  ## Data has to meet some strict criteria.
+  checkData(data)
+
+  if(!.isSingleString(version))
+      stop("'version' must be a single string")
+  if(!.isSingleString(maintainer))
+      stop("'maintainer' must be a single string")
+  if(!.isSingleString(author))
+      stop("'author' must be a single string")
   if(outputDir!="." && file.access(outputDir)[[1]]!=0){
-    stop("Selected outputDir '", outputDir,"' does not exist.")}
+      stop("Selected outputDir '", outputDir,"' does not exist.")}
+  if(!.isSingleString(tax_id))
+      stop("'tax_id' must be a single string")
+  if(!.isSingleString(genus))
+      stop("'genus' must be a single string")
+  if(!.isSingleString(species))
+      stop("'species' must be a single string")
+  
 
   ## generate name from the genus and species
   dbName <- .generateOrgDbName(genus,species)
   ## this becomes the file name for the DB
-  dbFileName <- paste(dbName, ".sqlite", sep="")
-
-  
-  ## TODO:
-  ## 'outputDir' is not passed to makeOrgDbFromDataFrames(). Hence the db file
-  ## is always created in ".".
-  
+  dbFileName <- file.path(outputDir,paste0(dbName, ".sqlite"))
+  ## Then make the DB
   makeOrgDbFromDataFrames(data, tax_id, genus, species, dbFileName)
   
-
   
   ## TODO a separate function should be placed here to take in the DB
   ## and remove redundant GO terms.
   ## This will need to be optional since users may not want to have GO terms.
   ## argument will have to specify where the GO terms are (tablename
   ## or list element name)
-  
   ## require(GO.db)
 
   
