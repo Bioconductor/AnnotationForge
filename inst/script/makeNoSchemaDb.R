@@ -114,16 +114,18 @@ select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
 ## 2) Add code to look for and extract ALL extra GIDs - DONE
 
 ## 3) Add code to filter GO IDs :
-   ## A - add arg to function to say which table should get GO treatment.
-   ## B - add special checks for GO frame (special checker)
-       ## - only three cols required (GID, GO, EVIDENCE)
-       ## - those cols must have names: GID, GO, EVIDENCE
-   ## C - add function to drop old go table, and make 2 new ones:
-   ## D - use .filterGOFrame to remove stuff that's too new from go->populate
-   ## E - make newer .expandGOFRAME to make a go_all table
-       ## - (GID, GOALL, EVIDENCEALL, ONTOLOGYALL)
-       ## - require(GO.db); select(GO.db, go$GO, "ONTOLOGY")
-## 4) Add indexing to relevant fields (_id, go_id and all others)
+   ## A - add arg to function to say which table should get GO treatment. - DONE
+   ## B - add special checks for GO frame (special checker)- DONE
+       ## - only three cols required (GID, GO, EVIDENCE)- DONE
+       ## - those cols must have names: GID, GO, EVIDENCE- DONE
+   ## C - add function to drop old go table, and make 2 new ones:  -DONE
+   ## D - use .filterGOFrame to remove stuff that's too new from go->populate - DONE
+   ## E - make newer .expandGOFRAME to make a go_all table -DONE
+       ## - (GID, GOALL, EVIDENCEALL, ONTOLOGYALL) - yep
+       ## - require(GO.db); select(GO.db, go$GO, "ONTOLOGY") -yep
+## 4) Add indexing to relevant fields (_id, go_id and all others) - DONE
+
+
 ## 5) Add unit tests for new helpers
 ## 6) Add manual page 
 ## 7) Add vignette for makeOrgPackage() and for makeOrgPackageFromNCBI()

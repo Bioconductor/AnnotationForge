@@ -184,26 +184,45 @@
   AnnotationForge:::.addMeta(con, name, value)
 }
 
+.addOntologyData <- function(data){
+    ## And then make the new ones.
+    require(GO.db)
+    goOnts <- select(GO.db, as.character(data$GO), "ONTOLOGY")
+    if(dim(goOnts)[1] == dim(data)[1]){
+        data <- cbind(data, goOnts)
+    }else{stop("Ontology should be 1:1 with GOIDs")}
+    ## and re-shuffle
+    data[,c("GID","GO","EVIDENCE","ONTOLOGY")]
+}
+
 ## helper to prepare/filter data for two GO tables.
 .makeNewGOTables <- function(con, goTable, goData){
     ## So 1st drop the old go table
     sqliteQuickSQL(con, paste0("DROP TABLE ",goTable,";"))
-    ## And then make the new ones.
-    require(GO.db)
-    goOnts <- select(GO.db, as.character(goData$GO), "ONTOLOGY")
-    if(dim(goOnts)[1] == dim(goData)[1]){
-        goData <- cbind(goData, goOnts)
-    }else{stop("Ontology should be 1:1 with GOIDs")}
-    ## and re-shuffle
-    goData <- goData[,c("GID","GO","EVIDENCE","ONTOLOGY")]
+    ## add Ontologies data
+    goData <- .addOntologyData(goData)
     ## now filter that for terms that are "too new"
     message("Dropping GO IDs that are too new for the current GO.db")
     goData <- goData[goData[["GO"]] %in% Lkeys(GOTERM),]
     ## Then make the 1st table
-    .makeTable(goData, names(goData), con=con)
-     
-    
-    
+    .makeTable(goData, "go", con=con)
+
+    ## Then prepare data for the 2nd (go_all) table
+    gbp <- goData[goData$ONTOLOGY=="BP",c("GID","GO","EVIDENCE")]
+    gcc <- goData[goData$ONTOLOGY=="CC",c("GID","GO","EVIDENCE")]
+    gmf <- goData[goData$ONTOLOGY=="MF",c("GID","GO","EVIDENCE")]
+    names(gbp) <- names(gcc) <- names(gmf) <- c("gene_id","go_id","evidence")
+    ## then recycle older expand function
+    bpAll <- .expandGOFrame(gbp, GOBPANCESTOR)
+    mfAll <- .expandGOFrame(gmf, GOMFANCESTOR)
+    ccAll <- .expandGOFrame(gcc, GOCCANCESTOR)
+    ## then combine
+    goAllData <- rbind(bpAll,ccAll,mfAll)
+    names(goAllData) <- c("GID","GO","EVIDENCE")
+    goAllData <- .addOntologyData(goAllData)
+    names(goAllData) <- c("GID","GOALL","EVIDENCEALL","ONTOLOGYALL")
+    ## Then make the 2nd table
+    .makeTable(goAllData, "go_all", con=con)
 }
 
 
