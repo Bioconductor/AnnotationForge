@@ -20,7 +20,7 @@ fGO <- fGO[fGO[,2]!="",]
 fGO <- fGO[fGO[,3]!="",]
 colnames(fGO) <- c("GID","GO","EVIDENCE")
 
-## Now make a list
+## Now make a list (for testing internal stuff)
 data <- list(gene_info=fSym, chromosome=fChr, go=fGO)
 ## And set up come other variables
 genus <- "Taeniopygia"
@@ -66,7 +66,9 @@ test_expandGOFrame <- function(){
 
 
 test_makeOrgPackage <- function(){
-    res <- AnnotationForge:::makeOrgPackage(data=data,
+    res <- AnnotationForge:::makeOrgPackage(gene_info=fSym,
+                                       chromosome=fChr,
+                                       go=fGO,
                                        version="0.1",
                                        maintainer="Some One <so@someplace.org>",
                                        author="Some One <so@someplace.org>",

@@ -229,7 +229,7 @@
 ## function to put together the database.
 ## This takes a named list of data.frames.
 makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, 
-                                    dbFileName, goTable){    
+                                    dbFileName, goTable){
     ## set up DB connection 
     require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
@@ -279,7 +279,7 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
 
 
 ## function to make the package:
-makeOrgPackage <- function(data,
+makeOrgPackage <- function(...,
                            version,
                            maintainer,
                            author,
@@ -288,6 +288,8 @@ makeOrgPackage <- function(data,
                            genus,
                            species,
                            goTable=NA){
+    ## get all the arguments into a list
+    data <- list(...)
 
     ## Data has to meet some strict criteria.
     ## check that it's a list of data.frames.

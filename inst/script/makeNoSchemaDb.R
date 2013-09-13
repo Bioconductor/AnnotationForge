@@ -23,7 +23,7 @@ fGO <- fGO[fGO[,3]!="",]
 colnames(fGO) <- c("GID","GO","EVIDENCE")
 
 ## Now make a list
-data <- list(gene_info=fSym, chromosome=fChr, go=fGO)
+## data <- list(gene_info=fSym, chromosome=fChr, go=fGO)
 genus <- "Taeniopygia"
 species <- "guttata"
 dbName <- AnnotationForge:::.generateOrgDbName(genus,species)
@@ -41,7 +41,7 @@ dbfile <- paste(dbName, ".sqlite", sep="")
 
 
 ## or test pkg building
-AnnotationForge:::makeOrgPackage(data=data,
+AnnotationForge:::makeOrgPackage(gene_info=fSym, chromosome=fChr, go=fGO,
                                  version="0.1",
                                  maintainer="Some One <so@someplace.org>",
                                  author="Some One <so@someplace.org>",
@@ -51,7 +51,7 @@ AnnotationForge:::makeOrgPackage(data=data,
                                  species=species)
 
 
-AnnotationForge:::makeOrgPackage(data=data,
+AnnotationForge:::makeOrgPackage(gene_info=fSym, chromosome=fChr, go=fGO,
                                  version="0.1",
                                  maintainer="Some One <so@someplace.org>",
                                  author="Some One <so@someplace.org>",
@@ -124,6 +124,7 @@ select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
        ## - (GID, GOALL, EVIDENCEALL, ONTOLOGYALL) - yep
        ## - require(GO.db); select(GO.db, go$GO, "ONTOLOGY") -yep
 ## 4) Add indexing to relevant fields (_id, go_id and all others) - DONE
+## 5.5) change the argument on the external function from a list to a ... Then internally convert that to a list use: extraArgs <- list(...) - DONE
 
 
 
