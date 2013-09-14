@@ -290,6 +290,8 @@ makeOrgPackage <- function(...,
                            goTable=NA){
     ## get all the arguments into a list
     data <- list(...)
+    ## drop any rownames on all data.frames
+    data <- lapply(data, function(x){rownames(x) <- NULL; x})
 
     ## Data has to meet some strict criteria.
     ## check that it's a list of data.frames.

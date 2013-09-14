@@ -125,13 +125,12 @@ select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
        ## - require(GO.db); select(GO.db, go$GO, "ONTOLOGY") -yep
 ## 4) Add indexing to relevant fields (_id, go_id and all others) - DONE
 ## 5.5) change the argument on the external function from a list to a ... Then internally convert that to a list use: extraArgs <- list(...) - DONE
+## 6) Add manual page - DONE
+
 
 
 
 ## 5) Add unit tests for new helpers  - Need some help
-
-
-## 6) Add manual page
 
 ## 6.5) Add more checks: 1) GO terms should look like: "GO:DDDDDDD"; 2) no row names on the data.frames. 
 

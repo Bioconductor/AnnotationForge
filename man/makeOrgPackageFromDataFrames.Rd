@@ -91,15 +91,15 @@ fGO <- fGO[fGO[,2]!="",]
 fGO <- fGO[fGO[,3]!="",]
 colnames(fGO) <- c("GID","GO","EVIDENCE")
 
-AnnotationForge:::makeOrgPackage(gene_info=fSym, chromosome=fChr, go=fGO,
-                                 version="0.1",
-                                 maintainer="Some One <so@someplace.org>",
-                                 author="Some One <so@someplace.org>",
-                                 outputDir = ".",
-                                 tax_id="59729",
-                                 genus="Taeniopygia",
-                                 species="guttata",
-                                 goTable="go")
+makeOrgPackage(gene_info=fSym, chromosome=fChr, go=fGO,
+               version="0.1",
+               maintainer="Some One <so@someplace.org>",
+               author="Some One <so@someplace.org>",
+               outputDir = ".",
+               tax_id="59729",
+               genus="Taeniopygia",
+               species="guttata",
+               goTable="go")
 
 ## then you can call install.packages based on the return value
 install.packages("./org.Tguttata.eg.db", repos=NULL)
