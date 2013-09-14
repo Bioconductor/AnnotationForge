@@ -36,7 +36,10 @@ export(
 
     ## This one will make you an org package:
     makeOrgPackageFromNCBI,
- 
+
+    ## This one will make you an org package from just data.frames:
+    makeOrgPackage,
+       
     ## from R/makeProbePackage.R
     getProbeDataAffy,
     getProbeData_1lq,

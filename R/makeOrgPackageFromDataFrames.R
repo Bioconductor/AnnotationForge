@@ -295,19 +295,19 @@ makeOrgPackage <- function(...,
     ## check that it's a list of data.frames.
     dataClasses <- unique(sapply(data, class))
     if(!is.list(data) || dataClasses!="data.frame")
-        stop("'data' must be a named list of data.frame objects")
+        stop("'...' must be a named set of data.frame objects")
     ## There must be unique names for each data.frame. (
     if(length(unique(names(data))) != length(data))
-        stop("All elements of 'data' must be a named")
+        stop("All elements of '...' must be a named")
     ## None of the list names is allowed to be "genes", "metadata" 
     blackListedNames <- c("genes","metadata")
     if(any(names(data) %in% blackListedNames))
-       stop("'genes' and 'metadata' are reserved.  Please choose different names for elements of 'data'.")
+       stop("'genes' and 'metadata' are reserved.  Please choose different names for elements of '...'.")
     ## The data.frames should NOT be allowed to have missing/redundant rows...
     lengthsUni <- sapply(data, function(x){dim(unique(x))[1]})
     lengthsRaw <- sapply(data, function(x){dim(x)[1]})
     if(any(lengthsUni != lengthsRaw))
-        stop("'data' should not contain redundant rows")
+        stop("data.frames passed in to '...' should not contain redundant rows")
     ## There must be colnames for each data.frame.(they must each be
     ## unique)
     .noGID <- function(x){x[!(x %in% "GID")]}
@@ -315,7 +315,7 @@ makeOrgPackage <- function(...,
     colnamesAll <- .noGID(unlist(sapply(data, colnames)))
     names(colnamesAll) <- NULL
     if(any(colnamesUni != colnamesAll))
-        stop("data.frames in 'data' should have unique names for all fields that are not the primary gene id 'GID'")
+        stop("data.frames should have completely unique names for all fields that are not the primary gene id 'GID'")
     ## The 1st column of each data.frame must be a gene ID  (GID)
     colnameGIDs <- sapply(data, function(x){colnames(x)[1]})
     if(any(colnameGIDs != "GID"))
@@ -342,7 +342,7 @@ makeOrgPackage <- function(...,
     if(!.isSingleStringOrNA(goTable))
         stop("'goTable' argument needs to be a single string or NA")
     if(!is.na(goTable) && !(goTable %in% names(data)))
-        stop("When definined, 'goTable' needs to be a table name from 'data'")
+        stop("When definined, 'goTable' needs to be a table name from the named data.frames passed in to '...'")
     
     
     ## generate name from the genus and species
