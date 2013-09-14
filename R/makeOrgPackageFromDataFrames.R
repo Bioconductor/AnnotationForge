@@ -251,10 +251,12 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
         
     ## when we have a goTable, we make special GO tables
     if(goTable %in% names(data)){
-        ## An extra check for go table (when specified)
+        ## Extra checks for go table (when specified)
         goData <- data[[goTable]]
         if(!all(names(goData) == c("GID", "GO", "EVIDENCE")))
       stop("'goTable' must have three columns called 'GID','GO' and 'EVIDENCE'")
+        if(any(!grepl("^GO:", as.character(goData$GO))))
+            stop("'goTable' GO Ids must be formatted like 'GO:XXXXXXX'")
         .makeNewGOTables(con, goTable, goData)
     }
 

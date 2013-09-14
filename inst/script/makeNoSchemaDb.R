@@ -132,7 +132,9 @@ select(org.Tguttata.eg.db, keys="BDNF", columns="GENENAME", keytype="SYMBOL")
 
 ## 5) Add unit tests for new helpers  - Need some help
 
-## 6.5) Add more checks: 1) GO terms should look like: "GO:DDDDDDD"; 2) no row names on the data.frames. 
+## 6.5) Add more checks:
+   ##1) GO terms should look like: "GO:DDDDDDD";
+   ## 2) no row names on the data.frames. - DONE
 
 ## 7) Add vignette for makeOrgPackage() and for makeOrgPackageFromNCBI()
 
