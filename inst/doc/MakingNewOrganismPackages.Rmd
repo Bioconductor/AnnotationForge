@@ -1,0 +1,22 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Accessing the KEGG REST API}
+-->
+
+# Making Organism packages
+
+### by Marc Carlson
+
+## Overview
+
+Making Organism Packages is a straightforward process using the helper
+functions makeOrgPackageFromNCBI() and makeOrgPackage().  If your
+package is available at NCBI with an identifiable NCBI Taxonomy ID you
+can try makeOrgPackageFromNCBI().  However, even if this fails, the
+second and more general makeOrgPackage() function will allow you to
+make a database package using only data.frames of data.
+
+
+## Making use of makeOrgPackageFromNCBI()
+
+The makeOrgPackageFromNCBI() function, will take arguments for

@@ -560,6 +560,7 @@
   .populateBaseTable(con, sql, data, "map_counts")
 }
 
+
 #########################################################################
 ## Generate the database using the helper functions:
 #########################################################################
@@ -676,33 +677,18 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
 
 
 
-
-
-## TODO (here):
-
-## 14) There is more work to do still in terms of making the MAPCOUNTS accurate.
-## 15) Make sure than when we use blast2GO, we adjust the metadata accordingly!
-
-## 12) Drop the NCBI_getters.R file (test the code 1st to verify that we don't need it).
-
-## 13) Add the ability to make a DB from Ensembl sources (this should be just a few functions and a new template away)
-
-
-
-
-## DB building tests.
-
-## makeOrgDbFromNCBI("9606", "Homo", "sapiens")
-## makeOrgDbFromNCBI("1428") ## Bacillus thuringiensis?
-## Still don't kwow which kind ... Bacillus thuringiensis?
-
-
-## try zebrafinch as a better test than human.
-
-## makeOrgDbFromNCBI("59729", genus = "Taeniopygia" , species = "guttata")
-
-
-
+## For argument checking:
+.isSingleString <- function(x){
+    is.atomic(x) && length(x) == 1L && is.character(x)
+}
+.isSingleStringOrNA <- function(x)
+{
+    is.atomic(x) && length(x) == 1L && (is.character(x) || is.na(x))
+}
+.isSingleStringOrNull <- function(x)
+{
+    is.atomic(x) && length(x) == 1L && (is.character(x) || is.null(x))
+}
 
 
 ## function to make the package:
@@ -714,10 +700,24 @@ makeOrgPackageFromNCBI <- function(version,
                                genus,
                                species,
                                NCBIFilesDir=NULL){
-
+  ## Arguement checking:
+  if(!.isSingleString(version))
+      stop("'version' must be a single string")
+  if(!.isSingleString(maintainer))
+      stop("'maintainer' must be a single string")
+  if(!.isSingleString(author))
+      stop("'author' must be a single string")
   if(outputDir!="." && file.access(outputDir)[[1]]!=0){
-    stop("Selected outputDir '", outputDir,"' does not exist.")}
-
+      stop("Selected outputDir '", outputDir,"' does not exist.")}
+  if(!.isSingleString(tax_id))
+      stop("'tax_id' must be a single string")
+  if(!.isSingleString(genus))
+      stop("'genus' must be a single string")
+  if(!.isSingleString(species))
+      stop("'species' must be a single string")
+  if(!.isSingleStringOrNull(NCBIFilesDir))
+      stop("'NCBIFilesDir' argument needs to be a single string or NULL")
+       
   ## 'outputDir' is not passed to makeOrgDbFromNCBI(). Hence the db file
   ## is always created in ".". Maybe that could be revisited.
   makeOrgDbFromNCBI(tax_id=tax_id, genus=genus, species=species,
@@ -748,45 +748,3 @@ makeOrgPackageFromNCBI <- function(version,
 
 
 
-
-############
-### TEST - works
-############
-
-## library(AnnotationDbi)
-## #source("NCBI_ftp.R") #
-## source("~/proj/Rpacks/AnnotationDbi/R/NCBI_ftp.R")
-## tax_id = "59729"
-## genus = "Taeniopygia"
-## species = "guttata"
-## outputDir = "."
-## version = "0.1"
-## author = "me <me@someplace>"
-## maintainer = "me <me@someplace>"
-## dbName <- .generateOrgDbName(genus,species)  
-## seed <- new("AnnDbPkgSeed",
-##             Package= paste(dbName,".db",sep=""),
-##             Version=version,
-##             Author=author,
-##             Maintainer=maintainer,
-##             PkgTemplate="ORGANISM.DB",
-##             AnnObjPrefix=dbName,
-##             organism = paste(genus, species),
-##             species = paste(genus, species),
-##             biocViews = "annotation",
-##             manufacturerUrl = "no manufacturer",
-##             manufacturer = "no manufacturer",
-##             chipName = "no manufacturer")
-## makeAnnDbPkg(seed, paste(outputDir,"/", dbName,".sqlite", sep=""),
-##              dest_dir = outputDir)
-
-
-## "Complete" TEST - works
-
-## makeOrgPackageFromNCBI(version = "0.1",
-##                        author = "me <me@someplace>",
-##                        maintainer = "me <me@someplace>",
-##                        outputDir = ".",
-##                        tax_id = "59729",
-##                        genus = "Taeniopygia",
-##                        species = "guttata")

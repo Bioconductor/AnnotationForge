@@ -2,16 +2,13 @@
 %\VignetteDepends{org.Hs.eg.db}
 %\VignetteDepends{human.db0}
 %\VignetteKeywords{annotation, database}
-%\VignettePackage{AnnotationDbi}
+%\VignettePackage{AnnotationForge}
+
 \documentclass[11pt]{article}
 
-\newcommand{\Rfunction}[1]{{\texttt{#1}}}
-\newcommand{\Robject}[1]{{\texttt{#1}}}
-\newcommand{\Rpackage}[1]{{\textit{#1}}}
-\newcommand{\Rclass}[1]{{\textit{#1}}}
-
-\usepackage{hyperref}
-
+<<style, eval=TRUE, echo=FALSE, results=tex>>=
+BiocStyle::latex()
+@
 
 \title{Creating a New Annotation Package using SQLForge}
 \author{Marc Carlson, Herve Pages, Nianhua Li}

@@ -3,46 +3,9 @@
 
 \documentclass[11pt]{article}
 
-
-\usepackage{Sweave}
-\usepackage[usenames,dvipsnames]{color}
-\usepackage{graphics}
-\usepackage{latexsym, amsmath, amssymb}
-\usepackage{authblk}
-\usepackage[colorlinks=true, linkcolor=Blue, urlcolor=Blue,
-  citecolor=Blue]{hyperref}
-
-%% Simple macros
-
-\newcommand{\code}[1]{{\texttt{#1}}}
-\newcommand{\file}[1]{{\texttt{#1}}}
-
-\newcommand{\software}[1]{\textsl{#1}}
-\newcommand\R{\textsl{R}}
-\newcommand\Bioconductor{\textsl{Bioconductor}}
-\newcommand\Rpackage[1]{{\textsl{#1}\index{#1 (package)}}}
-\newcommand\Biocpkg[1]{%
-  {\href{http://bioconductor.org/packages/devel/bioc/html/#1.html}%
-    {\textsl{#1}}}%
-  \index{#1 (package)}}
-\newcommand\Rpkg[1]{%
-  {\href{http://cran.fhcrc.org/web/devel/#1/index.html}%
-    {\textsl{#1}}}%
-  \index{#1 (package)}}
-\newcommand\Biocdatapkg[1]{%
-  {\href{http://bioconductor.org/packages/devel/data/experiment/html/#1.html}%
-    {\textsl{#1}}}%
-  \index{#1 (package)}}
-\newcommand\Biocannopkg[1]{%
-  {\href{http://bioconductor.org/packages/release/data/annotation/html/#1.html}%
-    {\textsl{#1}}}%
-  \index{#1 (package)}}
-\newcommand\Robject[1]{{\small\texttt{#1}}}
-\newcommand\Rclass[1]{{\textit{#1}\index{#1 (class)}}}
-\newcommand\Rfunction[1]{{{\small\texttt{#1}}\index{#1 (function)}}}
-\newcommand\Rmethod[1]{{\texttt{#1}}}
-\newcommand\Rfunarg[1]{{\small\texttt{#1}}}
-\newcommand\Rcode[1]{{\small\texttt{#1}}}
+<<style, eval=TRUE, echo=FALSE, results=tex>>=
+BiocStyle::latex()
+@
 
 %% Question, Exercise, Solution
 \usepackage{theorem}
@@ -73,11 +36,11 @@
 
 \section{Introduction}
 The most common interface for retrieving data in \Bioconductor{} is
-now the \Rmethod{select} method.  The interface provides a simple way
+now the \Rfunction{select} method.  The interface provides a simple way
 of extracting data.  
 
 There are really 4 methods that work together to allow a
-\Rmethod{select} interface.  The 1st one is \Rmethod{columns}, which
+\Rfunction{select} interface.  The 1st one is \Rfunction{columns}, which
 tells you about what kinds of values you can retrieve as columns in
 the final result.
 
@@ -86,14 +49,14 @@ library(Homo.sapiens)
 columns(Homo.sapiens)
 @ 
 
-The next method is \Rmethod{keytypes} which tells you the kinds of
+The next method is \Rfunction{keytypes} which tells you the kinds of
 things that can be used as keys.
 
 <<Homo.sapiens>>=
 keytypes(Homo.sapiens) 
 @ 
 
-The third method is \Rmethod{keys} which is used to retrieve all the
+The third method is \Rfunction{keys} which is used to retrieve all the
 viable keys of a particular type.
 
 <<Homo.sapiens>>=
@@ -101,7 +64,7 @@ k <- head(keys(Homo.sapiens,keytype="ENTREZID"))
 k
 @ 
 
-And finally there is \Rmethod{select}, which extracts data by using
+And finally there is \Rfunction{select}, which extracts data by using
 values supplied by the other method.
 
 <<Homo.sapiens>>=
@@ -169,7 +132,7 @@ be made available in this format).
 
 But what if you had another kind of web resource or database and you
 wanted to expose it to the world using something like this new
-\Rmethod{select} method interface?  How could you go about this?
+\Rfunction{select} method interface?  How could you go about this?
 
 
 
@@ -392,7 +355,7 @@ aa
 In order to expose a web service using select, you will need to create
 an object that will be loaded at the time when the package is loaded.
 Unlike with a database, the purpose of this object is pretty much
-purely for dispatch.  We just need \Rmethod{select} and it's friends
+purely for dispatch.  We just need \Rfunction{select} and it's friends
 to know which select method to call
 
 The first step is to create an object.  Creating an object is simple
@@ -430,16 +393,16 @@ the package namespace as the package loads.
 \section{Creating package accessors for a web service}
 
 At this point you have all that you need to know in order to implement
-\Rmethod{keytype},\Rmethod{columns},\Rmethod{keys} and \Rmethod{select}
+\Rfunction{keytype},\Rfunction{columns},\Rfunction{keys} and \Rfunction{select}
 for your package.  In this section we will explore how you could
 implement some of these if you were making a package that exposed
 uniprot.
 
-\subsection{Example: creating \Rmethod{keytypes} and \Rmethod{columns} methods}
+\subsection{Example: creating \Rfunction{keytypes} and \Rfunction{columns} methods}
 
-The \Rmethod{keytype} and \Rmethod{columns} methods are always the 1st
+The \Rfunction{keytype} and \Rfunction{columns} methods are always the 1st
 ones you should implement.  They are the easiest, and their existence
-is required to be able to use \Rmethod{keys} or \Rmethod{select}.  In
+is required to be able to use \Rfunction{keys} or \Rfunction{select}.  In
 this simple case we only have one value that can be used as a keytype,
 and that is a UNIPROT ID.
 
@@ -460,11 +423,11 @@ setMethod("columns", "uniprot",
 columns(uniprot)
 @
 %%
-Also, notice how for both \Rmethod{keytypes} and \Rmethod{columns} I am
+Also, notice how for both \Rfunction{keytypes} and \Rfunction{columns} I am
 using all capital letters.  This is a style adopted throughout the
 project.
 
-\subsection{Example 2: creating a \Rmethod{select} method}
+\subsection{Example 2: creating a \Rfunction{select} method}
 
 At this point we have enough to be able to make a select method.
 
@@ -472,7 +435,7 @@ At this point we have enough to be able to make a select method.
 \begin{Exercise}
 Using what you have learned above, and the helper function from
 earlier, define a select method.  This select method will have a
-default \Rfunarg{keytype} of "UNIPROT".
+default \Rcode{keytype} of "UNIPROT".
 \end{Exercise}
 \begin{Solution}
 <<webServiceSelect>>=
@@ -536,8 +499,8 @@ useful functions for doing this.  Most of these come from the
 \Rpackage{RSQLite} or \Rpackage{DBI} packages.  For the sake of
 simplicity, I will only discuss those that are immediately useful for
 exploring and extracting data from a database in this vignette.  One
-pair of useful methods are the \Rmethod{dbListTables} and
-\Rmethod{dbListFields} which are useful for exploring the schema of a
+pair of useful methods are the \Rfunction{dbListTables} and
+\Rfunction{dbListFields} which are useful for exploring the schema of a
 database.
 
 <<dbListTables>>=
@@ -547,7 +510,7 @@ dbListFields(con, "Mus_musculus")
 @ 
 %%
 For actually executing SQL to retrieve data, you probably want to
-use something like \Rmethod{dbGetQuery}.  The only caveat is that this
+use something like \Rfunction{dbGetQuery}.  The only caveat is that this
 will actually require you to know a little SQL.
 %%
 <<dbGetQuery>>=
@@ -645,7 +608,7 @@ already know how to learn this:
 head(dbListTables(con))
 @ 
 And we also know that once we have a table we are curious about, we
-can then look up it's fields using \Rmethod{dbListFields}
+can then look up it's fields using \Rfunction{dbListFields}
 <<dbListFields2>>=
 dbListFields(con, "Apis_mellifera")
 @ 
@@ -656,7 +619,7 @@ for that should look like:
 \begin{verbatim}
     SELECT * FROM Apis_mellifera;
 \end{verbatim}
-So we can now call a query like that from R by using \Rmethod{dbGetQuery}: 
+So we can now call a query like that from R by using \Rfunction{dbGetQuery}: 
 <<dbGetQuery2>>=
 head(dbGetQuery(con, "SELECT * FROM Apis_mellifera"))
 @ 
@@ -708,11 +671,11 @@ and "Db type".  Those fields specify both the name of the package with
 the expected class definition, and also the name of the object that
 this database is expected to be represented by in the R session
 respectively. If you fail to include this information in your metadata
-table, then \Rmethod{loadDb} will not know what to do with the
+table, then \Rfunction{loadDb} will not know what to do with the
 database when it is called.  In this case, the class definition has
 been stored in the \Biocpkg{AnnotationDbi} package, but it could live
 anywhere you need it too.  By specifying the metadata field, you
-enable \Rmethod{loadDb} to find it.
+enable \Rfunction{loadDb} to find it.
 
 Once you have set up the metadata you will need to create a class for
 your package that extends the \Rclass{AnnotationDb} class.  In the
@@ -726,7 +689,7 @@ case of the hom.Hs.inp.db package, the class is defined to be a
 @
 
 Finally the \Rfunction{.onLoad} call for your package will have to
-contain code that will call the \Rmethod{loadDb} method.  This is what
+contain code that will call the \Rfunction{loadDb} method.  This is what
 it currently looks like in the \Biocannopkg{hom.Hs.inp.db} package.
 
 <<onLoad,eval=FALSE>>=
@@ -743,7 +706,7 @@ namespaceExport(ns, dbNewname)
 When the code above is run (at load time) the name of the package (AKA
 "pkgname", which is a parameter that will be passed into
 \Rfunction{.onLoad}) is then used to derive the name for the object.
-Then that name, is used by \Rmethod{onload} to create an
+Then that name, is used by \Rfunction{onload} to create an
 \Rclass{InparanoidDb} object.  This object is then assigned to the
 namespace for this package so that it will be loaded for the user.
 
@@ -753,7 +716,7 @@ At this point, all that remains is to create the means for accessing
 the data in the database.  This should prove a lot less difficult than
 it may initially sound.  For the new interface, only the four methods
 that were described earlier are really required:
-\Rmethod{columns},\Rmethod{keytypes},\Rmethod{keys} and \Rmethod{select}.
+\Rfunction{columns},\Rfunction{keytypes},\Rfunction{keys} and \Rfunction{select}.
 
 In order to do this you need to know a small amount of SQL and a few
 tricks for accessing the database from R.  The point of providing
@@ -762,9 +725,9 @@ experience when retrieving data from the database.  But other kinds of
 accessors (such as those provided for the \Rclass{TranscriptDb}
 objects) may also be warranted.
 
-\subsection{Examples: creating a \Rmethod{columns} and \Rmethod{keytypes} method}
+\subsection{Examples: creating a \Rfunction{columns} and \Rfunction{keytypes} method}
 
-Now lets suppose that we want to define a \Rmethod{columns} method for
+Now lets suppose that we want to define a \Rfunction{columns} method for
 our \Rclass{hom.Hs.inp.db} object. And lets also suppose that we want
 is for it to tell us about the actual organisms for which we can
 extract identifiers.  How could we do that?
@@ -791,13 +754,13 @@ columns(hom.Hs.inp.db)
 
 Notice again how I formatted the output to all uppercase characters?
 This is just done to make the interface look consistent with what has
-been done before for the other \Rmethod{select} interfaces.  But doing
+been done before for the other \Rfunction{select} interfaces.  But doing
 this means that we will have to do a tiny bit of extra work when we
 implement out other methods.
 
 \begin{Exercise}
   Now use what you have learned to try and define a method for
-  \Rmethod{keytypes} on \Rclass{hom.Hs.inp.db}.  The keytypes method
+  \Rfunction{keytypes} on \Rclass{hom.Hs.inp.db}.  The keytypes method
   should return the same results as columns (in this case).  What if you
   needed to translate back to the lowercase table names?  Also write
   an quick helper function to do that.
@@ -840,10 +803,10 @@ columns(hom.Hs.inp.db)
 @
 \end{Solution}
 
-\subsection{Example: creating a \Rmethod{keys} method}
+\subsection{Example: creating a \Rfunction{keys} method}
 
 \begin{Exercise}
-  Now define a method for \Rmethod{keys} on \Rclass{hom.Hs.inp.db}.
+  Now define a method for \Rfunction{keys} on \Rclass{hom.Hs.inp.db}.
   The keys method should return the keys from a given organism based
   on the appropriate keytype.  Since each table has rows that
   correspond to both human and non-human IDs, it will be necessary to

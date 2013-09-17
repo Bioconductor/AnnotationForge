@@ -3,26 +3,22 @@ Title: Code for Building Annotation Database Packages
 Description: Provides code for generating Annotation packages and
 	     their databases.  Packages produced are intended to be
 	     used with AnnotationDbi.
-Version: 1.3.22
+Version: 1.3.23
 Author: Marc Carlson, Herve Pages
-Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
+Maintainer: Bioconductor Package Maintainer
+        <maintainer@bioconductor.org>
 Depends: R (>= 2.7.0), methods, utils, BiocGenerics (>= 0.1.13),
-         Biobase (>= 1.17.0), AnnotationDbi (>= 1.19.15), org.Hs.eg.db
+        Biobase (>= 1.17.0), AnnotationDbi (>= 1.19.15), org.Hs.eg.db
 Imports: methods, utils, DBI, RSQLite, BiocGenerics, Biobase
 Suggests: DBI (>= 0.2-4), RSQLite (>= 0.6-4), XML, RCurl, hgu95av2.db,
-          human.db0, affy, Homo.sapiens, hom.Hs.inp.db, GO.db
-Collate: AnnDbPkg-maker.R
-	 sqlForge_utils.R
-	 sqlForge_baseMapBuilder.R
-         sqlForge_schemaGen.R
-         sqlForge_tableBuilder.R
-         sqlForge_makeAnnPkgs.R
-         sqlForge_wrapBaseDBPkgs.R
-	 sqlForge_seqnames.R
-         makeProbePackage.R
-	 makeOrgPackageFromDataFrames.R
-         NCBI_ftp.R
-         NCBI_getters.R
-	 test_AnnotationForge_package.R
+        human.db0, affy, Homo.sapiens, hom.Hs.inp.db, GO.db, BiocStyle,
+        knitr
+Collate: AnnDbPkg-maker.R sqlForge_utils.R sqlForge_baseMapBuilder.R
+        sqlForge_schemaGen.R sqlForge_tableBuilder.R
+        sqlForge_makeAnnPkgs.R sqlForge_wrapBaseDBPkgs.R
+        sqlForge_seqnames.R makeProbePackage.R
+        makeOrgPackageFromDataFrames.R NCBI_ftp.R NCBI_getters.R
+        test_AnnotationForge_package.R
 License: Artistic-2.0
 biocViews: Annotation, Infrastructure
+Packaged: 2013-09-16 23:40:25 UTC; mcarlson
