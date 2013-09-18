@@ -66,17 +66,17 @@ test_expandGOFrame <- function(){
 
 
 test_makeOrgPackage <- function(){
-##     pkgNm <- AnnotationForge:::makeOrgPackage(gene_info=fSym,
-##                                        chromosome=fChr,
-##                                        go=fGO,
-##                                        version="0.1",
-##                                        maintainer="Some One <so@someplace.org>",
-##                                        author="Some One <so@someplace.org>",
-##                                        outputDir = outputDir,
-##                                        tax_id="59729",
-##                                        genus=genus,
-##                                        species=species,
-##                                        goTable="go")
+    pkgNm <- AnnotationForge:::makeOrgPackage(gene_info=fSym,
+                                       chromosome=fChr,
+                                       go=fGO,
+                                       version="0.1",
+                                       maintainer="Some One <so@someplace.org>",
+                                       author="Some One <so@someplace.org>",
+                                       outputDir = outputDir,
+                                       tax_id="59729",
+                                       genus=genus,
+                                       species=species,
+                                       goTable="go")
 
 ##     ## Then install it.
 ##     install.packages(pkgNm, repos=NULL)
