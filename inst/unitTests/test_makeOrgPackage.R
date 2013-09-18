@@ -78,6 +78,8 @@ test_makeOrgPackage <- function(){
                                        species=species,
                                        goTable="go")
 
+    
+    checkTrue(pkgNm==file.path(outputDir,"org.Tguttata.eg.db"))
 ##     ## Then install it.
 ##     install.packages(pkgNm, repos=NULL)
 
@@ -91,5 +93,8 @@ test_makeOrgPackage <- function(){
     
     ## finish by removing it
 ##     remove.packages("org.Tguttata.eg.db")
+
+    ## the install and remove options don't work with R CMD check :(
+    ## ALSO the keytypes() etc.  calls should be checked in AnnotationDbi
 }
 
