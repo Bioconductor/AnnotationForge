@@ -14,7 +14,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -63,7 +63,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -111,7 +111,7 @@
                            chipName = "ChipName not specified",
                            manufacturerUrl = "Manufacturer Url not specified",
                            author = "Marc Carlson",
-                           maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                           maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -161,7 +161,7 @@
                            chipName = "ChipName not specified",
                            manufacturerUrl = "Manufacturer Url not specified",
                            author = "Marc Carlson",
-                           maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                           maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -209,7 +209,7 @@
                                    chipName = "ChipName not specified",
                                    manufacturerUrl = "Manufacturer Url not specified",
                                    author = "Marc Carlson",
-                                   maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                                   maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -253,7 +253,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -300,7 +300,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -350,7 +350,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -401,7 +401,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -451,7 +451,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -501,7 +501,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -550,7 +550,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -599,7 +599,7 @@
                              chipName = "ChipName not specified",
                              manufacturerUrl = "Manufacturer Url not specified",
                              author = "Marc Carlson",
-                             maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -648,7 +648,7 @@
                             chipName = "ChipName not specified",
                             manufacturerUrl = "Manufacturer Url not specified",
                             author = "Marc Carlson",
-                            maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                            maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     
@@ -697,7 +697,7 @@
                            chipName = "ChipName not specified",
                            manufacturerUrl = "Manufacturer Url not specified",
                            author = "Marc Carlson",
-                           maintainer = "Biocore Data Team <biocannotation@lists.fhcrc.org>"){
+                           maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
     

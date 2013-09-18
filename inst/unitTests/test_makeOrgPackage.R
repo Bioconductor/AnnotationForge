@@ -66,30 +66,30 @@ test_expandGOFrame <- function(){
 
 
 test_makeOrgPackage <- function(){
-    pkgNm <- AnnotationForge:::makeOrgPackage(gene_info=fSym,
-                                       chromosome=fChr,
-                                       go=fGO,
-                                       version="0.1",
-                                       maintainer="Some One <so@someplace.org>",
-                                       author="Some One <so@someplace.org>",
-                                       outputDir = outputDir,
-                                       tax_id="59729",
-                                       genus=genus,
-                                       species=species,
-                                       goTable="go")
+##     pkgNm <- AnnotationForge:::makeOrgPackage(gene_info=fSym,
+##                                        chromosome=fChr,
+##                                        go=fGO,
+##                                        version="0.1",
+##                                        maintainer="Some One <so@someplace.org>",
+##                                        author="Some One <so@someplace.org>",
+##                                        outputDir = outputDir,
+##                                        tax_id="59729",
+##                                        genus=genus,
+##                                        species=species,
+##                                        goTable="go")
 
-    ## Then install it.
-    install.packages(pkgNm, repos=NULL)
+##     ## Then install it.
+##     install.packages(pkgNm, repos=NULL)
 
-    ## Now test the output of select, cols, keytypes, and keys...
-    library(org.Tguttata.eg.db)
-    ## debug(AnnotationDbi:::.noSchemaCols)
-    columns(org.Tguttata.eg.db)
-    ## so that change will also work for keytypes
-    keytypes(org.Tguttata.eg.db)
+##     ## Now test the output of select, cols, keytypes, and keys...
+##     library(org.Tguttata.eg.db)
+##     ## debug(AnnotationDbi:::.noSchemaCols)
+##     columns(org.Tguttata.eg.db)
+##     ## so that change will also work for keytypes
+##     keytypes(org.Tguttata.eg.db)
 
     
     ## finish by removing it
-    remove.packages("org.Tguttata.eg.db")
+##     remove.packages("org.Tguttata.eg.db")
 }
 

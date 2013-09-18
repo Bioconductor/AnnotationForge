@@ -3,7 +3,7 @@ Title: Chromosome Name translations
 Description: Provides translation information for various kinds of chromosome name conventions.
 Version: @VERSION@
 Author: Marc Carlson, Herve Pages
-Maintainer: Biocore Data Team <biocannotation@lists.fhcrc.org>
+Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 Depends: R (>= 2.15.0), methods, AnnotationDbi (>= @ANNOTATIONDBIVERSION@)
 Imports: methods, AnnotationDbi
 License: Artistic-2.0

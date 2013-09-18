@@ -35,7 +35,7 @@ setClass(
         Title=as.character(NA),
         License="Artistic-2.0",
         Author="Marc Carlson",
-        Maintainer="Biocore Data Team <biocannotation@lists.fhcrc.org>",
+        Maintainer="Bioconductor Package Maintainer <maintainer@bioconductor.org>",
         DBschema=as.character(NA),
         AnnObjPrefix=as.character(NA),
         AnnObjTarget=as.character(NA),
