@@ -66,7 +66,7 @@ test_expandGOFrame <- function(){
 
 
 test_makeOrgPackage <- function(){
-    res <- AnnotationForge:::makeOrgPackage(gene_info=fSym,
+    pkgNm <- AnnotationForge:::makeOrgPackage(gene_info=fSym,
                                        chromosome=fChr,
                                        go=fGO,
                                        version="0.1",
@@ -78,14 +78,18 @@ test_makeOrgPackage <- function(){
                                        species=species,
                                        goTable="go")
 
-## TODO:  Why can't I install from tempdir()???
-    
-    ## Then install it?
-#    install.packages(res, repos=NULL)
+    ## Then install it.
+    install.packages(pkgNm, repos=NULL)
 
-    ## test the output of select, cols, keytypes, and keys...
+    ## Now test the output of select, cols, keytypes, and keys...
+    library(org.Tguttata.eg.db)
+    ## debug(AnnotationDbi:::.noSchemaCols)
+    columns(org.Tguttata.eg.db)
+    ## so that change will also work for keytypes
+    keytypes(org.Tguttata.eg.db)
 
     
-#    remove.packages(paste0(dbName, ".sqlite"))
+    ## finish by removing it
+    remove.packages("org.Tguttata.eg.db")
 }
 

@@ -256,7 +256,7 @@ makeOrgPackage <- function(...,
                 manufacturer = "no manufacturer",
                 chipName = "no manufacturer")
     
-    makeAnnDbPkg(seed, dbFileName, dest_dir=paste0(outputDir,dbFileName))
+    makeAnnDbPkg(seed, dbFileName, dest_dir=outputDir)
     
     ## cleanup
     message("Now deleting temporary database file")

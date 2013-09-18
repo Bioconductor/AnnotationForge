@@ -408,7 +408,7 @@ setGeneric("makeAnnDbPkg", signature="x",
 
 setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
           function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
-            .makeAnnDbPkg(x, dbfile, dest_dir=".", no.man=FALSE, ...)
+            .makeAnnDbPkg(x, dbfile, dest_dir=dest_dir, no.man=no.man, ...)
           }
           )
         
@@ -421,7 +421,7 @@ setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
 
 setMethod("makeAnnDbPkg", "list",
           function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
-            .makeAnnDbPkgList(x, dbfile, dest_dir=".", no.man=FALSE, ...)
+            .makeAnnDbPkgList(x, dbfile, dest_dir=dest_dir, no.man=no.man, ...)
           }
           )
 
@@ -480,7 +480,7 @@ setMethod("makeAnnDbPkg", "list",
 
 setMethod("makeAnnDbPkg", "character",
           function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
-            .makeAnnDbPkgs(x, dbfile, dest_dir=".", no.man=FALSE, ...)
+            .makeAnnDbPkgs(x, dbfile, dest_dir=dest_dir, no.man=no.man, ...)
           }
           )
 
