@@ -5,8 +5,7 @@ Description: Provides code for generating Annotation packages and
 	     used with AnnotationDbi.
 Version: 1.3.26
 Author: Marc Carlson, Herve Pages
-Maintainer: Bioconductor Package Maintainer
-        <maintainer@bioconductor.org>
+Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 Depends: R (>= 2.7.0), methods, utils, BiocGenerics (>= 0.1.13),
         Biobase (>= 1.17.0), AnnotationDbi (>= 1.19.15), org.Hs.eg.db
 Imports: methods, utils, DBI, RSQLite, BiocGenerics, Biobase
