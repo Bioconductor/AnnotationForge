@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Accessing the KEGG REST API}
+%\VignetteIndexEntry{Making New Organism Packages}
 -->
 
 
