@@ -2,10 +2,11 @@
 %\VignetteDepends{Biobase, AnnotationForge}
 %\VignetteKeywords{annotation}
 %\VignettePackage{AnnotationDbi}
+%\VignetteEngine{knitr::knitr}
 
 \documentclass[11pt]{article}
 
-<<style, eval=TRUE, echo=FALSE, results=tex>>=
+<<style, eval=TRUE, echo=FALSE, results='asis'>>=
 BiocStyle::latex()
 @
 
@@ -27,7 +28,7 @@ probe sequences and related information.
 
 First, let us load the \Rpackage{AnnotationForge} package.
 %
-<<startup,results=hide>>=
+<<startup,results='hide'>>=
 library("AnnotationForge")
 @
 

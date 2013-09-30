@@ -1,9 +1,10 @@
 %\VignetteIndexEntry{AnnotationForge: Creating select Interfaces for custom Annotation resources}
 %\VignetteDepends{Homo.sapiens,hom.Hs.inp.db}
+%\VignetteEngine{knitr::knitr}
 
 \documentclass[11pt]{article}
 
-<<style, eval=TRUE, echo=FALSE, results=tex>>=
+<<style, eval=TRUE, echo=FALSE, results='asis'>>=
 BiocStyle::latex()
 @
 
@@ -27,7 +28,12 @@ BiocStyle::latex()
 \title{Creating select Interfaces for custom Annotation resources}
 \author{Marc Carlson}
 
-\SweaveOpts{keep.source=TRUE}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(tidy=FALSE)
+@
+
 \begin{document}
 
 \maketitle
@@ -52,14 +58,14 @@ columns(Homo.sapiens)
 The next method is \Rfunction{keytypes} which tells you the kinds of
 things that can be used as keys.
 
-<<Homo.sapiens>>=
+<<Homo.sapiens2>>=
 keytypes(Homo.sapiens) 
 @ 
 
 The third method is \Rfunction{keys} which is used to retrieve all the
 viable keys of a particular type.
 
-<<Homo.sapiens>>=
+<<Homo.sapiens3>>=
 k <- head(keys(Homo.sapiens,keytype="ENTREZID"))
 k
 @ 
@@ -67,7 +73,7 @@ k
 And finally there is \Rfunction{select}, which extracts data by using
 values supplied by the other method.
 
-<<Homo.sapiens>>=
+<<Homo.sapiens4>>=
 result <- select(Homo.sapiens, keys=k, 
                  columns=c("TXNAME","TXSTART","TXSTRAND"), 
                  keytype="ENTREZID")
@@ -295,7 +301,7 @@ ns <- structure(sapply(defs, function(x) x$uri), names=names(defs))
 
 There are two high level 'entry' nodes which represent
 the two id's requested in the original query.
-<<xml_namespace>>=
+<<xml_namespace2>>=
 entry <- getNodeSet(xml, "//ns:entry", "ns")
 xmlSize(entry)
 @
@@ -326,7 +332,7 @@ xmlSize(getNodeSet(xml, P13368, namespaces="ns"))
 
 List all possible values for the 'type' attribute of the
 'feature' nodes.
-<<xml_feature_type>>=
+<<xml_feature_type2>>=
 path <- "//ns:feature"
 unique(xpathSApply(xml, path, xmlGetAttr, "type", namespaces="ns"))
 @
@@ -417,7 +423,7 @@ this case since we are limited to things that we can return from the
 web service.  Since this is just an example, lets limit it to the
 following fields: "ID", "SEQUENCE", "ORGANISM". 
 %%
-<<keytypeUniprot>>=
+<<keytypeUniprot2>>=
 setMethod("columns", "uniprot", 
           function(x){return(c("ID", "SEQUENCE", "ORGANISM"))})
 columns(uniprot)
@@ -464,7 +470,7 @@ database from \R.  This section will introduce you to those skills.
 If all you know is the name of the SQLite database, then to get a DB
 connection you need to do something like this:
 %%
-<<classicConn,results=hide>>=
+<<classicConn,results='hide'>>=
 drv <- SQLite()
 library("org.Hs.eg.db")
 con <- dbConnect(drv, dbname=system.file("extdata", "org.Hs.eg.sqlite",

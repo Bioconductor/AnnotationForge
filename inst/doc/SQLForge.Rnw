@@ -3,17 +3,22 @@
 %\VignetteDepends{human.db0}
 %\VignetteKeywords{annotation, database}
 %\VignettePackage{AnnotationForge}
+%\VignetteEngine{knitr::knitr}
 
 \documentclass[11pt]{article}
 
-<<style, eval=TRUE, echo=FALSE, results=tex>>=
+<<style, eval=TRUE, echo=FALSE, results='asis'>>=
 BiocStyle::latex()
 @
 
 \title{Creating a New Annotation Package using SQLForge}
 \author{Marc Carlson, Herve Pages, Nianhua Li}
 
-\SweaveOpts{keep.source=TRUE}
+
+<<include=FALSE>>=
+opts_chunk$set(tidy=FALSE)
+@
+
 
 \begin{document}
 
@@ -166,7 +171,7 @@ available.dbschemas()
 
 The following shows an example of how to make a chip package:
 
-<<SQLForge, keep.source=TRUE, results=hide>>=
+<<SQLForge, tidy=FALSE, results='hide'>>=
 hcg110_IDs = system.file("extdata",
                           "hcg110_ID",
                           package="AnnotationDbi")
@@ -184,7 +189,7 @@ makeDBPackage("HUMANCHIP_DB",
               chipName = "Human Cancer G110 Array",
               manufacturerUrl = "http://www.affymetrix.com")
 @ 
-<<cleanup2, echo=FALSE, results=hide>>=
+<<cleanup2, echo=FALSE, results='hide'>>=
 file.remove(file.path(tmpout, "hcg110.sqlite"))
 file.rename(file.path(tmpout, "hcg110.db"),file.path(tmpout, "foo.db"))
 @
@@ -248,7 +253,7 @@ example, no additional SQL has to be inserted 1st into the database
 since it is just adding a mapping onto data that already exists in the
 database (but is just not normally exposed as a mapping).
 
-<<createSimpleMapping, keep.source=TRUE>>=
+<<createSimpleMapping, tidy=FALSE>>=
 library(hgu95av2.db)
 hgu95av2NAMESYMBOL <- createSimpleBimap("gene_info",
                                         "gene_name",
