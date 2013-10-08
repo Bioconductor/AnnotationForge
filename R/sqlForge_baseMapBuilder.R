@@ -88,21 +88,14 @@ labelDuplicatedProbes <- function(frame){
     ##col (numProbes) Then I need to test if among those matches there is more
     ##than one entrez gene ID.  If more than one, then I need to put a 1
     ##There is a corner case however, if I have 1 unmapped and one
-    multipleAssign = function(x){
-        probeInds = grep(paste('^',x[1],'$',sep=""),frame[,1],perl=TRUE)
-        numProbes = length(probeInds)
-        EGs = frame[probeInds,2]
-        uniqEGs = unique(EGs[!is.na(EGs)]) ##must filter out "" since it does not count as an EG
-        numUniqEGs = length(uniqEGs)
-        if( numProbes>1  &&  numUniqEGs>1 ){
-            return(1)
-        }else{
-            return(0)
-        }
-    }
-    is_multiple = unlist(apply(frame,1,multipleAssign))
-    ans = cbind(frame, is_multiple)
-    ans
+   tmp <- tapply(1:nrow(frame), frame[,1], function(x) frame[x,2])
+   tmp2 <- sapply(tmp, length)
+   tmp <- sapply(tmp, function(x) length(unique(x[!is.na(x)])))
+   out <- tmp > 1 & tmp2 > 1
+   out <- out[frame[,1]]
+   is_multiple <- as.numeric(out)
+   out <- cbind(frame, is_multiple)
+   out
 }
 
 
