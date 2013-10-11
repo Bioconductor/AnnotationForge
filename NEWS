@@ -1,5 +1,24 @@
  	**************************************************
 	*						 *
+	*	        1.4.0 SERIES NEWS		 *
+	*						 *
+	**************************************************
+
+NEW FEATURES
+
+    o adds more general mechanism for creating organism packages.
+    makeOrgPackage() will now allow users to pass in a series of
+    data.frames, and (provided that they are formatted correctly) will
+    compile those into a gene-centric organism package.  The aim is to
+    provide a more general mechanism for people who are working on
+    organisms that are off the beaten path.
+
+    o updates to the documentation (new vignettes) to better clarify
+    how users who need to make new organism packages should do so.
+
+
+ 	**************************************************
+	*						 *
 	*	        1.0.0 SERIES NEWS		 *
 	*						 *
 	**************************************************

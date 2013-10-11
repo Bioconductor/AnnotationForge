@@ -25,7 +25,7 @@ colnames(fGO) <- c("GID","GO","EVIDENCE")
 ## Now make a list
 ## data <- list(gene_info=fSym, chromosome=fChr, go=fGO)
 genus <- "Taeniopygia"
-species <- "guttata"
+species <- "guttataTestingSubset"
 dbName <- AnnotationForge:::.generateOrgDbName(genus,species)
 ## this becomes the file name for the DB
 dbfile <- paste(dbName, ".sqlite", sep="")
