@@ -58,18 +58,14 @@ makeChipPackage <- function(probeFrame, ## data.frame with probe 2 gene mappings
     ## complicated BUT chip packages DO specify the org package that
     ## they are supposed to depend on.
 
-    ## SO: when I go to join later on, I will have to check the
-    ## schema, and act accordingly by using a helper function. - but
-    ## its not that simply since the select method can't reasonably
-    ## cross-pollinate
-
-    ## OR: I may need to just require that they use an org package
-    ## that is 1) installed and 2) of the NOSCHEMA type.
-
-    ## OR (best idea I think) I may require that the org package be of
-    ## the correct type and then make a chip package of the correct
-    ## type.
-
+    ## Best idea I think: based on the org package, I need to generate
+    ## either a NOSCHEMACHIP OR a CHIPDB (there is very little to do
+    ## in either case), so that the user can specify what they want
+    ## and get a package built for their needs.
+    ## SO by default get them a NOSCHEMACHIP.DB, and otherwise it's
+    ## one of the following: NCBICHIP.DB, YEASTCHIP.DB,
+    ## ARABIDOPSISCHIP.DB.  If its one of those "other three" then
+    ## dispatch will be handled through .legacySelect()
     
     
     ## check other arguments
