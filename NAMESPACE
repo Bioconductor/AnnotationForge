@@ -39,6 +39,7 @@ export(
 
     ## This one will make you an org package from just data.frames:
     makeOrgPackage,
+    makeChipPackage,
        
     ## from R/makeProbePackage.R
     getProbeDataAffy,
