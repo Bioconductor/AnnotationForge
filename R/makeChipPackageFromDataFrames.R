@@ -33,9 +33,12 @@ makeChipDbFromDataFrame <- function(probeFrame, tax_id, genus, species,
 }
 
 
+## TODO: Add args for manufacturer information (url, manuf. &
+## chipname) - Then pass these along to the seed
 
 ## function to make the package:
-makeChipPackage <- function(probeFrame,
+makeChipPackage <- function(probeFrame, ## data.frame with probe 2 gene mappings
+                            orgPkgName, ## name of org package for dependency
                             version,
                             maintainer,
                             author,
@@ -44,6 +47,31 @@ makeChipPackage <- function(probeFrame,
                             genus,
                             species){
 
+    ## probeFrame has to be a data.frame with two columns. (for probes
+    ## and gene id)
+    
+    ## the internal table name should be called probes with fields
+    ## (PROBE and GID) to go with new NOSCHEMA style of database.
+
+    ## What if someone wants to use an old style org package with a
+    ## new style of chip package?  - That situation could have gotten
+    ## complicated BUT chip packages DO specify the org package that
+    ## they are supposed to depend on.
+
+    ## SO: when I go to join later on, I will have to check the
+    ## schema, and act accordingly by using a helper function. - but
+    ## its not that simply since the select method can't reasonably
+    ## cross-pollinate
+
+    ## OR: I may need to just require that they use an org package
+    ## that is 1) installed and 2) of the NOSCHEMA type.
+
+    ## OR (best idea I think) I may require that the org package be of
+    ## the correct type and then make a chip package of the correct
+    ## type.
+
+    
+    
     ## check other arguments
     if(!.isSingleString(version))
         stop("'version' must be a single string")
@@ -69,7 +97,6 @@ makeChipPackage <- function(probeFrame,
     ## Then make the DB
     makeChipDbFromDataFrame(probeFrame, tax_id, genus, species, dbFileName)
 
-    ## TODO: pass in args for manufacturer information (url, manuf. & chipname)
     ## make the seed
     seed <- new("AnnDbPkgSeed",
                 Package= paste0(dbName,".db"),
