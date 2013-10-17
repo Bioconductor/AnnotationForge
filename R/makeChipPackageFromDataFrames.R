@@ -1,8 +1,15 @@
 
 ## function to put together the database.
 ## This takes a named list of data.frames.
-makeChipDbFromDataFrame <- function(probeFrame, tax_id, genus, species, 
-                                    dbFileName){
+makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
+                                    genus, species, dbFileName){
+
+    ## 1st connect to the org package
+    require(orgPkgName, character.only = TRUE)
+
+    ## then find out what kind of DB we are building...
+    
+    
     ## set up DB connection 
     require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
@@ -29,7 +36,6 @@ makeChipDbFromDataFrame <- function(probeFrame, tax_id, genus, species,
             stop("'goTable' GO Ids must be formatted like 'GO:XXXXXXX'")
         .makeNewGOTables(con, goTable, goData)
     }
-
 }
 
 
