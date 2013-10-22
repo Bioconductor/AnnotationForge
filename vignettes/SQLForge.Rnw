@@ -15,9 +15,6 @@ BiocStyle::latex()
 \author{Marc Carlson, Herve Pages, Nianhua Li}
 
 
-<<include=FALSE>>=
-opts_chunk$set(tidy=FALSE)
-@
 
 
 \begin{document}
@@ -128,6 +125,10 @@ latest .db0 package for your organism by using biocLite() like this.
 <<GetIntermedDB, eval=FALSE>>=
 source("http://bioconductor.org/biocLite.R")
 biocLite("human.db0")
+@
+
+<<checkforhumandb0, echo=FALSE>>=
+require("human.db0")
 @
 
 Even if you have installed the .db0 package before, it's a good idea
