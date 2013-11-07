@@ -10,27 +10,40 @@ probeFrame <- data.frame(probes=probeNames, genes=geneIds)
 orgPkgName <- "org.TguttataTestingSubset.eg.db"
 genus <- "Taeniopygia"
 species <- "guttataTestingSubset"
-dbName <- AnnotationForge:::.generateOrgDbName(genus,species)
-## this becomes the file name for the DB
-dbfile <- paste(dbName, ".sqlite", sep="")
+
+
+## specifics for the DB test
+prefix = "fakeChip"
+outputDir="."
+dbFileName <- file.path(outputDir,paste0(prefix, ".sqlite"))
 tax_id <- "59729"
 
 ## Test DB building:
-AnnotationForge:::makeOrgDbFromDataFrames(probeFrame, orgPkgName, tax_id,
-                                          genus, species, dbfile)
+## AnnotationForge:::makeChipDbFromDataFrame(probeFrame, orgPkgName, tax_id,
+##                                           genus, species, dbFileName)
 
 # debug(AnnotationForge:::.makeAnnDbPkg)
 # debug(AnnotationForge:::.createAnnotPackage)
 
 
 ## or test pkg building
-AnnotationForge:::makeOrgPackage(probeFrame,
-                                 orgPkgName,
-                                 version="0.1",
-                                 maintainer="Some One <so@someplace.org>",
-                                 author="Some One <so@someplace.org>",
-                                 outputDir = ".",
-                                 tax_id="59729",
-                                 genus=genus,
-                                 species=species)
+AnnotationForge:::makeChipPackage(prefix=prefix,
+                                  probeFrame=probeFrame,
+                                  orgPkgName=orgPkgName,
+                                  version="0.1",
+                                  maintainer="Some One <so@someplace.org>",
+                                  author="Some One <so@someplace.org>",
+                                  outputDir=outputDir,
+                                  tax_id=tax_id,
+                                  genus=genus,
+                                  species=species)
+
+
+## next up:
+
+## make NOSCHEMACHIP.db
+## deal with creating multiple "kinds" (old and new) - do we need a
+## new kind? - see notes - we do want that, but we have to also have
+## legacy support...
+## make changes to AnnotationDbi to support these different package types.
 

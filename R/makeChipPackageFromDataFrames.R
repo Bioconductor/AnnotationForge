@@ -1,3 +1,49 @@
+## For when we have a new schema
+.makeProbesTable <- function(probeFrame, con){
+  message("Populating genes table:")
+  sql<- paste("    CREATE TABLE IF NOT EXISTS probes (
+      probe_id VARCHAR(80),           -- probe ID
+      gene_id VARCHAR(10) NULL,           -- Gene ID
+      is_multiple SMALLINT NOT NULL           -- matches multiple genes?
+    );")
+  sqliteQuickSQL(con, sql)
+
+  values <- data.frame(probeFrame) ## TODO: data.frame() necessary???
+  sql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
+               "VALUES(?,?,?);")
+  dbBeginTransaction(con)
+  dbGetPreparedQuery(con, sql, values)
+  dbCommit(con)
+  sqliteQuickSQL(con,
+                 "CREATE INDEX IF NOT EXISTS Fgenes ON probes (gene_id)")
+  sqliteQuickSQL(con,
+                 "CREATE INDEX IF NOT EXISTS Fprobes ON probes (probe_id)")
+  message("probes table filled and indexed")
+}
+
+## For maintaining the OLDE style schema
+.makeLegacyProbesTable <- function(probeFrame, con){
+  message("Populating genes table:")
+  sql<- paste("    CREATE TABLE IF NOT EXISTS probes (
+      probe_id VARCHAR(80),           -- probe ID
+      gene_id VARCHAR(10) NULL,           -- Gene ID
+      is_multiple SMALLINT NOT NULL           -- matches multiple genes?
+    );")
+  sqliteQuickSQL(con, sql)
+
+  values <- data.frame(probeFrame) ## TODO: data.frame() necessary???
+  sql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
+               "VALUES(?,?,?);")
+  dbBeginTransaction(con)
+  dbGetPreparedQuery(con, sql, values)
+  dbCommit(con)
+  sqliteQuickSQL(con,
+                 "CREATE INDEX IF NOT EXISTS Fgenes ON probes (gene_id)")
+  sqliteQuickSQL(con,
+                 "CREATE INDEX IF NOT EXISTS Fprobes ON probes (probe_id)")
+  message("probes table filled and indexed")
+}
+
 
 ## function to put together the database.
 ## This takes a named list of data.frames.
@@ -6,9 +52,24 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
 
     ## 1st connect to the org package
     require(orgPkgName, character.only = TRUE)
-
-    ## then find out what kind of DB we are building...
     
+    ## then find out what kind of DB we are building...
+    ## (check the org package and see if it needs a legacy or not, set
+    ## a flag and then check it below when we call .makeProbesTable() or
+    ## .makeLegacyProbesTable()) - basically: is it not : "NOSCHEMA.DB"?
+
+    ## Do some work to see which things in probeFrame are multiples
+    testForMultiples <- function(probe,probes){
+        if(length(probe %in% probes) > 1){
+            1
+        }else{
+            0
+        }
+    }
+    multiple <- unlist(lapply(as.character(probeFrame$probes),
+                              testForMultiples,
+                              probes=as.character(probeFrame$probes)))
+    probeFrame <- cbind(probeFrame, multiple)
     
     ## set up DB connection 
     require(RSQLite)
@@ -16,34 +77,19 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
     con <- dbConnect(SQLite(), dbFileName)
     AnnotationForge:::.createMetadataTables(con)
     
-    ## gather all GIDs together and make the genes table
-    genes <- unique(unlist(unname(lapply(data, "[", 'GID'))))
-    AnnotationForge:::.makeGenesTable(genes, con)
-    
-    ## Then do each data.frame in turn
-    mapply(FUN=.makeTable, data, names(data), MoreArgs=list(con=con))
-        
+    ## Make a probes table
+    AnnotationForge:::.makeProbesTable(probeFrame, con)
+
     ## Add metadata but keep it very basic
     AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species)
-        
-    ## when we have a goTable, we make special GO tables
-    if(goTable %in% names(data)){
-        ## Extra checks for go table (when specified)
-        goData <- data[[goTable]]
-        if(!all(names(goData) == c("GID", "GO", "EVIDENCE")))
-      stop("'goTable' must have three columns called 'GID','GO' and 'EVIDENCE'")
-        if(any(!grepl("^GO:", as.character(goData$GO))))
-            stop("'goTable' GO Ids must be formatted like 'GO:XXXXXXX'")
-        .makeNewGOTables(con, goTable, goData)
-    }
 }
 
 
-## TODO: Add args for manufacturer information (url, manuf. &
-## chipname) - Then pass these along to the seed
+
 
 ## function to make the package:
-makeChipPackage <- function(probeFrame, ## data.frame with probe 2 gene mappings
+makeChipPackage <- function(prefix,
+                            probeFrame, ## data.frame with probe 2 gene mappings
                             orgPkgName, ## name of org package for dependency
                             version,
                             maintainer,
@@ -54,7 +100,9 @@ makeChipPackage <- function(probeFrame, ## data.frame with probe 2 gene mappings
                             species){
 
     ## probeFrame has to be a data.frame with two columns. (for probes
-    ## and gene id)
+    ## and gene id)  And probeFrame HAS to have unique rows
+    if(dim(probeFrame)[1] != dim(unique(probeFrame))[1])
+        stop("All rows in 'probeFrame' must be unique")
     
     ## the internal table name should be called probes with fields
     ## (PROBE and GID) to go with new NOSCHEMA style of database.
@@ -72,9 +120,14 @@ makeChipPackage <- function(probeFrame, ## data.frame with probe 2 gene mappings
     ## one of the following: NCBICHIP.DB, YEASTCHIP.DB,
     ## ARABIDOPSISCHIP.DB.  If its one of those "other three" then
     ## dispatch will be handled through .legacySelect()
-    
+
+    ## TODO: I am going to have to write a DBSCHEMA detection and dispatch
+    ## helper for finding if it's ARABIDOPSIS, YEAST, NOSCHEMA OR
+    ## something else.
     
     ## check other arguments
+    if(!.isSingleString(prefix))
+        stop("'prefix' must be a single string")
     if(!.isSingleString(version))
         stop("'version' must be a single string")
     if(!.isSingleString(maintainer))
@@ -89,24 +142,21 @@ makeChipPackage <- function(probeFrame, ## data.frame with probe 2 gene mappings
         stop("'genus' must be a single string")
     if(!.isSingleString(species))
         stop("'species' must be a single string")
-    if(!.isSingleStringOrNA(goTable))
-        stop("'goTable' argument needs to be a single string or NA")
     
-    ## generate name from the genus and species
-    dbName <- .generateOrgDbName(genus,species)
-    ## this becomes the file name for the DB
-    dbFileName <- file.path(outputDir,paste0(dbName, ".sqlite"))
+    ## The file name for the DB
+    dbFileName <- file.path(outputDir,paste0(prefix, ".sqlite"))
     ## Then make the DB
-    makeChipDbFromDataFrame(probeFrame, tax_id, genus, species, dbFileName)
+    makeChipDbFromDataFrame(probeFrame, orgPkgName, tax_id,
+                            genus, species, dbFileName)
 
     ## make the seed
     seed <- new("AnnDbPkgSeed",
-                Package= paste0(dbName,".db"),
+                Package= paste0(prefix,".db"),
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
                 PkgTemplate="NOSCHEMA.DB",  ## TODO: make NOSCHEMACHIP.DB
-                AnnObjPrefix=dbName,
+                AnnObjPrefix=prefix,
                 organism = paste(genus, species),
                 species = paste(genus, species),
                 biocViews = "annotation",
@@ -120,7 +170,7 @@ makeChipPackage <- function(probeFrame, ## data.frame with probe 2 gene mappings
     message("Now deleting temporary database file")
     file.remove(dbFileName)
     ## return the path to the dir that was just created.
-    file.path(outputDir,paste0(dbName,".db"))
+    file.path(outputDir,paste0(prefix,".db"))
 }
 
 
