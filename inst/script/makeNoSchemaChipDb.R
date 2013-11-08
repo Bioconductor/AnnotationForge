@@ -39,6 +39,26 @@ AnnotationForge:::makeChipPackage(prefix=prefix,
                                   species=species)
 
 
+
+## test a legacy platform (do a human example)
+library(org.Hs.eg.db)
+library(AnnotationForge)
+geneIds = head(keys(org.Hs.eg.db),n=200)
+probeNames <- paste("probe", 1:length(geneIds), sep="")
+probeFrame <- data.frame(probes=probeNames, genes=geneIds)
+
+AnnotationForge:::makeChipPackage(prefix="fakeHumanChip",
+                                  probeFrame=probeFrame,
+                                  orgPkgName="org.Hs.eg.db",
+                                  version="0.1",
+                                  maintainer="Some One <so@someplace.org>",
+                                  author="Some One <so@someplace.org>",
+                                  outputDir=".",
+                                  tax_id="9606",
+                                  genus="Homo",
+                                  species="sapiens")
+
+
 ## next up:
 
 ## -make NOSCHEMACHIP.db - done
@@ -51,3 +71,6 @@ AnnotationForge:::makeChipPackage(prefix=prefix,
 ## -make changes to AnnotationDbi to support these different package types.
 
 ## - have to add support for select methods
+
+
+## We ALMOST can use the 2nd type of package.  (the 1st type will need a bit more work).
