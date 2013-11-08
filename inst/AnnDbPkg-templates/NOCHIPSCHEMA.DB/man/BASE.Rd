@@ -5,11 +5,11 @@
 \description{
 
   Welcome to the @ANNOBJPREFIX@.db annotation Package.  This is an
-  organism specific package.  The purpose is to provide detailed
-  information about the species abbreviated in the second part of the
-  package name @ANNOBJPREFIX@.db.  "Hs" is for Homo sapiens.  This
-  package is updated biannually.
-
+  platform specific package (sometimes called a chip or ChipDb based
+  package).  The purpose is to provide detailed information about the
+  platform by mapping probes to genes.  The platform is usually
+  abbreviated by the package name @ANNOBJPREFIX@.
+  
   To learn more about this package, users are encouraged to learn about
   the select, columns, keys and keytypes methods.  These are described
   in a walkthrough on the bioconductor website as well as in the manual

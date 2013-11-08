@@ -67,13 +67,16 @@
 
 
 ## helper to add most basic of metadata
-.addEssentialMetadata <- function(con, tax_id, genus, species){
+.addEssentialMetadata <- function(con, tax_id, genus, species,
+                                  schema="NOSCHEMA_DB",
+                                  type="OrgDb",
+                                  centralID="GID"){
   name <- c("DBSCHEMAVERSION","DBSCHEMA","ORGANISM","SPECIES","CENTRALID",
             "TAXID",
             "Db type","Supporting package")
-  value<- c("2.1","NOSCHEMA_DB",paste(genus,species),paste(genus,species),
-            "GID",tax_id,
-            "OrgDb","AnnotationDbi")
+  value<- c("2.1",schema,paste(genus,species),paste(genus,species),
+            centralID,tax_id,
+            type,"AnnotationDbi")
   AnnotationForge:::.addMeta(con, name, value)
 }
 

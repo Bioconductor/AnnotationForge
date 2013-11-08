@@ -1,0 +1,14 @@
+Package: @PKGNAME@
+Title: Chip style package for @SPECIES@
+Description: A custom made chip style package to match probes to gene information for @SPECIES@.
+Version: @PKGVERSION@
+Author: @AUTHOR@
+Maintainer: @MAINTAINER@
+Depends: R (>= 2.7.0), methods, AnnotationDbi (>= @ANNDBIVERSION@)
+Suggests: annotate, RUnit
+Imports: methods, AnnotationDbi
+License: @LIC@
+organism: @ORGANISM@
+species: @SPECIES@
+biocViews: ChipDb, @BIOCVIEWS@
+

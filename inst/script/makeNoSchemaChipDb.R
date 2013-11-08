@@ -19,8 +19,8 @@ dbFileName <- file.path(outputDir,paste0(prefix, ".sqlite"))
 tax_id <- "59729"
 
 ## Test DB building:
-## AnnotationForge:::makeChipDbFromDataFrame(probeFrame, orgPkgName, tax_id,
-##                                           genus, species, dbFileName)
+AnnotationForge:::makeChipDbFromDataFrame(probeFrame, orgPkgName, tax_id,
+                                          genus, species, dbFileName)
 
 # debug(AnnotationForge:::.makeAnnDbPkg)
 # debug(AnnotationForge:::.createAnnotPackage)
@@ -41,9 +41,13 @@ AnnotationForge:::makeChipPackage(prefix=prefix,
 
 ## next up:
 
-## make NOSCHEMACHIP.db
-## deal with creating multiple "kinds" (old and new) - do we need a
+## -make NOSCHEMACHIP.db - done
+## -deal with creating multiple "kinds" (old and new) - do we need a
 ## new kind? - see notes - we do want that, but we have to also have
-## legacy support...
-## make changes to AnnotationDbi to support these different package types.
+## legacy support... - done?
+## - have to add support for legacy chip mappings (four were never defined - so try to make that work)
 
+
+## -make changes to AnnotationDbi to support these different package types.
+
+## - have to add support for select methods

@@ -2,22 +2,22 @@
 .makeProbesTable <- function(probeFrame, con){
   message("Populating genes table:")
   sql<- paste("    CREATE TABLE IF NOT EXISTS probes (
-      probe_id VARCHAR(80),           -- probe ID
-      gene_id VARCHAR(10) NULL,           -- Gene ID
+      PROBEID VARCHAR(80),           -- PROBEID
+      GENEID VARCHAR(10) NULL,           -- GENEID
       is_multiple SMALLINT NOT NULL           -- matches multiple genes?
     );")
   sqliteQuickSQL(con, sql)
 
-  values <- data.frame(probeFrame) ## TODO: data.frame() necessary???
-  sql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
+  values <- data.frame(probeFrame) 
+  sql <- paste("INSERT INTO probes(PROBEID, GENEID, is_multiple)",
                "VALUES(?,?,?);")
   dbBeginTransaction(con)
   dbGetPreparedQuery(con, sql, values)
   dbCommit(con)
   sqliteQuickSQL(con,
-                 "CREATE INDEX IF NOT EXISTS Fgenes ON probes (gene_id)")
+                 "CREATE INDEX IF NOT EXISTS Fgenes ON probes (GENEID)")
   sqliteQuickSQL(con,
-                 "CREATE INDEX IF NOT EXISTS Fprobes ON probes (probe_id)")
+                 "CREATE INDEX IF NOT EXISTS Fprobes ON probes (PROBEID)")
   message("probes table filled and indexed")
 }
 
@@ -31,7 +31,7 @@
     );")
   sqliteQuickSQL(con, sql)
 
-  values <- data.frame(probeFrame) ## TODO: data.frame() necessary???
+  values <- data.frame(probeFrame) 
   sql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
                "VALUES(?,?,?);")
   dbBeginTransaction(con)
@@ -45,6 +45,15 @@
 }
 
 
+## We need a listing of supported NCBI legacy types
+supportedNCBItypes <- function(){
+    c("ARABIDOPSIS_DB","ANOPHELES_DB","BOVINE_DB","CANINE_DB","CHICKEN_DB",
+      "CHIMP_DB","COELICOLOR_DB","ECOLI_DB","FLY_DB","HUMAN_DB","MALARIA_DB",
+      "MOUSE_DB","PIG_DB","RAT_DB","RHESUS_DB","WORM_DB","XENOPUS_DB",
+      "ZEBRAFISH_DB")
+}
+
+
 ## function to put together the database.
 ## This takes a named list of data.frames.
 makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
@@ -53,11 +62,7 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
     ## 1st connect to the org package
     require(orgPkgName, character.only = TRUE)
     
-    ## then find out what kind of DB we are building...
-    ## (check the org package and see if it needs a legacy or not, set
-    ## a flag and then check it below when we call .makeProbesTable() or
-    ## .makeLegacyProbesTable()) - basically: is it not : "NOSCHEMA.DB"?
-
+            
     ## Do some work to see which things in probeFrame are multiples
     testForMultiples <- function(probe,probes){
         if(length(probe %in% probes) > 1){
@@ -70,18 +75,35 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
                               testForMultiples,
                               probes=as.character(probeFrame$probes)))
     probeFrame <- cbind(probeFrame, multiple)
-    
+
     ## set up DB connection 
     require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
     con <- dbConnect(SQLite(), dbFileName)
     AnnotationForge:::.createMetadataTables(con)
     
-    ## Make a probes table
-    AnnotationForge:::.makeProbesTable(probeFrame, con)
-
-    ## Add metadata but keep it very basic
-    AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species)
+    ## then find out what kind of DB we are building and make matching thing.
+    orgPkg <- eval(parse(text=orgPkgName))
+    orgSchema = metadata(orgPkg)[metadata(orgPkg)$name=="DBSCHEMA",][,2]
+    if(orgSchema == 'NOSCHEMA_DB'){
+        ## Make probes table
+        AnnotationForge:::.makeProbesTable(probeFrame, con)
+        ## Add metadata with new schema
+        AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species,
+                                                schema="NOCHIPSCHEMA_DB",
+                                                type="ChipDb",centralID="GID")
+    }else if(orgSchema %in% supportedNCBItypes()){
+        ## supports the classic "ENTREZID" based legacy org packages
+        AnnotationForge:::.makeLegacyProbesTable(probeFrame, con)
+        schema <- sub("_DB$","CHIP_DB",orgSchema)
+        centralID <- metadata(orgPkg)[metadata(orgPkg)$name=="CENTRALID",][,2]
+        AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species,
+                                                schema=schema,
+                                                type="ChipDb",
+                                                centralID=centralID)
+    }else{## note that "legacy" yeast is not supported.
+        stop("The org package you have specified has an unsupported schema.")
+    }
 }
 
 
@@ -155,7 +177,7 @@ makeChipPackage <- function(prefix,
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="NOSCHEMA.DB",  ## TODO: make NOSCHEMACHIP.DB
+                PkgTemplate="NOCHIPSCHEMA.DB",  
                 AnnObjPrefix=prefix,
                 organism = paste(genus, species),
                 species = paste(genus, species),
