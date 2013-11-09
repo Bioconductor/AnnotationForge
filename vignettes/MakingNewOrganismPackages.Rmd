@@ -61,17 +61,17 @@ makeOrgPackageFromNCBI(version = "0.1",
 ```
 
 
-## Making use of makeOrgPackageFromNCBI()
+## Making use of makeOrgPackage()
 
 Sometimes you may not find what you need at NCBI, most commonly this
 is because they may just not have enough data about the organism you
 are interested in.  But often other resources will have annotation
 data that you want to make into an organism package.  When this
-happens you can use the much more general makeOrgPackageFromNCBI()
-function.  This function takes more arguments, but it does not rely on
-NCBI in order to run.  We do however still ask for you to provice a
-tax ID for the metadata (even though we are not using it to look up
-data from NCBI).  Many of the other arguments are also the same as the
+happens you can use the much more general makeOrgPackage() function.
+This function takes more arguments, but it does not rely on NCBI in
+order to run.  We do however still ask for you to provice a tax ID for
+the metadata (even though we are not using it to look up data from
+NCBI).  Many of the other arguments are also the same as the
 makeOrgPackageFromNCBI() function.  But a key difference is that the
 1st argument for this function is (...).  For that argument, we want
 you to provide named arguments corresponding to data.frames of
