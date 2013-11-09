@@ -177,7 +177,7 @@ makeChipPackage <- function(prefix,
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="NOCHIPSCHEMA.DB",  
+                PkgTemplate="NOCHIPSCHEMA.DB",  ## Pass in correct value here!
                 AnnObjPrefix=prefix,
                 organism = paste(genus, species),
                 species = paste(genus, species),

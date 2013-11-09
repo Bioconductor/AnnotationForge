@@ -687,7 +687,8 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
 }
 .isSingleStringOrNull <- function(x)
 {
-    is.atomic(x) && length(x) == 1L && (is.character(x) || is.null(x))
+    (is.atomic(x) && length(x) == 1L && is.character(x)) ||
+    (is.atomic(x) && length(x) == 0L && is.null(x))
 }
 
 

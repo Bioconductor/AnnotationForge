@@ -74,3 +74,5 @@ AnnotationForge:::makeChipPackage(prefix="fakeHumanChip",
 
 
 ## We ALMOST can use the 2nd type of package.  (the 1st type will need a bit more work).
+## BUG: the "NOCHIPSCHEMA_DB" is currently ALWAYS being used when the package is wrapped.
+## TODO: make sure we supporte ORGANISM_DB schema for our easy chip packages...
