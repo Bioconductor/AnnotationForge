@@ -80,6 +80,10 @@
 
 ## used to gather ancestor nodes for GO terms
 .expandGOFrame <- function(frame, AncestMap){
+  if(dim(frame)[1] ==0){
+      res <- data.frame(gene_id=0, go_id=0, evidence=0)
+      return(res[FALSE,])
+  }
   ## I want to apply through the original frame and call for the ancestor
   ancList <- mget(as.character(frame$go_id), AncestMap, ifnotfound=NA)
   names(ancList) <- frame$gene_id

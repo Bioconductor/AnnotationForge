@@ -473,10 +473,10 @@ connection you need to do something like this:
 <<classicConn,results='hide'>>=
 drv <- SQLite()
 library("org.Hs.eg.db")
-con <- dbConnect(drv, dbname=system.file("extdata", "org.Hs.eg.sqlite",
+con_hs <- dbConnect(drv, dbname=system.file("extdata", "org.Hs.eg.sqlite",
                         package = "org.Hs.eg.db"))
-con
-dbDisconnect(con)
+con_hs
+dbDisconnect(con_hs)
 @
 %%
 But in our case the connection has already been created here as part
