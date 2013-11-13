@@ -19,8 +19,8 @@ dbFileName <- file.path(outputDir,paste0(prefix, ".sqlite"))
 tax_id <- "59729"
 
 ## Test DB building:
-AnnotationForge:::makeChipDbFromDataFrame(probeFrame, orgPkgName, tax_id,
-                                          genus, species, dbFileName)
+## AnnotationForge:::makeChipDbFromDataFrame(probeFrame, orgPkgName, tax_id,
+##                                           genus, species, dbFileName)
 
 # debug(AnnotationForge:::.makeAnnDbPkg)
 # debug(AnnotationForge:::.createAnnotPackage)
@@ -47,6 +47,9 @@ geneIds = head(keys(org.Hs.eg.db),n=200)
 probeNames <- paste("probe", 1:length(geneIds), sep="")
 probeFrame <- data.frame(probes=probeNames, genes=geneIds)
 
+#debug(AnnotationForge:::makeChipPackage)
+# debug(AnnotationForge:::.cloneMapMetadata)
+
 AnnotationForge:::makeChipPackage(prefix="fakeHumanChip",
                                   probeFrame=probeFrame,
                                   orgPkgName="org.Hs.eg.db",
@@ -57,6 +60,7 @@ AnnotationForge:::makeChipPackage(prefix="fakeHumanChip",
                                   tax_id="9606",
                                   genus="Homo",
                                   species="sapiens")
+
 
 
 ## next up:

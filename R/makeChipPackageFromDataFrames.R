@@ -21,8 +21,49 @@
   message("probes table filled and indexed")
 }
 
+
+## helper to populate missing map_metadata from org packages for olde templates
+.cloneMapMetadata <- function(con, orgPkgName){
+    ## 1st we need to extract the map_metadata
+    orgCon <- AnnotationDbi:::dbConn(eval(parse(text=orgPkgName)))
+    mapValues <- sqliteQuickSQL(orgCon, "SELECT * FROM map_metadata")
+    ## then get value for accnum and append it
+    orgSchema <- .getOrgSchema(orgPkgName)
+    if(orgSchema == "ARABIDOPSIS_DB"){
+        accnums <- c("ACCNUM","NA","NA","NA")  ## TODO: these could be passed in
+        mapValues <- rbind(mapValues, accNums)
+    }else{
+        accNums <- mapValues[mapValues$map_name== "ENTREZID",]
+        accNums[1] <- "ACCNUM"
+        ## alias2p <- mapValues[mapValues$map_name== "ENTREZID",]
+        ## accNums[1] <- "ALIAS2PROBE"
+        mapValues <- rbind(mapValues, accNums)
+        mapValues[mapValues$map_name== "ALIAS2EG",1] <- "ALIAS2PROBE"
+        mapValues[mapValues$map_name== "PMID2EG",1] <- "PMID2PROBE"
+        mapValues[mapValues$map_name== "GO2EG",1] <- "GO2PROBE"
+        mapValues[mapValues$map_name== "GO2ALLEGS",1] <- "GO2ALLPROBES"
+        mapValues[mapValues$map_name== "PATH2EG",1] <- "PATH2PROBE"
+        mapValues[mapValues$map_name== "ENSEMBL2EG",1] <- "ENSEMBL2PROBE"
+    }
+    message("Populating map_metadata table:")
+    sql<- paste("CREATE TABLE IF NOT EXISTS map_metadata (
+      map_name VARCHAR(80) NOT NULL,
+      source_name VARCHAR(80) NOT NULL,
+      source_url VARCHAR(255) NOT NULL,
+      source_date VARCHAR(20) NOT NULL
+    );")
+    sqliteQuickSQL(con, sql)
+    sql <- paste("INSERT INTO map_metadata(map_name, source_name, source_url,
+                  source_date)",
+                 "VALUES(?,?,?,?);")
+    dbBeginTransaction(con)
+    dbGetPreparedQuery(con, sql, mapValues)
+    dbCommit(con)
+}
+
+
 ## For maintaining the OLDE style schema
-.makeLegacyProbesTable <- function(probeFrame, con){
+.makeLegacyProbesTable <- function(probeFrame, con, orgPkgName){
   message("Populating genes table:")
   sql<- paste("    CREATE TABLE IF NOT EXISTS probes (
       probe_id VARCHAR(80),           -- probe ID
@@ -41,6 +82,9 @@
                  "CREATE INDEX IF NOT EXISTS Fgenes ON probes (gene_id)")
   sqliteQuickSQL(con,
                  "CREATE INDEX IF NOT EXISTS Fprobes ON probes (probe_id)")
+  ## now set up correct map_metadata
+  .cloneMapMetadata(con, orgPkgName)
+  
   message("probes table filled and indexed")
 }
 
@@ -52,6 +96,35 @@ supportedNCBItypes <- function(){
       "MOUSE_DB","PIG_DB","RAT_DB","RHESUS_DB","WORM_DB","XENOPUS_DB",
       "ZEBRAFISH_DB")
 }
+
+
+## helper to determine the org schema from the package name string
+.getOrgSchema <- function(orgPkgName){
+    orgPkg <- eval(parse(text=orgPkgName))
+    metadata(orgPkg)[metadata(orgPkg)$name=="DBSCHEMA",][,2]
+}
+## helper to get the right chip schema for an org schema string
+.getChipSchema <- function(orgSchema){
+    if(orgSchema == 'NOSCHEMA_DB'){
+        chipSchema <- "NOCHIPSCHEMA_DB"
+    }else{
+        chipSchema <- sub("_DB$","CHIP_DB",orgSchema)
+    }
+    chipSchema
+}
+## central ID 
+.getChipCentralID <- function(orgPkgName){
+    orgPkg <- eval(parse(text=orgPkgName))
+    centralID <- metadata(orgPkg)[metadata(orgPkg)$name=="CENTRALID",][,2]
+    switch(centralID,
+           "EG"="ENTREZID",
+           "ORF"="ORF",
+           "TAIR"="TAIR",
+           "GID"="GID",
+           "GID")
+}
+
+
 
 
 ## function to put together the database.
@@ -83,22 +156,21 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
     AnnotationForge:::.createMetadataTables(con)
     
     ## then find out what kind of DB we are building and make matching thing.
-    orgPkg <- eval(parse(text=orgPkgName))
-    orgSchema = metadata(orgPkg)[metadata(orgPkg)$name=="DBSCHEMA",][,2]
+    orgSchema <- .getOrgSchema(orgPkgName)
+    chipSchema <- .getChipSchema(orgSchema)
     if(orgSchema == 'NOSCHEMA_DB'){
         ## Make probes table
         AnnotationForge:::.makeProbesTable(probeFrame, con)
         ## Add metadata with new schema
         AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species,
-                                                schema="NOCHIPSCHEMA_DB",
+                                                schema=chipSchema,
                                                 type="ChipDb",centralID="GID")
     }else if(orgSchema %in% supportedNCBItypes()){
         ## supports the classic "ENTREZID" based legacy org packages
-        AnnotationForge:::.makeLegacyProbesTable(probeFrame, con)
-        schema <- sub("_DB$","CHIP_DB",orgSchema)
-        centralID <- metadata(orgPkg)[metadata(orgPkg)$name=="CENTRALID",][,2]
+        AnnotationForge:::.makeLegacyProbesTable(probeFrame, con, orgPkgName)
+        centralID <- .getChipCentralID(orgPkgName)
         AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species,
-                                                schema=schema,
+                                                schema=chipSchema,
                                                 type="ChipDb",
                                                 centralID=centralID)
     }else{## note that "legacy" yeast is not supported.
@@ -171,13 +243,23 @@ makeChipPackage <- function(prefix,
     makeChipDbFromDataFrame(probeFrame, orgPkgName, tax_id,
                             genus, species, dbFileName)
 
+    ## choose the appropriate pkgTemplate (schema)
+    orgSchema <- .getOrgSchema(orgPkgName)
+    chipSchema <- .getChipSchema(orgSchema)
+    ## set up appropriate template 
+    if(chipSchema %in% c("NOCHIPSCHEMA_DB", "ARABIDOPSISCHIP_DB")){
+        pkgTemplate <- sub("_",".",chipSchema)
+    }else{
+        pkgTemplate <- "NCBICHIP.DB"
+    }
+        
     ## make the seed
     seed <- new("AnnDbPkgSeed",
                 Package= paste0(prefix,".db"),
                 Version=version,
                 Author=author,
                 Maintainer=maintainer,
-                PkgTemplate="NOCHIPSCHEMA.DB",  ## Pass in correct value here!
+                PkgTemplate=pkgTemplate,  
                 AnnObjPrefix=prefix,
                 organism = paste(genus, species),
                 species = paste(genus, species),
@@ -198,4 +280,5 @@ makeChipPackage <- function(prefix,
 
 
 
-
+## replacing map_metadata worked!  But stuff is STILL missing.
+## TODO: still missing: @ALIAS2PROBESOURCE@
