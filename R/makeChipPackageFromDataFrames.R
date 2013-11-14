@@ -70,7 +70,8 @@
 
 
 ## For maintaining the OLDE style schema
-.makeLegacyProbesTable <- function(probeFrame, con, orgPkgName){
+.makeLegacyProbesTable <- function(probeFrame, con, orgPkgName,
+                                   accessionsFrame){
   message("Populating genes table:")
   sql<- paste("    CREATE TABLE IF NOT EXISTS probes (
       probe_id VARCHAR(80),           -- probe ID
@@ -80,10 +81,10 @@
   sqliteQuickSQL(con, sql)
 
   values <- data.frame(probeFrame) 
-  sql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
+  psql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
                "VALUES(?,?,?);")
   dbBeginTransaction(con)
-  dbGetPreparedQuery(con, sql, values)
+  dbGetPreparedQuery(con, psql, values)
   dbCommit(con)
   sqliteQuickSQL(con,
                  "CREATE INDEX IF NOT EXISTS Fgenes ON probes (gene_id)")
@@ -91,8 +92,38 @@
                  "CREATE INDEX IF NOT EXISTS Fprobes ON probes (probe_id)")
   ## now set up correct map_metadata
   .cloneMapMetadata(con, orgPkgName)
-  
   message("probes table filled and indexed")
+
+  ###########################################################
+  ## code for legacy accessions table
+  sqliteQuickSQL(con, "CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20))")
+  ## accessionsFrame will either be null or we will need to insert it
+  if(!is.null(accessionsFrame)){
+      message("Populating accessions table:")
+      values <- data.frame(accessionsFrame) 
+      asql <- paste("INSERT INTO accessions (probe_id, accession)",
+                   "VALUES(?,?);")
+      dbBeginTransaction(con)
+      dbGetPreparedQuery(con, asql, values)
+      dbCommit(con)
+      ## If there are probes that were mentioned in
+      ## accessionsFrame that were NOT mentioned in
+      ## probeFrame, that we need to add them like this:
+      accProbes <- unique(accessionsFrame[,1])
+      pfProbes <- unique(probeFrame[,1])
+      if(any(!(accProbes %in% pfProbes))){
+          newProbes <- accProbes[!(accProbes %in% pfProbes)]
+          newVals <- data.frame(probe_id=newProbes,
+                                is_multiple=rep(0L, times=length(newProbes)))
+          ssql <- paste("INSERT INTO probes(probe_id, is_multiple)",
+                        "VALUES(:probe_id,:is_multiple);")
+          ## may have to switch NA to NULL
+          dbBeginTransaction(con)
+          dbGetPreparedQuery(con, ssql, newVals)
+          dbCommit(con)
+      }
+  }
+  sqliteQuickSQL(con, "CREATE INDEX Fgbprobes ON accessions (probe_id)")
 }
 
 
@@ -132,27 +163,26 @@ supportedNCBItypes <- function(){
 }
 
 
-
+## Do some work to see which things in probeFrame are multiples
+.testForMultiples <- function(probe,probes){
+    if(length(probes[probes %in% probe]) > 1){
+        1
+    }else{
+        0
+    }
+}
 
 ## function to put together the database.
 ## This takes a named list of data.frames.
 makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
-                                    genus, species, dbFileName){
+                                    genus, species, dbFileName,
+                                    optionalAccessionsFrame){
 
     ## 1st connect to the org package
     require(orgPkgName, character.only = TRUE)
-    
-            
-    ## Do some work to see which things in probeFrame are multiples
-    testForMultiples <- function(probe,probes){
-        if(length(probe %in% probes) > 1){
-            1
-        }else{
-            0
-        }
-    }
+    ## Then make final column for the probeFrame            
     multiple <- unlist(lapply(as.character(probeFrame$probes),
-                              testForMultiples,
+                              .testForMultiples,
                               probes=as.character(probeFrame$probes)))
     probeFrame <- cbind(probeFrame, multiple)
 
@@ -174,7 +204,8 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
                                                 type="ChipDb",centralID="GID")
     }else if(orgSchema %in% supportedNCBItypes()){
         ## supports the classic "ENTREZID" based legacy org packages
-        AnnotationForge:::.makeLegacyProbesTable(probeFrame, con, orgPkgName)
+        AnnotationForge:::.makeLegacyProbesTable(probeFrame, con, orgPkgName,
+                                                 optionalAccessionsFrame)
         centralID <- .getChipCentralID(orgPkgName)
         AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species,
                                                 schema=chipSchema,
@@ -198,34 +229,17 @@ makeChipPackage <- function(prefix,
                             outputDir = ".",
                             tax_id,
                             genus,
-                            species){
+                            species,
+                            optionalAccessionsFrame=NULL){
 
     ## probeFrame has to be a data.frame with two columns. (for probes
     ## and gene id)  And probeFrame HAS to have unique rows
     if(dim(probeFrame)[1] != dim(unique(probeFrame))[1])
         stop("All rows in 'probeFrame' must be unique")
-    
-    ## the internal table name should be called probes with fields
-    ## (PROBE and GID) to go with new NOSCHEMA style of database.
-
-    ## What if someone wants to use an old style org package with a
-    ## new style of chip package?  - That situation could have gotten
-    ## complicated BUT chip packages DO specify the org package that
-    ## they are supposed to depend on.
-
-    ## Best idea I think: based on the org package, I need to generate
-    ## either a NOSCHEMACHIP OR a CHIPDB (there is very little to do
-    ## in either case), so that the user can specify what they want
-    ## and get a package built for their needs.
-    ## SO by default get them a NOSCHEMACHIP.DB, and otherwise it's
-    ## one of the following: NCBICHIP.DB, YEASTCHIP.DB,
-    ## ARABIDOPSISCHIP.DB.  If its one of those "other three" then
-    ## dispatch will be handled through .legacySelect()
-
-    ## TODO: I am going to have to write a DBSCHEMA detection and dispatch
-    ## helper for finding if it's ARABIDOPSIS, YEAST, NOSCHEMA OR
-    ## something else.
-    
+    if(dim(probeFrame)[1] == 0 ||
+           dim(probeFrame)[2] != 2){
+        stop("'probeFrame' should have two columns with row data for which probes match up with which gene Ids")
+        }
     ## check other arguments
     if(!.isSingleString(prefix))
         stop("'prefix' must be a single string")
@@ -243,12 +257,21 @@ makeChipPackage <- function(prefix,
         stop("'genus' must be a single string")
     if(!.isSingleString(species))
         stop("'species' must be a single string")
+    ## optionalAccessionsFrame
+    if(!is.null(optionalAccessionsFrame)){
+        if(dim(optionalAccessionsFrame)[1] == 0 ||
+           dim(optionalAccessionsFrame)[2] != 2){
+            stop("When provided, 'optionalAccessionsFrame' should have two columns with data for which probes match up with which accessions")
+        }
+        if(dim(optionalAccessionsFrame)[1] != dim(unique(optionalAccessionsFrame))[1])
+            stop("All rows in 'optionalAccessionsFrame' must be unique")  
+    }
     
     ## The file name for the DB
     dbFileName <- file.path(outputDir,paste0(prefix, ".sqlite"))
     ## Then make the DB
     makeChipDbFromDataFrame(probeFrame, orgPkgName, tax_id,
-                            genus, species, dbFileName)
+                            genus, species, dbFileName, optionalAccessionsFrame)
 
     ## choose the appropriate pkgTemplate (schema)
     orgSchema <- .getOrgSchema(orgPkgName)
@@ -286,15 +309,4 @@ makeChipPackage <- function(prefix,
 
 
 
-
-## TODO: you forgot to add accesions tables.  You really just only
-## need this for the legacy chip format.  It's a two column table that
-## looks like this:
-## CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20));
-## CREATE INDEX Fgbprobes ON accessions (probe_id);
-## And it should be created whenever .makeLegacyProbesTable() is called.
-## I don't want that to be part of the new schema-less ChipDbs though.
-## Checking: For the main function, it can just be an option that you
-## can pass in if you are using a legacy package.  (A warning will
-## have to be issued if you use it with a schema-less org package).
 
