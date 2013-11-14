@@ -77,6 +77,15 @@ AnnotationForge:::makeChipPackage(prefix="fakeHumanChip",
 ## - have to add support for select methods
 
 
-## We ALMOST can use the 2nd type of package.  (the 1st type will need a bit more work).
-## BUG: the "NOCHIPSCHEMA_DB" is currently ALWAYS being used when the package is wrapped.
-## TODO: make sure we supporte ORGANISM_DB schema for our easy chip packages...
+## We ALMOST can use the 2nd type of package.  (the 1st type will need a bit more work)
+
+## TODO: make sure we support ORGANISM_DB schema for our easy chip packages...
+
+## This now (mostly) works (at least for human legacy pkgs).  The one thing I see wrong is that there are not any ACCNUM values (which makes sense).  So I might have to take steps to stamp out the ACCNUM man page etc. from this kind of package (after the fact)
+
+
+## for example
+keytypes(fakeHumanChip.db)
+columns(fakeHumanChip.db)
+k = head(keys(fakeHumanChip.db))
+select(fakeHumanChip.db , k , "SYMBOL","PROBEID")

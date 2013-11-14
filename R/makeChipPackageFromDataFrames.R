@@ -21,6 +21,15 @@
   message("probes table filled and indexed")
 }
 
+## helper to safely rename things
+.tweakMapName <- function(df, initial, replacement){
+    if(any(df[["map_name"]]==initial)){
+        df[df$map_name==initial,1] <- replacement
+        return(df)
+    }else{
+        return(df)
+    }
+}
 
 ## helper to populate missing map_metadata from org packages for olde templates
 .cloneMapMetadata <- function(con, orgPkgName){
@@ -35,15 +44,13 @@
     }else{
         accNums <- mapValues[mapValues$map_name== "ENTREZID",]
         accNums[1] <- "ACCNUM"
-        ## alias2p <- mapValues[mapValues$map_name== "ENTREZID",]
-        ## accNums[1] <- "ALIAS2PROBE"
         mapValues <- rbind(mapValues, accNums)
-        mapValues[mapValues$map_name== "ALIAS2EG",1] <- "ALIAS2PROBE"
-        mapValues[mapValues$map_name== "PMID2EG",1] <- "PMID2PROBE"
-        mapValues[mapValues$map_name== "GO2EG",1] <- "GO2PROBE"
-        mapValues[mapValues$map_name== "GO2ALLEGS",1] <- "GO2ALLPROBES"
-        mapValues[mapValues$map_name== "PATH2EG",1] <- "PATH2PROBE"
-        mapValues[mapValues$map_name== "ENSEMBL2EG",1] <- "ENSEMBL2PROBE"
+        mapValues <- .tweakMapName(mapValues, "ALIAS2EG", "ALIAS2PROBE")
+        mapValues <- .tweakMapName(mapValues, "PMID2EG", "PMID2PROBE")
+        mapValues <- .tweakMapName(mapValues, "GO2EG", "GO2PROBE")
+        mapValues <- .tweakMapName(mapValues, "GO2ALLEGS", "GO2ALLPROBES")
+        mapValues <- .tweakMapName(mapValues, "PATH2EG", "PATH2PROBE")
+        mapValues <- .tweakMapName(mapValues, "ENSEMBL2EG", "ENSEMBL2PROBE")
     }
     message("Populating map_metadata table:")
     sql<- paste("CREATE TABLE IF NOT EXISTS map_metadata (
@@ -280,5 +287,14 @@ makeChipPackage <- function(prefix,
 
 
 
-## replacing map_metadata worked!  But stuff is STILL missing.
-## TODO: still missing: @ALIAS2PROBESOURCE@
+## TODO: you forgot to add accesions tables.  You really just only
+## need this for the legacy chip format.  It's a two column table that
+## looks like this:
+## CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20));
+## CREATE INDEX Fgbprobes ON accessions (probe_id);
+## And it should be created whenever .makeLegacyProbesTable() is called.
+## I don't want that to be part of the new schema-less ChipDbs though.
+## Checking: For the main function, it can just be an option that you
+## can pass in if you are using a legacy package.  (A warning will
+## have to be issued if you use it with a schema-less org package).
+
