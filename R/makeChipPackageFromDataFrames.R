@@ -3,19 +3,19 @@
   message("Populating genes table:")
   sql<- paste("    CREATE TABLE IF NOT EXISTS probes (
       PROBEID VARCHAR(80),           -- PROBEID
-      GENEID VARCHAR(10) NULL,           -- GENEID
+      GID VARCHAR(10) NULL,           -- GENEID
       is_multiple SMALLINT NOT NULL           -- matches multiple genes?
     );")
   sqliteQuickSQL(con, sql)
 
   values <- data.frame(probeFrame) 
-  sql <- paste("INSERT INTO probes(PROBEID, GENEID, is_multiple)",
+  sql <- paste("INSERT INTO probes(PROBEID, GID, is_multiple)",
                "VALUES(?,?,?);")
   dbBeginTransaction(con)
   dbGetPreparedQuery(con, sql, values)
   dbCommit(con)
   sqliteQuickSQL(con,
-                 "CREATE INDEX IF NOT EXISTS Fgenes ON probes (GENEID)")
+                 "CREATE INDEX IF NOT EXISTS Fgenes ON probes (GID)")
   sqliteQuickSQL(con,
                  "CREATE INDEX IF NOT EXISTS Fprobes ON probes (PROBEID)")
   message("probes table filled and indexed")

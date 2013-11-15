@@ -41,17 +41,20 @@ AnnotationForge:::makeChipPackage(prefix=prefix,
 
 ## TESTING select() (for example)
 library(fakeChip.db)
-keytypes(fakeChip.db)
-columns(fakeChip.db)
-k = head(keys(fakeChip.db))
-select(fakeChip.db , k , "SYMBOL","PROBEID")
+keytypes(fakeChip.db)                         ## now works!
+columns(fakeChip.db)                          ## now works!
+k = head(keys(fakeChip.db))                   ## now works!
+k
+select(fakeChip.db , k , "SYMBOL","PROBEID")  
 
 ## TODO: 1) ORGPKG needs to be in the metadata and then get made by
 ## template into relevant object. 2) ORGPKG ALSO needs to be inserted
 ## into the DESCRIPTION file template (as a dependency) - so add a new
 ## "tag" to the templates.
-
-
+## BUG:
+library(org.TguttataTestingSubset.eg.db)
+k = head(keys(org.TguttataTestingSubset.eg.db))
+select(org.TguttataTestingSubset.eg.db, k , c("SYMBOL","CHROMOSOME"),"GID")
 
 
 
@@ -169,3 +172,24 @@ select(fakeHumanChip.db , k , "SYMBOL","PROBEID")
 ## TODO: I am going to have to write a DBSCHEMA detection and dispatch
 ## helper for finding if it's ARABIDOPSIS, YEAST, NOSCHEMA OR
 ## something else.
+
+## TODO: Add better argument checking to make sure columns and
+## keytypes are always legitimate! - DONE.
+## library(org.Hs.eg.db)
+## k = head(keys(org.Hs.eg.db))
+## select(org.Hs.eg.db , k , "SYMBOL","ENTREZID")
+
+
+
+
+
+
+
+
+
+## TODO:
+## This ALSO means that PROBEID is now officially a reserved word for
+## making NOSCHEMA org packages.  Also forbidden is the use of probes
+## as a table name
+## ALSO: genes should be reserved as a table name (and should be already)
+
