@@ -6,6 +6,7 @@ datacache <- new.env(hash=TRUE, parent=emptyenv())
 @ANNOBJPREFIX@_dbschema <- function(file="", show.indices=FALSE) dbschema(datacache, file=file, show.indices=show.indices)
 @ANNOBJPREFIX@_dbInfo <- function() dbInfo(datacache)
 
+@ANNOBJPREFIX@ORGPKG <- "@ORGPKGDEP@"
 @ANNOBJPREFIX@ORGANISM <- "@ORGANISM@"
 
 .onLoad <- function(libname, pkgname)

@@ -299,6 +299,11 @@ setGeneric("makeAnnDbPkg", signature="x",
     function(x, dbfile, dest_dir=".", no.man=FALSE, ...) standardGeneric("makeAnnDbPkg")
 )
 
+## helper to extract metadata
+.getOrgDepFromMetadata <- function(dbfile){
+    con <- dbConnect(SQLite(), dbfile)
+    sqliteQuickSQL(con, "SELECT value FROM metadata WHERE name = 'ORGPKGDEP'")
+}
 
 .makeAnnDbPkg <- function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
   x <- initWithDbMetada(x, dbfile)
@@ -322,7 +327,12 @@ setGeneric("makeAnnDbPkg", signature="x",
                      "SELECT value FROM metadata WHERE name='Db type'")
   if(type=="ChipDb"){
     org_version <- installed.packages()['org.Hs.eg.db','Version']
-    org_pkg <- paste0(AnnotationDbi:::getOrgPkgForSchema(x@DBschema),".db")
+    ## NOCHIPSCHEMA DBs know who they depend on
+    if(x@DBschema=="NOCHIPSCHEMA_DB"){
+        org_pkg <- as.character(.getOrgDepFromMetadata(dbfile))
+    }else{
+        org_pkg <- paste0(AnnotationDbi:::getOrgPkgForSchema(x@DBschema),".db")
+    }
   }else{
     org_version <- "no org version date"
     org_pkg <- "no org pkg required"

@@ -11,6 +11,7 @@ export(
     @ANNOBJPREFIX@_dbschema,
     @ANNOBJPREFIX@_dbInfo,
 
+    @ANNOBJPREFIX@ORGPKG,
     @ANNOBJPREFIX@ORGANISM
 )
 

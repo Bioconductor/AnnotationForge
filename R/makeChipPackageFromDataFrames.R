@@ -172,6 +172,7 @@ supportedNCBItypes <- function(){
     }
 }
 
+
 ## function to put together the database.
 ## This takes a named list of data.frames.
 makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
@@ -214,6 +215,10 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
     }else{## note that "legacy" yeast is not supported.
         stop("The org package you have specified has an unsupported schema.")
     }
+    ## Add org package info to metadata
+    shortPkgName <- sub(".db","",orgPkgName)
+    AnnotationForge:::.addMeta(con, "ORGPKGDEP", shortPkgName)
+    
 }
 
 

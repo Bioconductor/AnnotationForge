@@ -39,6 +39,21 @@ AnnotationForge:::makeChipPackage(prefix=prefix,
                                   species=species)
 
 
+## TESTING select() (for example)
+library(fakeChip.db)
+keytypes(fakeChip.db)
+columns(fakeChip.db)
+k = head(keys(fakeChip.db))
+select(fakeChip.db , k , "SYMBOL","PROBEID")
+
+## TODO: 1) ORGPKG needs to be in the metadata and then get made by
+## template into relevant object. 2) ORGPKG ALSO needs to be inserted
+## into the DESCRIPTION file template (as a dependency) - so add a new
+## "tag" to the templates.
+
+
+
+
 
 ## test a legacy platform (do a human example)
 library(org.Hs.eg.db)
