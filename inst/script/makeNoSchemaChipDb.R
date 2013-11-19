@@ -129,55 +129,29 @@ select(fakeHumanChip.db , k , "SYMBOL","PROBEID")
 
 
 
-## TODO: you forgot to add accesions tables.  You really just only
-## need this for the legacy chip format.  It's a two column table that
-## looks like this:
-## CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20));
-## CREATE INDEX Fgbprobes ON accessions (probe_id);
-## And it should be created whenever .makeLegacyProbesTable() is called.
-## I don't want that to be part of the new schema-less ChipDbs though.
-## Checking: For the main function, it can just be an option that you
-## can pass in if you are using a legacy package.  (A warning will
-## have to be issued if you use it with a schema-less org package).
-
-
-## TODO: test to make sure that I can do this with a probeFrame where
-## some probes have no gene IDs. = OK
-
-## BUT: There is still an oddity, it seems that I need to put entrez
-## gene IDs into accessions table too?  That's really strange for
-## users...  Maybe the argument should just be left out?
-
 
 
 ##########################################################################
-## Notes on the planned behavior of makeChipPackage()
-## the internal table name should be called probes with fields
-## (PROBE and GID) to go with new NOSCHEMA style of database.
+## We have two kinds of chip packages we can make, 1) NOCHIPSCHEMA_DB
+## packages ddon't have the same structure internally as classic chip
+## packages, but they do support select. 2) classic ones point to a
+## known (supported) org package and also will have bimaps and most of
+## what is in a classic chip package (map counts are gone though).
+## BUT overall, I think these are still BETTER for me because you
+## don't need a .db0 to make one.
+## There is an extra argument for the 2nd case, for the case where
+## users want to have a functioning ACCNUM bimap (and have ACCNUMS).
+## But it's optional.  This second kind of package really exists so
+## that I can make classic chip packages in this new way (still only
+## for supported packages).  If I go this route, I should probably add
+## some code to fill in the map_counts.
 
-## What if someone wants to use an old style org package with a
-## new style of chip package?  - That situation could have gotten
-## complicated BUT chip packages DO specify the org package that
-## they are supposed to depend on.
-
-## Best idea I think: based on the org package, I need to generate
-## either a NOSCHEMACHIP OR a CHIPDB (there is very little to do
-## in either case), so that the user can specify what they want
-## and get a package built for their needs.
-## SO by default get them a NOSCHEMACHIP.DB, and otherwise it's
-## one of the following: NCBICHIP.DB, YEASTCHIP.DB,
-## ARABIDOPSISCHIP.DB.  If its one of those "other three" then
-## dispatch will be handled through .legacySelect()
-
-## TODO: I am going to have to write a DBSCHEMA detection and dispatch
-## helper for finding if it's ARABIDOPSIS, YEAST, NOSCHEMA OR
-## something else.
 
 ## TODO: Add better argument checking to make sure columns and
 ## keytypes are always legitimate! - DONE.
-## library(org.Hs.eg.db)
-## k = head(keys(org.Hs.eg.db))
-## select(org.Hs.eg.db , k , "SYMBOL","ENTREZID")
+library(org.Hs.eg.db)
+k = head(keys(org.Hs.eg.db))
+select(org.Hs.eg.db , k , "SYMBOL","ENTREZID")
 
 
 
@@ -192,4 +166,6 @@ select(fakeHumanChip.db , k , "SYMBOL","PROBEID")
 ## making NOSCHEMA org packages.  Also forbidden is the use of probes
 ## as a table name
 ## ALSO: genes should be reserved as a table name (and should be already)
+
+
 
