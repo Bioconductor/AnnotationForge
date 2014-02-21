@@ -11,7 +11,6 @@ datacache <- new.env(hash=TRUE, parent=emptyenv())
 
 .onLoad <- function(libname, pkgname)
 {
-    require("methods", quietly=TRUE)
     ## Connect to the SQLite DB
     dbfile <- system.file("extdata", "@DBFILE@", package=pkgname, lib.loc=libname)
     assign("dbfile", dbfile, envir=datacache)
