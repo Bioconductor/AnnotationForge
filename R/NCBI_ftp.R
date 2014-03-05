@@ -343,23 +343,26 @@
   GBVals <- vals[grep("genbank",vals[,4]),c(2,6)]
   colnames(GBVals) <- colnames(RSVals) <- c("go_id","accession")
   tables <- sqliteQuickSQL(con,"SELECT * FROM sqlite_master")$name
-  
-  if("gene2refseq" %in% tables){
-    g2rs <- sqliteQuickSQL(con,
-      "SELECT gene_id, protein_accession FROM gene2refseq")
-    g2rs[,2] <- sub("\\.\\d+$","",g2rs[,2])
-    vals <- merge(RSVals,g2rs, by.x="accession" , by.y="protein_accession")
-  }else if("gene2accession" %in% tables){
-    g2ac <- sqliteQuickSQL(con,
-      "SELECT gene_id, protein_accession FROM gene2accession")
-    gb <- merge(GBVals,g2ac, by.x="accession" , by.y="protein_accession")
-    if("gene2refseq" %in% tables){
-      vals <- rbind(vals, gb)
-    }else{
-      vals <- gb
-    }
-  }else{
+
+  if(!any(c("gene2refseq","gene2accession") %in% tables)){
     stop("It is impossible to match up blasted GO terms with NCBI accessions.")
+  }else{
+      if("gene2refseq" %in% tables){
+          g2rs <- sqliteQuickSQL(con,
+                                 "SELECT gene_id, protein_accession FROM gene2refseq")
+          g2rs[,2] <- sub("\\.\\d+$","",g2rs[,2])
+          vals <- merge(RSVals,g2rs, by.x="accession" , by.y="protein_accession")
+      }
+      if("gene2accession" %in% tables){
+          g2ac <- sqliteQuickSQL(con,
+                                 "SELECT gene_id, protein_accession FROM gene2accession")
+          gb <- merge(GBVals,g2ac, by.x="accession" , by.y="protein_accession")
+          if("gene2refseq" %in% tables){
+              vals <- rbind(vals, gb)
+          }else{
+              vals <- gb
+          }
+      }
   }
 
   ## Add to the metadata:
