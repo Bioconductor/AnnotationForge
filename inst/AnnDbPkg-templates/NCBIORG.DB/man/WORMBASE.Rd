@@ -10,7 +10,7 @@
   \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to Wormbase
   Accession Numbers.
 
-  Mappings were based on data provided by: @WORMBASESOURCE@
+  Mappings were based on data provided from ensembl
 }
 
 \examples{

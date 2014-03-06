@@ -10,7 +10,7 @@
   This object is a simple mapping of manufacturer identifiers to Wormbase
   Accessions.
 
-  Mappings were based on data provided by: @WORMBASESOURCE@
+  Mappings were based on data provided from ensembl
 }
 
 \examples{
