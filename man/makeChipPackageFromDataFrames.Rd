@@ -93,7 +93,7 @@ makeChipPackage(prefix='testChip',
 
 ## then you can call install.packages based on the return value
 install.packages('./testChip.db', repos=NULL)
-library(testChip.db)
+
 }
 
 }
