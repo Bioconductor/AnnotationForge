@@ -44,6 +44,6 @@ export(
     ## from R/makeProbePackage.R
     getProbeDataAffy,
     getProbeData_1lq,
-    makeProbePackage
-
+    makeProbePackage,
+    makeInpDb
 )
