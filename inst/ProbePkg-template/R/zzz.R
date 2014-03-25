@@ -1,5 +1,5 @@
 .onLoad <- function(libname, pkgname) {
-  ## load the data
+  ## load the utils::data
   where = asNamespace(pkgname)
-  data(list = pkgname, package = pkgname, envir = where)
+  utils::data(list = pkgname, package = pkgname, envir = where)
 }
