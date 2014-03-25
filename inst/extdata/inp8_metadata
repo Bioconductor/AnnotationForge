@@ -1,0 +1,10 @@
+name	value
+INPSOURCEDATE	12-Dec-2013
+INPSOURCENAME	Inparanoid Orthologs
+INPSOURCEURL	http://inparanoid.sbc.su.se/download/current/Orthologs/
+DBSCHEMA	INPARANOID_DB8
+ORGANISM	NULL
+SPECIES	NULL
+package	AnnotationDbi
+Db type	Inparanoid8Db
+DBSCHEMAVERSION	1.0

@@ -90,8 +90,8 @@
 
 ## helper to get us a 
 .lookupTableName <- function(shortName){
-    allNames <- read.delim(system.file('extdata','Full_species_mapping',
-                                        package='InparanoidBaseBuilder'),
+    allNames <- read.delim(system.file('extdata','inp8_Full_species_mapping',
+                                        package='AnnotationForge'),
                            sep="\t", header=TRUE, stringsAsFactors=FALSE)
     lidx <-grepl(shortName, allNames$inparanoidSpecies)
     res <- allNames[lidx, 'tableNames']
@@ -158,8 +158,8 @@
         name VARCHAR(80) PRIMARY KEY,
         value VARCHAR(255));")
     sqliteQuickSQL(con, sql)
-    meta <- read.delim(system.file('extdata','metadata',
-                                   package='InparanoidBaseBuilder'),
+    meta <- read.delim(system.file('extdata','inp8_metadata',
+                                   package='AnnotationForge'),
                        sep="\t", header=TRUE, stringsAsFactors=FALSE)
     species <- sub("_", " ", species)
     meta[meta$name=='ORGANISM','value'] <- species
@@ -172,8 +172,8 @@
 
 ## map metadata is also something I don't need to inp8 (no more maps)
 ## .makeMapMetadata <- function(){
-##     meta <- read.delim(system.file('extdata','metadata',
-##                                    package='InparanoidBaseBuilder'),
+##     meta <- read.delim(system.file('extdata','inp8_metadata',
+##                                    package='AnnotationForge'),
 ##                        sep="\t", header=TRUE, stringsAsFactors=FALSE)
 ## }
 
@@ -190,6 +190,8 @@
 makeInpDb <- function(dir, dataDir="."){
     ## Start by getting all the data we need
     files <- .getAFileSet(dir)
+    ## temp hack if you don't want to re-DL the files each time    
+    ## files = dir('.', pattern='*.tgz')
     ## set up for a database
     require("RSQLite")
     ## the connection is for the KIND of DB
@@ -271,4 +273,12 @@ makeInpDbs <- function(dataDir="."){
 
 
 ## TODO: add Organism and species to the metadata!
+
+
+
+### TEST again:
+## library(AnnotationForge);
+## debug(makeInpDb);
+## makeInpDb(dir="http://inparanoid.sbc.su.se/download/current/Orthologs/A.aegypti/", dataDir=".")
+## debug(AnnotationForge:::.lookupTableName)
 
