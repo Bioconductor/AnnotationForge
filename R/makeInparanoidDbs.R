@@ -32,17 +32,18 @@
 
 
 ## helper to get one file set
-.getAFileSet <- function(dir){
+.getAFileSet <- function(dir, dataDir){
     files <- .getSubDirs(dir)
     ## filter empty dirs (are not tarballs)
     files <- files[grepl(".tgz$",files)]
     allPaths <- paste0(dir, files)
     ## now actually download all these files
-    mapply(download.file, url=allPaths, destfile=files)
+    localFiles <- file.path(dataDir, files)
+    mapply(download.file, url=allPaths, destfile=localFiles)
     ## untar all that stuff...
-    lapply(files, untar)
+    lapply(localFiles, untar, exdir=dataDir)
     ## And then return the list of junk you just downloaded
-    files
+    localFiles
 }
 
 
@@ -103,14 +104,15 @@
     ## cleanup because there is some peculiarity for some of their files.
     file <- sub("\\..tgz","\\.tgz",file)
     ## extract the tableName we need for the table name etc.
-    fileSpecies <- sub("^InParanoid.+?-","",file, perl=TRUE)
+    ## fileSpecies <- sub("^InParanoid.+?-","",file, perl=TRUE)
+    fileSpecies <- sub("^.*/InParanoid.+?-","",file, perl=TRUE) ## DEBUG
     fileSpecies <- sub(".tgz$","",fileSpecies)
     ## get tableName by translating the fileSpecies
     tableName <- .lookupTableName(fileSpecies)
     ## tableName <- sub("\\.","_",fileSpecies)
     ## tableName <- sub("-","_",tableName)
     ## get the actual extracted src file name that I need.
-    srcFile <- paste0("sqltable.",species,"-",fileSpecies)
+    srcFile <- file.path(dataDir, paste0("sqltable.",species,"-",fileSpecies))
     
     ##Make a table
     message(paste0("Creating table: ", tableName))
@@ -125,7 +127,7 @@
     
     ##Populate it with the contents of the filename
     message(cat(paste0("Populating table: ",tableName)))
-    clnVals <- .prepareData(file=file.path(dataDir,srcFile))
+    clnVals <- .prepareData(file=srcFile)
 
     sql<- paste0("    INSERT into ", tableName,
        " (clust_id,clu2,species,score,inp_id,seed_status) VALUES
@@ -136,11 +138,13 @@
 }
 
 ## Helper to toss out all the generated files...
-.cleanupFiles <- function(files){    
+.cleanupFiles <- function(files, dataDir="."){    
     ## unlink allows wildcards
-    fileBase <- sub("InParanoid","",sub(".tgz","",files))
-    unlink(paste0("*",fileBase,"*"))
-    unlink("*.stdout")
+    fileBase <- sub(file.path(dataDir,""),"",
+                    sub("InParanoid","",
+                        sub(".tgz","",files)))
+    unlink(file.path(dataDir,paste0("*",fileBase,"*")))
+    unlink(file.path(dataDir,"*.stdout"))
 }
 
 ## .makeMapCounts <- function(con, species){
@@ -189,14 +193,15 @@
 ## function to make a set of tables.
 makeInpDb <- function(dir, dataDir="."){
     ## Start by getting all the data we need
-    files <- .getAFileSet(dir)
+    files <- .getAFileSet(dir, dataDir)
     ## temp hack if you don't want to re-DL the files each time    
     ## files = dir('.', pattern='*.tgz')
     ## set up for a database
     require("RSQLite")
     ## the connection is for the KIND of DB
     abbrevSpeciesName <- sub("-.*.tgz$","",files[1])
-    abbrevSpeciesName <- sub("^InParanoid.","",abbrevSpeciesName)
+    ## abbrevSpeciesName <- sub("^InParanoid.","",abbrevSpeciesName)
+    abbrevSpeciesName <- sub("^.*/InParanoid.","",abbrevSpeciesName) ## DEBUG!
     DBNAME <- paste0("hom.",
                      .lookupTableName(abbrevSpeciesName),
                      ".inp8",
@@ -206,7 +211,8 @@ makeInpDb <- function(dir, dataDir="."){
     ## each DB will need a connection
     for(i in seq_along(files)){
         ## Then start making tables...
-        .popInpTable(con, file=files[i], species=abbrevSpeciesName)    
+        .popInpTable(con, file=files[i], species=abbrevSpeciesName,
+                     dataDir=dataDir)    
     }
 
     ## Don't forget the metadata...
@@ -214,9 +220,11 @@ makeInpDb <- function(dir, dataDir="."){
     .makeBasicMetadata(con, species=.lookupTableName(abbrevSpeciesName))
     
     ## And end by unlinking all the data we don't need anymore...
-    .cleanupFiles(files)
+    .cleanupFiles(files, dataDir)
     ## and close the connection
     dbDisconnect(con)
+    ## return the name of the DB connection for external saving
+    DBNAME
 }
 
 
@@ -226,24 +234,24 @@ makeInpDb <- function(dir, dataDir="."){
 ## then asking for each one in turn.
 
 
-makeInpDbs <- function(dataDir="."){
-    curLoc <- 'http://inparanoid.sbc.su.se/download/current/Orthologs/'
-    subDirs <- .getSubDirs(curLoc)
-    ## minor filtering
-    ## subDirs <- subDirs[!(subDirs %in% c('stderr/'))]
-    ## species <- sub("/","",subDirs)
-    ## allDirs <- paste0(curLoc, subDirs)
-    ## ## for each AllDir, we want to make a DB with:
-    ## lapply(allDirs, makeInpDb, dataDir)
+## makeInpDbs <- function(dataDir="."){
+##     curLoc <- 'http://inparanoid.sbc.su.se/download/current/Orthologs/'
+##     subDirs <- .getSubDirs(curLoc)
+##     ## minor filtering
+##     ## subDirs <- subDirs[!(subDirs %in% c('stderr/'))]
+##     ## species <- sub("/","",subDirs)
+##     ## allDirs <- paste0(curLoc, subDirs)
+##     ## ## for each AllDir, we want to make a DB with:
+##     ## lapply(allDirs, makeInpDb, dataDir)
 
-    ## JUST for now: lets just make the ones we supported before (for testing)
-    traditional <- c('A.thaliana','C.elegans','D.melanogaster','D.rerio','H.sapiens','M.musculus','R.norvegicus','S.cerevisiae')
-    allDirs <- paste0(curLoc, traditional,"/")
+##     ## JUST for now: lets just make the ones we supported before (for testing)
+##     traditional <- c('A.thaliana','C.elegans','D.melanogaster','D.rerio','H.sapiens','M.musculus','R.norvegicus','S.cerevisiae')
+##     allDirs <- paste0(curLoc, traditional,"/")
 
     
-    lapply(allDirs, makeInpDb, dataDir)
+##     lapply(allDirs, makeInpDb, dataDir)
     
-}
+## }
 
 
 ## Test this out
@@ -282,3 +290,14 @@ makeInpDbs <- function(dataDir="."){
 ## makeInpDb(dir="http://inparanoid.sbc.su.se/download/current/Orthologs/A.aegypti/", dataDir=".")
 ## debug(AnnotationForge:::.lookupTableName)
 
+
+
+## library(AnnotationForge);
+## debug(AnnotationForge:::.cleanupFiles);
+## debug(makeInpDb);
+## debug(AnnotationForge:::.popInpTable);
+## example(makeInpDb)
+
+## I need to have the db able to be saved
+## library(AnnotationForge);
+## db <- makeInpDb(dir="http://inparanoid.sbc.su.se/download/current/Orthologs/A.aegypti/", dataDir=tempdir())
