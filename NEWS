@@ -1,5 +1,23 @@
  	**************************************************
 	*						 *
+	*	        1.6.0 SERIES NEWS		 *
+	*						 *
+	**************************************************
+
+NEW FEATURES
+
+    o Adds support for a generalized makeChipPackage() function so
+    that users with a probe that maps to an ID can make a chip package
+    providing only that they have access to an org package (no .db0
+    package required).
+
+    o Adds support for making new inparanoid8 databases (for loading
+    into AnnotationHub)
+
+
+
+ 	**************************************************
+	*						 *
 	*	        1.4.0 SERIES NEWS		 *
 	*						 *
 	**************************************************
