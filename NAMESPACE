@@ -4,7 +4,7 @@ import(Biobase)
 import(DBI)
 import(RSQLite)
 import(BiocGenerics)
-## importFrom(IRanges, metadata)
+import(S4Vectors)
 
 exportClasses(
     ## from R/AnnDbPkg-maker.R
