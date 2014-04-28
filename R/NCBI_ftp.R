@@ -177,15 +177,11 @@
   }
 }
 
-.downloadData <- function (file, tax_id, NCBIFilesDir=NULL) {
-  colClasses1 <- c("character",rep("NULL", times= length(unlist(file))-1))
-  colClasses2 <- c(rep("character", times= length(unlist(file))))
-  ## names(file) is something like: "gene2go.gz"
-  message(paste("Getting data for ",names(file),sep=""))
-  
-  ## Where to DL from
-  url <- paste("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/",names(file), sep="")
-  
+
+## Helper for deciding what to do about saves (returns location of saved subset)
+## TODO: make another helper called from here, that will populate and
+## index a DB with these files as they download.
+.getFiles <- function(NCBIFilesDir, file, url){
   if(is.null(NCBIFilesDir)){
       tmp <- tempfile() 
       ##download.file(url, tmp, quiet=TRUE)
@@ -194,53 +190,47 @@
       tmp <- paste(NCBIFilesDir, names(file), sep=.Platform$file.sep)
        if(!file.exists(tmp)){
            .tryDL(url, tmp)
-       }## otherwise we already have the file saved
+       }## means we already have the file saved
   }
-  ## TODO: this check could be more robust...
-  header <- unlist(strsplit(readLines(tmp, n=1),"\t"))
-  if(all(unlist(file) %in% header)){ ## then we have been here before.
-      message("reading from a pre-processed file")
-      vals <- read.delim(tmp, header=TRUE, sep="\t", quote="",
-                         stringsAsFactors=FALSE)
-  }else{
-      message("discarding data from other organisms")
-      if("tax_id" %in% unlist(file)){ ## when there is a tax_id need to subset
-          tax_ids <- unlist(read.delim(tmp,header=FALSE,sep="\t",skip=1,
-                                       stringsAsFactors=FALSE, quote="",
-                                       colClasses = colClasses1)[,1])
-          
-          ind <- grep(paste("^",tax_id,"$",sep=""), tax_ids, perl=TRUE)
-          
-          if(length(ind) == 0){## ie there are no matching tax_ids...
-              vals <- data.frame(t(1:length(unlist(file))),
-                                 stringsAsFactors=FALSE)
-              colnames(vals) <- unlist(file)
-              vals <- vals[FALSE,]
-          }else{
-              vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1+min(ind),
-                                 nrows= max(ind) - min(ind) +1,
-                                 stringsAsFactors=FALSE, quote="",
-                                 colClasses = colClasses2)
-          }
+  return(tmp)
+}
+
+
+
+
+##########################################################
+.downloadData <- function (file, tax_id, NCBIFilesDir=NULL) {
+  colClasses1 <- c("character",rep("NULL", times= length(unlist(file))-1))
+  colClasses2 <- c(rep("character", times= length(unlist(file))))
+  ## names(file) is something like: "gene2go.gz"
+  message(paste("Getting data for ",names(file),sep=""))
+  ## Where to DL from
+  url <- paste("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/",names(file), sep="")
+  ## Do we have a saved file already?
+  tmp <- .getFiles(NCBIFilesDir, file, url)  
+  message(paste0("discarding data from other organisms from : " ,tmp))
+  if("tax_id" %in% unlist(file)){ ## when there is a tax_id need to subset
+      tax_ids <- unlist(read.delim(tmp,header=FALSE,sep="\t",skip=1,
+                                   stringsAsFactors=FALSE, quote="",
+                                   colClasses = colClasses1)[,1])
+      ind <- grep(paste("^",tax_id,"$",sep=""), tax_ids, perl=TRUE)
+      if(length(ind) == 0){## ie there are no matching tax_ids...
+          vals <- data.frame(t(1:length(unlist(file))),
+                             stringsAsFactors=FALSE)
+          colnames(vals) <- unlist(file)
+          vals <- vals[FALSE,]
       }else{
-          vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
+          vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1+min(ind),
+                             nrows= max(ind) - min(ind) +1,
                              stringsAsFactors=FALSE, quote="",
                              colClasses = colClasses2)
-      } 
-      ## The following will just keep unwanted data from our temp DB tables.
-      ## if there is a tax_id,
-      ## then only return the piece that matches the organism in question
-      colnames(vals) <- unlist(file)
-      if(!is.null(vals[["tax_id"]])){
-          vals <- vals[vals[["tax_id"]]==tax_id,]
       }
-      ## Remove the following save line if you think there are problems
-      ## with the tx_id filtering above.
-      ## save the processed results ONLY
-      if(!is.null(NCBIFilesDir)){
-          write.table(vals, sep="\t", quote=FALSE, row.names=FALSE, file=tmp)
-      }
-  }
+  }else{
+      vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
+                         stringsAsFactors=FALSE, quote="",
+                         colClasses = colClasses2)
+  } 
+  colnames(vals) <- unlist(file)
   vals
 }
 
