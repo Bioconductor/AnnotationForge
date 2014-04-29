@@ -48,9 +48,14 @@
 debug(makeOrgDbFromNCBI)
 debug(AnnotationForge:::.makeBaseDBFromDLs)
 debug(AnnotationForge:::.saveFiles)
-
-
 debug(AnnotationForge:::.downloadData)
+
+debug(AnnotationForge:::.getFiles)
+
+
+debug(AnnotationForge:::.writeToNCBIDB)
+
+debug(AnnotationForge:::.indexTaxIds)
 
 
 library(AnnotationForge)
