@@ -178,58 +178,99 @@
 }
 
 
+## TODO:
+## 1) make another helper called from here, that will populate and
+## index a DB with these files as they download. Only Index the tax_id
+## columns.
+## Use dbWriteTable() and: 
+## vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
+##                    stringsAsFactors=FALSE, quote="",
+##                    colClasses = colClasses2)
+##
+## 2) Pass in the DB connection (through this funnction)
+## 3) in .downloadData() retrieve data from the DB (instead of using
+## read.delim).
+## 4) in .downloadData() also create a metadata table and set/check a
+## data.  If the database exists AND is new enough, then don't re-pop
+## the DB (IOW DON'T call .getFiles).
+
+## helper for writing data to a temp NCBI database for rapid retrieval
+.writeToNCBIDB <- function(NCBIcon, tableName){
+    vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
+                       stringsAsFactors=FALSE, quote="",
+                       colClasses = colClasses2)
+    dbWriteTable(conn=NCBIcon, name=tableName, value=vals, overwrite=TRUE)
+    ## create INDEX on tax_id
+    sql <- paste0("CREATE INDEX IF NOT EXISTS ",tableName,"_taxId ON ",
+                  tableName, " (tax_id)")
+    sqliteQuickSQL(conn=NCBIcon, sql)
+}
+
+
 ## Helper for deciding what to do about saves (returns location of saved subset)
-## TODO: make another helper called from here, that will populate and
-## index a DB with these files as they download.
-.getFiles <- function(NCBIFilesDir, file, url){
-  if(is.null(NCBIFilesDir)){
+.getFiles <- function(NCBIFilesDir, file, url, NCBIcon){
+  if(is.null(NCBIFilesDir)){ ## the case for using tempfile()
       tmp <- tempfile() 
-      ##download.file(url, tmp, quiet=TRUE)
       .tryDL(url, tmp)
+      ## TODO: 'check for DB stale-ness' here!
+      .writeToNCBIDB(NCBIcon, tableName=names(file))
   }else{
       tmp <- paste(NCBIFilesDir, names(file), sep=.Platform$file.sep)
-       if(!file.exists(tmp)){
+       if(!file.exists(tmp)){ 
            .tryDL(url, tmp)
-       }## means we already have the file saved
+           ## TODO: 'check for DB stale-ness' here too!
+           .writeToNCBIDB(NCBIcon, tableName=names(file))
+       }## otherwise means we already have the file saved (AND the DB created)
   }
   return(tmp)
 }
 
 
-
-
 ##########################################################
 .downloadData <- function (file, tax_id, NCBIFilesDir=NULL) {
-  colClasses1 <- c("character",rep("NULL", times= length(unlist(file))-1))
-  colClasses2 <- c(rep("character", times= length(unlist(file))))
+  ## colClasses1 <- c("character",rep("NULL", times= length(unlist(file))-1))
+  ## colClasses2 <- c(rep("character", times= length(unlist(file))))
   ## names(file) is something like: "gene2go.gz"
   message(paste("Getting data for ",names(file),sep=""))
   ## Where to DL from
   url <- paste("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/",names(file), sep="")
+  ## make an NCBI connection
+  if(is.null(NCBIFilesDir)){
+      NCBIcon <- dbConnect(SQLite(), dbname = tempfile())
+  }else{
+      NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
+  }
   ## Do we have a saved file already?
-  tmp <- .getFiles(NCBIFilesDir, file, url)  
+  tmp <- .getFiles(NCBIFilesDir, file, url, NCBIcon)
+
+  ## get the data from the DB
   message(paste0("discarding data from other organisms from : " ,tmp))
   if("tax_id" %in% unlist(file)){ ## when there is a tax_id need to subset
-      tax_ids <- unlist(read.delim(tmp,header=FALSE,sep="\t",skip=1,
-                                   stringsAsFactors=FALSE, quote="",
-                                   colClasses = colClasses1)[,1])
-      ind <- grep(paste("^",tax_id,"$",sep=""), tax_ids, perl=TRUE)
-      if(length(ind) == 0){## ie there are no matching tax_ids...
+      ## tax_ids <- unlist(read.delim(tmp,header=FALSE,sep="\t",skip=1,
+      ##                              stringsAsFactors=FALSE, quote="",
+      ##                              colClasses = colClasses1)[,1])
+      tableName <- names(file)
+      sql <- paste0("SELECT * FROM ", tablename, " WHERE ",
+                    tablename, ".tax_id = '", tax_id, "'")
+      vals <- sqliteQuickSQL(NCBIcon, sql)
+      ## ind <- grep(paste("^",tax_id,"$",sep=""), tax_ids, perl=TRUE)
+      ## TODO: change this criteria to be something we get back from the DB
+      if(dim(vals)[1] == 0){## iow there are no records here
           vals <- data.frame(t(1:length(unlist(file))),
                              stringsAsFactors=FALSE)
           colnames(vals) <- unlist(file)
           vals <- vals[FALSE,]
-      }else{
-          vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1+min(ind),
-                             nrows= max(ind) - min(ind) +1,
-                             stringsAsFactors=FALSE, quote="",
-                             colClasses = colClasses2)
-      }
-  }else{
-      vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
-                         stringsAsFactors=FALSE, quote="",
-                         colClasses = colClasses2)
-  } 
+      ## }else{
+          ## vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1+min(ind),
+          ##                    nrows= max(ind) - min(ind) +1,
+          ##                    stringsAsFactors=FALSE, quote="",
+          ##                    colClasses = colClasses2)
+      ## }
+  ## }else{
+      ## vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
+      ##                    stringsAsFactors=FALSE, quote="",
+      ##                    colClasses = colClasses2)
+  ## } 
   colnames(vals) <- unlist(file)
   vals
 }
