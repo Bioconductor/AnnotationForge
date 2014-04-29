@@ -297,7 +297,8 @@
       sql <- paste0("SELECT * FROM ", tableName)
       vals <- sqliteQuickSQL(NCBIcon, sql)
   }
-  vals
+  ## remove row_names col 
+  vals[,!(colnames(vals) %in% 'row_names')]
 }
 
 
