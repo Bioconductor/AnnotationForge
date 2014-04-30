@@ -178,21 +178,6 @@
 }
 
 
-## TODO:
-## 1) make another helper called from here, that will populate and
-## index a DB with these files as they download. Only Index the tax_id
-## columns.
-## Use dbWriteTable() and: 
-## vals <- read.delim(tmp, header=FALSE, sep="\t", skip=1,
-##                    stringsAsFactors=FALSE, quote="",
-##                    colClasses = colClasses2)
-##
-## 2) Pass in the DB connection (through this funnction)
-## 3) in .downloadData() retrieve data from the DB (instead of using
-## read.delim).
-## 4) in .downloadData() also create a metadata table and set/check a
-## data.  If the database exists AND is new enough, then don't re-pop
-## the DB (IOW DON'T call .getFiles).
 
 ## helper for writing data to a temp NCBI database for rapid retrieval
 .writeToNCBIDB <- function(NCBIcon, tableName, tmp, file){
@@ -765,6 +750,7 @@ makeOrgPackageFromNCBI <- function(version,
                                genus,
                                species,
                                NCBIFilesDir=NULL){
+  message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds) if you have made them within a day.")
   ## Arguement checking:
   if(!.isSingleString(version))
       stop("'version' must be a single string")
