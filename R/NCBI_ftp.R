@@ -238,7 +238,7 @@
 .setNCBIDateStamp <- function(NCBIcon, tableName){
     tblNm <- paste0(tableName,'_date') 
     vals = data.frame('date'=as.character(Sys.Date()))
-    dbWriteTable(NCBIcon, name=tblNm, value=vals)
+    dbWriteTable(NCBIcon, name=tblNm, value=vals, overwrite=TRUE)
 }
 
 .getNCBIDateStamp <- function(NCBIcon, tableName){
