@@ -247,7 +247,7 @@
 }
 
 ##########################################################
-.downloadData <- function (file, tax_id, NCBIFilesDir=NULL) {
+.downloadData <- function (file, tax_id, NCBIFilesDir) {
   ## names(file) is something like: "gene2go.gz"
   message(paste("Getting data for ",names(file),sep=""))
   tableName <- sub(".gz","",names(file))
@@ -512,7 +512,7 @@
 
 ## need code to generate a table for each of the
 ## file below is like: files[1] or files[2]
-.createTEMPNCBIBaseTable <- function (con, file, tax_id, NCBIFilesDir=NULL) {
+.createTEMPNCBIBaseTable <- function (con, file, tax_id, NCBIFilesDir) {
   data <- .downloadData(file, tax_id, NCBIFilesDir=NCBIFilesDir)
   table <- sub(".gz$","",names(file))
   if(is.null(table)) stop("Unable to infer a table name.")
@@ -538,7 +538,7 @@
 
 
 ## loop through and make the tables
-.makeBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir=NULL){
+.makeBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir){
   for(i in seq_len(length(files))){
     .createTEMPNCBIBaseTable(con, files[i], tax_id, NCBIFilesDir=NCBIFilesDir)
   }
@@ -614,10 +614,12 @@
 ## Generate the database using the helper functions:
 #########################################################################
 
-makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
+makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir,
+                              outputDir){
   require(RSQLite)
   require(GO.db)
-  dbFileName <- paste(.generateOrgDbName(genus,species),".sqlite",sep="")
+  dbFileName <- paste0(.generateOrgDbName(genus,species),".sqlite")
+  dbFileName <- file.path(outputDir, dbFileName)
   if(file.exists(dbFileName)){ file.remove(dbFileName) }
   con <- dbConnect(SQLite(), dbFileName)
   .createMetadataTables(con)  ## just makes the tables
@@ -741,15 +743,15 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir=NULL){
 }
 
 
-## function to make the package:
-makeOrgPackageFromNCBI <- function(version,
+## OLDER function to make the package:
+OLD_makeOrgPackageFromNCBI <- function(version,
                                maintainer,
                                author,
-                               outputDir = ".",
+                               outputDir,
                                tax_id,
                                genus,
                                species,
-                               NCBIFilesDir=NULL){
+                               NCBIFilesDir){
   message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds) if you have made them within a day.")
   ## Arguement checking:
   if(!.isSingleString(version))
@@ -769,10 +771,8 @@ makeOrgPackageFromNCBI <- function(version,
   if(!.isSingleStringOrNull(NCBIFilesDir))
       stop("'NCBIFilesDir' argument needs to be a single string or NULL")
        
-  ## 'outputDir' is not passed to makeOrgDbFromNCBI(). Hence the db file
-  ## is always created in ".". Maybe that could be revisited.
   makeOrgDbFromNCBI(tax_id=tax_id, genus=genus, species=species,
-                    NCBIFilesDir=NCBIFilesDir)
+                    NCBIFilesDir=NCBIFilesDir, outputDir)
   
   dbName <- .generateOrgDbName(genus,species)
   dbfile <- paste(dbName, ".sqlite", sep="")
@@ -799,3 +799,79 @@ makeOrgPackageFromNCBI <- function(version,
 
 
 
+## NEW function to make the package:
+NEW_makeOrgPackageFromNCBI <- function(version,
+                               maintainer,
+                               author,
+                               outputDir,
+                               tax_id,
+                               genus,
+                               species,
+                               NCBIFilesDir){
+  message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds) if you have made them within a day.")
+  ## Arguement checking:
+  if(!.isSingleString(version))
+      stop("'version' must be a single string")
+  if(!.isSingleString(maintainer))
+      stop("'maintainer' must be a single string")
+  if(!.isSingleString(author))
+      stop("'author' must be a single string")
+  if(outputDir!="." && file.access(outputDir)[[1]]!=0){
+      stop("Selected outputDir '", outputDir,"' does not exist.")}
+  if(!.isSingleString(tax_id))
+      stop("'tax_id' must be a single string")
+  if(!.isSingleString(genus))
+      stop("'genus' must be a single string")
+  if(!.isSingleString(species))
+      stop("'species' must be a single string")
+  if(!.isSingleStringOrNull(NCBIFilesDir))
+      stop("'NCBIFilesDir' argument needs to be a single string or NULL")
+       
+  makeOrgDbFromNCBI(tax_id=tax_id, genus=genus, species=species,
+                    NCBIFilesDir=NCBIFilesDir, outputDir)
+  
+  dbName <- .generateOrgDbName(genus,species)
+  dbfile <- paste(dbName, ".sqlite", sep="")
+
+  seed <- new("AnnDbPkgSeed",
+              Package= paste(dbName,".db",sep=""),
+              Version=version,
+              Author=author,
+              Maintainer=maintainer,
+              PkgTemplate="ORGANISM.DB",
+              AnnObjPrefix=dbName,
+              organism = paste(genus, species),
+              species = paste(genus, species),
+              biocViews = "annotation",
+              manufacturerUrl = "no manufacturer",
+              manufacturer = "no manufacturer",
+              chipName = "no manufacturer")
+  
+  makeAnnDbPkg(seed, dbfile, dest_dir=outputDir)
+  
+  ## cleanup
+  file.remove(dbfile)
+}
+
+
+
+
+
+## function wrapper to make the package:
+makeOrgPackageFromNCBI <- function(version,
+                                   maintainer,
+                                   author,
+                                   outputDir=getwd(),
+                                   tax_id,
+                                   genus,
+                                   species,
+                                   NCBIFilesDir=getwd(),
+                                   useDeprecatedStyle=FALSE){
+    if(useDeprecatedStyle==TRUE){
+        OLD_makeOrgPackageFromNCBI(version,maintainer,author,outputDir,
+                                   tax_id,genus,species,NCBIFilesDir)
+    }else{
+        NEW_makeOrgPackageFromNCBI(version,maintainer,author,outputDir,
+                                   tax_id,genus,species,NCBIFilesDir)
+    }
+}
