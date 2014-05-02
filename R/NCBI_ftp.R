@@ -844,6 +844,11 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 ## Helper to make a list of data frames from the NCBI cache database
 ## (which it will also make if needed)
 
+## STILL TODO:
+## 1- unigene and entrez gene both have the sameish issue (need completel list of GIDs to proceed) - I think this was solved already for makeOrgPackage()
+## 2- blast2GO needs to be added.
+## 3- alias has a semi-solution that just needs to be modded for this use case.
+
 prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                                 outputDir){
     ## Get list of files that need to be processed 
@@ -854,13 +859,62 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     data = list() ## so I can pass them back
     ## now post-process the data list into proper data frames for each
     
-    ## accessions, genes, go, alias, chromosomes, gene_info, entrez_genes
+    ## pubmed
     data <- .procDat(rawData,
                      keepTable='gene2pubmed.gz',
                      keepCols=c('gene_id','pubmed_id'),
                      data,
                      newName='pubmed',
                      newCols=c('GID', 'PMID'))
+    ## chromosomes
+    data <- .procDat(rawData,
+                     keepTable='gene_info.gz',
+                     keepCols=c('gene_id','chromosome'),
+                     data,
+                     newName='chromosomes',
+                     newCols=c('GID', 'CHR'))
+    ## gene_info
+    data <- .procDat(rawData,
+                     keepTable='gene_info.gz',
+                     keepCols=c('gene_id','description','symbol'),
+                     data,
+                     newName='gene_info',
+                     newCols=c('GID', 'GENENAME','SYMBOL'))
+    ## entrez genes ## TODO: update to be more inclusive by moving to the end?
+    data <- .procDat(rawData,
+                     keepTable='gene_info.gz',
+                     keepCols=c('gene_id','gene_id'),
+                     data,
+                     newName='entrez_genes',
+                     newCols=c('GID', 'ENTREZID'))
+    
+    ## go has to be done in two separate steps so that if we get
+    ## nothing back we can look for results from blast2GO.
+    goDat <- .extract(rawData,
+                      keepTable='gene2go.gz',
+                      keepCols=c('gene_id','go_id','evidence'))
+
+    if(dim(goDat)[1] >0){
+        data <- .rename(data,
+                        goDat,
+                        newName='go',
+                        newCols=c("GID","GO","EVIDENCE"))
+    }else{
+        ## TODO: Blast2GO!
+    }
+
+    
+    ## For alias I need to massage the synonyms field from gene_info    
+  ##   ## alias ## requires sub-parsing.
+  ## alias <- sqliteQuickSQL(con,
+  ##   "SELECT distinct gene_id, synonyms FROM gene_info")
+  ## aliases <- sapply(alias[,2], strsplit, "\\|")
+  ## numAlias <- sapply(aliases, length)
+  ## alGenes <- rep(alias[,1], numAlias)
+  ## alias <- data.frame(gene_id=alGenes,alias_symbol=unlist(aliases))
+  ## .makeSimpleTable(alias, table="alias", con)
+
+    
             
     ## refseq requires a custom job since a couple columns must be
     ## combined into one column
@@ -877,6 +931,21 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                     as.data.frame(refDat, stringsAsFactors=FALSE),
                     newName='refseq',
                     newCols=c('GID', 'REFSEQ'))
+    ## accession is similar to refseq
+    accDat1 <- .extract(rawData,
+                     keepTable='gene2accession.gz',
+                     keepCols=c('gene_id','protein_accession'))
+    accDat2 <- .extract(rawData,
+                     keepTable='gene2accession.gz',
+                     keepCols=c('gene_id','rna_accession'))
+    colnames(accDat1) <- NULL
+    colnames(accDat2) <- NULL    
+    accDat <- rbind(as.matrix(accDat1),as.matrix(accDat2))
+    data <- .rename(data,
+                    as.data.frame(accDat, stringsAsFactors=FALSE),
+                    newName='accessions',
+                    newCols=c('GID', 'ACCNUM'))
+    
     
     ## ## unigene needs custom extraction of relevant genes ONLY (do last)
     ## uniDat <- .extract(rawData,
@@ -930,43 +999,56 @@ NEW_makeOrgPackageFromNCBI <- function(version,
   if(!.isSingleStringOrNull(NCBIFilesDir))
       stop("'NCBIFilesDir' argument needs to be a single string or NULL")
        
-  ## makeOrgDbFromNCBI(tax_id=tax_id, genus=genus, species=species,
-  ##                   NCBIFilesDir=NCBIFilesDir, outputDir)
 
-  data <- prepareDataFromNCBI(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir, outputDir)
+  data <- prepareDataFromNCBI(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
+                              outputDir)
   
   dbName <- .generateOrgDbName(genus,species)
   dbfile <- paste0(dbName, ".sqlite")
 
-  makeOrgPackage(pubmed=data[['pubmed']],
-                 refseq=data[['refseq']],  
-                 version=version,
-                 maintainer=maintainer,
-                 author=author,
-                 outputDir=outputDir,
-                 tax_id=tax_id,
-                 genus=genus,
-                 species=species)#,
-#                 goTable="go") ## GOTABLE will always be called this.
+  ## TODO: remove stuff earlier and then here I should not need any
+  ## more logic here (it's unavoidable for GO since the flag for
+  ## goTable has to be set)...
+  ## and actually this just means that I want to call makeOrgPackage()
+  ## via an alternate version of the method (so that the ... can be
+  ## passed instead as a list
   
-  ## seed <- new("AnnDbPkgSeed",
-  ##             Package= paste(dbName,".db",sep=""),
-  ##             Version=version,
-  ##             Author=author,
-  ##             Maintainer=maintainer,
-  ##             PkgTemplate="ORGANISM.DB",
-  ##             AnnObjPrefix=dbName,
-  ##             organism = paste(genus, species),
-  ##             species = paste(genus, species),
-  ##             biocViews = "annotation",
-  ##             manufacturerUrl = "no manufacturer",
-  ##             manufacturer = "no manufacturer",
-  ##             chipName = "no manufacturer")
+  if(!is.null(data[['go']])){
+      makeOrgPackage(pubmed=data[['pubmed']],
+                     chromosomes=data[['chromosomes']],
+                     gene_info=data[['gene_info']],
+                     entrez_genes=data[['entrez_genes']],
+                     go=data[['go']],
+                     refseq=data[['refseq']],
+                     accessions=data[['accessions']],
+                     ## unigene=data[['unigene']],
+                     version=version,
+                     maintainer=maintainer,
+                     author=author,
+                     outputDir=outputDir,
+                     tax_id=tax_id,
+                     genus=genus,
+                     species=species,
+                     goTable="go") 
+  }else{
+      makeOrgPackage(pubmed=data[['pubmed']],
+                     chromosomes=data[['chromosomes']],
+                     gene_info=data[['gene_info']],
+                     entrez_genes=data[['entrez_genes']],
+                     refseq=data[['refseq']],
+                     accessions=data[['accessions']],
+                     ## unigene=data[['unigene']],
+                     version=version,
+                     maintainer=maintainer,
+                     author=author,
+                     outputDir=outputDir,
+                     tax_id=tax_id,
+                     genus=genus,
+                     species=species) 
+  }
   
-  ## makeAnnDbPkg(seed, dbfile, dest_dir=outputDir)
   
-  ## cleanup
-  ## file.remove(dbfile)
+
 }
 
 

@@ -53,7 +53,8 @@ makeOrgPackageFromNCBI(version = "0.1",
 
 ## Another test for building the new data.frames out
 
-## debug(AnnotationForge:::prepareDataFromNCBI)
+debug(AnnotationForge:::prepareDataFromNCBI)
+
 library(AnnotationForge)
 
 makeOrgPackageFromNCBI(version = "0.1",
