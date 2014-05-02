@@ -69,7 +69,7 @@
 
 \examples{
 
-\dontrun{
+if(interactive()){
 
 ## Makes an organism package for Zebra Finch data.frames:
 finchFile <- system.file("extdata","finch_info.txt",package="AnnotationForge")

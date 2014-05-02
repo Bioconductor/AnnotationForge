@@ -167,19 +167,15 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
 ## TODO: this should return the path to the created dir so that the
 ## user can just call install.packages(on that filepath).
 
-
-## function to make the package:
-makeOrgPackage <- function(...,
-                           version,
-                           maintainer,
-                           author,
-                           outputDir = getwd(),
-                           tax_id,
-                           genus,
-                           species,
-                           goTable=NA){
-    ## get all the arguments into a list
-    data <- list(...)
+.makeOrgPackage <- function(data,
+                            version,
+                            maintainer,
+                            author,
+                            outputDir = getwd(),
+                            tax_id,
+                            genus,
+                            species,
+                            goTable=NA){
     ## drop any rownames on all data.frames
     data <- lapply(data, function(x){rownames(x) <- NULL; x})
 
@@ -266,6 +262,24 @@ makeOrgPackage <- function(...,
     file.remove(dbFileName)
     ## return the path to the dir that was just created.
     file.path(outputDir,paste0(dbName,".db"))
+}
+
+
+
+## function to make the package:
+makeOrgPackage <- function(...,
+                           version,
+                           maintainer,
+                           author,
+                           outputDir = getwd(),
+                           tax_id,
+                           genus,
+                           species,
+                           goTable=NA){
+    ## get all the arguments into a list
+    data <- list(...)
+    .makeOrgPackage(data, version, maintainer, author, outputDir,
+                    tax_id, genus, species, goTable)
 }
 
 

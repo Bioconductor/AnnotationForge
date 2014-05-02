@@ -845,8 +845,8 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 ## (which it will also make if needed)
 
 ## STILL TODO:
-## 1- unigene and entrez gene both have the sameish issue (need completel list of GIDs to proceed) - I think this was solved already for makeOrgPackage()
-## 2- blast2GO needs to be added.
+## 1- blast2GO needs to be added.
+## 2- unigene and entrez gene both have the sameish issue (need completel list of GIDs to proceed) - I think this was solved already for makeOrgPackage()
 ## 3- alias has a semi-solution that just needs to be modded for this use case.
 
 prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
@@ -904,6 +904,7 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     }
 
     
+    ## Alias table needs to contain both symbols AND stuff from synonyms
     ## For alias I need to massage the synonyms field from gene_info    
   ##   ## alias ## requires sub-parsing.
   ## alias <- sqliteQuickSQL(con,
@@ -914,7 +915,6 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
   ## alias <- data.frame(gene_id=alGenes,alias_symbol=unlist(aliases))
   ## .makeSimpleTable(alias, table="alias", con)
 
-    
             
     ## refseq requires a custom job since a couple columns must be
     ## combined into one column
@@ -998,7 +998,6 @@ NEW_makeOrgPackageFromNCBI <- function(version,
       stop("'species' must be a single string")
   if(!.isSingleStringOrNull(NCBIFilesDir))
       stop("'NCBIFilesDir' argument needs to be a single string or NULL")
-       
 
   data <- prepareDataFromNCBI(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                               outputDir)
@@ -1006,49 +1005,27 @@ NEW_makeOrgPackageFromNCBI <- function(version,
   dbName <- .generateOrgDbName(genus,species)
   dbfile <- paste0(dbName, ".sqlite")
 
-  ## TODO: remove stuff earlier and then here I should not need any
-  ## more logic here (it's unavoidable for GO since the flag for
-  ## goTable has to be set)...
-  ## and actually this just means that I want to call makeOrgPackage()
-  ## via an alternate version of the method (so that the ... can be
-  ## passed instead as a list
-  
+  ## if there is go data, then we have to use the goTable argument.
   if(!is.null(data[['go']])){
-      makeOrgPackage(pubmed=data[['pubmed']],
-                     chromosomes=data[['chromosomes']],
-                     gene_info=data[['gene_info']],
-                     entrez_genes=data[['entrez_genes']],
-                     go=data[['go']],
-                     refseq=data[['refseq']],
-                     accessions=data[['accessions']],
-                     ## unigene=data[['unigene']],
-                     version=version,
-                     maintainer=maintainer,
-                     author=author,
-                     outputDir=outputDir,
-                     tax_id=tax_id,
-                     genus=genus,
-                     species=species,
-                     goTable="go") 
+      .makeOrgPackage(data,
+                      version=version,
+                      maintainer=maintainer,
+                      author=author,
+                      outputDir=outputDir,
+                      tax_id=tax_id,
+                      genus=genus,
+                      species=species,
+                      goTable="go") 
   }else{
-      makeOrgPackage(pubmed=data[['pubmed']],
-                     chromosomes=data[['chromosomes']],
-                     gene_info=data[['gene_info']],
-                     entrez_genes=data[['entrez_genes']],
-                     refseq=data[['refseq']],
-                     accessions=data[['accessions']],
-                     ## unigene=data[['unigene']],
-                     version=version,
-                     maintainer=maintainer,
-                     author=author,
-                     outputDir=outputDir,
-                     tax_id=tax_id,
-                     genus=genus,
-                     species=species) 
+      .makeOrgPackage(data,
+                      version=version,
+                      maintainer=maintainer,
+                      author=author,
+                      outputDir=outputDir,
+                      tax_id=tax_id,
+                      genus=genus,
+                      species=species) 
   }
-  
-  
-
 }
 
 
