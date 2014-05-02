@@ -536,14 +536,14 @@
   }
 }
 
-
-## loop through and make the tables
-.makeBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir){
+## Download all the data files and make the cache DB
+.setupBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir){
   for(i in seq_len(length(files))){
     .createTEMPNCBIBaseTable(con, files[i], tax_id, NCBIFilesDir=NCBIFilesDir)
   }
   con
 }
+
 
 
 .dropOldTables <- function(con,fileNames){
@@ -609,6 +609,32 @@
   .populateBaseTable(con, sql, data, "map_counts")
 }
 
+## list of primary NCBI files that we need to process
+.primaryFiles <- function(){
+    list(
+         "gene2pubmed.gz" = c("tax_id","gene_id", "pubmed_id"),
+         "gene2accession.gz" = c("tax_id","gene_id","status","rna_accession",
+           "rna_gi","protein_accession","protein_gi","genomic_dna_accession",
+           "genomic_dna_gi","genomic_start","genomic_end","orientation",
+           "assembly"),
+         ## This one might be needed later
+         "gene2refseq.gz" = c("tax_id","gene_id","status","rna_accession",
+           "rna_gi","protein_accession","protein_gi","genomic_dna_accession",
+           "genomic_dna_gi","genomic_start","genomic_end","orientation",
+           "assembly"),
+         "gene2unigene" = c("gene_id","unigene_id"),
+         "gene_info.gz" = c("tax_id","gene_id","symbol","locus_tag",
+           "synonyms","dbXrefs","chromosome","map_location","description",
+           "gene_type","nomenclature_symbol","nomenclature_name",
+           "nomenclature_status","other_designations", "modification_date"),
+         ##        "mim2gene.gz" = c("mim_id","gene_id","relation_type"),
+         ##        "gene_refseq_uniprotkb_collab.gz" =
+         ##         c("refseq_id","uniprot_id"),
+         "gene2go.gz" = c("tax_id","gene_id","go_id","evidence",
+           "go_qualifier", "go_description","pubmed_id","category")
+         )
+}
+
 
 #########################################################################
 ## Generate the database using the helper functions:
@@ -627,28 +653,8 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir,
   ## (needed for schema definitions later)
   ## IF ANY OF THESE gets moved in the source files
   ## then things will be in the wrong place!
-  files = list(
-    "gene2pubmed.gz" = c("tax_id","gene_id", "pubmed_id"),
-    "gene2accession.gz" = c("tax_id","gene_id","status","rna_accession",
-        "rna_gi","protein_accession","protein_gi","genomic_dna_accession",
-        "genomic_dna_gi","genomic_start","genomic_end","orientation",
-        "assembly"),
-    ## This one might be needed later
-    "gene2refseq.gz" = c("tax_id","gene_id","status","rna_accession",
-        "rna_gi","protein_accession","protein_gi","genomic_dna_accession",
-        "genomic_dna_gi","genomic_start","genomic_end","orientation",
-        "assembly"),
-    "gene2unigene" = c("gene_id","unigene_id"),
-    "gene_info.gz" = c("tax_id","gene_id","symbol","locus_tag",
-        "synonyms","dbXrefs","chromosome","map_location","description",
-        "gene_type","nomenclature_symbol","nomenclature_name",
-        "nomenclature_status","other_designations", "modification_date"),
-    ##        "mim2gene.gz" = c("mim_id","gene_id","relation_type"),
-    ##        "gene_refseq_uniprotkb_collab.gz" = c("refseq_id","uniprot_id"),
-    "gene2go.gz" = c("tax_id","gene_id","go_id","evidence",
-        "go_qualifier", "go_description","pubmed_id","category")
-  )
-  .makeBaseDBFromDLs(files, tax_id, con, NCBIFilesDir=NCBIFilesDir)
+  files = .primaryFiles()
+  .setupBaseDBFromDLs(files, tax_id, con, NCBIFilesDir=NCBIFilesDir)
   
   ## Add metadata:
   .addMetadata(con, tax_id, genus, species) 
@@ -743,6 +749,7 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir,
 }
 
 
+
 ## OLDER function to make the package:
 OLD_makeOrgPackageFromNCBI <- function(version,
                                maintainer,
@@ -752,7 +759,7 @@ OLD_makeOrgPackageFromNCBI <- function(version,
                                genus,
                                species,
                                NCBIFilesDir){
-  message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds) if you have made them within a day.")
+  message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds).  The cache will try to rebuild once per day.")
   ## Arguement checking:
   if(!.isSingleString(version))
       stop("'version' must be a single string")
@@ -799,6 +806,102 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 
 
 
+#############################################################################
+## Code specific for the new process.
+
+## loop through and make the tables
+.makeBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir){
+    data <- list()
+    for(i in seq_len(length(files))){
+        res <- .downloadData(files[i], tax_id, NCBIFilesDir=NCBIFilesDir)
+        data[[i]] <- res
+    }
+    data
+}
+
+
+## Functions for extracting data from a frame, making sure there *is*
+## some data and renaming it etc.
+.extract <- function(rawData, keepTable, keepCols){
+    rawData[[keepTable]][,keepCols]
+}
+
+.rename <- function(data, dataSub, newName, newCols){
+    if(dim(dataSub)[1] > 0){ ## if there are rows...
+        data[[newName]] <- unique(dataSub)
+        colnames(data[[newName]]) <- newCols
+        return(data)
+    }else{ ## don't add anything to data
+        return(data)
+    }
+}
+
+.procDat <- function(rawData, keepTable, keepCols, data, newName, newCols){
+    pubSub <- .extract(rawData, keepTable, keepCols)
+    .rename(data, pubSub, newName, newCols)
+}
+
+## Helper to make a list of data frames from the NCBI cache database
+## (which it will also make if needed)
+
+prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
+                                outputDir){
+    ## Get list of files that need to be processed 
+    files = .primaryFiles()
+    NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
+    rawData <- .makeBaseDBFromDLs(files, tax_id, NCBIcon, NCBIFilesDir)
+    names(rawData) <- names(files)
+    data = list() ## so I can pass them back
+    ## now post-process the data list into proper data frames for each
+    
+    ## accessions, genes, go, alias, chromosomes, gene_info, entrez_genes
+    data <- .procDat(rawData,
+                     keepTable='gene2pubmed.gz',
+                     keepCols=c('gene_id','pubmed_id'),
+                     data,
+                     newName='pubmed',
+                     newCols=c('GID', 'PMID'))
+            
+    ## refseq requires a custom job since a couple columns must be
+    ## combined into one column
+    refDat1 <- .extract(rawData,
+                     keepTable='gene2refseq.gz',
+                     keepCols=c('gene_id','protein_accession'))
+    refDat2 <- .extract(rawData,
+                     keepTable='gene2refseq.gz',
+                     keepCols=c('gene_id','rna_accession'))
+    colnames(refDat1) <- NULL
+    colnames(refDat2) <- NULL    
+    refDat <- rbind(as.matrix(refDat1),as.matrix(refDat2))
+    data <- .rename(data,
+                    as.data.frame(refDat, stringsAsFactors=FALSE),
+                    newName='refseq',
+                    newCols=c('GID', 'REFSEQ'))
+    
+    ## ## unigene needs custom extraction of relevant genes ONLY (do last)
+    ## uniDat <- .extract(rawData,
+    ##                    keepTable='gene2unigene',
+    ##                    keepCols=c('gene_id','unigene_id'))    
+    ## TODO: then make uniSub uniquely the gene_ids that we want... (row filter)
+    ## THIS STEP is tricky since we 1st have to have 100% the ENTREZ IDs
+    ## ## then rename
+    ## data <- .rename(data,
+    ##                 dataSub=uniDat,
+    ##                 newName='unigene',
+    ##                 newCols=c('GID', 'UNIGENE'))
+    
+    
+
+    
+    ## Then make sure we have key things (gene names, GO IDs etc.)
+
+    ## If we don't have GO IDs, then try to use blast2GO to get them.
+    
+
+    data
+}
+
+
 ## NEW function to make the package:
 NEW_makeOrgPackageFromNCBI <- function(version,
                                maintainer,
@@ -808,7 +911,7 @@ NEW_makeOrgPackageFromNCBI <- function(version,
                                genus,
                                species,
                                NCBIFilesDir){
-  message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds) if you have made them within a day.")
+  message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds).  The cache will try to rebuild once per day.")
   ## Arguement checking:
   if(!.isSingleString(version))
       stop("'version' must be a single string")
@@ -827,30 +930,43 @@ NEW_makeOrgPackageFromNCBI <- function(version,
   if(!.isSingleStringOrNull(NCBIFilesDir))
       stop("'NCBIFilesDir' argument needs to be a single string or NULL")
        
-  makeOrgDbFromNCBI(tax_id=tax_id, genus=genus, species=species,
-                    NCBIFilesDir=NCBIFilesDir, outputDir)
+  ## makeOrgDbFromNCBI(tax_id=tax_id, genus=genus, species=species,
+  ##                   NCBIFilesDir=NCBIFilesDir, outputDir)
+
+  data <- prepareDataFromNCBI(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir, outputDir)
   
   dbName <- .generateOrgDbName(genus,species)
-  dbfile <- paste(dbName, ".sqlite", sep="")
+  dbfile <- paste0(dbName, ".sqlite")
 
-  seed <- new("AnnDbPkgSeed",
-              Package= paste(dbName,".db",sep=""),
-              Version=version,
-              Author=author,
-              Maintainer=maintainer,
-              PkgTemplate="ORGANISM.DB",
-              AnnObjPrefix=dbName,
-              organism = paste(genus, species),
-              species = paste(genus, species),
-              biocViews = "annotation",
-              manufacturerUrl = "no manufacturer",
-              manufacturer = "no manufacturer",
-              chipName = "no manufacturer")
+  makeOrgPackage(pubmed=data[['pubmed']],
+                 refseq=data[['refseq']],  
+                 version=version,
+                 maintainer=maintainer,
+                 author=author,
+                 outputDir=outputDir,
+                 tax_id=tax_id,
+                 genus=genus,
+                 species=species)#,
+#                 goTable="go") ## GOTABLE will always be called this.
   
-  makeAnnDbPkg(seed, dbfile, dest_dir=outputDir)
+  ## seed <- new("AnnDbPkgSeed",
+  ##             Package= paste(dbName,".db",sep=""),
+  ##             Version=version,
+  ##             Author=author,
+  ##             Maintainer=maintainer,
+  ##             PkgTemplate="ORGANISM.DB",
+  ##             AnnObjPrefix=dbName,
+  ##             organism = paste(genus, species),
+  ##             species = paste(genus, species),
+  ##             biocViews = "annotation",
+  ##             manufacturerUrl = "no manufacturer",
+  ##             manufacturer = "no manufacturer",
+  ##             chipName = "no manufacturer")
+  
+  ## makeAnnDbPkg(seed, dbfile, dest_dir=outputDir)
   
   ## cleanup
-  file.remove(dbfile)
+  ## file.remove(dbfile)
 }
 
 

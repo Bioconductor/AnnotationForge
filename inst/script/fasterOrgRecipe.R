@@ -31,20 +31,31 @@
 debug(makeOrgDbFromNCBI)
 debug(AnnotationForge:::.makeBaseDBFromDLs)
 debug(AnnotationForge:::.saveFiles)
-
 debug(AnnotationForge:::.downloadData)
-
 debug(AnnotationForge:::.getFiles)
-
-
 debug(AnnotationForge:::.writeToNCBIDB)
-
 debug(AnnotationForge:::.indexTaxIds)
 
 
+## test for older stuff
+library(AnnotationForge)
+makeOrgPackageFromNCBI(version = "0.1",
+                       author = "Some One <so@someplace.org>",
+                       maintainer = "Some One <so@someplace.org>",
+                       outputDir = ".",
+                       tax_id = "9606",
+                       genus = "Homo",
+                       species = "sapiens",
+                       NCBIFilesDir=".",
+                       useDeprecatedStyle=TRUE)
+## WORKS
+
+
+## Another test for building the new data.frames out
+
+## debug(AnnotationForge:::prepareDataFromNCBI)
 library(AnnotationForge)
 
-## use the NCBIFilesDi arg to cache the big file locally
 makeOrgPackageFromNCBI(version = "0.1",
                        author = "Some One <so@someplace.org>",
                        maintainer = "Some One <so@someplace.org>",
@@ -53,6 +64,8 @@ makeOrgPackageFromNCBI(version = "0.1",
                        genus = "Campylobacter",
                        species = "jejuni",
                        NCBIFilesDir=".")
+ 
+
 
 ## TROUBLE: problem with blast2GO?
 ## test to make sure I can do another one right after...
