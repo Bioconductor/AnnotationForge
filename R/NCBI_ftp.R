@@ -841,14 +841,35 @@ OLD_makeOrgPackageFromNCBI <- function(version,
     .rename(data, pubSub, newName, newCols)
 }
 
+
+## based (very loosely) on older .Blast2GOData() above
+## Alternative Blast2GO (refactor in progress)
+.getBlast2GO <- function(tax_id, refseq, accs) {
+  url = paste("http://www.b2gfar.org/_media/species:data:",
+        tax_id,".annot.zip",sep="")
+  tmp <- tempfile()
+  ##download.file(url, tmp, quiet=TRUE)
+  .tryDL(url,tmp)
+  vals <- read.delim(unzip(tmp), header=FALSE, sep="\t", quote="",
+                     stringsAsFactors=FALSE)
+
+  ## merge to match gene_ids with accessions
+
+  ## Combine refseq matches and accession mathes
+
+  ## make sure that the gene_id/go_id data.frame is unique and then do this:
+
+  data <-data.frame(gene_id = as.character(vals[["gene_id"]]),
+                    go_id = vals[["go_id"]],
+                    evidence = rep("IEA", length(vals[["go_id"]])))
+  data
+}
+
+
+
+
 ## Helper to make a list of data frames from the NCBI cache database
 ## (which it will also make if needed)
-
-## STILL TODO:
-## 1- blast2GO needs to be added.
-## 2- unigene and entrez gene both have the sameish issue (need completel list of GIDs to proceed) - I think this was solved already for makeOrgPackage()
-## 3- alias has a semi-solution that just needs to be modded for this use case.
-
 prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                                 outputDir){
     ## Get list of files that need to be processed 
@@ -888,20 +909,6 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                      newName='entrez_genes',
                      newCols=c('GID', 'ENTREZID'))
     
-    ## go has to be done in two separate steps so that if we get
-    ## nothing back we can look for results from blast2GO.
-    goDat <- .extract(rawData,
-                      keepTable='gene2go.gz',
-                      keepCols=c('gene_id','go_id','evidence'))
-
-    if(dim(goDat)[1] >0){
-        data <- .rename(data,
-                        goDat,
-                        newName='go',
-                        newCols=c("GID","GO","EVIDENCE"))
-    }else{
-        ## TODO: Blast2GO!
-    }
 
     
     ## Alias table needs to contain both symbols AND stuff from synonyms
@@ -946,6 +953,24 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                     newName='accessions',
                     newCols=c('GID', 'ACCNUM'))
     
+
+
+    ## go has to be done in two separate steps so that if we get
+    ## nothing back we can look for results from blast2GO.
+    goDat <- .extract(rawData,
+                      keepTable='gene2go.gz',
+                      keepCols=c('gene_id','go_id','evidence'))
+    if(dim(goDat)[1] == 0){## then try Blast2GO
+        ## get all accessions together
+        goDat <- .getBlast2GO(tax_id, data[['refseq']], data[['accessions']]) 
+    }    
+    if(dim(goDat)[1] >0){
+        data <- .rename(data,
+                        goDat,
+                        newName='go',
+                        newCols=c("GID","GO","EVIDENCE"))
+    }
+
     
     ## ## unigene needs custom extraction of relevant genes ONLY (do last)
     ## uniDat <- .extract(rawData,
@@ -962,9 +987,8 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     
 
     
-    ## Then make sure we have key things (gene names, GO IDs etc.)
+    ## TODO: Then make sure we have key things (gene names, GO IDs etc.)
 
-    ## If we don't have GO IDs, then try to use blast2GO to get them.
     
 
     data
@@ -1050,3 +1074,12 @@ makeOrgPackageFromNCBI <- function(version,
                                    tax_id,genus,species,NCBIFilesDir)
     }
 }
+
+
+
+
+## STILL TODO:
+## 1- blast2GO needs to be added.
+## 2- unigene and entrez gene both have the sameish issue (need completel list of GIDs to proceed) - I think this was solved already for makeOrgPackage()
+## 3- alias has a semi-solution that just needs to be modded for this use case.
+## 4- finish code to check that we have all the parts and make sure it filters out any stuff that we don't need (empty data.frames should be dropped)
