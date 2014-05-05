@@ -809,13 +809,27 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 #############################################################################
 ## Code specific for the new process.
 
+## based on tax_id do we need to look at unigene?
+.doWeNeedUnigene <- function(tax_id){
+    file <- system.file('extdata','unigene.txt',package='AnnotationForge')
+    res <- read.table(file, skip=1, sep=":") 
+    tax_id %in% res[[2]]
+}
+
 ## loop through and make the tables
 .makeBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir){
     data <- list()
+    ## Here test if we need to bother with unigene (shorten out from
+    ## files if not)
+    if(!.doWeNeedUnigene(tax_id)){
+       files <- files[!(names(files) %in% 'gene2unigene')]
+   }
+    ## Then get/update the data
     for(i in seq_len(length(files))){
         res <- .downloadData(files[i], tax_id, NCBIFilesDir=NCBIFilesDir)
         data[[i]] <- res
     }
+    names(data) <- names(files)
     data
 }
 
@@ -918,7 +932,6 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     files = .primaryFiles()
     NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
     rawData <- .makeBaseDBFromDLs(files, tax_id, NCBIcon, NCBIFilesDir)
-    names(rawData) <- names(files)
     data = list() ## so I can pass them back
     ## now post-process the data list into proper data frames for each
     
@@ -1025,17 +1038,19 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     
     
     ## unigene needs custom extraction of relevant genes ONLY (do last)
-    uniDat <- .extract(rawData,
-                       keepTable='gene2unigene',
-                       keepCols=c('gene_id','unigene_id'))    
-    ## Then row filter our things that are not in our set of entrez gene IDs
-    uniDat <- uniDat[uniDat$gene_id %in% egIDs,]
-    ## and rename
-    data <- .rename(data,
-                    dataSub=uniDat,
-                    newName='unigene',
-                    newCols=c('GID', 'UNIGENE'))
-    
+    if(.doWeNeedUnigene(tax_id)){
+        uniDat <- .extract(rawData,
+                           keepTable='gene2unigene',
+                           keepCols=c('gene_id','unigene_id'))    
+        ## Then row filter our things that are not in our set of entrez gene IDs
+        uniDat <- uniDat[uniDat$gene_id %in% egIDs,]
+        ## and rename
+        data <- .rename(data,
+                        dataSub=uniDat,
+                        newName='unigene',
+                        newCols=c('GID', 'UNIGENE'))
+    }
+
     
     ## TODO: Then make sure we have key things (gene names, GO IDs etc.)
     
@@ -1138,3 +1153,5 @@ makeOrgPackageFromNCBI <- function(version,
 ## where certain standards are not met...
 
 ## 5- extracting ALL unigenes into memory every time is not efficient.  It would be better if I knew beforehand which organisms I need this for (and could therefore not do it the rest of the time).
+## Make use of THIS FILE to do this:
+## ftp://ftp.ncbi.nih.gov/repository/UniGene/README
