@@ -820,13 +820,25 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 }
 
 
-## Functions for extracting data from a frame, making sure there *is*
-## some data and renaming it etc.
+## Helper functions for extracting data from a frame, making sure
+## there *is* some data and renaming it etc.
+.tossHyphens <- function(df){
+    cols <- 1:dim(df)[2] ## get range of columns in df
+    cols <- cols[-1] ## drop the 1st one
+    for(i in cols){
+        df <- df[df[[i]]!='-',]
+    }
+    df
+}
+
+## extraction function
 .extract <- function(rawData, keepTable, keepCols){
     rawData[[keepTable]][,keepCols]
 }
 
+## rename and alter the data list (if needed)
 .rename <- function(data, dataSub, newName, newCols){
+    dataSub <- .tossHyphens(dataSub)
     if(dim(dataSub)[1] > 0){ ## if there are rows...
         data[[newName]] <- unique(dataSub)
         colnames(data[[newName]]) <- newCols
@@ -836,6 +848,7 @@ OLD_makeOrgPackageFromNCBI <- function(version,
     }
 }
 
+## extract AND rename etc.
 .procDat <- function(rawData, keepTable, keepCols, data, newName, newCols){
     pubSub <- .extract(rawData, keepTable, keepCols)
     .rename(data, pubSub, newName, newCols)
@@ -869,6 +882,7 @@ OLD_makeOrgPackageFromNCBI <- function(version,
   
   ## Combine refseq matches and accession mathes
   vals <- unique(rbind(GBIDs, RSIDs))
+  rownames(vals) <- NULL
 
   ## Then do this to make the final data.frame:
   data.frame(gene_id = as.character(vals[["GID"]]),
@@ -883,15 +897,15 @@ OLD_makeOrgPackageFromNCBI <- function(version,
     paste0("SELECT gene_id FROM ", tableName, " WHERE ",
            tableName, ".tax_id = '", tax_id, "'")
 }
-asV <- function(df){
+.asV <- function(df){
     unique(as.character(t(df)))
 }
 .getAllEnrezGeneIdsFromNCBI <- function(tax_id, NCBIcon){
-    id1 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene_info')))
-    id2 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2refseq')))
-    id3 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2go')))
-    id4 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2pubmed')))
-    id5 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2accession')))
+    id1 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene_info')))
+    id2 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2refseq')))
+    id3 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2go')))
+    id4 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2pubmed')))
+    id5 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2accession')))
     unique(c(id1,id2,id3,id4,id5))
 }
 
@@ -939,17 +953,27 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                     newCols=c('GID', 'ENTREZID'))
     
     ## Alias table needs to contain both symbols AND stuff from synonyms
-    ## For alias I need to massage the synonyms field from gene_info    
-  ##   ## alias ## requires sub-parsing.
-  ## alias <- sqliteQuickSQL(con,
-  ##   "SELECT distinct gene_id, synonyms FROM gene_info")
-  ## aliases <- sapply(alias[,2], strsplit, "\\|")
-  ## numAlias <- sapply(aliases, length)
-  ## alGenes <- rep(alias[,1], numAlias)
-  ## alias <- data.frame(gene_id=alGenes,alias_symbol=unlist(aliases))
-  ## .makeSimpleTable(alias, table="alias", con)
-
-            
+    ## For alias I need to massage the synonyms field from gene_info
+    ## and add it to symbols from the same.
+    aliasSQL <- paste0("SELECT distinct gene_id, synonyms FROM gene_info ",
+                       "WHERE tax_id ='",tax_id,"'")
+    alias <- sqliteQuickSQL(NCBIcon,aliasSQL)
+    aliases <- sapply(alias[,2], strsplit, "\\|")
+    numAlias <- sapply(aliases, length)
+    allGenes <- rep(alias[,1], numAlias)
+    aliasDat <- data.frame(gene_id=allGenes,alias_symbol=unlist(aliases)
+                           ,stringsAsFactors=FALSE)
+    symbolDat <- .extract(rawData,
+                          keepTable='gene_info.gz',
+                          keepCols=c('gene_id','symbol'))
+    colnames(aliasDat) <- NULL
+    colnames(symbolDat) <- NULL
+    faliasDat <- unique(rbind(as.matrix(aliasDat), as.matrix(symbolDat)))
+    rownames(faliasDat) <- NULL
+    data <- .rename(data,
+                    as.data.frame(faliasDat, stringsAsFactors=FALSE),
+                    newName='alias',
+                    newCols=c('GID', 'ALIAS'))            
     ## refseq requires a custom job since a couple columns must be
     ## combined into one column
     refDat1 <- .extract(rawData,
@@ -961,6 +985,7 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     colnames(refDat1) <- NULL
     colnames(refDat2) <- NULL    
     refDat <- rbind(as.matrix(refDat1),as.matrix(refDat2))
+    rownames(refDat) <- NULL
     data <- .rename(data,
                     as.data.frame(refDat, stringsAsFactors=FALSE),
                     newName='refseq',
@@ -975,6 +1000,7 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     colnames(accDat1) <- NULL
     colnames(accDat2) <- NULL    
     accDat <- rbind(as.matrix(accDat1),as.matrix(accDat2))
+    rownames(accDat) <- NULL
     data <- .rename(data,
                     as.data.frame(accDat, stringsAsFactors=FALSE),
                     newName='accessions',
@@ -1103,11 +1129,6 @@ makeOrgPackageFromNCBI <- function(version,
 
 
 ## STILL TODO:
-## 2- unigene and entrez gene both have the sameish issue (need
-## completel list of GIDs to proceed) - I think this was solved
-## already for makeOrgPackage()
-
-## 3- alias has a semi-solution that just needs to be modded for this use case.
 
 ## 4- finish code to check that we have all the parts and make sure it
 ## filters out any stuff that we don't need (empty data.frames should
@@ -1115,3 +1136,5 @@ makeOrgPackageFromNCBI <- function(version,
 ## will be FALSE that will be something like requireMinStandards and
 ## which will not actually make a DB (will error out) in the case
 ## where certain standards are not met...
+
+## 5- extracting ALL unigenes into memory every time is not efficient.  It would be better if I knew beforehand which organisms I need this for (and could therefore not do it the rest of the time).
