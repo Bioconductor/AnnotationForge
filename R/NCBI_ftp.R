@@ -1152,6 +1152,12 @@ makeOrgPackageFromNCBI <- function(version,
 ## which will not actually make a DB (will error out) in the case
 ## where certain standards are not met...
 
-## 5- extracting ALL unigenes into memory every time is not efficient.  It would be better if I knew beforehand which organisms I need this for (and could therefore not do it the rest of the time).
-## Make use of THIS FILE to do this:
-## ftp://ftp.ncbi.nih.gov/repository/UniGene/README
+## See how many species are in gene_info and gene2go (and what their sizes are)
+## library(AnnotationForge); NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite"); taxes = sqliteQuickSQL(NCBIcon, 'SELECT tax_id from gene_info')
+ ## t = as.character(taxes[[1]]); tf <- as.factor(t); tab = table(tf)
+## head(sort(tab))
+## plot(sort(tab))
+
+
+## try for GO data
+## gos = sqliteQuickSQL(NCBIcon, 'SELECT tax_id from gene2go'); g = as.character(gos[[1]]); gf <- as.factor(g); tabg = table(gf)
