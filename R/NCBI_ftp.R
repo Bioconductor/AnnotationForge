@@ -844,6 +844,9 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 
 ## based (very loosely) on older .Blast2GOData() above
 ## Alternative Blast2GO (refactor in progress)
+## The file we have to proces has specs here:
+## http://www.b2gfar.org/fileformat
+
 .getBlast2GO <- function(tax_id, refseq, accs) {
   url = paste("http://www.b2gfar.org/_media/species:data:",
         tax_id,".annot.zip",sep="")
@@ -852,16 +855,26 @@ OLD_makeOrgPackageFromNCBI <- function(version,
   .tryDL(url,tmp)
   vals <- read.delim(unzip(tmp), header=FALSE, sep="\t", quote="",
                      stringsAsFactors=FALSE)
+  ## I will need to so extra stuff here to match up categories etc.
+  ## (vals has to look like gene2go would, and I have to join to refseq and to
+  ## accession just to get my EGs)
+  RSVals <- vals[grep("refseq",vals[,4]),c(2,3)]
+  GBVals <- vals[grep("genbank",vals[,4]),c(2,6)]
+  colnames(GBVals) <- colnames(RSVals) <- c("go_id","accession")
 
-  ## merge to match gene_ids with accessions
-
+  ## Get gene_ids matches to refseq and merge
+  RSIDs <- merge(RSVals, refseq, by.x='accession', by.y='REFSEQ')
+  ## Get gene_ids matches to accessions and merge
+  GBIDs <- merge(GBVals, accs, by.x='accession', by.y='ACCNUM')
+  
   ## Combine refseq matches and accession mathes
+  vals <- unique(rbind(GBIDs, RSIDs))
 
-  ## make sure that the gene_id/go_id data.frame is unique and then do this:
-
-  data <-data.frame(gene_id = as.character(vals[["gene_id"]]),
+  ## Then do this to make the final data.frame:
+  data <-data.frame(gene_id = as.character(vals[["GID"]]),
                     go_id = vals[["go_id"]],
-                    evidence = rep("IEA", length(vals[["go_id"]])))
+                    evidence = rep("IEA", length(vals[["go_id"]])),
+                    stringsAsFactors=FALSE)
   data
 }
 
