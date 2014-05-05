@@ -853,13 +853,13 @@ OLD_makeOrgPackageFromNCBI <- function(version,
   tmp <- tempfile()
   ##download.file(url, tmp, quiet=TRUE)
   .tryDL(url,tmp)
-  vals <- read.delim(unzip(tmp), header=FALSE, sep="\t", quote="",
+  rawVals <- read.delim(unzip(tmp), header=FALSE, sep="\t", quote="",
                      stringsAsFactors=FALSE)
   ## I will need to so extra stuff here to match up categories etc.
   ## (vals has to look like gene2go would, and I have to join to refseq and to
   ## accession just to get my EGs)
-  RSVals <- vals[grep("refseq",vals[,4]),c(2,3)]
-  GBVals <- vals[grep("genbank",vals[,4]),c(2,6)]
+  RSVals <- rawVals[grep("refseq",rawVals[,4]),c(2,3)]
+  GBVals <- rawVals[grep("genbank",rawVals[,4]),c(2,6)]
   colnames(GBVals) <- colnames(RSVals) <- c("go_id","accession")
 
   ## Get gene_ids matches to refseq and merge
@@ -871,14 +871,29 @@ OLD_makeOrgPackageFromNCBI <- function(version,
   vals <- unique(rbind(GBIDs, RSIDs))
 
   ## Then do this to make the final data.frame:
-  data <-data.frame(gene_id = as.character(vals[["GID"]]),
-                    go_id = vals[["go_id"]],
-                    evidence = rep("IEA", length(vals[["go_id"]])),
-                    stringsAsFactors=FALSE)
-  data
+  data.frame(gene_id = as.character(vals[["GID"]]),
+             go_id = vals[["go_id"]],
+             evidence = rep("IEA", length(vals[["go_id"]])),
+             stringsAsFactors=FALSE)
 }
 
 
+## Helper to get complete list of entrez gene IDs
+.mkGIdQ <- function(tax_id, tableName){
+    paste0("SELECT gene_id FROM ", tableName, " WHERE ",
+           tableName, ".tax_id = '", tax_id, "'")
+}
+asV <- function(df){
+    unique(as.character(t(df)))
+}
+.getAllEnrezGeneIdsFromNCBI <- function(tax_id, NCBIcon){
+    id1 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene_info')))
+    id2 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2refseq')))
+    id3 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2go')))
+    id4 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2pubmed')))
+    id5 <- asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2accession')))
+    unique(c(id1,id2,id3,id4,id5))
+}
 
 
 ## Helper to make a list of data frames from the NCBI cache database
@@ -914,15 +929,14 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                      data,
                      newName='gene_info',
                      newCols=c('GID', 'GENENAME','SYMBOL'))
-    ## entrez genes ## TODO: update to be more inclusive by moving to the end?
-    data <- .procDat(rawData,
-                     keepTable='gene_info.gz',
-                     keepCols=c('gene_id','gene_id'),
-                     data,
-                     newName='entrez_genes',
-                     newCols=c('GID', 'ENTREZID'))
     
-
+    ## entrez genes (special code to ensure we have them all)
+    egIDs <- .getAllEnrezGeneIdsFromNCBI(tax_id, NCBIcon)
+    egData <- data.frame(GID=egIDs, ENTREZID=egIDs,stringsAsFactors=FALSE)
+    data <- .rename(data,
+                    egData,
+                    newName='entrez_genes',
+                    newCols=c('GID', 'ENTREZID'))
     
     ## Alias table needs to contain both symbols AND stuff from synonyms
     ## For alias I need to massage the synonyms field from gene_info    
@@ -976,32 +990,29 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     if(dim(goDat)[1] == 0){## then try Blast2GO
         ## get all accessions together
         goDat <- .getBlast2GO(tax_id, data[['refseq']], data[['accessions']]) 
-    }    
-    if(dim(goDat)[1] >0){
-        data <- .rename(data,
-                        goDat,
-                        newName='go',
-                        newCols=c("GID","GO","EVIDENCE"))
     }
-
-    
-    ## ## unigene needs custom extraction of relevant genes ONLY (do last)
-    ## uniDat <- .extract(rawData,
-    ##                    keepTable='gene2unigene',
-    ##                    keepCols=c('gene_id','unigene_id'))    
-    ## TODO: then make uniSub uniquely the gene_ids that we want... (row filter)
-    ## THIS STEP is tricky since we 1st have to have 100% the ENTREZ IDs
-    ## ## then rename
-    ## data <- .rename(data,
-    ##                 dataSub=uniDat,
-    ##                 newName='unigene',
-    ##                 newCols=c('GID', 'UNIGENE'))
+    ## .rename already checks to make sure there actually ARE GO IDs
+    data <- .rename(data,
+                    goDat,
+                    newName='go',
+                    newCols=c("GID","GO","EVIDENCE"))
     
     
-
+    ## unigene needs custom extraction of relevant genes ONLY (do last)
+    uniDat <- .extract(rawData,
+                       keepTable='gene2unigene',
+                       keepCols=c('gene_id','unigene_id'))    
+    ## Then row filter our things that are not in our set of entrez gene IDs
+    uniDat <- uniDat[uniDat$gene_id %in% egIDs,]
+    ## and rename
+    data <- .rename(data,
+                    dataSub=uniDat,
+                    newName='unigene',
+                    newCols=c('GID', 'UNIGENE'))
+    
     
     ## TODO: Then make sure we have key things (gene names, GO IDs etc.)
-
+    
     
 
     data
@@ -1092,7 +1103,15 @@ makeOrgPackageFromNCBI <- function(version,
 
 
 ## STILL TODO:
-## 1- blast2GO needs to be added.
-## 2- unigene and entrez gene both have the sameish issue (need completel list of GIDs to proceed) - I think this was solved already for makeOrgPackage()
+## 2- unigene and entrez gene both have the sameish issue (need
+## completel list of GIDs to proceed) - I think this was solved
+## already for makeOrgPackage()
+
 ## 3- alias has a semi-solution that just needs to be modded for this use case.
-## 4- finish code to check that we have all the parts and make sure it filters out any stuff that we don't need (empty data.frames should be dropped)
+
+## 4- finish code to check that we have all the parts and make sure it
+## filters out any stuff that we don't need (empty data.frames should
+## be dropped) = For this we want to add an argument that normally
+## will be FALSE that will be something like requireMinStandards and
+## which will not actually make a DB (will error out) in the case
+## where certain standards are not met...

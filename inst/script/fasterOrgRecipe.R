@@ -49,14 +49,12 @@ makeOrgPackageFromNCBI(version = "0.1",
                        NCBIFilesDir=".",
                        useDeprecatedStyle=TRUE)
 ## WORKS
+debug(AnnotationForge:::.getBlast2GO)
 
 
 ## Another test for building the new data.frames out
 
 debug(AnnotationForge:::prepareDataFromNCBI)
-
-
-debug(AnnotationForge:::.getBlast2GO)
 
 library(AnnotationForge)
 
