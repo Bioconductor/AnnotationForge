@@ -146,7 +146,7 @@ makeOrgPackageFromNCBI(version = "0.1",
 
 
 ###############################################################################
-## AND refactor code to support the "NOSCHEMA.DB" : 
+## AND refactor code to support the "NOSCHEMA.DB" : done
 
 ## Compare DB generated to the one made by makeOrgPackage() -
 ## NOSCHEMA.DB is better design.
@@ -187,10 +187,7 @@ makeOrgPackageFromNCBI(version = "0.1",
 ## goids <- keys(mouse4302.db, "GO")
 ## xx = select(mouse4302.db, head(goids), "GOALL", "GO")
 ## which takes forever and returns many duplicates
+## The above is a select bug that I need to fix in AnnotationDbi...
 
 
 
-## I need code to process which taxIDs I can reasonably make into a recipe.
-## 1) Look in gene2GO - these TaxIDs we will do.
-## 2) For remaining taxIDs - do they have refseq OR genbank acccession?  If not, drop them as it won't be posible to use blast2GO
-## 3) For those taxIDs that have RS or GB IDs, try to get data from blast2GO.  If no data comes down, drop them from the list.

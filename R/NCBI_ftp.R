@@ -1080,12 +1080,6 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                         newName='unigene',
                         newCols=c('GID', 'UNIGENE'))
     }
-
-    
-    ## TODO: Then make sure we have key things (gene names, GO IDs etc.)
-    
-    
-
     data
 }
 
@@ -1175,13 +1169,11 @@ makeOrgPackageFromNCBI <- function(version,
 
 ## STILL TODO:
 
-## 4- finish code to check that we have all the parts and make sure it
-## filters out any stuff that we don't need (empty data.frames should
-## be dropped) = For this we want to add an argument that normally
-## will be FALSE that will be something like requireMinStandards and
-## which will not actually make a DB (will error out) in the case
-## where certain standards are not met...
+## 9 - The code that does blast2GO is leaving the .annot files behind
+## after the fact.
 
+
+## Exploration of gene data avail for species:
 ## See how many species are in gene_info and gene2go (and what their sizes are)
 ## library(AnnotationForge); NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite"); taxes = sqliteQuickSQL(NCBIcon, 'SELECT tax_id from gene_info')
  ## t = as.character(taxes[[1]]); tf <- as.factor(t); tab = table(tf)
@@ -1192,22 +1184,14 @@ makeOrgPackageFromNCBI <- function(version,
 ## gos = sqliteQuickSQL(NCBIcon, 'SELECT tax_id from gene2go'); g = as.character(gos[[1]]); gf <- as.factor(g); tabg = table(gf)
 
 
-
-## 5- once we have made some decisions, I need to block organisms that
-## don't have "GO" and some min number of annotated genes.  So there
-## should be an argument that normally lets you make any package, and
-## that stops the process (and errors out if the min specs are not
-## met.
-
+## CONCLUSIONS:
+## I need code to process which taxIDs I can reasonably make into a recipe.
+## 1) Look in gene2GO - these TaxIDs we will do.
+## 2) For remaining taxIDs - do they have refseq OR genbank acccession?  If not, drop them as it won't be posible to use blast2GO
+## 3) For those taxIDs that have RS or GB IDs, try to get data from blast2GO.  If no data comes down, drop them from the list.
 
 
-## 7 - There is presently a bug that happens with rice (something else
-## needs to be checked)
-
-
-## 8 - For blast2GO i will need to pre-process the ones that we want
-## to do and make a white list (for when there is data)
-
-## 9 - The code that does blast2GO is leaving the .annot files behind
-## after the fact.
+## So rather than making the function 'picky', I will just limit the
+## recipe to only be run on certain tax IDs (prescreened as above).
+## AND I will create a function to do that prescreening.
 
