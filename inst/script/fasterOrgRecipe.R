@@ -72,17 +72,15 @@ makeOrgPackageFromNCBI(version = "0.1",
                        NCBIFilesDir=".")
  
 
-
-## TROUBLE: problem with blast2GO?
-## test to make sure I can do another one right after...
-## makeOrgPackageFromNCBI(version="0.1",
-##                        maintainer="Pengfei Liu <liupfskygre@gmail.com>",
-##                        author="Pengfei Liu <liupfskygre@gmail.com>",
-##                        outputDir=".",
-##                        tax_id="1041930",
-##                        genus="Methanocella",
-##                        species="conradii",
-##                        NCBIFilesDir=".")
+## This works
+makeOrgPackageFromNCBI(version="0.1",
+                       maintainer="Pengfei Liu <liupfskygre@gmail.com>",
+                       author="Pengfei Liu <liupfskygre@gmail.com>",
+                       outputDir=".",
+                       tax_id="1041930",
+                       genus="Methanocella",
+                       species="conradii",
+                       NCBIFilesDir=".")
 
 
 ## More TROUBLE: (looks like I need more checks to see if things are missing

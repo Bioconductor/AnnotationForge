@@ -884,7 +884,8 @@ OLD_makeOrgPackageFromNCBI <- function(version,
      }else if(is(tryResult,"try-error") && i >= times){
          msg = paste("After 2 attempts, AnnotationDbi is still not able",
                      "to access the following URL:", url,
-                     "You might want to try again later.",
+                     "You might want to try again later since",
+                     "this means you will not have GO data for your package.",
                       sep=" ")
          warning(paste(strwrap(msg,exdent=2), collapse="\n"))
          return(FALSE)
@@ -1192,9 +1193,6 @@ makeOrgPackageFromNCBI <- function(version,
 ## that stops the process (and errors out if the min specs are not
 ## met.
 
-
-## 6 - When they don't have "GO" at blast2GO I currently get an error
-## from my downloader I need to NOT have it do that.
 
 
 ## 7 - There is presently a bug that happens with rice (something else
