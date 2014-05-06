@@ -893,6 +893,11 @@ OLD_makeOrgPackageFromNCBI <- function(version,
   }
 }
 
+.emptyGoFrame <- function(){
+    data.frame(gene_id=character(), go_id=character(),
+               evidence=character(), stringsAsFactors=FALSE)
+}
+
 .getBlast2GO <- function(tax_id, refseq, accs) {
   url = paste("http://www.b2gfar.org/_media/species:data:",
         tax_id,".annot.zip",sep="")
@@ -902,15 +907,12 @@ OLD_makeOrgPackageFromNCBI <- function(version,
       rawVals <- read.delim(unzip(tmp), header=FALSE, sep="\t", quote="",
                             stringsAsFactors=FALSE)
   }else{## return empty thing right now.
-      return(data.frame(gene_id=character(),
-                        go_id=character(),
-                        evidence=character(),stringsAsFactors=FALSE))
+      return(.emptyGoFrame())
   }
   ## if there are no refseqs and now accessions either (from NCBI) - then bail
   if(is.null(refseq) && is.null(accs)){
-      return(data.frame(gene_id=character(),
-                        go_id=character(),
-                        evidence=character(),stringsAsFactors=FALSE))
+      return(.emptyGoFrame())
+      warning("No GO data was able to be matched to this tax ID.")
   }
   ## I will need to so extra stuff here to match up categories etc.
   ## (vals has to look like gene2go would, and I have to join to refseq and to
