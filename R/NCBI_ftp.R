@@ -911,8 +911,8 @@ OLD_makeOrgPackageFromNCBI <- function(version,
   }
   ## if there are no refseqs and now accessions either (from NCBI) - then bail
   if(is.null(refseq) && is.null(accs)){
-      return(.emptyGoFrame())
       warning("No GO data was able to be matched to this tax ID.")
+      return(.emptyGoFrame())
   }
   ## I will need to so extra stuff here to match up categories etc.
   ## (vals has to look like gene2go would, and I have to join to refseq and to
