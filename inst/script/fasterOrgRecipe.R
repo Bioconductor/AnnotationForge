@@ -55,7 +55,8 @@ debug(AnnotationForge:::prepareDataFromNCBI)
 
 ## Another test for building the new data.frames out
 
-debug(AnnotationForge:::.makeBaseDBFromDLs)
+
+debug(AnnotationForge:::prepareDataFromNCBI)
 
 
 
@@ -105,15 +106,15 @@ makeOrgPackageFromNCBI(version = "0.1",
                        species = "vulgare",
                        NCBIFilesDir=".")
 
-## Axolotl (no blast2go?) -same error as the Methanocella
-## makeOrgPackageFromNCBI(version = "0.1",
-##                        author = "Some One <so@someplace.org>",
-##                        maintainer = "Some One <so@someplace.org>",
-##                        outputDir = ".",
-##                        tax_id = "8296",
-##                        genus = "Ambystoma",
-##                        species = "mexicanum",
-##                        NCBIFilesDir=".")
+## Axolotl works...
+makeOrgPackageFromNCBI(version = "0.1",
+                       author = "Some One <so@someplace.org>",
+                       maintainer = "Some One <so@someplace.org>",
+                       outputDir = ".",
+                       tax_id = "8296",
+                       genus = "Ambystoma",
+                       species = "mexicanum",
+                       NCBIFilesDir=".")
 
 
 

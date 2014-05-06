@@ -178,7 +178,6 @@
 }
 
 
-
 ## helper for writing data to a temp NCBI database for rapid retrieval
 .writeToNCBIDB <- function(NCBIcon, tableName, tmp, file){
     colClasses <- c(rep("character", times= length(unlist(file))))
@@ -869,19 +868,43 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 }
 
 
-## based (very loosely) on older .Blast2GOData() above
+## newer .getBlast2GO is based (very loosely) on older .Blast2GOData()
 ## Alternative Blast2GO (refactor in progress)
 ## The file we have to proces has specs here:
 ## http://www.b2gfar.org/fileformat
+
+## need a version of this that does not throw in towel if GO is missing
+.tryDL2 <- function(url, tmp){
+    times = 2 ## try this many times to DL
+  for(i in 1:times){ 
+    ## tryResult <- try( download.file(url, tmp, quiet=TRUE) , silent=TRUE)     
+     tryResult <- try( .downloadAndSaveToTemp(url, tmp) , silent=TRUE)     
+     if(is(tryResult,"try-error") && i < times){
+         Sys.sleep(20)
+     }else if(is(tryResult,"try-error") && i >= times){
+         msg = paste("After 2 attempts, AnnotationDbi is still not able",
+                     "to access the following URL:", url,
+                     "You might want to try again later.",
+                      sep=" ")
+         warning(paste(strwrap(msg,exdent=2), collapse="\n"))
+         return(FALSE)
+     }else{ return(TRUE) }
+  }
+}
 
 .getBlast2GO <- function(tax_id, refseq, accs) {
   url = paste("http://www.b2gfar.org/_media/species:data:",
         tax_id,".annot.zip",sep="")
   tmp <- tempfile()
-  ##download.file(url, tmp, quiet=TRUE)
-  .tryDL(url,tmp)
-  rawVals <- read.delim(unzip(tmp), header=FALSE, sep="\t", quote="",
-                     stringsAsFactors=FALSE)
+  ##if we can download the file, process it.
+  if(.tryDL2(url,tmp)){
+      rawVals <- read.delim(unzip(tmp), header=FALSE, sep="\t", quote="",
+                            stringsAsFactors=FALSE)
+  }else{## return empty thing right now.
+      return(data.frame(gene_id=character(),
+                        go_id=character(),
+                        evidence=character(),stringsAsFactors=FALSE))
+  }
   ## I will need to so extra stuff here to match up categories etc.
   ## (vals has to look like gene2go would, and I have to join to refseq and to
   ## accession just to get my EGs)
@@ -1030,7 +1053,7 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
         ## get all accessions together
         goDat <- .getBlast2GO(tax_id, data[['refseq']], data[['accessions']]) 
     }
-    ## .rename already checks to make sure there actually ARE GO IDs
+    ## and .rename already checks to make sure there actually ARE GO IDs
     data <- .rename(data,
                     goDat,
                     newName='go',
@@ -1158,6 +1181,26 @@ makeOrgPackageFromNCBI <- function(version,
 ## head(sort(tab))
 ## plot(sort(tab))
 
-
 ## try for GO data
 ## gos = sqliteQuickSQL(NCBIcon, 'SELECT tax_id from gene2go'); g = as.character(gos[[1]]); gf <- as.factor(g); tabg = table(gf)
+
+
+
+## 5- once we have made some decisions, I need to block organisms that
+## don't have "GO" and some min number of annotated genes.  So there
+## should be an argument that normally lets you make any package, and
+## that stops the process (and errors out if the min specs are not
+## met.
+
+
+## 6 - When they don't have "GO" at blast2GO I currently get an error
+## from my downloader I need to NOT have it do that.
+
+
+## 7 - There is presently a bug that happens with rice (something else
+## needs to be checked)
+
+
+## 8 - For blast2GO i will need to pre-process the ones that we want
+## to do and make a white list (for when there is data)
+
