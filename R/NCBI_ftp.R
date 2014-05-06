@@ -1177,13 +1177,13 @@ makeOrgPackageFromNCBI <- function(version,
 
 ## STILL TODO:
 
-## Test the argument for makeOrgPackageFromNCBI (and .makeOrgPackage)
-## that allows output of ONLY the database (and skips the part where
-## we make a package). (arg is called databaseOnly)
-
-
 ## 9 - The code that does blast2GO is leaving the .annot files behind
 ## after the fact.
+
+## 10 - The code that does blast2GO seems to be leaving things called
+## "NEWENTRY" into the database.  And YET these things have entrez
+## gene IDs.  So I guess it's just cosmetic, but its still lame.
+
 
 
 ## Exploration of gene data avail for species:
@@ -1210,38 +1210,100 @@ makeOrgPackageFromNCBI <- function(version,
 
 
 
-## This helper will just get the taxIDs that we have GO data for
-.getCoreTaxIds <- function(){
+## This helper will just get the taxIDs that we have GO data for.
+
+.getCoreTaxIds <- function(NCBIFilesDir=getwd()){
     ## 1st get the NCBI database (it probably already exists and if
     ## not you will need it later anyways)
     files = .primaryFiles() 
     NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
-    .makeBaseDBFromDLs(files, "9606", NCBIcon, NCBIFilesDir)
+    .makeBaseDBFromDLs(files, "192222", NCBIcon, getwd())
     ## now get the list of taxIDs that we know are supported
     taxIDs <- sqliteQuickSQL(NCBIcon, "SELECT tax_id FROM gene2go;")[[1]]
     unique(taxIDs)
 }
+## taxIDs=AnnotationForge:::.getCoreTaxIds()
 
 
-
-## TODO: find util for reverse lookup of genus and species from the tax ID. 
-## UniProt.ws:::lookupUniprotSpeciesFromTaxId('10090')
-## Or (since that package is cranky) just redeclare it here:
-.lookupUniprotSpeciesFromTaxId <- function(id){
-  species <- read.delim(system.file('extdata','availSpecies.txt',
-                                    package='UniProt.ws')
-                        , header=FALSE, stringsAsFactors=FALSE)
-  g <- species[,1] %in% id
-  res <- species[g,2]
-  if(length(res)<1) stop("No species match the requested Tax Id.")
-  if(length(res)>1) stop("There may be a problem with the Tax Id data file.")
-  if(length(res)==1) return(res)
+## modified function to use our own data.
+.lookupSpeciesFromTaxId <- function(id){
+    load(system.file('extdata','taxNames.rda',
+                     package='AnnotationForge'))
+    keep <- !is.na(specData$species)
+    specData <- specData[keep,]
+    ## Then find matches
+    g <- specData[,1] == id
+    res <- specData[g,]
+    if(dim(res)[1]<1) stop("No species match the requested Tax Id.")
+    if(dim(res)[1]==1) return(res[1,])
+    if(dim(res)[1]>1){
+        .tooLong <- function(x){
+            splt <- unlist(strsplit(x,split=" "))
+            if(length(splt) > 1){
+                return(TRUE)
+            }else{
+                return(FALSE)
+            }
+        }
+        tooLong = unlist(lapply(as.character(res$species), .tooLong))
+        if(all(tooLong)){
+            return(res[1,])
+        }else{
+            res <- res[!tooLong,]
+            return(res[1,])
+        }
+    }
 }
-## .lookupUniprotSpeciesFromTaxId("10090")
+
+## modify the above to throw out species=NA and only keep the 1st result
+
+
+## .lookupSpeciesFromTaxId("10090")
+## res <- list()
 ## for(i in seq_along(taxIDs)){
 ##     message(paste0('now testing: ',taxIDs[i]))
-##     .lookupUniprotSpeciesFromTaxId(taxIDs[i])
+##     res[[i]] <- .lookupSpeciesFromTaxId(taxIDs[i])
 ## }
 
-## This fails pretty soon...  IOW this is NOT encouraging...  I probably need something for AnnotationForge (separately)
+    
+
+
+
+
+
+
+###################################################################3
+## Code for processing the tax IDs directly from NCBI.
+## So look here for a mapping file
+## ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+## And grab out the names.dmp file
+## and then do this to it to preprocess it:
+.processTaxNamesFile <- function(){
+    species <- read.delim('names.dmp',header = FALSE,sep = "|")
+    ## keep only 1st two cols
+    species <- species[,1:2]
+    ## throw away tabs from second col
+    species[[2]] <- gsub('\t','',species[[2]])
+    ## split second column by first space:
+
+    rawSpec <- species[[2]]
+    spltSpec <- strsplit(rawSpec, split=" ")
+    genusDat <- unlist(lapply(spltSpec, function(x){x[1]}))
+    .getRest <- function(x){
+        if(length(x) > 1){
+            return(paste(x[2:length(x)], collapse=" "))
+        }else{
+            return(NA)
+        }
+    }
+    speciesDat <- unlist(lapply(spltSpec, .getRest))
+    specData <- data.frame(tax_id=species[[1]],
+                           genus=genusDat,
+                           species=speciesDat,
+                           stringsAsFactors=FALSE)
+    ## name columns
+    save(specData, file='taxNames.rda')
+}
+## .processTaxNamesFile()
+
 
