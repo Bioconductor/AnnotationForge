@@ -1209,9 +1209,8 @@ makeOrgPackageFromNCBI <- function(version,
 ## AND I will create a function to do that prescreening.
 
 
-
+## STEP 1:
 ## This helper will just get the taxIDs that we have GO data for.
-
 .getCoreTaxIds <- function(NCBIFilesDir=getwd()){
     ## 1st get the NCBI database (it probably already exists and if
     ## not you will need it later anyways)
@@ -1219,10 +1218,41 @@ makeOrgPackageFromNCBI <- function(version,
     NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
     .makeBaseDBFromDLs(files, "192222", NCBIcon, getwd())
     ## now get the list of taxIDs that we know are supported
-    taxIDs <- sqliteQuickSQL(NCBIcon, "SELECT tax_id FROM gene2go;")[[1]]
-    unique(taxIDs)
+    sqliteQuickSQL(NCBIcon, "SELECT DISTINCT tax_id FROM gene2go;")[[1]]
 }
 ## taxIDs = AnnotationForge:::.getCoreTaxIds()
+
+
+
+
+## STEP 2:
+## This helper will find out which of our remaining TaxIDs even have
+## the ability to be mapped onto blast2GO.
+.getBlast2GOViableTaxIDs <- function(NCBIFilesDir=getwd()){
+    ## 1st get the NCBI database (it probably already exists and if
+    ## not you will need it later anyways)
+    files = .primaryFiles() 
+    NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
+    .makeBaseDBFromDLs(files, "192222", NCBIcon, getwd())
+    ## now get the list of taxIDs that we know are supported
+    sql <- paste0('SELECT DISTINCT tax_id FROM gene2accession UNION ',
+                  'SELECT DISTINCT tax_id FROM gene2refseq')
+    viableTaxIds <- unique(sqliteQuickSQL(NCBIcon, sql)[[1]])
+    ## Then drop the core Tax IDs since I won't need to get those again.
+    coretaxIDs <- .getCoreTaxIds()
+    ## So we only want these ones:
+    viableTaxIds[!viableTaxIds %in% coretaxIDs]
+}
+## otherIDs = AnnotationForge:::.getBlast2GOViableTaxIDs()
+
+
+## STEP 3:
+## This helper is for calling Blast2GO to see which of the viable taxIDs are even 
+
+
+
+
+
 
 
 ## modified function to use our own data.
@@ -1255,17 +1285,14 @@ makeOrgPackageFromNCBI <- function(version,
 
 ## modify the above to throw out species=NA and only keep the 1st result
 
-
+## usage:
 ## .lookupSpeciesFromTaxId("10090")
+## bigger test:
 ## res <- list()
 ## for(i in seq_along(taxIDs)){
 ##     message(paste0('now testing: ',taxIDs[i]))
 ##     res[[i]] <- .lookupSpeciesFromTaxId(taxIDs[i])
 ## }
-
-    
-
-
 
 
 
@@ -1309,5 +1336,7 @@ makeOrgPackageFromNCBI <- function(version,
     save(specData, file='taxNames.rda')
 }
 ## .processTaxNamesFile()
+
+
 
 
