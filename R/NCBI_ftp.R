@@ -1222,15 +1222,13 @@ makeOrgPackageFromNCBI <- function(version,
     taxIDs <- sqliteQuickSQL(NCBIcon, "SELECT tax_id FROM gene2go;")[[1]]
     unique(taxIDs)
 }
-## taxIDs=AnnotationForge:::.getCoreTaxIds()
+## taxIDs = AnnotationForge:::.getCoreTaxIds()
 
 
 ## modified function to use our own data.
 .lookupSpeciesFromTaxId <- function(id){
     load(system.file('extdata','taxNames.rda',
                      package='AnnotationForge'))
-    keep <- !is.na(specData$species)
-    specData <- specData[keep,]
     ## Then find matches
     g <- specData[,1] == id
     res <- specData[g,]
@@ -1280,12 +1278,18 @@ makeOrgPackageFromNCBI <- function(version,
 ## and then do this to it to preprocess it:
 .processTaxNamesFile <- function(){
     species <- read.delim('names.dmp',header = FALSE,sep = "|")
+    colnames(species) <- c('tax_id','name_txt','unique_name','name_class')
     ## keep only 1st two cols
-    species <- species[,1:2]
+    species <- species[,c(1:2,4)]
     ## throw away tabs from second col
     species[[2]] <- gsub('\t','',species[[2]])
+    ## And the third col
+    species[[3]] <- gsub('\t','',species[[3]])
+    ## throw away rows where the third column doesn't say 'scientific name'
+    keep <- grepl('scientific name', species[[3]])
+    species <- species[keep,1:2]
+    
     ## split second column by first space:
-
     rawSpec <- species[[2]]
     spltSpec <- strsplit(rawSpec, split=" ")
     genusDat <- unlist(lapply(spltSpec, function(x){x[1]}))
