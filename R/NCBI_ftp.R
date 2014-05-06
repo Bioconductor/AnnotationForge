@@ -1088,13 +1088,14 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
 
 ## NEW function to make the package:
 NEW_makeOrgPackageFromNCBI <- function(version,
-                               maintainer,
-                               author,
-                               outputDir,
-                               tax_id,
-                               genus,
-                               species,
-                               NCBIFilesDir){
+                                       maintainer,
+                                       author,
+                                       outputDir,
+                                       tax_id,
+                                       genus,
+                                       species,
+                                       NCBIFilesDir,
+                                       databaseOnly){
   message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds).  The cache will try to rebuild once per day.")
   ## Arguement checking:
   if(!.isSingleString(version))
@@ -1130,7 +1131,8 @@ NEW_makeOrgPackageFromNCBI <- function(version,
                       tax_id=tax_id,
                       genus=genus,
                       species=species,
-                      goTable="go") 
+                      goTable="go",
+                      databaseOnly=databaseOnly)
   }else{
       .makeOrgPackage(data,
                       version=version,
@@ -1139,7 +1141,9 @@ NEW_makeOrgPackageFromNCBI <- function(version,
                       outputDir=outputDir,
                       tax_id=tax_id,
                       genus=genus,
-                      species=species) 
+                      species=species,
+                      goTable=NA,
+                      databaseOnly=databaseOnly)
   }
 }
 
@@ -1156,13 +1160,15 @@ makeOrgPackageFromNCBI <- function(version,
                                    genus,
                                    species,
                                    NCBIFilesDir=getwd(),
+                                   databaseOnly=FALSE,
                                    useDeprecatedStyle=FALSE){
     if(useDeprecatedStyle==TRUE){
         OLD_makeOrgPackageFromNCBI(version,maintainer,author,outputDir,
                                    tax_id,genus,species,NCBIFilesDir)
     }else{
         NEW_makeOrgPackageFromNCBI(version,maintainer,author,outputDir,
-                                   tax_id,genus,species,NCBIFilesDir)
+                                   tax_id,genus,species,NCBIFilesDir,
+                                   databaseOnly)
     }
 }
 
@@ -1170,6 +1176,11 @@ makeOrgPackageFromNCBI <- function(version,
 
 
 ## STILL TODO:
+
+## Test the argument for makeOrgPackageFromNCBI (and .makeOrgPackage)
+## that allows output of ONLY the database (and skips the part where
+## we make a package). (arg is called databaseOnly)
+
 
 ## 9 - The code that does blast2GO is leaving the .annot files behind
 ## after the fact.
@@ -1196,4 +1207,41 @@ makeOrgPackageFromNCBI <- function(version,
 ## So rather than making the function 'picky', I will just limit the
 ## recipe to only be run on certain tax IDs (prescreened as above).
 ## AND I will create a function to do that prescreening.
+
+
+
+## This helper will just get the taxIDs that we have GO data for
+.getCoreTaxIds <- function(){
+    ## 1st get the NCBI database (it probably already exists and if
+    ## not you will need it later anyways)
+    files = .primaryFiles() 
+    NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
+    .makeBaseDBFromDLs(files, "9606", NCBIcon, NCBIFilesDir)
+    ## now get the list of taxIDs that we know are supported
+    taxIDs <- sqliteQuickSQL(NCBIcon, "SELECT tax_id FROM gene2go;")[[1]]
+    unique(taxIDs)
+}
+
+
+
+## TODO: find util for reverse lookup of genus and species from the tax ID. 
+## UniProt.ws:::lookupUniprotSpeciesFromTaxId('10090')
+## Or (since that package is cranky) just redeclare it here:
+.lookupUniprotSpeciesFromTaxId <- function(id){
+  species <- read.delim(system.file('extdata','availSpecies.txt',
+                                    package='UniProt.ws')
+                        , header=FALSE, stringsAsFactors=FALSE)
+  g <- species[,1] %in% id
+  res <- species[g,2]
+  if(length(res)<1) stop("No species match the requested Tax Id.")
+  if(length(res)>1) stop("There may be a problem with the Tax Id data file.")
+  if(length(res)==1) return(res)
+}
+## .lookupUniprotSpeciesFromTaxId("10090")
+## for(i in seq_along(taxIDs)){
+##     message(paste0('now testing: ',taxIDs[i]))
+##     .lookupUniprotSpeciesFromTaxId(taxIDs[i])
+## }
+
+## This fails pretty soon...  IOW this is NOT encouraging...  I probably need something for AnnotationForge (separately)
 

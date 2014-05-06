@@ -175,7 +175,8 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
                             tax_id,
                             genus,
                             species,
-                            goTable=NA){
+                            goTable=NA,
+                            databaseOnly=FALSE){
     ## drop any rownames on all data.frames
     data <- lapply(data, function(x){rownames(x) <- NULL; x})
 
@@ -240,28 +241,32 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
     ## Then make the DB
     makeOrgDbFromDataFrames(data, tax_id, genus, species, dbFileName, goTable)
         
-  
-    seed <- new("AnnDbPkgSeed",
-                Package= paste0(dbName,".db"),
-                Version=version,
-                Author=author,
-                Maintainer=maintainer,
-                PkgTemplate="NOSCHEMA.DB",
-                AnnObjPrefix=dbName,
-                organism = paste(genus, species),
-                species = paste(genus, species),
-                biocViews = "annotation",
-                manufacturerUrl = "no manufacturer",
-                manufacturer = "no manufacturer",
-                chipName = "no manufacturer")
-    
-    makeAnnDbPkg(seed, dbFileName, dest_dir=outputDir)
-    
-    ## cleanup
-    message("Now deleting temporary database file")
-    file.remove(dbFileName)
-    ## return the path to the dir that was just created.
-    file.path(outputDir,paste0(dbName,".db"))
+    if(databaseOnly==FALSE){
+        seed <- new("AnnDbPkgSeed",
+                    Package= paste0(dbName,".db"),
+                    Version=version,
+                    Author=author,
+                    Maintainer=maintainer,
+                    PkgTemplate="NOSCHEMA.DB",
+                    AnnObjPrefix=dbName,
+                    organism = paste(genus, species),
+                    species = paste(genus, species),
+                    biocViews = "annotation",
+                    manufacturerUrl = "no manufacturer",
+                    manufacturer = "no manufacturer",
+                    chipName = "no manufacturer")
+        
+        makeAnnDbPkg(seed, dbFileName, dest_dir=outputDir)
+        
+        ## cleanup
+        message("Now deleting temporary database file")
+        file.remove(dbFileName)
+        ## return the path to the dir that was just created.
+        file.path(outputDir,paste0(dbName,".db"))
+    }else{
+        ## return the path to the database file
+        file.path(outputDir,dbFileName)
+    }
 }
 
 
@@ -278,8 +283,15 @@ makeOrgPackage <- function(...,
                            goTable=NA){
     ## get all the arguments into a list
     data <- list(...)
-    .makeOrgPackage(data, version, maintainer, author, outputDir,
-                    tax_id, genus, species, goTable)
+    .makeOrgPackage(data,
+                    version=version,
+                    maintainer=maintainer,
+                    author=author,
+                    outputDir=outputDir,
+                    tax_id=tax_id,
+                    genus=genus,
+                    species=species,
+                    goTable=goTable)
 }
 
 

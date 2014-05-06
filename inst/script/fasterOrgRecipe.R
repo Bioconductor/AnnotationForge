@@ -81,7 +81,8 @@ makeOrgPackageFromNCBI(version="0.11",
                        tax_id="39947",
                        genus="OryZa",
                        species="sativa.japonica",
-                       NCBIFilesDir=".")
+                       NCBIFilesDir=".",
+                       databaseOnly=TRUE)
 
 
 
