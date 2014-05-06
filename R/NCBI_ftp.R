@@ -906,6 +906,12 @@ OLD_makeOrgPackageFromNCBI <- function(version,
                         go_id=character(),
                         evidence=character(),stringsAsFactors=FALSE))
   }
+  ## if there are no refseqs and now accessions either (from NCBI) - then bail
+  if(is.null(refseq) && is.null(accs)){
+      return(data.frame(gene_id=character(),
+                        go_id=character(),
+                        evidence=character(),stringsAsFactors=FALSE))
+  }
   ## I will need to so extra stuff here to match up categories etc.
   ## (vals has to look like gene2go would, and I have to join to refseq and to
   ## accession just to get my EGs)
@@ -1201,4 +1207,7 @@ makeOrgPackageFromNCBI <- function(version,
 
 ## 8 - For blast2GO i will need to pre-process the ones that we want
 ## to do and make a white list (for when there is data)
+
+## 9 - The code that does blast2GO is leaving the .annot files behind
+## after the fact.
 

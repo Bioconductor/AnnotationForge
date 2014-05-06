@@ -49,9 +49,7 @@ makeOrgPackageFromNCBI(version = "0.1",
                        NCBIFilesDir=".",
                        useDeprecatedStyle=TRUE)
 ## WORKS
-debug(AnnotationForge:::.getBlast2GO)
 debug(AnnotationForge:::prepareDataFromNCBI)
-
 
 ## Another test for building the new data.frames out
 
@@ -59,9 +57,36 @@ debug(AnnotationForge:::prepareDataFromNCBI)
 debug(AnnotationForge:::prepareDataFromNCBI)
 
 
+debug(AnnotationForge:::.getBlast2GO)
+
 
 library(AnnotationForge)
 
+## So this is an example where there are not any refseq or genbank IDs
+## (tax ID is too general)
+makeOrgPackageFromNCBI(version="0.11",
+                       maintainer="g <g.ye@irri.org>",
+                       author="g <g.ye@irri.org>",
+                       outputDir=".",
+                       tax_id="4530",
+                       genus="OryZa",
+                       species="sativa",
+                       NCBIFilesDir=".")
+
+## Whereas this one works just fine
+makeOrgPackageFromNCBI(version="0.11",
+                       maintainer="g <g.ye@irri.org>",
+                       author="g <g.ye@irri.org>",
+                       outputDir=".",
+                       tax_id="39947",
+                       genus="OryZa",
+                       species="sativa.japonica",
+                       NCBIFilesDir=".")
+
+
+
+
+## The following all works:
 makeOrgPackageFromNCBI(version = "0.1",
                        author = "Some One <so@someplace.org>",
                        maintainer = "Some One <so@someplace.org>",
@@ -83,15 +108,6 @@ makeOrgPackageFromNCBI(version="0.1",
                        NCBIFilesDir=".")
 
 
-## More TROUBLE: (looks like I need more checks to see if things are missing
-## makeOrgPackageFromNCBI(version="0.11",
-##                        maintainer="g.ye@irri.org>",
-##                        author="g.ye@irri.org>",
-##                        outputDir=".",
-##                        tax_id="4530",
-##                        genus="OryZa",
-##                        species="sativa",
-##                        NCBIFilesDir=".")
 
 
 ## Barley works...
@@ -171,3 +187,10 @@ makeOrgPackageFromNCBI(version = "0.1",
 ## goids <- keys(mouse4302.db, "GO")
 ## xx = select(mouse4302.db, head(goids), "GOALL", "GO")
 ## which takes forever and returns many duplicates
+
+
+
+## I need code to process which taxIDs I can reasonably make into a recipe.
+## 1) Look in gene2GO - these TaxIDs we will do.
+## 2) For remaining taxIDs - do they have refseq OR genbank acccession?  If not, drop them as it won't be posible to use blast2GO
+## 3) For those taxIDs that have RS or GB IDs, try to get data from blast2GO.  If no data comes down, drop them from the list.
