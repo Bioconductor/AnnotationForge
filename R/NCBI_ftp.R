@@ -1116,7 +1116,10 @@ NEW_makeOrgPackageFromNCBI <- function(version,
 
   ## if genus or species are null, then we should get them now.
   if(is.null(genus)){genus <- .lookupSpeciesFromTaxId(tax_id)[['genus']] }
-  if(is.null(species)){species <- .lookupSpeciesFromTaxId(tax_id)[['species']] }
+  if(is.null(species)){
+      species <- .lookupSpeciesFromTaxId(tax_id)[['species']] 
+      species <- gsub(' ', '.', species)
+  }
   
   
   data <- prepareDataFromNCBI(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
@@ -1280,7 +1283,7 @@ makeOrgPackageFromNCBI <- function(version,
     ## Then find matches
     g <- specData[,1] == id
     res <- specData[g,]
-    if(dim(res)[1]<1) stop("No species match the requested Tax Id.")
+    if(dim(res)[1]<1) stop("Cannot find a species to match the requested taxonomy id. Please provide the genus and species manually.")
     if(dim(res)[1]==1) return(res[1,])
     if(dim(res)[1]>1){
         .tooLong <- function(x){

@@ -235,8 +235,12 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
     
     ## if genus or species are null, then we should get them now.
     if(is.null(genus)){genus <- .lookupSpeciesFromTaxId(tax_id)[['genus']] }
-    if(is.null(species)){species <- .lookupSpeciesFromTaxId(tax_id)[['species']] }  
-        
+    if(is.null(species)){
+        species <- .lookupSpeciesFromTaxId(tax_id)[['species']]
+        species <- gsub(' ','.', species)
+    }
+
+    
     ## generate name from the genus and species
     dbName <- .generateOrgDbName(genus,species)
     ## this becomes the file name for the DB

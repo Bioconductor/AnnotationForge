@@ -95,8 +95,9 @@ makeOrgPackageFromNCBI(version = "0.1",
                        tax_id = "192222",
 #                       genus = "Campylobacter",
 #                       species = "jejuni",
-                       NCBIFilesDir=".")
-## This example demonstrates the limitations of using a lookup table. (fails because species ends up with white spaces inside). 
+                       NCBIFilesDir=".",
+                       databaseOnly=TRUE)
+## This example demonstrates the limitations of using a lookup table (IOW unsupported characters can end up in the package name) 
 
 ## Lets see if this will guess the genus and species here
 makeOrgPackageFromNCBI(version="0.1",
@@ -108,6 +109,7 @@ makeOrgPackageFromNCBI(version="0.1",
 #                       species="conradii",
                        NCBIFilesDir=".")
 ## And this simply fails to find a match for this species...
+## There is no helping this situation since I have not thrown out any of the available scientific names.  Users will simply have to provide a name in this case.
 
 
 
