@@ -173,9 +173,9 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
                             author,
                             outputDir = getwd(),
                             tax_id,
-                            genus,
-                            species,
-                            goTable=NA,
+                            genus=NULL,
+                            species=NULL,
+                            goTable=NULL,
                             databaseOnly=FALSE){
     ## drop any rownames on all data.frames
     data <- lapply(data, function(x){rownames(x) <- NULL; x})
@@ -224,16 +224,19 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
         stop("Selected outputDir '", outputDir,"' does not exist.")}
     if(!.isSingleString(tax_id))
         stop("'tax_id' must be a single string")
-    if(!.isSingleString(genus))
-        stop("'genus' must be a single string")
-    if(!.isSingleString(species))
-        stop("'species' must be a single string")
-    if(!.isSingleStringOrNA(goTable))
-        stop("'goTable' argument needs to be a single string or NA")
-    if(!is.na(goTable) && !(goTable %in% names(data)))
+    if(!.isSingleStringOrNull(genus))
+        stop("'genus' must be a single string or NULL")
+    if(!.isSingleStringOrNull(species))
+        stop("'species' must be a single string or NULL")
+    if(!.isSingleStringOrNull(goTable))
+        stop("'goTable' argument needs to be a single string or NULL")
+    if(!is.null(goTable) && !(goTable %in% names(data)))
         stop("When definined, 'goTable' needs to be a table name from the named data.frames passed in to '...'")
     
-    
+    ## if genus or species are null, then we should get them now.
+    if(is.null(genus)){genus <- .lookupSpeciesFromTaxId(tax_id)[['genus']] }
+    if(is.null(species)){species <- .lookupSpeciesFromTaxId(tax_id)[['species']] }  
+        
     ## generate name from the genus and species
     dbName <- .generateOrgDbName(genus,species)
     ## this becomes the file name for the DB
@@ -278,9 +281,9 @@ makeOrgPackage <- function(...,
                            author,
                            outputDir = getwd(),
                            tax_id,
-                           genus,
-                           species,
-                           goTable=NA){
+                           genus=NULL,
+                           species=NULL,
+                           goTable=NULL){
     ## get all the arguments into a list
     data <- list(...)
     .makeOrgPackage(data,

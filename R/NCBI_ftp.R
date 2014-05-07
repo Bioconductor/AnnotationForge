@@ -1107,13 +1107,18 @@ NEW_makeOrgPackageFromNCBI <- function(version,
       stop("Selected outputDir '", outputDir,"' does not exist.")}
   if(!.isSingleString(tax_id))
       stop("'tax_id' must be a single string")
-  if(!.isSingleString(genus))
-      stop("'genus' must be a single string")
-  if(!.isSingleString(species))
-      stop("'species' must be a single string")
+  if(!.isSingleStringOrNull(genus))
+      stop("'genus' must be a single string or NULL")
+  if(!.isSingleStringOrNull(species))
+      stop("'species' must be a single string or NULL")
   if(!.isSingleStringOrNull(NCBIFilesDir))
       stop("'NCBIFilesDir' argument needs to be a single string or NULL")
 
+  ## if genus or species are null, then we should get them now.
+  if(is.null(genus)){genus <- .lookupSpeciesFromTaxId(tax_id)[['genus']] }
+  if(is.null(species)){species <- .lookupSpeciesFromTaxId(tax_id)[['species']] }
+  
+  
   data <- prepareDataFromNCBI(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                               outputDir)
   
@@ -1141,7 +1146,7 @@ NEW_makeOrgPackageFromNCBI <- function(version,
                       tax_id=tax_id,
                       genus=genus,
                       species=species,
-                      goTable=NA,
+                      goTable=NULL,
                       databaseOnly=databaseOnly)
   }
 }
@@ -1156,8 +1161,8 @@ makeOrgPackageFromNCBI <- function(version,
                                    author,
                                    outputDir=getwd(),
                                    tax_id,
-                                   genus,
-                                   species,
+                                   genus=NULL,
+                                   species=NULL,
                                    NCBIFilesDir=getwd(),
                                    databaseOnly=FALSE,
                                    useDeprecatedStyle=FALSE){

@@ -20,9 +20,9 @@
                  author,
                  outputDir = ".",
                  tax_id,
-                 genus,
-                 species,
-                 goTable=NA)
+                 genus=NULL,
+                 species=NULL,
+                 goTable=NULL)
 }
 
 \arguments{
@@ -45,7 +45,7 @@
   a nice online browser for finding the one you need)}
   \item{genus}{Single string indicating the genus.}
   \item{species}{Single string indicating the species.}
-  \item{goTable}{By default, this is NA, but if one of your '...'
+  \item{goTable}{By default, this is NULL, but if one of your '...'
   data.frames has GO annotations, then this name will be the name of
   that argument.  When you specify this, \code{makeOrgPackage} will
   process that data.frame to remove extra GO terms (that are too new for
