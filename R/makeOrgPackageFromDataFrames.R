@@ -175,7 +175,7 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
                             tax_id,
                             genus=NULL,
                             species=NULL,
-                            goTable=NULL,
+                            goTable=NA,
                             databaseOnly=FALSE){
     ## drop any rownames on all data.frames
     data <- lapply(data, function(x){rownames(x) <- NULL; x})
@@ -228,9 +228,9 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
         stop("'genus' must be a single string or NULL")
     if(!.isSingleStringOrNull(species))
         stop("'species' must be a single string or NULL")
-    if(!.isSingleStringOrNull(goTable))
-        stop("'goTable' argument needs to be a single string or NULL")
-    if(!is.null(goTable) && !(goTable %in% names(data)))
+    if(!.isSingleStringOrNA(goTable))
+        stop("'goTable' argument needs to be a single string or NULL") ## only an NA internally - a NULL is what would have come in from outside...
+    if(!is.na(goTable) && !(goTable %in% names(data)))
         stop("When definined, 'goTable' needs to be a table name from the named data.frames passed in to '...'")
     
     ## if genus or species are null, then we should get them now.
@@ -284,6 +284,7 @@ makeOrgPackage <- function(...,
                            genus=NULL,
                            species=NULL,
                            goTable=NULL){
+    if(is.null(goTable)){goTable <- NA}
     ## get all the arguments into a list
     data <- list(...)
     .makeOrgPackage(data,

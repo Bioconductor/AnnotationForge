@@ -1146,7 +1146,7 @@ NEW_makeOrgPackageFromNCBI <- function(version,
                       tax_id=tax_id,
                       genus=genus,
                       species=species,
-                      goTable=NULL,
+                      goTable=NA,
                       databaseOnly=databaseOnly)
   }
 }

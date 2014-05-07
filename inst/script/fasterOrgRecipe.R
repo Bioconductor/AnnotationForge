@@ -93,21 +93,21 @@ makeOrgPackageFromNCBI(version = "0.1",
                        maintainer = "Some One <so@someplace.org>",
                        outputDir = ".",
                        tax_id = "192222",
-                       genus = "Campylobacter",
-                       species = "jejuni",
+#                       genus = "Campylobacter",
+#                       species = "jejuni",
                        NCBIFilesDir=".")
- 
+## This example demonstrates the limitations of using a lookup table. (fails because species ends up with white spaces inside). 
 
-## This works
+## Lets see if this will guess the genus and species here
 makeOrgPackageFromNCBI(version="0.1",
                        maintainer="Pengfei Liu <liupfskygre@gmail.com>",
                        author="Pengfei Liu <liupfskygre@gmail.com>",
                        outputDir=".",
                        tax_id="1041930",
-                       genus="Methanocella",
-                       species="conradii",
+#                       genus="Methanocella",
+#                       species="conradii",
                        NCBIFilesDir=".")
-
+## And this simply fails to find a match for this species...
 
 
 
