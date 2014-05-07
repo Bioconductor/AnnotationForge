@@ -874,8 +874,7 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 ## http://www.b2gfar.org/fileformat
 
 ## need a version of this that does not throw in towel if GO is missing
-.tryDL2 <- function(url, tmp){
-    times = 2 ## try this many times to DL
+.tryDL2 <- function(url, tmp, times = 2){
   for(i in 1:times){ 
     ## tryResult <- try( download.file(url, tmp, quiet=TRUE) , silent=TRUE)     
      tryResult <- try( .downloadAndSaveToTemp(url, tmp) , silent=TRUE)     
@@ -1247,13 +1246,27 @@ makeOrgPackageFromNCBI <- function(version,
 
 
 ## STEP 3:
-## This helper is for calling Blast2GO to see which of the viable taxIDs are even 
+## This helper is just for calling Blast2GO to see which of the viable
+## taxIDs are actually supported
+.testBlast2GO <- function(tax_id){
+    url = paste("http://www.b2gfar.org/_media/species:data:",
+      tax_id,".annot.zip",sep="")
+    tmp <- tempfile()
+    ##try once to DL the file.
+    .tryDL2(url,tmp, times=1)
+}
+## results <- unlist(lapply(otherIDs, AnnotationForge:::.testBlast2GO)); names(results <- otherIDs; save(results, file='viableIDs.rda')
 
 
 
 
 
 
+
+
+
+############################################################################
+## Helpers for getting genus and species from the NCBI taxonomy ID
 
 ## modified function to use our own data.
 .lookupSpeciesFromTaxId <- function(id){
