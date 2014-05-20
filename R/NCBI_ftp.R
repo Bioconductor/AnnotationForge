@@ -1263,7 +1263,7 @@ makeOrgPackageFromNCBI <- function(version,
     ##try once to DL the file.
     .tryDL2(url,tmp, times=1)
 }
-## results <- unlist(lapply(otherIDs, AnnotationForge:::.testBlast2GO)); names(results <- otherIDs; save(results, file='viableIDs.rda')
+## results <- unlist(lapply(otherIDs, AnnotationForge:::.testBlast2GO)); names(results) <- otherIDs; save(results, file='viableIDs.rda')
 
 
 
@@ -1314,7 +1314,6 @@ makeOrgPackageFromNCBI <- function(version,
 ##     message(paste0('now testing: ',taxIDs[i]))
 ##     res[[i]] <- .lookupSpeciesFromTaxId(taxIDs[i])
 ## }
-## results <- unlist(lapply(otherIDs, AnnotationForge:::.testBlast2GO)); names(results) <- otherIDs; save(results, file='viableIDs.rda')
  
 ## This indicates that I have about 1438 different organisms that I
 ## can run blast2GO for plus 38 organisms that I have NCBI GO data
