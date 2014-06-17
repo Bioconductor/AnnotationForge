@@ -1278,8 +1278,10 @@ makeOrgPackageFromNCBI <- function(version,
 
 ## modified function to use our own data.
 .lookupSpeciesFromTaxId <- function(id){
-    load(system.file('extdata','taxNames.rda',
-                     package='AnnotationForge'))
+    if(!exists('specData')){## Only load this the 1st time
+        load(system.file('extdata','taxNames.rda',
+                         package='AnnotationForge'))
+    }
     ## Then find matches
     g <- specData[,1] == id
     res <- specData[g,]
