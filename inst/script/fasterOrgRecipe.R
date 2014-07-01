@@ -194,3 +194,90 @@ makeOrgPackageFromNCBI(version = "0.1",
 
 
 
+
+
+
+
+
+
+
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+## THIS is a test to see if we can really build 1100 org Dbs objects!
+
+## Separately, I have made a list of taxIDs that I should be able to quickly process into a bunch of DBs.  I aim to test that here...
+
+## First lets just get all the viable taxIds:
+
+## These are the IDs (prescreened) for us to process
+load(system.file('extdata','viableIDs.rda', package='AnnotationForge'))
+ids <- names(results)[results]
+
+## old school table of tax Ids
+load(system.file('extdata','taxNames.rda', package='AnnotationForge'))
+sd <- specData[!is.na(specData[[3]]),]
+
+## Some taxonomy IDs cannot be looked up at all - so discard
+ids <- ids[ids %in% sd$tax_id]
+
+## AND remove this one bad one that we discovered (an overly general barley ID)
+ids <- ids[!(ids %in% '4513')]
+
+## Now ids should be OK (verified that there are species etc. before)
+
+## need to find offenders
+lookup <- function(id){
+    message(paste0("looking up value for: ", id))
+    AnnotationForge:::.lookupSpeciesFromTaxId(id)
+}
+res <- lapply(ids,lookup)
+
+
+
+## Then run all (1146) of these to make sure they all work.
+library(AnnotationForge)
+
+## constant variables
+version <- '3.0.0'
+author = "Marc Carlson"
+maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"
+NCBIFilesDir="."
+
+## mapply variables
+taxonomyId <- as.character(unlist(lapply(res, function(x){x$tax_id})))
+genus <- unlist(lapply(res, function(x){x$genus}))
+species <- unlist(lapply(res, function(x){x$species}))  
+## Some name cleanup:
+genus <- gsub(" ", "_", genus)
+genus <- gsub("/", "|", genus)
+species <- gsub(" ", "_", species)
+species <- gsub("/", "|", species)
+
+
+## Then go
+Map(makeOrgPackageFromNCBI,
+    tax_id=taxonomyId,
+    genus=genus,
+    species=species,
+     MoreArgs=list(
+       version=version,
+       author=author,
+       maintainer=maintainer,
+       NCBIFilesDir=NCBIFilesDir,
+       databaseOnly=TRUE
+       ))
+
+## Map(makeOrgPackageFromNCBI,
+##     tax_id=taxonomyId[1:2],
+##     genus=genus[1:2],
+##     species=species[1:2],
+##      MoreArgs=list(
+##        version=version,
+##        author=author,
+##        maintainer=maintainer,
+##        NCBIFilesDir=NCBIFilesDir,
+##        databaseOnly=TRUE
+##        ))
