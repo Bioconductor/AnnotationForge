@@ -801,6 +801,8 @@ OLD_makeOrgPackageFromNCBI <- function(version,
   
   ## cleanup
   file.remove(dbfile)
+  ## return handle to the DB file name
+  dbfile
 }
 
 
@@ -1152,6 +1154,8 @@ NEW_makeOrgPackageFromNCBI <- function(version,
                       goTable=NA,
                       databaseOnly=databaseOnly)
   }
+  ## return handle to the DB name
+  dbfile
 }
 
 
@@ -1170,13 +1174,16 @@ makeOrgPackageFromNCBI <- function(version,
                                    databaseOnly=FALSE,
                                    useDeprecatedStyle=FALSE){
     if(useDeprecatedStyle==TRUE){
-        OLD_makeOrgPackageFromNCBI(version,maintainer,author,outputDir,
-                                   tax_id,genus,species,NCBIFilesDir)
+        dbname <- OLD_makeOrgPackageFromNCBI(version,maintainer,author,
+                                             outputDir,tax_id,genus,
+                                             species,NCBIFilesDir)
     }else{
-        NEW_makeOrgPackageFromNCBI(version,maintainer,author,outputDir,
-                                   tax_id,genus,species,NCBIFilesDir,
-                                   databaseOnly)
+        dbname <- NEW_makeOrgPackageFromNCBI(version,maintainer,author,
+                                             outputDir,tax_id,genus,species,
+                                             NCBIFilesDir,databaseOnly)
     }
+    ## return handle to the db name
+    dbname
 }
 
 
