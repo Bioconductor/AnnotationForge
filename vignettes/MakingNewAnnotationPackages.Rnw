@@ -728,8 +728,8 @@ In order to do this you need to know a small amount of SQL and a few
 tricks for accessing the database from R.  The point of providing
 these 4 accessors is to give users of these packages a more unified
 experience when retrieving data from the database.  But other kinds of
-accessors (such as those provided for the \Rclass{TranscriptDb}
-objects) may also be warranted.
+accessors (such as those provided for the \Rclass{TxDb} objects) may
+also be warranted.
 
 \subsection{Examples: creating a \Rfunction{columns} and \Rfunction{keytypes} method}
 
