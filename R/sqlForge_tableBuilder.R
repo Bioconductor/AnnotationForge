@@ -1053,7 +1053,7 @@ appendPfam <- function(db, subStrs, printSchema){
     
   sql<- paste("    CREATE TABLE pfam (
       _id INTEGER NOT NULL,                         -- REFERENCES ", subStrs[["cntrTab"]],"
-      ipi_id CHAR(11) NOT NULL,                     -- IPI accession number
+      ipi_id CHAR(11),                     -- IPI accession number
       pfam_id CHAR(7) NULL,                         -- Pfam ID
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
@@ -1093,7 +1093,7 @@ appendProsite <- function(db, subStrs, printSchema){
     
   sql<- paste("    CREATE TABLE prosite (
       _id INTEGER NOT NULL,                         -- REFERENCES ", subStrs[["cntrTab"]],"
-      ipi_id CHAR(11) NOT NULL,                     -- IPI accession number
+      ipi_id CHAR(11),                     -- IPI accession number
       prosite_id CHAR(7) NULL,                      -- PROSITE ID
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
