@@ -61,26 +61,3 @@ makeDBPackage = function(schema, ...){
 }
 
 
-##Makes a simpleBimap for tables that are added outside of standard AnnotationForge Schemas.
-##This function requires that the bimap map from a single table in the DB.
-createSimpleBimap <- function(tablename, Lcolname, Rcolname,
-                              datacache,
-                              objName=as.character(NA),
-                              objTarget=as.character(NA))
-{
-    seed <- list(
-                 objName=objName,
-                 objTarget=objTarget,
-                 Class="AnnDbBimap",
-                 L2Rchain=list(
-                   list(
-                        tablename=tablename,
-                        Lcolname=Lcolname,
-                        Rcolname=Rcolname
-                        )
-                   ),
-                 datacache=datacache
-                 )
-    AnnotationDbi:::createAnnDbBimap(seed, list())
-}
-
