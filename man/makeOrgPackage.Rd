@@ -18,11 +18,13 @@
     version=,
     maintainer,
     author,
-    outputDir=".",
+    outputDir=getwd(),
     tax_id,
-    genus,
-    species,
-    NCBIFilesDir=NULL)
+    genus=NULL,
+    species=NULL,
+    NCBIFilesDir=getwd(),
+    databaseOnly=FALSE,
+    useDeprecatedStyle=FALSE)
 }
 
 \arguments{
@@ -39,6 +41,11 @@
   were used to make your DB, then specify a directory here.  Otherwise
   leave this NULL.  This argument is mostly useful for troubleshooting
   since many of the files are large.  Most users should ignore it.}
+  \item{databaseOnly}{Only generate a DB without a package (TRUE or FALSE)}
+  \item{useDeprecatedStyle}{For legacy support in those cases where it
+  will actually work.  Should we use the older database and package
+  style (with bimaps)? (TRUE or FALSE) Also: this can't work with
+  unsupported organisms}
 }
 
 

@@ -18,7 +18,7 @@
                  version,
                  maintainer,
                  author,
-                 outputDir = ".",
+                 outputDir=getwd(),
                  tax_id,
                  genus=NULL,
                  species=NULL,
