@@ -11,7 +11,7 @@
       _id INTEGER PRIMARY KEY,
       gene_id VARCHAR(10) NOT NULL UNIQUE           -- Entrez Gene ID
     );")
-  sqliteQuickSQL(con, sql)
+  dbGetQuery(con, sql)
 
   gene_id <- data.frame(entrez) ## TODO: data.frame() necessary???
   sql<- paste("INSERT INTO genes(gene_id) VALUES(?);")
@@ -33,7 +33,7 @@
       ",tableFieldLines,"
       FOREIGN KEY (_id) REFERENCES genes (_id)
     );") 
-    sqliteQuickSQL(con, sql)
+    dbGetQuery(con, sql)
 }
 .makeSimpleTable <- function(data, table, con, fieldNameLens=25,
                              indFields="_id"){
@@ -62,18 +62,18 @@
      WHERE g.gene_id=t.gene_id
      ORDER BY g._id;
      ", sep="") 
-    sqliteQuickSQL(con, sql)
+    dbGetQuery(con, sql)
 
     ## Add index to all fields in indFields (default is all)
     for(i in seq_len(length(indFields))){
-    sqliteQuickSQL(con,
+    dbGetQuery(con,
         paste("CREATE INDEX IF NOT EXISTS ",
               table,"_",indFields[i],"_ind ON ",table,
               " (",indFields[i],");", sep=""))      
     }
     
     ## drop the temp table
-    sqliteQuickSQL(con, "DROP TABLE temp;")
+    dbGetQuery(con, "DROP TABLE temp;")
   }
   message(paste(table,"table filled"))
 }
@@ -108,15 +108,15 @@
 ## TODO: modify this so that it no longer unwinds lists...
 ## used to make the 6 custom GO tables
 .makeGOTablesFromNCBI <- function(con){
-  bp <- .filterGOFrame(sqliteQuickSQL(con,
+  bp <- .filterGOFrame(dbGetQuery(con,
            paste("SELECT distinct gene_id, go_id, evidence FROM gene2go",
                  "WHERE category = 'Process'")))
 
-  mf <- .filterGOFrame(sqliteQuickSQL(con,
+  mf <- .filterGOFrame(dbGetQuery(con,
            paste("SELECT distinct gene_id, go_id, evidence FROM gene2go",
                  "WHERE category = 'Function'")))
     
-  cc <- .filterGOFrame(sqliteQuickSQL(con,
+  cc <- .filterGOFrame(dbGetQuery(con,
            paste("SELECT distinct gene_id, go_id, evidence FROM gene2go",
                  "WHERE category = 'Component'"))) 
 
@@ -195,7 +195,7 @@
     ## create INDEX on tax_id
     sql <- paste0("CREATE INDEX IF NOT EXISTS ",tableName,"_taxId ON ",
                   tableName, " (tax_id);")
-    sqliteQuickSQL(NCBIcon, sql)
+    dbGetQuery(NCBIcon, sql)
 }
 
 
@@ -227,7 +227,7 @@
 
 .getNCBIDateStamp <- function(NCBIcon, tableName){
     tblNm <- paste0(tableName,'_date')
-    sqliteQuickSQL(NCBIcon, paste0("SELECT date from ",tblNm))$date
+    dbGetQuery(NCBIcon, paste0("SELECT date from ",tblNm))$date
 }
 
 .isNCBICurrentWith <- function(NCBIcon, tableName){
@@ -268,7 +268,7 @@
   if("tax_id" %in% unlist(file)){ ## when there is a tax_id need to subset
       sql <- paste0("SELECT * FROM ", tableName, " WHERE ",
                     tableName, ".tax_id = '", tax_id, "'")
-      vals <- sqliteQuickSQL(NCBIcon, sql)
+      vals <- dbGetQuery(NCBIcon, sql)
       ## if things are empty: make sure we have correct number of cols
       if(dim(vals)[1] == 0){## if after select there are no records here
           vals <- data.frame(t(1:length(unlist(file))),
@@ -279,7 +279,7 @@
   }else{ ## Just get the whole record
       message(paste0("getting all data for our organism from : " ,tableName))
       sql <- paste0("SELECT * FROM ", tableName)
-      vals <- sqliteQuickSQL(NCBIcon, sql)
+      vals <- dbGetQuery(NCBIcon, sql)
   }
   ## remove row_names col 
   vals[,!(colnames(vals) %in% 'row_names')]
@@ -299,20 +299,20 @@
 ## Convenience function for quickly making indices
 .makeIndex <- function(con,table, field){
   indName <-paste("ind",table,field,sep="_")
-  sqliteQuickSQL(con,
+  dbGetQuery(con,
    paste("CREATE INDEX IF NOT EXISTS",indName,"ON",table,"(",field,")"))
 }
 
 ## metadata stuff
 .createMetadataTables <- function(con){
-  sqliteQuickSQL(con, paste("CREATE TABLE IF NOT EXISTS metadata (name",
+  dbGetQuery(con, paste("CREATE TABLE IF NOT EXISTS metadata (name",
                             "VARCHAR(80) PRIMARY KEY,value VARCHAR(255))"))  
-  sqliteQuickSQL(con, paste("CREATE TABLE IF NOT EXISTS map_metadata ",
+  dbGetQuery(con, paste("CREATE TABLE IF NOT EXISTS map_metadata ",
                             "(map_name VARCHAR(80) NOT NULL,",
                             "source_name VARCHAR(80) NOT NULL,",
                             "source_url VARCHAR(255) NOT NULL,",
                             "source_date VARCHAR(20) NOT NULL)"))
-  sqliteQuickSQL(con, paste("CREATE TABLE IF NOT EXISTS map_counts ",
+  dbGetQuery(con, paste("CREATE TABLE IF NOT EXISTS map_counts ",
                             "(map_name VARCHAR(80) PRIMARY KEY,",
                             "count INTEGER NOT NULL)"))    
 }
@@ -359,10 +359,10 @@
 
   ##clean up unwanted data
   ## if we used blast2GO, then we need to drop classic GO
-  goSrcs <- sqliteQuickSQL(con,
+  goSrcs <- dbGetQuery(con,
              "SELECT source_name FROM map_metadata WHERE map_name='GO2EG'")
   if("Gene Ontology" %in% goSrcs & "blast2GO" %in% goSrcs){
-    sqliteQuickSQL(con,paste("DELETE FROM map_metadata where map_name",
+    dbGetQuery(con,paste("DELETE FROM map_metadata where map_name",
                              "='GO2EG' AND source_name='Gene Ontology'"))
   }
 }
@@ -383,19 +383,19 @@
   RSVals <- vals[grep("refseq",vals[,4]),c(2,3)]
   GBVals <- vals[grep("genbank",vals[,4]),c(2,6)]
   colnames(GBVals) <- colnames(RSVals) <- c("go_id","accession")
-  tables <- sqliteQuickSQL(con,"SELECT * FROM sqlite_master")$name
+  tables <- dbGetQuery(con,"SELECT * FROM sqlite_master")$name
 
   if(!any(c("gene2refseq","gene2accession") %in% tables)){
     stop("It is impossible to match up blasted GO terms with NCBI accessions.")
   }else{
       if("gene2refseq" %in% tables){
-          g2rs <- sqliteQuickSQL(con,
+          g2rs <- dbGetQuery(con,
                                  "SELECT gene_id, protein_accession FROM gene2refseq")
           g2rs[,2] <- sub("\\.\\d+$","",g2rs[,2])
           vals <- merge(RSVals,g2rs, by.x="accession" , by.y="protein_accession")
       }
       if("gene2accession" %in% tables){
-          g2ac <- sqliteQuickSQL(con,
+          g2ac <- dbGetQuery(con,
                                  "SELECT gene_id, protein_accession FROM gene2accession")
           gb <- merge(GBVals,g2ac, by.x="accession" , by.y="protein_accession")
           if("gene2refseq" %in% tables){
@@ -517,7 +517,7 @@
   if(is.null(table)) stop("Unable to infer a table name.")
   cols <- .generateCols(file)
   sql<- paste("CREATE TABLE IF NOT EXISTS ",table," (",cols,");")
-  sqliteQuickSQL(con, sql)
+  dbGetQuery(con, sql)
   
   message(paste("Populating ",table," table:", sep=""))
   sql <- .generateTempTableINSERTStatement(file)
@@ -549,7 +549,7 @@
   fileNames <- sub(".gz", "", fileNames)
   message(paste("dropping table",fileNames))
   for(i in seq_len(length(fileNames))){
-    sqliteQuickSQL(con, paste("DROP TABLE IF EXISTS",fileNames[i]))
+    dbGetQuery(con, paste("DROP TABLE IF EXISTS",fileNames[i]))
   }
 }
 
@@ -571,7 +571,7 @@
               " AS t, genes as g WHERE t._id=g._id AND t.",field,
               " NOT NULL", sep="")
   message(sql)
-  sqliteQuickSQL(con,sql)
+  dbGetQuery(con,sql)
 }
 
 ## when we want to know how many of something there is (reverse mapping?)
@@ -580,7 +580,7 @@
               " AS t, genes as g WHERE t._id=g._id AND t.",field,
               " NOT NULL", sep="")
   message(sql)
-  sqliteQuickSQL(con,sql)
+  dbGetQuery(con,sql)
 }
 
 
@@ -601,7 +601,7 @@
              .computeSimpleMapCounts(con, "accessions", "accession"),
              #GO ones 
              .computeSimpleEGMapCounts(con, "alias", "alias_symbol"),
-             sqliteQuickSQL(con,"SELECT count(DISTINCT gene_id) FROM genes")
+             dbGetQuery(con,"SELECT count(DISTINCT gene_id) FROM genes")
              )
   data = data.frame(map_name,count,stringsAsFactors=FALSE)
   sql <- "INSERT INTO map_counts (map_name,count) VALUES(?,?)"
@@ -661,12 +661,12 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir,
   .addMapMetadata(con, tax_id, genus, species)
  
   ## Make the central table
-  egs <- sqliteQuickSQL(con, "SELECT distinct gene_id FROM gene_info")[,1]
+  egs <- dbGetQuery(con, "SELECT distinct gene_id FROM gene_info")[,1]
   .makeCentralTable(egs, con)
   
   ## Make the other tables:
   ## gene_info
-  symbs <- sqliteQuickSQL(con,
+  symbs <- dbGetQuery(con,
     "SELECT distinct gene_id, description, symbol FROM gene_info")
   colnames(symbs) <- c("gene_id", "gene_name", "symbol")
   ## constraint requires that we always have BOTH a symbol and a name.
@@ -678,7 +678,7 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir,
   .makeSimpleTable(symbs, table="gene_info_temp", con, fieldNameLens=c(255,80))
   
   ## alias ## requires sub-parsing.
-  alias <- sqliteQuickSQL(con,
+  alias <- dbGetQuery(con,
     "SELECT distinct gene_id, synonyms FROM gene_info")
   aliases <- sapply(alias[,2], strsplit, "\\|")
   numAlias <- sapply(aliases, length)
@@ -687,31 +687,31 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir,
   .makeSimpleTable(alias, table="alias", con)
   
   ## chr
-  chrs <- sqliteQuickSQL(con,
+  chrs <- dbGetQuery(con,
     "SELECT distinct gene_id, chromosome FROM gene_info")
     .makeSimpleTable(chrs, table="chromosomes", con)
   
   
   ## pubmed
-  pm <- sqliteQuickSQL(con,
+  pm <- dbGetQuery(con,
     "SELECT distinct gene_id, pubmed_id FROM gene2pubmed")
     .makeSimpleTable(pm, table="pubmed", con)
   
   ## refseq ## requires sub-parsing.
-  rs <- sqliteQuickSQL(con,
+  rs <- dbGetQuery(con,
     "SELECT distinct gene_id,rna_accession,protein_accession FROM gene2refseq")
   rs <- .mergeAndCleanAccession(rs)
   .makeSimpleTable(rs, table="refseq", con)
   
   ## accessions
-  ac <- sqliteQuickSQL(con,
+  ac <- dbGetQuery(con,
      paste("SELECT distinct gene_id,rna_accession,protein_accession",
            "FROM gene2accession"))
   ac <- .mergeAndCleanAccession(ac)
   .makeSimpleTable(ac, table="accessions", con)
   
   ## unigene 
-  ug <- sqliteQuickSQL(con,
+  ug <- dbGetQuery(con,
     "SELECT distinct g.gene_id, u.unigene_id FROM gene2unigene as u,
      gene_info as g WHERE u.gene_id=g.gene_id")
   .makeSimpleTable(ug, table="unigene", con) 
@@ -722,7 +722,7 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir,
   ## Drop all the older tables (which will include the original "gene_info").
   .dropOldTables(con,names(files))  
   ## Rename "gene_info_temp" to be just "gene_info":
-  sqliteQuickSQL(con,"ALTER TABLE gene_info_temp RENAME TO gene_info")
+  dbGetQuery(con,"ALTER TABLE gene_info_temp RENAME TO gene_info")
   ## add GO views to the DB
   makeGOViews(con)
 
@@ -948,11 +948,11 @@ OLD_makeOrgPackageFromNCBI <- function(version,
     unique(as.character(t(df)))
 }
 .getAllEnrezGeneIdsFromNCBI <- function(tax_id, NCBIcon){
-    id1 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene_info')))
-    id2 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2refseq')))
-    id3 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2go')))
-    id4 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2pubmed')))
-    id5 <- .asV(sqliteQuickSQL(NCBIcon, .mkGIdQ(tax_id, 'gene2accession')))
+    id1 <- .asV(dbGetQuery(NCBIcon, .mkGIdQ(tax_id, 'gene_info')))
+    id2 <- .asV(dbGetQuery(NCBIcon, .mkGIdQ(tax_id, 'gene2refseq')))
+    id3 <- .asV(dbGetQuery(NCBIcon, .mkGIdQ(tax_id, 'gene2go')))
+    id4 <- .asV(dbGetQuery(NCBIcon, .mkGIdQ(tax_id, 'gene2pubmed')))
+    id5 <- .asV(dbGetQuery(NCBIcon, .mkGIdQ(tax_id, 'gene2accession')))
     unique(c(id1,id2,id3,id4,id5))
 }
 
@@ -1003,7 +1003,7 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     ## and add it to symbols from the same.
     aliasSQL <- paste0("SELECT distinct gene_id, synonyms FROM gene_info ",
                        "WHERE tax_id ='",tax_id,"'")
-    alias <- sqliteQuickSQL(NCBIcon,aliasSQL)
+    alias <- dbGetQuery(NCBIcon,aliasSQL)
     aliases <- sapply(alias[,2], strsplit, "\\|")
     numAlias <- sapply(aliases, length)
     allGenes <- rep(alias[,1], numAlias)
@@ -1202,13 +1202,13 @@ makeOrgPackageFromNCBI <- function(version,
 
 ## Exploration of gene data avail for species:
 ## See how many species are in gene_info and gene2go (and what their sizes are)
-## library(AnnotationForge); NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite"); taxes = sqliteQuickSQL(NCBIcon, 'SELECT tax_id from gene_info')
+## library(AnnotationForge); NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite"); taxes = dbGetQuery(NCBIcon, 'SELECT tax_id from gene_info')
  ## t = as.character(taxes[[1]]); tf <- as.factor(t); tab = table(tf)
 ## head(sort(tab))
 ## plot(sort(tab))
 
 ## try for GO data
-## gos = sqliteQuickSQL(NCBIcon, 'SELECT tax_id from gene2go'); g = as.character(gos[[1]]); gf <- as.factor(g); tabg = table(gf)
+## gos = dbGetQuery(NCBIcon, 'SELECT tax_id from gene2go'); g = as.character(gos[[1]]); gf <- as.factor(g); tabg = table(gf)
 
 
 ## CONCLUSIONS:
@@ -1232,7 +1232,7 @@ makeOrgPackageFromNCBI <- function(version,
     NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
     .makeBaseDBFromDLs(files, "192222", NCBIcon, getwd())
     ## now get the list of taxIDs that we know are supported
-    sqliteQuickSQL(NCBIcon, "SELECT DISTINCT tax_id FROM gene2go;")[[1]]
+    dbGetQuery(NCBIcon, "SELECT DISTINCT tax_id FROM gene2go;")[[1]]
 }
 ## taxIDs = AnnotationForge:::.getCoreTaxIds()
 
@@ -1251,7 +1251,7 @@ makeOrgPackageFromNCBI <- function(version,
     ## now get the list of taxIDs that we know are supported
     sql <- paste0('SELECT DISTINCT tax_id FROM gene2accession UNION ',
                   'SELECT DISTINCT tax_id FROM gene2refseq')
-    viableTaxIds <- unique(sqliteQuickSQL(NCBIcon, sql)[[1]])
+    viableTaxIds <- unique(dbGetQuery(NCBIcon, sql)[[1]])
     ## Then drop the core Tax IDs since I won't need to get those again.
     coretaxIDs <- .getCoreTaxIds()
     ## So we only want these ones:

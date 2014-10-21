@@ -302,7 +302,7 @@ setGeneric("makeAnnDbPkg", signature="x",
 ## helper to extract metadata
 .getOrgDepFromMetadata <- function(dbfile){
     con <- dbConnect(SQLite(), dbfile)
-    sqliteQuickSQL(con, "SELECT value FROM metadata WHERE name = 'ORGPKGDEP'")
+    dbGetQuery(con, "SELECT value FROM metadata WHERE name = 'ORGPKGDEP'")
 }
 
 .makeAnnDbPkg <- function(x, dbfile, dest_dir=".", no.man=FALSE, ...){

@@ -8,25 +8,25 @@ message(cat("Prepending Metadata"))
       value VARCHAR(255))
     ;")
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""))}
-  sqliteQuickSQL(db, sql) ##This table was set up in the previous step (was always set up before this) ==> NO apparently it was NOT!
+  dbGetQuery(db, sql) ##This table was set up in the previous step (was always set up before this) ==> NO apparently it was NOT!
  # TODO: move this printschema statement to the makeBaseMaps section.
 
   ##This is where the version number for the schema is inserted.
   sql<- paste("
     INSERT INTO metadata VALUES('DBSCHEMAVERSION', '2.1');
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   ##This is where the Db type and package are set up
   sql<- paste("
     INSERT INTO metadata VALUES('Db type', '",subStrs[["Db_type"]],"');
      ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   ##This is where the version number for the schema is inserted.
   sql<- paste("
     INSERT INTO metadata VALUES('Supporting package', 'AnnotationDbi');
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 
 
@@ -36,7 +36,7 @@ message(cat("Prepending Metadata"))
     #message(cat("Using metaDataSrc.sqlite for Metadata \n"))
       
     sql <- paste("ATTACH DATABASE '",metaDataSrc,"' AS meta;",sep="")
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
       
     sql<- paste("
       INSERT INTO metadata
@@ -45,7 +45,7 @@ message(cat("Prepending Metadata"))
        WHERE package_name IN
           (SELECT value FROM metadata WHERE name='PKGNAME');
        ") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
 
     sql<- paste("
       INSERT INTO metadata
@@ -54,7 +54,7 @@ message(cat("Prepending Metadata"))
        WHERE package_name IN
           (SELECT value FROM metadata WHERE name='PKGNAME');
        ") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
   
     sql<- paste("
       INSERT INTO metadata
@@ -63,7 +63,7 @@ message(cat("Prepending Metadata"))
        WHERE package_name IN
           (SELECT value FROM metadata WHERE name='PKGNAME');
        ") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
 
     #these entries are only relevant for chip based packages
     if(subStrs[["coreTab"]]=="probes"){
@@ -74,7 +74,7 @@ message(cat("Prepending Metadata"))
          WHERE package_name IN
             (SELECT value FROM metadata WHERE name='PKGNAME');
          ") 
-      sqliteQuickSQL(db, sql)
+      dbGetQuery(db, sql)
 
       sql<- paste("
         INSERT INTO metadata
@@ -83,7 +83,7 @@ message(cat("Prepending Metadata"))
          WHERE package_name IN
             (SELECT value FROM metadata WHERE name='PKGNAME');
          ") 
-      sqliteQuickSQL(db, sql)
+      dbGetQuery(db, sql)
 
       sql<- paste("
         INSERT INTO metadata
@@ -92,47 +92,47 @@ message(cat("Prepending Metadata"))
          WHERE package_name IN
           (SELECT value FROM metadata WHERE name='PKGNAME');
          ") 
-      sqliteQuickSQL(db, sql)
+      dbGetQuery(db, sql)
     }
     
     sql<- paste("
       DETACH DATABASE meta;
        ")
       
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
   }
   else{  #user is using a named vector:
     #message(cat("Using named Vector for Metadata \n"))
     sql<- paste("
       INSERT INTO metadata VALUES('DBSCHEMA', '",metaDataSrc["DBSCHEMA"],"');
        ", sep="") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
     sql<- paste("
       INSERT INTO metadata VALUES('ORGANISM', '",metaDataSrc["ORGANISM"],"');
        ", sep="") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
     sql<- paste("
       INSERT INTO metadata VALUES('SPECIES', '",metaDataSrc["SPECIES"],"');
        ", sep="") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
     sql<- paste("
       INSERT INTO metadata VALUES('MANUFACTURER', '",metaDataSrc["MANUFACTURER"],"');
        ", sep="") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
     sql<- paste("
       INSERT INTO metadata VALUES('CHIPNAME', '",metaDataSrc["CHIPNAME"],"');
        ", sep="") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
     sql<- paste("
       INSERT INTO metadata VALUES('MANUFACTURERURL', '",metaDataSrc["MANUFACTURERURL"],"');
        ", sep="") 
-    sqliteQuickSQL(db, sql)    
+    dbGetQuery(db, sql)    
   }
     
   sql<- paste("
     DELETE FROM metadata WHERE name='PKGNAME';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 
   sql<- paste("    CREATE TABLE IF NOT EXISTS map_metadata (
@@ -142,14 +142,14 @@ message(cat("Prepending Metadata"))
       source_date VARCHAR(20) NOT NULL
     );")
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE TABLE IF NOT EXISTS map_counts (
       map_name VARCHAR(80) PRIMARY KEY,
       count INTEGER NOT NULL
     );")
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
 }
 
@@ -167,7 +167,7 @@ appendGenes <- function(db, subStrs, printSchema){
       gene_id VARCHAR(10) NOT NULL UNIQUE           -- Entrez Gene ID
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO genes
@@ -175,7 +175,7 @@ appendGenes <- function(db, subStrs, printSchema){
      FROM probe_map as p CROSS JOIN anno.genes as a
      WHERE p.gene_id=a.gene_id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   
   sql<- paste("
@@ -184,10 +184,10 @@ appendGenes <- function(db, subStrs, printSchema){
      FROM probe_map
      WHERE gene_id NOT IN (SELECT gene_id FROM genes);
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 
-  ##sqliteQuickSQL(db, "ANALYZE;")
+  ##dbGetQuery(db, "ANALYZE;")
 
   #Get only map_metadata for this table at this time:
   sql<- paste("
@@ -195,7 +195,7 @@ appendGenes <- function(db, subStrs, printSchema){
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ENTREZID';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
 }
 
@@ -214,7 +214,7 @@ appendProbes <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );")
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO probes
@@ -223,11 +223,11 @@ appendProbes <- function(db, subStrs, printSchema){
      ON p.gene_id=g.gene_id
      ORDER BY probe_id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fprobes ON probes (_id);") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 
   sql<- paste("
@@ -235,7 +235,7 @@ appendProbes <- function(db, subStrs, printSchema){
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ACCNUM';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sqlCount<- paste("
     SELECT 'ACCNUM', count(DISTINCT probe_id)
@@ -244,11 +244,11 @@ appendProbes <- function(db, subStrs, printSchema){
     ")   
   
   sql<- paste("INSERT INTO map_counts",sqlCount)
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
 ##   count = makeMapCounts(db, "ACCNUM","probe_id","probes","","WHERE accession NOT NULL")
 
-  count = as.integer(sqliteQuickSQL(db,sqlCount)[2])
+  count = as.integer(dbGetQuery(db,sqlCount)[2])
   message(cat("Found",count,"Probe Accessions"))
 }
 
@@ -265,7 +265,7 @@ appendAccessions <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO accessions
@@ -273,11 +273,11 @@ appendAccessions <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g CROSS JOIN anno.accessions as a
      WHERE g._id=a._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Faccessions ON accessions (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   #map_metadata
   sql<- paste("
@@ -285,7 +285,7 @@ appendAccessions <- function(db, subStrs, printSchema){
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ACCNUM';
     ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   #map_counts
 
@@ -296,7 +296,7 @@ appendAccessions <- function(db, subStrs, printSchema){
      FROM accessions AS a INNER JOIN ", subStrs[["cntrTab"]]," AS g
      WHERE a._id=g._id;
     ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 
   sqlCount<- paste("
@@ -306,9 +306,9 @@ appendAccessions <- function(db, subStrs, printSchema){
     ")
   
   sql<- paste("INSERT INTO map_counts",sqlCount)
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
-  count = as.integer(sqliteQuickSQL(db,sqlCount)[2])
+  count = as.integer(dbGetQuery(db,sqlCount)[2])
   
 ##   count = makeMapCounts(db, "ACCNUM","accession","accessions AS a",paste(subStrs[["cntrTab"]],"AS g"),"WHERE g._id=a._id")
 ##   makeMapCounts(db, "ACCNUM2EG","gene_id",paste(subStrs[["cntrTab"]],"AS g"),"accessions AS a","WHERE g._id=a._id")
@@ -329,7 +329,7 @@ appendGeneInfo <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO gene_info
@@ -338,7 +338,7 @@ appendGeneInfo <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 
   sql<- paste("
@@ -346,14 +346,14 @@ appendGeneInfo <- function(db, subStrs, printSchema){
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'GENENAME';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'SYMBOL';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
 
   if(subStrs[["coreTab"]]=="genes"){
@@ -379,7 +379,7 @@ appendChromosomes <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO chromosomes
@@ -388,18 +388,18 @@ appendChromosomes <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fchromosomes ON chromosomes (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'CHR';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "CHR",subStrs[["coreID"]],subStrs[["coreTab"]],"chromosomes",paste("WHERE ", subStrs[["coreTab"]],"._id=chromosomes._id",sep=""))
 }
@@ -417,7 +417,7 @@ appendCytogenicLocs <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO cytogenetic_locations
@@ -426,18 +426,18 @@ appendCytogenicLocs <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fcytogenetic_locations ON cytogenetic_locations (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'MAP';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "MAP",subStrs[["coreID"]],subStrs[["coreTab"]],"cytogenetic_locations",paste("WHERE ",subStrs[["coreTab"]],"._id=cytogenetic_locations._id",sep=""))
   if(subStrs[["coreTab"]]=="genes"){
@@ -458,7 +458,7 @@ appendOmim <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO omim
@@ -467,18 +467,18 @@ appendOmim <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fomim ON omim (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'OMIM';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "OMIM",subStrs[["coreID"]],subStrs[["coreTab"]],"omim",paste("WHERE ",subStrs[["coreTab"]],"._id=omim._id",sep=""))
   if(subStrs[["coreTab"]]=="genes"){
@@ -499,7 +499,7 @@ appendRefseq <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO refseq
@@ -508,18 +508,18 @@ appendRefseq <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Frefseq ON refseq (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'REFSEQ';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "REFSEQ",subStrs[["coreID"]],subStrs[["coreTab"]],"refseq",paste("WHERE ",subStrs[["coreTab"]],"._id=refseq._id",sep=""))
   if(subStrs[["coreTab"]]=="genes"){    
@@ -539,7 +539,7 @@ appendPubmed <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO pubmed
@@ -548,18 +548,18 @@ appendPubmed <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fpubmed ON pubmed (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'PMID';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
@@ -567,7 +567,7 @@ appendPubmed <- function(db, subStrs, printSchema){
      FROM anno.map_metadata
      WHERE map_name = 'PMID2GENE';
      ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "PMID",subStrs[["coreID"]],subStrs[["coreTab"]],"pubmed",paste("WHERE ",subStrs[["coreTab"]],"._id=pubmed._id",sep=""))
   makeMapCounts(db, paste("PMID2",subStrs[["suffix"]],sep=""),"pubmed_id","pubmed as p", paste(subStrs[["coreTab"]],"AS g"),"WHERE p._id=g._id")
@@ -586,7 +586,7 @@ appendUnigene <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO unigene
@@ -595,18 +595,18 @@ appendUnigene <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Funigene ON unigene (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'UNIGENE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "UNIGENE",subStrs[["coreID"]],subStrs[["coreTab"]],"unigene",paste("WHERE ",subStrs[["coreTab"]],"._id=unigene._id",sep=""))
   if(subStrs[["coreTab"]]=="genes"){  
@@ -626,20 +626,20 @@ message(cat("Appending ChrLengths"))
       length INTEGER NOT NULL
     );") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO chrlengths
      SELECT chromosome, length FROM anno.chrlengths;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'CHRLENGTHS';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "CHRLENGTHS","*","chrlengths")
 
@@ -662,7 +662,7 @@ appendGO <- function(db,subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO go_bp
@@ -671,15 +671,15 @@ appendGO <- function(db,subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_bp ON go_bp (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_bp_go_id ON go_bp (go_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   
   sql<- paste("    CREATE TABLE go_mf (
@@ -689,7 +689,7 @@ appendGO <- function(db,subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO go_mf
@@ -698,15 +698,15 @@ appendGO <- function(db,subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
     ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_mf ON go_mf (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_mf_go_id ON go_mf (go_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   
   sql<- paste("    CREATE TABLE go_cc (
@@ -716,7 +716,7 @@ appendGO <- function(db,subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO go_cc
@@ -725,15 +725,15 @@ appendGO <- function(db,subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
     ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_cc ON go_cc (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_cc_go_id ON go_cc (go_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 
   sql<- paste("
@@ -741,20 +741,20 @@ appendGO <- function(db,subStrs, printSchema){
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'GO';
     ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'GO2GENE';
     ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='GO2",subStrs[["suffix"]],"' WHERE map_name='GO2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 
   makeMapCounts(db, "GO",subStrs[["coreID"]],subStrs[["coreTab"]],"","WHERE _id IN (SELECT _id FROM go_bp UNION SELECT _id FROM go_mf UNION SELECT _id FROM go_cc)")
@@ -792,7 +792,7 @@ appendGOALL <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO go_bp_all
@@ -801,15 +801,15 @@ appendGOALL <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_bp_all ON go_bp_all (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_bp_all_go_id ON go_bp_all (go_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   
   sql<- paste("    CREATE TABLE go_mf_all (
@@ -819,7 +819,7 @@ appendGOALL <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO go_mf_all
@@ -828,15 +828,15 @@ appendGOALL <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_mf_all ON go_mf_all (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_mf_all_go_id ON go_mf_all (go_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   
   sql<- paste("    CREATE TABLE go_cc_all (
@@ -846,7 +846,7 @@ appendGOALL <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO go_cc_all
@@ -855,28 +855,28 @@ appendGOALL <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_cc_all ON go_cc_all (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgo_cc_all_go_id ON go_cc_all (go_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'GO2ALLGENES';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='GO2ALL",subStrs[["suffix"]],"S' WHERE map_name='GO2ALLGENES';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   
   if(subStrs[["coreID"]]=="systematic_name" && subStrs[["org"]]=="yeast" ){
@@ -905,7 +905,7 @@ appendKEGG <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO kegg
@@ -914,31 +914,31 @@ appendKEGG <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fkegg ON kegg (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'PATH';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'PATH2GENE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='PATH2",subStrs[["suffix"]],"' WHERE map_name='PATH2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "PATH",subStrs[["coreID"]],subStrs[["coreTab"]],"kegg",paste("WHERE ",subStrs[["coreTab"]],"._id=kegg._id",sep=""))
   makeMapCounts(db, paste("PATH2",subStrs[["suffix"]],sep=""),"path_id","kegg as k", paste(subStrs[["coreTab"]],"AS g"),"WHERE k._id=g._id")
@@ -957,7 +957,7 @@ appendEC <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ec
@@ -966,31 +966,31 @@ appendEC <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fec ON ec (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ENZYME';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ENZYME2GENE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='ENZYME2",subStrs[["suffix"]],"' WHERE map_name='ENZYME2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "ENZYME",subStrs[["coreID"]],subStrs[["coreTab"]],"ec",paste("WHERE ",subStrs[["coreTab"]],"._id=ec._id",sep=""))
   makeMapCounts(db, paste("ENZYME2",subStrs[["suffix"]],sep=""),"ec_number","ec as e", paste(subStrs[["coreTab"]],"AS g"),"WHERE e._id=g._id")
@@ -1011,7 +1011,7 @@ appendChromsomeLocs <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO chromosome_locations
@@ -1020,25 +1020,25 @@ appendChromsomeLocs <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fchromosome_locations ON chromosome_locations (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'CHRLOC';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'CHRLOCEND';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "CHRLOC",subStrs[["coreID"]],subStrs[["coreTab"]],"chromosome_locations",paste("WHERE ",subStrs[["coreTab"]],"._id=chromosome_locations._id",sep=""))
   makeMapCounts(db, "CHRLOCEND",subStrs[["coreID"]],subStrs[["coreTab"]],"chromosome_locations",paste("WHERE ",subStrs[["coreTab"]],"._id=chromosome_locations._id",sep=""))
@@ -1058,7 +1058,7 @@ appendPfam <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO pfam
@@ -1067,18 +1067,18 @@ appendPfam <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fpfam ON pfam (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'PFAM';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "PFAM",subStrs[["coreID"]],subStrs[["coreTab"]],"pfam",paste("WHERE ",subStrs[["coreTab"]],"._id=pfam._id",sep=""))
   
@@ -1098,7 +1098,7 @@ appendProsite <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO prosite
@@ -1107,18 +1107,18 @@ appendProsite <- function(db, subStrs, printSchema){
      WHERE g._id=i._id
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fprosite ON prosite (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'PROSITE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "PROSITE",subStrs[["coreID"]],subStrs[["coreTab"]],"prosite",paste("WHERE ",subStrs[["coreTab"]],"._id=prosite._id",sep=""))
   
@@ -1138,7 +1138,7 @@ appendAlias <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO alias
@@ -1146,24 +1146,24 @@ appendAlias <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.gene_synonyms as a
      WHERE g._id=a._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Falias ON alias (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ALIAS2GENE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='ALIAS2",subStrs[["suffix"]],"' WHERE map_name='ALIAS2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, paste("ALIAS2",subStrs[["suffix"]],sep=""),"alias_symbol","alias AS a", paste(subStrs[["coreTab"]],"AS g"),"WHERE a._id=g._id")
   
@@ -1183,7 +1183,7 @@ appendEnsembl <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ensembl
@@ -1191,31 +1191,31 @@ appendEnsembl <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.ensembl as e
      WHERE g._id=e._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fensembl ON ensembl (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ENSEMBL';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ENSEMBL2GENE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='ENSEMBL2",subStrs[["suffix"]],"' WHERE map_name='ENSEMBL2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "ENSEMBL",subStrs[["coreID"]],subStrs[["coreTab"]],"ensembl",paste("WHERE ",subStrs[["coreTab"]],"._id=ensembl._id",sep=""))
   makeMapCounts(db, paste("ENSEMBL2",subStrs[["suffix"]],sep=""),"ensembl_id","ensembl AS e", paste(subStrs[["coreTab"]],"AS g"),"WHERE e._id=g._id")
@@ -1233,7 +1233,7 @@ appendEnsembl2NCBI <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ensembl2ncbi
@@ -1241,11 +1241,11 @@ appendEnsembl2NCBI <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.ensembl2ncbi as e
      WHERE g._id=e._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fensembl2ncbi ON ensembl2ncbi (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
 }
 
@@ -1258,7 +1258,7 @@ appendNCBI2Ensembl <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ncbi2ensembl
@@ -1266,11 +1266,11 @@ appendNCBI2Ensembl <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.ncbi2ensembl as e
      WHERE g._id=e._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fncbi2ensembl ON ncbi2ensembl (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
 }
 
@@ -1287,7 +1287,7 @@ appendEnsemblProt <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ensembl_prot
@@ -1295,11 +1295,11 @@ appendEnsemblProt <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.ensembl_prot as a
      WHERE g._id=a._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fensemblp ON ensembl_prot (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   
   sql<- paste("
@@ -1310,7 +1310,7 @@ appendEnsemblProt <- function(db, subStrs, printSchema){
            m2.name='ENSOURCEURL' AND
            m3.name='ENSOURCEDATE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
@@ -1318,13 +1318,13 @@ appendEnsemblProt <- function(db, subStrs, printSchema){
      FROM map_metadata
      WHERE map_name='ENSEMBLPROT';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='ENSEMBLPROT2",subStrs[["suffix"]],"' WHERE map_name='ENSEMBLPROT2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "ENSEMBLPROT","e._id",paste(subStrs[["cntrTab"]]," AS g",sep=""),"ensembl_prot as e","WHERE g._id=e._id")
   makeMapCounts(db, paste("ENSEMBLPROT2",subStrs[["suffix"]],sep=""),"prot_id","ensembl_prot AS e", paste(subStrs[["cntrTab"]],"AS g"),"WHERE e._id=g._id")
@@ -1344,7 +1344,7 @@ appendEnsemblTrans <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ensembl_trans
@@ -1352,11 +1352,11 @@ appendEnsemblTrans <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.ensembl_trans as a
      WHERE g._id=a._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fensemblt ON ensembl_trans (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   
   sql<- paste("
@@ -1367,7 +1367,7 @@ appendEnsemblTrans <- function(db, subStrs, printSchema){
            m2.name='ENSOURCEURL' AND
            m3.name='ENSOURCEDATE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
@@ -1375,13 +1375,13 @@ appendEnsemblTrans <- function(db, subStrs, printSchema){
      FROM map_metadata
      WHERE map_name='ENSEMBLTRANS';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='ENSEMBLTRANS2",subStrs[["suffix"]],"' WHERE map_name='ENSEMBLTRANS2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "ENSEMBLTRANS","e._id",paste(subStrs[["cntrTab"]]," AS g",sep=""),"ensembl_trans as e","WHERE g._id=e._id")
   makeMapCounts(db, paste("ENSEMBLTRANS2",subStrs[["suffix"]],sep=""),"trans_id","ensembl_trans AS e", paste(subStrs[["cntrTab"]],"AS g"),"WHERE e._id=g._id")
@@ -1401,7 +1401,7 @@ appendMGI <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO mgi
@@ -1409,31 +1409,31 @@ appendMGI <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.mgi as e
      WHERE g._id=e._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fmgi ON mgi (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'MGI';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'MGI2GENE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='MGI2",subStrs[["suffix"]],"' WHERE map_name='MGI2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "MGI",subStrs[["coreID"]],subStrs[["coreTab"]],"mgi",paste("WHERE ",subStrs[["coreTab"]],"._id=mgi._id",sep=""))
   makeMapCounts(db, paste("MGI2",subStrs[["suffix"]],sep=""),"mgi_id","mgi AS m", paste(subStrs[["coreTab"]],"AS g"),"WHERE m._id=g._id")
@@ -1453,7 +1453,7 @@ appendFlyBase <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO flybase
@@ -1461,18 +1461,18 @@ appendFlyBase <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.flybase as f
      WHERE g._id=f._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fflybase ON flybase (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'FLYBASE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "FLYBASE",subStrs[["coreID"]],subStrs[["coreTab"]],"flybase",paste("WHERE ",subStrs[["coreTab"]],"._id=flybase._id",sep=""))
   makeMapCounts(db, paste("FLYBASE2",subStrs[["suffix"]],sep=""),"flybase_id","flybase AS f", paste(subStrs[["coreTab"]],"AS g"),"WHERE f._id=g._id")
@@ -1491,7 +1491,7 @@ appendFlyBaseCG <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO flybase_cg
@@ -1499,11 +1499,11 @@ appendFlyBaseCG <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.flybase_cg as f
      WHERE g._id=f._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fflybasecg ON flybase_cg (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   
   sql<- paste("
@@ -1511,20 +1511,20 @@ appendFlyBaseCG <- function(db, subStrs, printSchema){
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'FLYBASECG';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'FLYBASECG2GENE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='FLYBASECG",subStrs[["suffix"]],"' WHERE map_name='FLYBASECG2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "FLYBASECG",subStrs[["coreID"]],subStrs[["coreTab"]],"flybase_cg",paste("WHERE ",subStrs[["coreTab"]],"._id=flybase_cg._id",sep=""))
   makeMapCounts(db, paste("FLYBASECG2",subStrs[["suffix"]],sep=""),"flybase_cg_id","flybase_cg AS f", paste(subStrs[["coreTab"]],"AS g"),"WHERE f._id=g._id")  
@@ -1543,7 +1543,7 @@ appendFlyBaseProt <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]],"(_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO flybase_prot
@@ -1551,11 +1551,11 @@ appendFlyBaseProt <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.flybase_prot as f
      WHERE g._id=f._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fflybasep ON flybase_prot (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
@@ -1565,7 +1565,7 @@ appendFlyBaseProt <- function(db, subStrs, printSchema){
            m2.name='FBSOURCEURL' AND
            m3.name='FBSOURCEDATE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
@@ -1573,13 +1573,13 @@ appendFlyBaseProt <- function(db, subStrs, printSchema){
      FROM map_metadata
      WHERE map_name='FLYBASEPROT';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     UPDATE map_metadata
      SET map_name='FLYBASEPROT2",subStrs[["suffix"]],"' WHERE map_name='FLYBASEPROT2GENE';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "FLYBASEPROT","f._id",paste(subStrs[["cntrTab"]]," AS g",sep=""),"flybase_prot as f","WHERE g._id=f._id")
   makeMapCounts(db, paste("FLYBASEPROT2",subStrs[["suffix"]],sep=""),"prot_id","flybase_prot AS f", paste(subStrs[["cntrTab"]],"AS g"),"WHERE f._id=g._id")
@@ -1598,7 +1598,7 @@ appendAraCyc <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO aracyc
@@ -1606,18 +1606,18 @@ appendAraCyc <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g CROSS JOIN anno.aracyc as a
      WHERE g._id=a._id;
     ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Faracyc ON aracyc (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ARACYC';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   if( subStrs[["coreTab"]] == "probes" ){
       makeMapCounts(db, "ARACYC",subStrs[["coreID"]],subStrs[["coreTab"]],"aracyc",paste("WHERE ",subStrs[["coreTab"]],"._id=aracyc._id",sep=""))
@@ -1639,7 +1639,7 @@ appendAraCycEnzyme <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO enzyme
@@ -1647,7 +1647,7 @@ appendAraCycEnzyme <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g CROSS JOIN anno.enzyme as a
      WHERE g._id=a._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     DELETE FROM enzyme
@@ -1656,11 +1656,11 @@ appendAraCycEnzyme <- function(db, subStrs, printSchema){
       GROUP BY _id, ec_name
       HAVING min(rowid));
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fenzyme ON enzyme (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "ARACYCENZYME",subStrs[["coreID"]],subStrs[["coreTab"]],"enzyme",paste("WHERE ",subStrs[["coreTab"]],"._id=enzyme._id",sep=""))
   
@@ -1678,7 +1678,7 @@ appendArabidopsisGenes <- function(db, subStrs, printSchema){
       gene_id CHAR(9) NOT NULL UNIQUE               -- AGI locus ID
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   if( subStrs[["coreTab"]] == "probes" ){
     sql<- paste("
@@ -1687,17 +1687,17 @@ appendArabidopsisGenes <- function(db, subStrs, printSchema){
        FROM probe_map AS p CROSS JOIN anno.genes AS a
        WHERE p.gene_id=a.gene_id;
        ") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
   }
   else{
     sql<- paste("
       INSERT INTO genes
       SELECT * FROM anno.genes;
        ")
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
   }
 
-  sqliteQuickSQL(db, "ANALYZE;")
+  dbGetQuery(db, "ANALYZE;")
 }
 
 
@@ -1711,7 +1711,7 @@ appendArabidopsisEntrezGenes <- function(db, subStrs, printSchema){
       gene_id CHAR(9) NOT NULL UNIQUE               -- AGI locus ID
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   if( subStrs[["coreTab"]] == "probes" ){
     sql<- paste("
@@ -1720,19 +1720,19 @@ appendArabidopsisEntrezGenes <- function(db, subStrs, printSchema){
        FROM probe_map AS p CROSS JOIN anno.entrez_genes AS a
        WHERE p.gene_id=a.gene_id;
        ") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
   }
   else{
     sql<- paste("
       INSERT INTO entrez_genes
       SELECT * FROM anno.entrez_genes;
        ")
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
   }
   
   sql<- paste("    CREATE INDEX Fentrez_genes ON entrez_genes(gene_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 }
 
@@ -1747,7 +1747,7 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
       probe_id TEXT,
       is_multiple INTEGER
     );") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO match_count
@@ -1756,10 +1756,10 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
      FROM probe_map
      GROUP BY probe_id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX mc1 ON match_count(probe_id);") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste(" CREATE TEMP TABLE tprobes (
       probe_id VARCHAR(80) NOT NULL,                -- manufacturer ID
@@ -1768,7 +1768,7 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO tprobes
@@ -1782,11 +1782,11 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
         ON a.gene_id=b.gene_id
      ORDER BY a.is_multiple, b._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   ##We have to drop/cleanup probes that are multiple hits, where the 2nd hit does not map to a probe...
   ##So 1st we drop the 2ndary entries:
-  sqliteQuickSQL(db, "DELETE FROM tprobes WHERE is_multiple = 1 and _id IS NULL;")
+  dbGetQuery(db, "DELETE FROM tprobes WHERE is_multiple = 1 and _id IS NULL;")
 
   ##Then we have to work on cleaning up, the 1st step is to make a temporary table to count the number
   ##of mapped probes that we have for each 
@@ -1797,7 +1797,7 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
       count INTEGER NOT NULL,
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id));
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO probe_multi_counts (probe_id,
@@ -1810,10 +1810,10 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
             count(*)
      FROM tprobes GROUP BY probe_id;
      ")
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   ##Update the is_multiple col where our counts indicate that we should
-  sqliteQuickSQL(db, "UPDATE probe_multi_counts set is_multiple = 0 where count = 1;")
+  dbGetQuery(db, "UPDATE probe_multi_counts set is_multiple = 0 where count = 1;")
 
   ##Then we need a left join to combine this information 
   sql<- paste(" CREATE TEMP TABLE ljoin (probe_id VARCHAR(80) NOT NULL,
@@ -1825,7 +1825,7 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
       pmc_count INTEGER NULL,
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id));
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ljoin (probe_id,
@@ -1845,7 +1845,7 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
      FROM tprobes as p LEFT JOIN probe_multi_counts as pmc
      ON p.probe_id=pmc.probe_id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   ##And Finally, we can make our final table
   sql<- paste(" CREATE TABLE probes (
@@ -1854,7 +1854,7 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
       _id INTEGER NULL,                             -- REFERENCES  genes
       FOREIGN KEY (_id) REFERENCES  ", subStrs[["cntrTab"]],"   (_id)
     );") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO probes (probe_id,
@@ -1865,15 +1865,15 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
             _id
      FROM ljoin;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   sql<- paste("    CREATE INDEX Fprobes ON probes (_id);") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fprobes_probe_id ON probes (probe_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   if(subStrs[["prefix"]] == "ag" || subStrs[["prefix"]] == "ath1121501"){
     sql<- paste("
@@ -1882,7 +1882,7 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
        FROM anno.map_metadata
        WHERE map_name = '",subStrs[["prefix"]],"ACCNUM';
        ", sep="") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
   }
   else{
     sql<- paste("
@@ -1890,7 +1890,7 @@ appendArabidopsisProbes <- function(db, subStrs, printSchema){
        SELECT * FROM anno.map_metadata
        WHERE map_name = 'ACCNUM';
        ", sep="") 
-    sqliteQuickSQL(db, sql)
+    dbGetQuery(db, sql)
   }
   
   makeMapCounts(db, "ACCNUM","probe_id","probes","","WHERE _id NOT NULL")
@@ -1912,7 +1912,7 @@ appendArabidopsisGeneInfo <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id))
     ;") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO gene_info
@@ -1920,25 +1920,25 @@ appendArabidopsisGeneInfo <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g CROSS JOIN anno.gene_info as a
      WHERE g._id=a._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgene_info ON gene_info (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'GENENAME';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'SYMBOL';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
    
   makeMapCounts(db, "GENENAME",subStrs[["coreID"]],subStrs[["coreTab"]],"gene_info",paste("WHERE ", subStrs[["coreTab"]],"._id=gene_info._id AND gene_info.gene_name NOT NULL",sep=""))
 
@@ -1948,7 +1948,7 @@ appendArabidopsisGeneInfo <- function(db, subStrs, printSchema){
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'CHR';   ",sep="") 
-  sqliteQuickSQL(db, sql)  
+  dbGetQuery(db, sql)  
   
   makeMapCounts(db, "CHR",subStrs[["coreID"]],subStrs[["coreTab"]],"gene_info",paste("WHERE ", subStrs[["coreTab"]],"._id=gene_info._id AND chromosome NOT NULL",sep=""))
   
@@ -1968,7 +1968,7 @@ appendYeastSGD <- function(db, subStrs, printSchema){
       sgd_id CHAR(10) NOT NULL UNIQUE               -- SGD ID
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   if( subStrs[["coreTab"]] == "probes" ){
     sql<- paste("
@@ -1977,17 +1977,17 @@ appendYeastSGD <- function(db, subStrs, printSchema){
        FROM probe_map as p CROSS JOIN anno.sgd as s
        WHERE p.systematic_name=s.systematic_name;
        ") 
-    sqliteQuickSQL(db, sql) 
+    dbGetQuery(db, sql) 
   }
   else{
     sql<- paste("
       INSERT INTO sgd
       SELECT * FROM anno.sgd;
        ") 
-    sqliteQuickSQL(db, sql) 
+    dbGetQuery(db, sql) 
   }
 
-  sqliteQuickSQL(db, "ANALYZE;")
+  dbGetQuery(db, "ANALYZE;")
 
 }
 
@@ -2005,7 +2005,7 @@ appendYeastProbes <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES sgd (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO probes
@@ -2014,11 +2014,11 @@ appendYeastProbes <- function(db, subStrs, printSchema){
      ON p.systematic_name=s.systematic_name
      ORDER BY probe_id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fprobes ON probes (_id);") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
 
   sql<- paste("
@@ -2027,7 +2027,7 @@ appendYeastProbes <- function(db, subStrs, printSchema){
      FROM anno.map_metadata
      WHERE map_name='ALIAS';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "ORF","probe_id","probes",subStrs[["cntrTab"]],paste("WHERE ", subStrs[["cntrTab"]],"._id=probes._id",sep=""))
 
@@ -2045,7 +2045,7 @@ appendYeastOrphanMeta <- function(db, subStrs){
      FROM anno.map_metadata
      WHERE map_name='ALIAS';
     ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   if(subStrs[["coreTab"]]=="probes"){
       makeMapCounts(db, "GENENAME","probe_id","probes",subStrs[["cntrTab"]],paste("WHERE probes._id=", subStrs[["cntrTab"]],"._id AND ", subStrs[["cntrTab"]],".gene_name NOT NULL",sep=""))      
@@ -2071,7 +2071,7 @@ appendYeastChromosomeFeatures <- function(db, subStrs, printSchema){
         FOREIGN KEY (_id) REFERENCES sgd (_id)
       );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO chromosome_features
@@ -2079,25 +2079,25 @@ appendYeastChromosomeFeatures <- function(db, subStrs, printSchema){
      FROM sgd AS s CROSS JOIN anno.chromosome_features AS f
      WHERE s._id=f._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fchromosome_features ON chromosome_features (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'CHRLOC';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'CHRLOCEND';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "CHRLOC",subStrs[["coreID"]],subStrs[["coreTab"]],"chromosome_features",paste("WHERE ", subStrs[["coreTab"]],"._id=chromosome_features._id AND start NOT NULL",sep=""))
 
@@ -2108,7 +2108,7 @@ appendYeastChromosomeFeatures <- function(db, subStrs, printSchema){
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'CHR';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "CHR",subStrs[["coreID"]],subStrs[["coreTab"]],"chromosome_features",paste("WHERE ", subStrs[["coreTab"]],"._id=chromosome_features._id AND chromosome NOT NULL",sep=""))
 
@@ -2117,7 +2117,7 @@ appendYeastChromosomeFeatures <- function(db, subStrs, printSchema){
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'DESCRIPTION';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "DESCRIPTION",subStrs[["coreID"]],subStrs[["coreTab"]],"chromosome_features",paste("WHERE ", subStrs[["coreTab"]],"._id=chromosome_features._id AND feature_description NOT NULL",sep=""))
   
@@ -2137,7 +2137,7 @@ appendYeastAlias <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES sgd (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO gene2alias
@@ -2145,18 +2145,18 @@ appendYeastAlias <- function(db, subStrs, printSchema){
      FROM sgd AS s CROSS JOIN anno.gene2alias AS a
      WHERE s._id=a._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgene2alias ON gene2alias(_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ALIAS2GENE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
@@ -2164,7 +2164,7 @@ appendYeastAlias <- function(db, subStrs, printSchema){
      FROM anno.map_metadata
      WHERE map_name='ALIAS';
     ", sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, "ALIAS",subStrs[["coreID"]],subStrs[["coreTab"]],"gene2alias",paste("WHERE ", subStrs[["coreTab"]],"._id=gene2alias._id",sep=""))
 }
@@ -2181,25 +2181,25 @@ appendYeastPfam <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES sgd (_id))
     ;") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO pfam
      SELECT _id, pfam_id
      FROM anno.pfam;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fpfam ON pfam (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'PFAM';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "PFAM","_id","pfam")
   
@@ -2219,25 +2219,25 @@ appendYeastInterpro <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES sgd (_id))
     ;") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO interpro
      SELECT _id, interpro_id
      FROM anno.interpro;
     ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Finterpro ON interpro (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'INTERPRO';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "INTERPRO","_id","interpro")
 }
@@ -2255,25 +2255,25 @@ appendYeastSmart <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES sgd (_id))\
     ;") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO smart
      SELECT _id, smart_id
      FROM anno.smart;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fsmart ON smart (_id);") 
   if(printSchema==TRUE){write(paste(paste(sql,"\n"),"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'SMART';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "SMART","_id","smart")
   
@@ -2290,14 +2290,14 @@ appendYeastRejectORF <- function(db, subStrs, printSchema){
       systematic_name VARCHAR(14) PRIMARY KEY)     -- Yeast gene systematic name
     ;") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO reject_orf
      SELECT DISTINCT systematic_name
      FROM anno.reject_orf;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "REJECTORF","*","reject_orf")
   
@@ -2318,14 +2318,14 @@ appendYeastGene2Systematic <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES sgd (_id))
     ;") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO gene2systematic
      SELECT _id, gene_name, systematic_name
      FROM anno.gene2systematic;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
@@ -2333,7 +2333,7 @@ appendYeastGene2Systematic <- function(db, subStrs, printSchema){
      FROM anno.map_metadata
      WHERE map_name='ALIAS';
      ", sep = "") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   makeMapCounts(db, paste("COMMON2",subStrs[["suffix"]],sep=""),"gene_name","gene2systematic","","WHERE systematic_name IS NOT NULL")
   
@@ -2352,7 +2352,7 @@ appendUniprot <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
  
   sql<- paste("
     INSERT INTO uniprot
@@ -2360,18 +2360,18 @@ appendUniprot <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.uniprot as u
      WHERE g._id=u._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Funiprot ON uniprot (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'UNIPROT';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "UNIPROT",subStrs[["coreID"]],subStrs[["coreTab"]],"uniprot",paste("WHERE ",subStrs[["coreTab"]],"._id=uniprot._id",sep=""))
 
@@ -2388,7 +2388,7 @@ appendUCSCGenes <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
  
   sql<- paste("
     INSERT INTO ucsc
@@ -2396,18 +2396,18 @@ appendUCSCGenes <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.ucsc as u
      WHERE g._id=u._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fucsc ON ucsc (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'UCSCKG';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "UCSCKG",subStrs[["coreID"]],subStrs[["coreTab"]],"ucsc",paste("WHERE ",subStrs[["coreTab"]],"._id=ucsc._id",sep=""))
   
@@ -2425,7 +2425,7 @@ appendExternalEG <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
  
   sql<- paste("
     INSERT INTO genes
@@ -2433,18 +2433,18 @@ appendExternalEG <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.genes as u
      WHERE g._id=u._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fgene ON genes(_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ENTREZID';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "ENTREZID",subStrs[["coreID"]],subStrs[["coreTab"]],"genes",paste("WHERE ",subStrs[["coreTab"]],"._id=genes._id",sep=""))
 
@@ -2464,7 +2464,7 @@ appendZfin <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
  
   sql<- paste("
     INSERT INTO zfin
@@ -2472,18 +2472,18 @@ appendZfin <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.zfin as z
      WHERE g._id=z._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fzfin ON zfin (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ZFIN';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "ZFIN",subStrs[["coreID"]],subStrs[["coreTab"]],"zfin",paste("WHERE ",subStrs[["coreTab"]],"._id=zfin._id",sep=""))
 
@@ -2502,7 +2502,7 @@ appendWormbase <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
  
   sql<- paste("
     INSERT INTO wormbase
@@ -2510,18 +2510,18 @@ appendWormbase <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.wormbase as w
      WHERE g._id=w._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Fwormbase ON wormbase (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'WORMBASE';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "WORMBASE",subStrs[["coreID"]],subStrs[["coreTab"]],"wormbase",paste("WHERE ",subStrs[["coreTab"]],"._id=wormbase._id",sep=""))
 
@@ -2542,7 +2542,7 @@ appendYeastNCBILocusTags <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO locus_tag
@@ -2550,18 +2550,18 @@ appendYeastNCBILocusTags <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.locus_tags as lt
      WHERE g._id=lt._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX Flocus_tag ON locus_tag (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'ORF';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "ORF",subStrs[["coreID"]],subStrs[["coreTab"]],"locus_tag",paste("WHERE ",subStrs[["coreTab"]],"._id=locus_tag._id",sep=""))
   makeMapCounts(db, paste("ORF2",subStrs[["suffix"]],sep=""),"locus_tag","locust_tag AS lt", paste(subStrs[["coreTab"]],"AS g"),"WHERE lt._id=g._id")
@@ -2580,7 +2580,7 @@ appendYeastNCBISGD <- function(db, subStrs, printSchema){
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO sgd
@@ -2588,18 +2588,18 @@ appendYeastNCBISGD <- function(db, subStrs, printSchema){
      FROM ", subStrs[["cntrTab"]]," as g INNER JOIN anno.sgd_ids as s
      WHERE g._id=s._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX FSGD ON sgd (_id);") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
      WHERE map_name = 'SGD';
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   makeMapCounts(db, "SGD",subStrs[["coreID"]],subStrs[["coreTab"]],"sgd",paste("WHERE ",subStrs[["coreTab"]],"._id=sgd._id",sep=""))
   makeMapCounts(db, paste("SGD2",subStrs[["suffix"]],sep=""),"sgd_id","sgd AS s", paste(subStrs[["coreTab"]],"AS g"),"WHERE s._id=g._id")
@@ -2630,7 +2630,7 @@ SELECT _id,go_id,evidence, 'CC' FROM go_cc
 UNION
 SELECT _id,go_id,evidence, 'MF' FROM go_mf;
    ",sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
 CREATE VIEW go_all AS
@@ -2641,7 +2641,7 @@ UNION
 SELECT _id,go_id,evidence, 'MF' FROM go_mf_all;
    ",sep="")
   
-sqliteQuickSQL(db, sql)
+dbGetQuery(db, sql)
 }
 
 
@@ -2658,13 +2658,13 @@ appendPostMeta <- function(db, subStrs){
     INSERT INTO metadata SELECT * FROM anno.metadata
      WHERE name!='DBSCHEMA' AND name!='ORGANISM' AND name!='SPECIES' AND name!='DBSCHEMAVERSION';
    ",sep="") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   ##If its a chip package, then check to see what the metadata value is.  If that value is == "EG", then change it to be "ENTREZID"
   if(subStrs[["coreID"]]=="probe_id"){
-      curVal <- sqliteQuickSQL(db, "SELECT value FROM anno.metadata WHERE name='CENTRALID';")
+      curVal <- dbGetQuery(db, "SELECT value FROM anno.metadata WHERE name='CENTRALID';")
       if(curVal == "EG"){
-          sqliteQuickSQL(db, "UPDATE metadata SET value = 'ENTREZID' WHERE name = 'CENTRALID';")
+          dbGetQuery(db, "UPDATE metadata SET value = 'ENTREZID' WHERE name = 'CENTRALID';")
       }
   }  
   
@@ -2674,9 +2674,9 @@ appendPostMeta <- function(db, subStrs){
   makeMapCounts(db, "TOTAL",subStrs[["coreID"]],subStrs[["coreTab"]])
 
   #we ALWAYS have to drop the base "probe map"
-  sqliteQuickSQL(db, "DROP TABLE probe_map;")
-  ##sqliteQuickSQL(db, "VACUUM probe_map;")
-  ##sqliteQuickSQL(db, "ANALYZE;")  
+  dbGetQuery(db, "DROP TABLE probe_map;")
+  ##dbGetQuery(db, "VACUUM probe_map;")
+  ##dbGetQuery(db, "ANALYZE;")  
 }
 
 
@@ -2712,7 +2712,7 @@ appendGeneric <- function(db, subStrs, printSchema, table, matchID, field, fileN
       ",field," VARCHAR NOT NULL,
       ",matchID," VARCHAR NOT NULL
     );")
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   #read in the file in fileName
   IDs = read.delim(file=fileName, header=FALSE, sep="\t", quote="")
@@ -2723,7 +2723,7 @@ appendGeneric <- function(db, subStrs, printSchema, table, matchID, field, fileN
       sqlIns <- paste("INSERT INTO tempTable ('",field,"','",matchID,"') VALUES ('",IDs[[2]][i],"','",IDs[[1]][i],"');
       ", sep="")
       #print(sqlIns)
-      sqliteQuickSQL(db,sqlIns)
+      dbGetQuery(db,sqlIns)
   }  
   
   sql<- paste("    CREATE TABLE ",table," (
@@ -2732,7 +2732,7 @@ appendGeneric <- function(db, subStrs, printSchema, table, matchID, field, fileN
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ",table,"
@@ -2741,11 +2741,11 @@ appendGeneric <- function(db, subStrs, printSchema, table, matchID, field, fileN
      WHERE g.",matchID,"=t.",matchID,"
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX F",table," ON ",table," (_id);", sep ="") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   #Put a forward and reverse map into map_counts
   #note, these queries REQUIRE that the coretable be MADE before they are invoked
@@ -2756,7 +2756,7 @@ appendGeneric <- function(db, subStrs, printSchema, table, matchID, field, fileN
      WHERE r._id = ct._id;
   ", sep="")
   #print(sql)
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   sql<- paste("
     INSERT INTO map_counts
@@ -2765,7 +2765,7 @@ appendGeneric <- function(db, subStrs, printSchema, table, matchID, field, fileN
      WHERE r._id = ct._id;
   ", sep="")
   #print(sql)
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
 } 
 
@@ -2781,7 +2781,7 @@ appendProbesGeneric <- function(db, subStrs, printSchema, table, matchID, field,
       ",field," VARCHAR NOT NULL,
       ",matchID," VARCHAR NOT NULL
     );")
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   #read in the file in fileName
   IDs = read.delim(file=fileName, header=FALSE, sep="\t", quote="")
@@ -2792,7 +2792,7 @@ appendProbesGeneric <- function(db, subStrs, printSchema, table, matchID, field,
       sqlIns <- paste("INSERT INTO tempTable ('",field,"','",matchID,"') VALUES ('",IDs[[2]][i],"','",IDs[[1]][i],"');
       ", sep="")
       #print(sqlIns)
-      sqliteQuickSQL(db,sqlIns)
+      dbGetQuery(db,sqlIns)
   }  
   
   sql<- paste("    CREATE TABLE ",table," (
@@ -2801,7 +2801,7 @@ appendProbesGeneric <- function(db, subStrs, printSchema, table, matchID, field,
       FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ",table,"
@@ -2810,11 +2810,11 @@ appendProbesGeneric <- function(db, subStrs, printSchema, table, matchID, field,
      WHERE g.",matchID,"=t.",matchID,"
      ORDER BY g._id;
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("    CREATE INDEX F",table," ON ",table," (_id);", sep ="") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   #Put a forward and reverse map into map_counts
   #note, these queries REQUIRE that the coretable be MADE before they are invoked
@@ -2824,7 +2824,7 @@ appendProbesGeneric <- function(db, subStrs, printSchema, table, matchID, field,
      FROM ",table," WHERE ", subStrs[["coreID"]]," NOT NULL ;
   ", sep="")
   #print(sql)
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   #no reverse map this time - nobody ever wants probes to EG (not interesting except as a DB metric)
 }
@@ -2852,7 +2852,7 @@ createCntrTableGeneric <- function(db, subStrs, printSchema, table, field, fileN
   sql<- paste("    CREATE TEMP TABLE tempTable (
       ",field," VARCHAR NOT NULL               -- ",field," accession number
     );")
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   #read in the file in fileName
   IDs = read.delim(file=fileName, header=FALSE, sep="\t", quote="")
@@ -2870,7 +2870,7 @@ createCntrTableGeneric <- function(db, subStrs, printSchema, table, field, fileN
       sqlIns <- paste("INSERT INTO tempTable ('",field,"') VALUES ('",IDs[i],"');
       ", sep="")
       #print(sqlIns)
-      sqliteQuickSQL(db,sqlIns)
+      dbGetQuery(db,sqlIns)
   }
   
   sql<- paste("    CREATE TABLE ",table," (
@@ -2878,7 +2878,7 @@ createCntrTableGeneric <- function(db, subStrs, printSchema, table, field, fileN
      ",field," VARCHAR NOT NULL               -- ",field," accession number
     );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO ",table," (",field,")
@@ -2886,11 +2886,11 @@ createCntrTableGeneric <- function(db, subStrs, printSchema, table, field, fileN
      FROM tempTable
      ORDER BY ",field,";
      ") 
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   sql<- paste("    CREATE INDEX F",table," ON ",table," (",field,");", sep = "") 
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
   #since we are making a central DB here we should probably check whether a map_counts table exists or not etc.
   sql<- paste("    CREATE TABLE IF NOT EXISTS map_counts (
@@ -2898,7 +2898,7 @@ createCntrTableGeneric <- function(db, subStrs, printSchema, table, field, fileN
       count INTEGER NOT NULL
     );")
   if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   
 }
 
@@ -2908,42 +2908,42 @@ createCntrTableGeneric <- function(db, subStrs, printSchema, table, field, fileN
 ## simplify the probes tables (for all packages except yeast and arabidopsis)
 simplifyProbes <- function(db, subStrs){
   message(cat("simplifying probes table"))
-  sqliteQuickSQL(db, "CREATE TEMP TABLE probehook (probe_id VARCHAR(80), gene_id VARCHAR(10) NULL, is_multiple SMALLINT NOT NULL);")  
-  sqliteQuickSQL(db, "INSERT INTO probehook SELECT DISTINCT p.probe_id, g.gene_id, p.is_multiple FROM probes AS p LEFT JOIN genes AS g ON p._id = g._id;")
-  sqliteQuickSQL(db, "CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20));")
-  sqliteQuickSQL(db, "INSERT INTO accessions SELECT DISTINCT probe_id, accession FROM probes;") 
-  sqliteQuickSQL(db, "CREATE INDEX Fgbprobes ON accessions (probe_id);")
-  sqliteQuickSQL(db, "DROP TABLE probes;")
-  sqliteQuickSQL(db, "CREATE TABLE probes (probe_id VARCHAR(80), gene_id VARCHAR(10) NULL, is_multiple SMALLINT NOT NULL);")
-  sqliteQuickSQL(db, "INSERT INTO probes SELECT * FROM probehook;")
-  sqliteQuickSQL(db, "CREATE INDEX Fprobes ON probes (probe_id);")
-  sqliteQuickSQL(db, "CREATE INDEX Fgenes ON probes (gene_id);")
+  dbGetQuery(db, "CREATE TEMP TABLE probehook (probe_id VARCHAR(80), gene_id VARCHAR(10) NULL, is_multiple SMALLINT NOT NULL);")  
+  dbGetQuery(db, "INSERT INTO probehook SELECT DISTINCT p.probe_id, g.gene_id, p.is_multiple FROM probes AS p LEFT JOIN genes AS g ON p._id = g._id;")
+  dbGetQuery(db, "CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20));")
+  dbGetQuery(db, "INSERT INTO accessions SELECT DISTINCT probe_id, accession FROM probes;") 
+  dbGetQuery(db, "CREATE INDEX Fgbprobes ON accessions (probe_id);")
+  dbGetQuery(db, "DROP TABLE probes;")
+  dbGetQuery(db, "CREATE TABLE probes (probe_id VARCHAR(80), gene_id VARCHAR(10) NULL, is_multiple SMALLINT NOT NULL);")
+  dbGetQuery(db, "INSERT INTO probes SELECT * FROM probehook;")
+  dbGetQuery(db, "CREATE INDEX Fprobes ON probes (probe_id);")
+  dbGetQuery(db, "CREATE INDEX Fgenes ON probes (gene_id);")
 }
 
 
 ## simplify the probes tables (for arabidopsis)
 simplifyArabidopsisProbes <- function(db, subStrs){
   message(cat("simplifying probes table"))
-  sqliteQuickSQL(db, "CREATE TEMP TABLE probehook (probe_id VARCHAR(80) NOT NULL, is_multiple SMALLINT NOT NULL, gene_id VARCHAR(10) NULL);")
-  sqliteQuickSQL(db, "INSERT INTO probehook SELECT p.probe_id, p.is_multiple, g.gene_id FROM probes AS p LEFT JOIN genes AS g ON p._id = g._id;")
-  sqliteQuickSQL(db, "DROP TABLE probes;")
-  sqliteQuickSQL(db, "CREATE TABLE probes (probe_id VARCHAR(80) NOT NULL, is_multiple SMALLINT NOT NULL, gene_id VARCHAR(10) NULL);")
-  sqliteQuickSQL(db, "INSERT INTO probes SELECT * FROM probehook;")
-  sqliteQuickSQL(db, "CREATE INDEX Fprobes ON probes (probe_id);")
-  sqliteQuickSQL(db, "CREATE INDEX Fgenes ON probes (gene_id);")
+  dbGetQuery(db, "CREATE TEMP TABLE probehook (probe_id VARCHAR(80) NOT NULL, is_multiple SMALLINT NOT NULL, gene_id VARCHAR(10) NULL);")
+  dbGetQuery(db, "INSERT INTO probehook SELECT p.probe_id, p.is_multiple, g.gene_id FROM probes AS p LEFT JOIN genes AS g ON p._id = g._id;")
+  dbGetQuery(db, "DROP TABLE probes;")
+  dbGetQuery(db, "CREATE TABLE probes (probe_id VARCHAR(80) NOT NULL, is_multiple SMALLINT NOT NULL, gene_id VARCHAR(10) NULL);")
+  dbGetQuery(db, "INSERT INTO probes SELECT * FROM probehook;")
+  dbGetQuery(db, "CREATE INDEX Fprobes ON probes (probe_id);")
+  dbGetQuery(db, "CREATE INDEX Fgenes ON probes (gene_id);")
 }
 
 
 ## simplify the probes tables (for yeast)
 simplifyYeastProbes <- function(db, subStrs){
   message(cat("simplifying probes table"))
-  sqliteQuickSQL(db, "CREATE TEMP TABLE probehook (probe_id VARCHAR(80), systematic_name VARCHAR(14) NULL, gene_name VARCHAR(14) NULL, sgd_id CHAR(10) NULL, is_multiple SMALLINT NOT NULL);")
-  sqliteQuickSQL(db, "INSERT INTO probehook SELECT p.probe_id, s.systematic_name, s.gene_name, s.sgd_id, p.is_multiple FROM probes AS p LEFT JOIN sgd AS s ON p._id = s._id;")
-  sqliteQuickSQL(db, "DROP TABLE probes;")
-  sqliteQuickSQL(db, "CREATE TABLE probes (probe_id VARCHAR(80), systematic_name VARCHAR(14) NULL, gene_name VARCHAR(14) NULL, sgd_id CHAR(10) NULL, is_multiple SMALLINT NOT NULL);")
-  sqliteQuickSQL(db, "INSERT INTO probes SELECT * FROM probehook;")
-  sqliteQuickSQL(db, "CREATE INDEX Fprobes ON probes (probe_id);")
-  sqliteQuickSQL(db, "CREATE INDEX Fgenes ON probes (systematic_name);")
+  dbGetQuery(db, "CREATE TEMP TABLE probehook (probe_id VARCHAR(80), systematic_name VARCHAR(14) NULL, gene_name VARCHAR(14) NULL, sgd_id CHAR(10) NULL, is_multiple SMALLINT NOT NULL);")
+  dbGetQuery(db, "INSERT INTO probehook SELECT p.probe_id, s.systematic_name, s.gene_name, s.sgd_id, p.is_multiple FROM probes AS p LEFT JOIN sgd AS s ON p._id = s._id;")
+  dbGetQuery(db, "DROP TABLE probes;")
+  dbGetQuery(db, "CREATE TABLE probes (probe_id VARCHAR(80), systematic_name VARCHAR(14) NULL, gene_name VARCHAR(14) NULL, sgd_id CHAR(10) NULL, is_multiple SMALLINT NOT NULL);")
+  dbGetQuery(db, "INSERT INTO probes SELECT * FROM probehook;")
+  dbGetQuery(db, "CREATE INDEX Fprobes ON probes (probe_id);")
+  dbGetQuery(db, "CREATE INDEX Fgenes ON probes (systematic_name);")
 }
 
 
@@ -2957,9 +2957,9 @@ dropRedundantTables <- function(db, subStrs){
   list = list[!(list %in% saveList)]
   for(i in seq_len(length(list))){
       sql <- paste("DROP TABLE ",list[[i]],";",sep="")
-      sqliteQuickSQL(db, sql)
+      dbGetQuery(db, sql)
   }
-  ## sqliteQuickSQL(db, "VACUUM;")
+  ## dbGetQuery(db, "VACUUM;")
 }
 
 
@@ -3008,9 +3008,9 @@ makeMapCounts <- function(db, mapCount="", coreID="", coreTab="", otherTab="", w
   ##Announce the insertion. (temp)
   ## message(cat(sqlCount))
   ##make the insertion.
-  sqliteQuickSQL(db, sql)
+  dbGetQuery(db, sql)
   ##Then return the number of things inserted..
-  return(as.integer(sqliteQuickSQL(db,sqlCount)[2]))
+  return(as.integer(dbGetQuery(db,sqlCount)[2]))
 }
 
 

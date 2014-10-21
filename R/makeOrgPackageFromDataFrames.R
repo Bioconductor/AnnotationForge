@@ -5,16 +5,16 @@
       _id INTEGER PRIMARY KEY,
       GID VARCHAR(10) NOT NULL UNIQUE           -- Gene ID
     );")
-  sqliteQuickSQL(con, sql)
+  dbGetQuery(con, sql)
 
   geneid <- data.frame(genes) ## TODO: data.frame() necessary???
   sql<- paste("INSERT INTO genes(GID) VALUES(?);")
   dbBeginTransaction(con)
   dbGetPreparedQuery(con, sql, geneid)
   dbCommit(con)
-  sqliteQuickSQL(con,
+  dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS genes__id_ind ON genes (_id)")    
-  sqliteQuickSQL(con,
+  dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS genes_GID_ind ON genes (GID)")
   message("genes table filled")
 }
@@ -48,18 +48,18 @@
      FROM genes AS g, temp AS t
      WHERE g.GID=t.GID
      ORDER BY g._id;")
-    sqliteQuickSQL(con, sql)
+    dbGetQuery(con, sql)
 
     ## Add index to all fields in indFields (default is all)
     for(i in seq_len(length(indFields))){
-    sqliteQuickSQL(con,
+    dbGetQuery(con,
         paste0("CREATE INDEX IF NOT EXISTS ",
               table,"_",indFields[i],"_ind ON ",table,
               " (",indFields[i],");"))    
     }
     
     ## drop the temp table
-    sqliteQuickSQL(con, "DROP TABLE temp;")
+    dbGetQuery(con, "DROP TABLE temp;")
   }
   message(paste(table,"table filled"))
 }
@@ -94,7 +94,7 @@
 ## helper to prepare/filter data for two GO tables.
 .makeNewGOTables <- function(con, goTable, goData){
     ## So 1st drop the old go table
-    sqliteQuickSQL(con, paste0("DROP TABLE ",goTable,";"))
+    dbGetQuery(con, paste0("DROP TABLE ",goTable,";"))
     ## add Ontologies data
     goData <- .addOntologyData(goData)
     ## now filter that for terms that are "too new"
@@ -132,8 +132,8 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
     con <- dbConnect(SQLite(), dbFileName)
     AnnotationForge:::.createMetadataTables(con)
     ## TODO: why can't I drop these (investigate)
-#    sqliteQuickSQL(con, "DROP TABLE map_counts;")
-#    sqliteQuickSQL(con, "DROP TABLE map_metadata;")
+#    dbGetQuery(con, "DROP TABLE map_counts;")
+#    dbGetQuery(con, "DROP TABLE map_metadata;")
     
     ## gather all GIDs together and make the genes table
     genes <- unique(unlist(unname(lapply(data, "[", 'GID'))))

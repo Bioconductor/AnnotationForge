@@ -6,7 +6,7 @@
       GID VARCHAR(10) NULL,           -- GENEID
       is_multiple SMALLINT NOT NULL           -- matches multiple genes?
     );")
-  sqliteQuickSQL(con, sql)
+  dbGetQuery(con, sql)
 
   values <- data.frame(probeFrame) 
   sql <- paste("INSERT INTO probes(PROBEID, GID, is_multiple)",
@@ -14,9 +14,9 @@
   dbBeginTransaction(con)
   dbGetPreparedQuery(con, sql, values)
   dbCommit(con)
-  sqliteQuickSQL(con,
+  dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS Fgenes ON probes (GID)")
-  sqliteQuickSQL(con,
+  dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS Fprobes ON probes (PROBEID)")
   message("probes table filled and indexed")
 }
@@ -35,7 +35,7 @@
 .cloneMapMetadata <- function(con, orgPkgName){
     ## 1st we need to extract the map_metadata
     orgCon <- AnnotationDbi:::dbConn(eval(parse(text=orgPkgName)))
-    mapValues <- sqliteQuickSQL(orgCon, "SELECT * FROM map_metadata")
+    mapValues <- dbGetQuery(orgCon, "SELECT * FROM map_metadata")
     ## then get value for accnum and append it
     orgSchema <- .getOrgSchema(orgPkgName)
     if(orgSchema == "ARABIDOPSIS_DB"){
@@ -59,7 +59,7 @@
       source_url VARCHAR(255) NOT NULL,
       source_date VARCHAR(20) NOT NULL
     );")
-    sqliteQuickSQL(con, sql)
+    dbGetQuery(con, sql)
     sql <- paste("INSERT INTO map_metadata(map_name, source_name, source_url,
                   source_date)",
                  "VALUES(?,?,?,?);")
@@ -78,7 +78,7 @@
       gene_id VARCHAR(10) NULL,           -- Gene ID
       is_multiple SMALLINT NOT NULL           -- matches multiple genes?
     );")
-  sqliteQuickSQL(con, sql)
+  dbGetQuery(con, sql)
 
   values <- data.frame(probeFrame) 
   psql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
@@ -86,9 +86,9 @@
   dbBeginTransaction(con)
   dbGetPreparedQuery(con, psql, values)
   dbCommit(con)
-  sqliteQuickSQL(con,
+  dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS Fgenes ON probes (gene_id)")
-  sqliteQuickSQL(con,
+  dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS Fprobes ON probes (probe_id)")
   ## now set up correct map_metadata
   .cloneMapMetadata(con, orgPkgName)
@@ -96,7 +96,7 @@
 
   ###########################################################
   ## code for legacy accessions table
-  sqliteQuickSQL(con, "CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20))")
+  dbGetQuery(con, "CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20))")
   ## accessionsFrame will either be null or we will need to insert it
   if(!is.null(accessionsFrame)){
       message("Populating accessions table:")
@@ -123,7 +123,7 @@
           dbCommit(con)
       }
   }
-  sqliteQuickSQL(con, "CREATE INDEX Fgbprobes ON accessions (probe_id)")
+  dbGetQuery(con, "CREATE INDEX Fgbprobes ON accessions (probe_id)")
 }
 
 

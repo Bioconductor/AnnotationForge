@@ -455,6 +455,9 @@ setMethod("select", "uniprot",
 {
     .select(keys=keys, columns=columns)
 })
+@ 
+
+<<webServiceSelect2, eval=FALSE>>=
 select(uniprot, keys=c("P13368","P20806"), columns=c("ID","ORGANISM"))
 @
 \end{Solution}

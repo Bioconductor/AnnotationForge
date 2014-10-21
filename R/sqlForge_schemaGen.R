@@ -39,7 +39,7 @@ popHUMANCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -90,7 +90,7 @@ popHUMANDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -170,7 +170,7 @@ popMOUSECHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -222,7 +222,7 @@ popMOUSEDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -302,7 +302,7 @@ popRATCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )    
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -352,7 +352,7 @@ popRATDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -414,7 +414,7 @@ popARABIDOPSISCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendArabidopsisGenes(db, subStrs=subStrs, printSchema=printSchema)           ##Arabidopsis requires a custom function.
@@ -456,12 +456,12 @@ popARABIDOPSISDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
-    sqliteQuickSQL(db, "CREATE TABLE probe_map (probe_id TEXT, gene_id TEXT, accession TEXT);")
+    dbGetQuery(db, "CREATE TABLE probe_map (probe_id TEXT, gene_id TEXT, accession TEXT);")
     
-    sqliteQuickSQL(db, "CREATE TABLE metadata (name VARCHAR(80) PRIMARY KEY, value VARCHAR(255) );")
-    sqliteQuickSQL(db, paste("INSERT INTO metadata VALUES ('PKGNAME', '", prefix, "');", sep="", collapse=""))
+    dbGetQuery(db, "CREATE TABLE metadata (name VARCHAR(80) PRIMARY KEY, value VARCHAR(255) );")
+    dbGetQuery(db, paste("INSERT INTO metadata VALUES ('PKGNAME', '", prefix, "');", sep="", collapse=""))
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendArabidopsisGenes(db, subStrs=subStrs, printSchema=printSchema)        ##Arabidopsis requires a custom function.
@@ -532,7 +532,7 @@ popFLYCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )    
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -584,7 +584,7 @@ popFLYDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )    
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -641,7 +641,7 @@ popYEASTCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
 
@@ -685,12 +685,12 @@ popYEASTDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
-    sqliteQuickSQL(db, "CREATE TABLE probe_map (probe_id TEXT, gene_id TEXT, accession TEXT);")
+    dbGetQuery(db, "CREATE TABLE probe_map (probe_id TEXT, gene_id TEXT, accession TEXT);")
 
-    sqliteQuickSQL(db, "CREATE TABLE metadata (name VARCHAR(80) PRIMARY KEY, value VARCHAR(255) );")
-    sqliteQuickSQL(db, paste("INSERT INTO metadata VALUES ('PKGNAME', '", prefix, "');", sep="", collapse=""))
+    dbGetQuery(db, "CREATE TABLE metadata (name VARCHAR(80) PRIMARY KEY, value VARCHAR(255) );")
+    dbGetQuery(db, paste("INSERT INTO metadata VALUES ('PKGNAME', '", prefix, "');", sep="", collapse=""))
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
 
@@ -746,7 +746,7 @@ popMALARIADB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -808,7 +808,7 @@ popZEBRAFISHCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -859,7 +859,7 @@ popZEBRAFISHDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -938,7 +938,7 @@ popECOLICHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -980,7 +980,7 @@ popECOLIDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1052,7 +1052,7 @@ popCANINECHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1100,7 +1100,7 @@ popCANINEDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1176,7 +1176,7 @@ popBOVINECHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1226,7 +1226,7 @@ popBOVINEDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1304,7 +1304,7 @@ popWORMCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1353,7 +1353,7 @@ popWORMDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1432,7 +1432,7 @@ popPIGCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1478,7 +1478,7 @@ popPIGDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1552,7 +1552,7 @@ popCHICKENCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1603,7 +1603,7 @@ popCHICKENDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1666,7 +1666,7 @@ popCHIMPDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1742,7 +1742,7 @@ popRHESUSCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )    
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1793,7 +1793,7 @@ popRHESUSDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1847,7 +1847,7 @@ popANOPHELESDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1926,7 +1926,7 @@ popXENOPUSCHIPDB <- function(affy,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
     
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -1982,7 +1982,7 @@ popXENOPUSDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -2044,7 +2044,7 @@ popYEASTNCBIDB <- function(prefix,
     require("RSQLite")
     drv <- dbDriver("SQLite")
     db <- dbConnect(drv, dbname = file.path(outputDir, paste(prefix,".sqlite", sep="")) )
-    sqliteQuickSQL(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
+    dbGetQuery(db, paste("ATTACH DATABASE '",chipSrc,"' AS anno;",sep="") )
 
     appendPreMeta(db, subStrs=subStrs, printSchema=printSchema, metaDataSrc=metaDataSrc)
     appendGenes(db, subStrs=subStrs, printSchema=printSchema)
@@ -2156,8 +2156,8 @@ generate.schema <- function(name = "HUMANCHIP_DB", pkg = "hgu95av2.db", path = "
 analyzeVacuumDisconnect <- function(drv,outputDir,prefix){
   db <- dbConnect(drv, dbname = file.path(outputDir,
                   paste(prefix,".sqlite", sep="")) )
-  sqliteQuickSQL(db, "ANALYZE;")
-  sqliteQuickSQL(db, "VACUUM;")
+  dbGetQuery(db, "ANALYZE;")
+  dbGetQuery(db, "VACUUM;")
   dbDisconnect(db)  
 }
 

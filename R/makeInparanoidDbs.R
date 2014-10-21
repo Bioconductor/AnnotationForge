@@ -123,7 +123,7 @@
         score VARCHAR(6) NOT NULL,
         inp_id VARCHAR(30) NOT NULL,  
         seed_status CHAR(4));")
-    sqliteQuickSQL(con, sql)
+    dbGetQuery(con, sql)
     
     ##Populate it with the contents of the filename
     message(cat(paste0("Populating table: ",tableName)))
@@ -161,7 +161,7 @@
     sql<- paste0("    CREATE TABLE if not exists metadata (
         name VARCHAR(80) PRIMARY KEY,
         value VARCHAR(255));")
-    sqliteQuickSQL(con, sql)
+    dbGetQuery(con, sql)
     meta <- read.delim(system.file('extdata','inp8_metadata',
                                    package='AnnotationForge'),
                        sep="\t", header=TRUE, stringsAsFactors=FALSE)
