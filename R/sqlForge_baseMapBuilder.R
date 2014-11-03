@@ -130,7 +130,7 @@ probe2gene <- function(baseMap, otherSrc,
         #populate the contents of baseMap into curr_map
         clnVals <-baseMap
         sqlIns <- "INSERT INTO curr_map (probe_id,gene_id) VALUES (?,?);"
-        dbBeginTransaction(db)
+        dbBegin(db)
         rset <- dbSendPreparedQuery(db, sqlIns, clnVals)
         dbClearResult(rset)
         dbCommit(db)
@@ -200,7 +200,7 @@ probe2gene <- function(baseMap, otherSrc,
 	lapply(otherSrc, function(thisOtherName) {
             clnVals <- thisOtherName
             sqlIns <- "INSERT INTO other (probe_id,gene_id) VALUES(?,?);"
-            dbBeginTransaction(db)
+            dbBegin(db)
             rset <- dbSendPreparedQuery(db, sqlIns, clnVals)
             dbClearResult(rset)
             dbCommit(db)
@@ -249,7 +249,7 @@ probe2gene <- function(baseMap, otherSrc,
         probeData <- dbGetQuery(db, "SELECT * FROM temp_probe_map;")
         modifiedData <- labelDuplicatedProbes(probeData)
         sqlIns <- "INSERT INTO probe_map (probe_id,gene_id,accession,is_multiple) VALUES (?,?,?,?);"
-        dbBeginTransaction(db)
+        dbBegin(db)
         rset <- dbSendPreparedQuery(db, sqlIns, modifiedData)
         dbClearResult(rset)
         dbCommit(db)
@@ -360,7 +360,7 @@ getMapForYeastChipPkg <- function(affy, fileName, pkgName, outputDir=".") {
         probeData <- as.data.frame(baseMaps[[1]])
         clnVals <- labelDuplicatedProbes(probeData)
         sqlIns <- "INSERT INTO probe_map VALUES(?,?,?);"
-        dbBeginTransaction(db)
+        dbBegin(db)
         rset <- dbSendPreparedQuery(db, sqlIns, clnVals)
         dbClearResult(rset)
         dbCommit(db)        
@@ -369,7 +369,7 @@ getMapForYeastChipPkg <- function(affy, fileName, pkgName, outputDir=".") {
         probeData <- cleanSrcMap(fileName)
         clnVals <- labelDuplicatedProbes(probeData)
         sqlIns <- "INSERT INTO probe_map VALUES(?,?,?);"
-        dbBeginTransaction(db)
+        dbBegin(db)
         rset <- dbSendPreparedQuery(db, sqlIns, clnVals)
         dbClearResult(rset)
         dbCommit(db)
@@ -416,7 +416,7 @@ getMapForArabidopsisChipPkg <- function(affy, fileName, pkgName, chipMapSrc, out
     {        
         clnVals <- cleanSrcMap(fileName)
         sqlIns <- "INSERT INTO probe_map VALUES(?,?);"
-        dbBeginTransaction(db)
+        dbBegin(db)
         rset <- dbSendPreparedQuery(db, sqlIns, clnVals)
         dbClearResult(rset)
         dbCommit(db)

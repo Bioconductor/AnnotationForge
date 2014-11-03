@@ -908,7 +908,7 @@ facilities for us.
 <<LabelledPreparedQueries>>=
 names(data) <- c("id","string")
 sql <- "INSERT INTO genePheno VALUES ($id, $string)"
-dbBeginTransaction(con)
+dbBegin(con)
 dbGetPreparedQuery(con, sql, bind.data = data)
 dbCommit(con)
 @ 

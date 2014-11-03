@@ -9,7 +9,7 @@
 
   geneid <- data.frame(genes) ## TODO: data.frame() necessary???
   sql<- paste("INSERT INTO genes(GID) VALUES(?);")
-  dbBeginTransaction(con)
+  dbBegin(con)
   dbGetPreparedQuery(con, sql, geneid)
   dbCommit(con)
   dbGetQuery(con,

@@ -15,7 +15,7 @@
 
   gene_id <- data.frame(entrez) ## TODO: data.frame() necessary???
   sql<- paste("INSERT INTO genes(gene_id) VALUES(?);")
-  dbBeginTransaction(con)
+  dbBegin(con)
   dbGetPreparedQuery(con, sql, gene_id)
   dbCommit(con)
   message("genes table filled")
@@ -290,7 +290,7 @@
 
 ## helper to populate base tables
 .populateBaseTable <- function(con, sql, data, table) {
-    dbBeginTransaction(con)
+    dbBegin(con)
     dbGetPreparedQuery(con, sql, data)
     dbCommit(con)
     message(paste("table ",table," filled",sep=""))

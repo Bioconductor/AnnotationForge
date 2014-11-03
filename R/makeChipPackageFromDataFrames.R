@@ -11,7 +11,7 @@
   values <- data.frame(probeFrame) 
   sql <- paste("INSERT INTO probes(PROBEID, GID, is_multiple)",
                "VALUES(?,?,?);")
-  dbBeginTransaction(con)
+  dbBegin(con)
   dbGetPreparedQuery(con, sql, values)
   dbCommit(con)
   dbGetQuery(con,
@@ -63,7 +63,7 @@
     sql <- paste("INSERT INTO map_metadata(map_name, source_name, source_url,
                   source_date)",
                  "VALUES(?,?,?,?);")
-    dbBeginTransaction(con)
+    dbBegin(con)
     dbGetPreparedQuery(con, sql, mapValues)
     dbCommit(con)
 }
@@ -83,7 +83,7 @@
   values <- data.frame(probeFrame) 
   psql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
                "VALUES(?,?,?);")
-  dbBeginTransaction(con)
+  dbBegin(con)
   dbGetPreparedQuery(con, psql, values)
   dbCommit(con)
   dbGetQuery(con,
@@ -103,7 +103,7 @@
       values <- data.frame(accessionsFrame) 
       asql <- paste("INSERT INTO accessions (probe_id, accession)",
                    "VALUES(?,?);")
-      dbBeginTransaction(con)
+      dbBegin(con)
       dbGetPreparedQuery(con, asql, values)
       dbCommit(con)
       ## If there are probes that were mentioned in
@@ -118,7 +118,7 @@
           ssql <- paste("INSERT INTO probes(probe_id, is_multiple)",
                         "VALUES(:probe_id,:is_multiple);")
           ## may have to switch NA to NULL
-          dbBeginTransaction(con)
+          dbBegin(con)
           dbGetPreparedQuery(con, ssql, newVals)
           dbCommit(con)
       }
