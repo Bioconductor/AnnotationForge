@@ -438,7 +438,7 @@ popARABIDOPSISCHIPDB <- function(affy,
     simplifyArabidopsisProbes(db, subStrs=subStrs)
     dropRedundantTables(db, subStrs=subStrs)
         
-    dbDisconnect(db, subStrs=subStrs, printSchema=printSchema)
+    dbDisconnect(db)
     
     analyzeVacuumDisconnect(drv,outputDir,prefix)    
 }
@@ -481,7 +481,7 @@ popARABIDOPSISDB <- function(prefix,
     appendPostMeta(db, subStrs=subStrs)
     makeGOViews(db)
     
-    dbDisconnect(db, subStrs=subStrs, printSchema=printSchema)
+    dbDisconnect(db)
     
     analyzeVacuumDisconnect(drv,outputDir,prefix)    
 }
