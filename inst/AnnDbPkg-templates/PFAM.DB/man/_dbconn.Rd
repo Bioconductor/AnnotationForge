@@ -76,11 +76,6 @@
   ## Count the number of rows in the "de" table:
   dbGetQuery(@ANNOBJPREFIX@_dbconn(), "SELECT COUNT(*) FROM de;")
 
-  ## The connection object returned by @ANNOBJPREFIX@_dbconn() was
-  ## created with:
-  dbConnect(SQLite(), dbname=@ANNOBJPREFIX@_dbfile(), cache_size=64000,
-  synchronous=0)
-
   @ANNOBJPREFIX@_dbschema()
 
   @ANNOBJPREFIX@_dbInfo()
