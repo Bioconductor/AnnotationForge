@@ -49,7 +49,7 @@ information about the taconomy ID at NCBIs website.  Here is an
 example of calling this function to make a package for zebrafinch.
 
 
-```{makeOrgPackageFromNCBI, eval=FALSE}
+```{r makeOrgPackageFromNCBI, eval=FALSE}
 library(AnnotationForge)
 makeOrgPackageFromNCBI(version = "0.1",
                        author = "Some One <so@someplace.org>",
@@ -99,7 +99,7 @@ three data.frame and that makes use of the goTable argument.
 
 
 
-```{makeOrgPackage, eval=FALSE}
+```{r makeOrgPackage, eval=FALSE}
 ## Makes an organism package for Zebra Finch data.frames:
 finchFile <- system.file("extdata","finch_info.txt",
 		         package="AnnotationForge")
