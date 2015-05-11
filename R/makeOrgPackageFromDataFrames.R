@@ -234,9 +234,9 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
         stop("When definined, 'goTable' needs to be a table name from the named data.frames passed in to '...'")
     
     ## if genus or species are null, then we should get them now.
-    if(is.null(genus)){genus <- .lookupSpeciesFromTaxId(tax_id)[['genus']] }
+    if(is.null(genus)){genus <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['genus']] }
     if(is.null(species)){
-        species <- .lookupSpeciesFromTaxId(tax_id)[['species']]
+        species <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['species']]
         species <- gsub(' ','.', species)
     }
 

@@ -217,7 +217,7 @@ load(system.file('extdata','viableIDs.rda', package='AnnotationForge'))
 ids <- names(results)[results]
 
 ## old school table of tax Ids
-load(system.file('extdata','taxNames.rda', package='AnnotationForge'))
+load(system.file('extdata','specData.rda', package='GenomeInfoDb'))
 sd <- specData[!is.na(specData[[3]]),]
 
 ## Some taxonomy IDs cannot be looked up at all - so discard

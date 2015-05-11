@@ -1117,9 +1117,9 @@ NEW_makeOrgPackageFromNCBI <- function(version,
       stop("'NCBIFilesDir' argument needs to be a single string or NULL")
 
   ## if genus or species are null, then we should get them now.
-  if(is.null(genus)){genus <- .lookupSpeciesFromTaxId(tax_id)[['genus']] }
+  if(is.null(genus)){genus <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['genus']] }
   if(is.null(species)){
-      species <- .lookupSpeciesFromTaxId(tax_id)[['species']] 
+      species <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['species']] 
       species <- gsub(' ', '.', species)
   }
   
@@ -1272,102 +1272,6 @@ makeOrgPackageFromNCBI <- function(version,
 }
 ## results <- unlist(lapply(otherIDs, AnnotationForge:::.testBlast2GO)); names(results) <- otherIDs; save(results, file='viableIDs.rda')
 
-
-
-
-
-
-
-
-
-############################################################################
-## Helpers for getting genus and species from the NCBI taxonomy ID
-
-## modified function to use our own data.
-.lookupSpeciesFromTaxId <- function(id){
-    if(!exists('specData')){## Only load this the 1st time
-        load(system.file('extdata','taxNames.rda',
-                         package='AnnotationForge'))
-    }
-    ## Then find matches
-    g <- specData[,1] == id
-    res <- specData[g,]
-    if(dim(res)[1]<1) stop("Cannot find a species to match the requested taxonomy id. Please provide the genus and species manually.")
-    if(dim(res)[1]==1) return(res[1,])
-    if(dim(res)[1]>1){
-        .tooLong <- function(x){
-            splt <- unlist(strsplit(x,split=" "))
-            if(length(splt) > 1){
-                return(TRUE)
-            }else{
-                return(FALSE)
-            }
-        }
-        tooLong = unlist(lapply(as.character(res$species), .tooLong))
-        if(all(tooLong)){
-            return(res[1,])
-        }else{
-            res <- res[!tooLong,]
-            return(res[1,])
-        }
-    }
-}
-
-## modify the above to throw out species=NA and only keep the 1st result
-
-## usage:
-## .lookupSpeciesFromTaxId("10090")
-## bigger test:
-## res <- list()
-## for(i in seq_along(taxIDs)){
-##     message(paste0('now testing: ',taxIDs[i]))
-##     res[[i]] <- .lookupSpeciesFromTaxId(taxIDs[i])
-## }
- 
-## This indicates that I have about 1438 different organisms that I
-## can run blast2GO for plus 38 organisms that I have NCBI GO data
-## for.
-
-
-###################################################################3
-## Code for processing the tax IDs directly from NCBI.
-## So look here for a mapping file
-## ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
-## And grab out the names.dmp file
-## and then do this to it to preprocess it:
-.processTaxNamesFile <- function(){
-    species <- read.delim('names.dmp',header = FALSE,sep = "|")
-    colnames(species) <- c('tax_id','name_txt','unique_name','name_class')
-    ## keep only 1st two cols
-    species <- species[,c(1:2,4)]
-    ## throw away tabs from second col
-    species[[2]] <- gsub('\t','',species[[2]])
-    ## And the third col
-    species[[3]] <- gsub('\t','',species[[3]])
-    ## throw away rows where the third column doesn't say 'scientific name'
-    keep <- grepl('scientific name', species[[3]])
-    species <- species[keep,1:2]
-    
-    ## split second column by first space:
-    rawSpec <- species[[2]]
-    spltSpec <- strsplit(rawSpec, split=" ")
-    genusDat <- unlist(lapply(spltSpec, function(x){x[1]}))
-    .getRest <- function(x){
-        if(length(x) > 1){
-            return(paste(x[2:length(x)], collapse=" "))
-        }else{
-            return(NA)
-        }
-    }
-    speciesDat <- unlist(lapply(spltSpec, .getRest))
-    specData <- data.frame(tax_id=species[[1]],
-                           genus=genusDat,
-                           species=speciesDat,
-                           stringsAsFactors=FALSE)
-    ## name columns
-    save(specData, file='taxNames.rda')
-}
-## .processTaxNamesFile()
 
 
 
