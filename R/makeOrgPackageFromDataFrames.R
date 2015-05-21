@@ -72,7 +72,7 @@
                                   type="OrgDb",
                                   centralID="GID"){
   name <- c("DBSCHEMAVERSION","DBSCHEMA","ORGANISM","SPECIES","CENTRALID",
-            "TAXID",
+            "Taxonomy ID",
             "Db type","Supporting package")
   value<- c("2.1",schema,paste(genus,species),paste(genus,species),
             centralID,tax_id,

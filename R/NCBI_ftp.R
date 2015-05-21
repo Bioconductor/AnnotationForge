@@ -325,7 +325,7 @@
 
 .addMetadata <- function(con, tax_id, genus, species){
   name <- c("DBSCHEMAVERSION","DBSCHEMA","ORGANISM","SPECIES","CENTRALID",
-            "TAXID",
+            "Taxonomy ID",
             "EGSOURCEDATE","EGSOURCENAME","EGSOURCEURL",
             "GOSOURCEDATE","GOSOURCENAME","GOSOURCEURL",
             "GOEGSOURCEDATE","GOEGSOURCENAME","GOEGSOURCEURL",
