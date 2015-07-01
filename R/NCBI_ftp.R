@@ -1301,19 +1301,16 @@ makeOrgPackageFromNCBI <- function(version,
 ## There are files here that will help with this:
 ## /home/mcarlson/TEMP/TEST_UniprotGOAnnots/
 
+
+
+
 ################################################################################
-## Step 2: get ensemble data when making a new package.
+## Step 2: get ensembl data when making a new package.
 ## To make this happen I need to be able to 'know' which species data
 ## sets are available at ensembl, and at a couple of related marts. I
 ## basically need a way to pair a tax ID with a specific mart/dataset.
 ## Also, I will need to do this in a way that gets the latest release
 ## every time.
-
-
-## I don't think I want to use biomart...  It would like kinda like this:
-## marts: ensembl, fungi_mart_XX, metazoa_mart_XX, plants_mart_XX, protists_mart_XX
-## datasets could then can be spooled and listed by taxID...
-## mart = useMart('ensembl', 'hsapiens_gene_ensembl')
 
 
 ## lets make a helper to troll the ftp site and get ensembl to entrez
@@ -1366,12 +1363,6 @@ available.FastaEnsemblSpecies <- function(speciesDirs=NULL){
 ## gene ID.  (Which the display_xref_id is NOT)
 
 
-## SO I will have to use biomaRt to find the data...:
-## library(biomaRt);
-## mart = useMart('ensembl', dataset='amelanoleuca_gene_ensembl')
-## res = getBM(attributes=c("ensembl_gene_id", "entrezgene"), mart=mart)
-
-
 
 ## helper for parsing strings into
 g.species <- function(str){
@@ -1393,7 +1384,6 @@ available.datasets <- function(){
     ## so which of the datSets are also in the FTP site?
     ## (when initially tested these two groups were perfectly synced)
     ftpStrs[ftpStrs %in% datSets]
-
 }
 
 ## ## now get those from the ensembl marts
@@ -1401,7 +1391,13 @@ available.datasets <- function(){
 ## enses <- rep('ensembl', times=length(datSets))
 ## marts <- mapply(FUN=useMart, enses, dataset=datSets)
 
-
+.getEnsemblData <- function(taxId, release=80){
+    datSets <- available.datasets()
+    datSet <- datSets[names(datSets) %in% taxId]
+    mart <- useMart('ensembl', datSet)
+    res <- getBM(attributes=c("ensembl_gene_id", "entrezgene"), mart=mart)
+    unique(res)
+}
 
 
 
@@ -1434,8 +1430,6 @@ available.datasets <- function(){
 
 ## And now we just need a function to populate a table etc.
 ## But before we write this final function I need to work on getting GO mappings from UniProt...
-
-
 
 ## ## This one shows how this stuff can be done
 ## getGeneFiles <- function(release=80){
