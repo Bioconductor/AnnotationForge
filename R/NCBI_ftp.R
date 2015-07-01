@@ -1340,7 +1340,8 @@ getFastaSpeciesDirs <- function(release=80){
 ## getFastaSpeciesDirs()
 
 
-## Helper for getting precise genus and species
+## Helper for getting precise genus and species available via
+## FTP. (and their Tax IDs)
 available.FastaEnsemblSpecies <- function(speciesDirs=NULL){
     if(is.null(speciesDirs)){
         speciesDirs <- getFastaSpeciesDirs()
@@ -1358,35 +1359,81 @@ available.FastaEnsemblSpecies <- function(speciesDirs=NULL){
 ## lapply(specs, GenomeInfoDb:::.taxonomyId)
 
 
+## PROBLEM: this dir does not seem to have any entrez gene data?
+
+## So It really seems like I can't use this data without some extra
+## information about how to map from the ensembl gene ID to the entrez
+## gene ID.  (Which the display_xref_id is NOT)
+
+
+## SO I will have to use biomaRt to find the data...:
+## library(biomaRt);
+## mart = useMart('ensembl', dataset='amelanoleuca_gene_ensembl')
+## res = getBM(attributes=c("ensembl_gene_id", "entrezgene"), mart=mart)
+
+
+
+## helper for parsing strings into
+g.species <- function(str){
+    strVec <- unlist(strsplit(str, split=' '))
+    firstLetter <- tolower(substr(strVec[1],start=1,stop=1))
+    theLast <- strVec[length(strVec)]
+    paste0(firstLetter, theLast)
+}
+
+## I want to get the availble datasets for all the available fasta species.
+available.datasets <- function(){
+    fastaSpecs <- available.FastaEnsemblSpecies()
+    g.specs <- unlist(lapply(fastaSpecs, g.species))
+    ftpStrs <- paste0(g.specs, "_gene_ensembl")
+    names(ftpStrs) <- names(g.specs)
+    ## then get listing of the dataSets
+    ens <- useMart('ensembl')
+    datSets <- listDatasets(mart)$dataset
+    ## so which of the datSets are also in the FTP site?
+    ## (when initially tested these two groups were perfectly synced)
+    ftpStrs[ftpStrs %in% datSets]
+
+}
+
+## ## now get those from the ensembl marts
+## datSets <- available.datasets()
+## enses <- rep('ensembl', times=length(datSets))
+## marts <- mapply(FUN=useMart, enses, dataset=datSets)
+
+
+
+
+
 
 ## Next up: write function to pull down the gene.txt.gz file and
 ## process it to a data.frame
-.getFastaData <- function(taxId, release=80){
-    baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
-    listDirs <- getFastaSpeciesDirs(release)
-    dir <- listDirs[names(listDirs) %in% taxId]
-    url <- paste0(baseUrl, dir,"/gene.txt.gz")
-    tmp <- tempfile()
-    ## Try several times to get the file if needed...
-    .tryDL(url,tmp)
-    colClasses <- c(rep("character", times=17 )) ## 17 columns
-    res <- read.delim(tmp,header=FALSE, sep="\t", #skip=1,
-                      stringsAsFactors=FALSE, quote="",
-                      colClasses = colClasses)
-    res <- unique(res[,c(8,14)])
-    ## some of the foreign keys are missing. We only want entrez genes
-    ## though which are always integers
-    res[[1]] <- as.integer(res[[1]])
-    ## then remove rows that have NAs
-    res <- res[!is.na(res[[1]]),]
-    ## Then name the cols
-    colnames(res) <- c('foreignKey','EnsID')
-    res
-}
+## .getFastaData <- function(taxId, release=80){
+##     baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
+##     listDirs <- getFastaSpeciesDirs(release)
+##     dir <- listDirs[names(listDirs) %in% taxId]
+##     url <- paste0(baseUrl, dir,"/gene.txt.gz")
+##     tmp <- tempfile()
+##     ## Try several times to get the file if needed...
+##     .tryDL(url,tmp)
+##     colClasses <- c(rep("character", times=17 )) ## 17 columns
+##     res <- read.delim(tmp,header=FALSE, sep="\t", #skip=1,
+##                       stringsAsFactors=FALSE, quote="",
+##                       colClasses = colClasses)
+##     res <- unique(res[,c(8,14)])
+##     ## some of the foreign keys are missing. We only want entrez genes
+##     ## though which are always integers
+##     res[[1]] <- as.integer(res[[1]])
+##     ## then remove rows that have NAs
+##     res <- res[!is.na(res[[1]]),]
+##     ## Then name the cols
+##     colnames(res) <- c('foreignKey','EnsID')
+##     res
+## }
 
 
 ## And now we just need a function to populate a table etc.
-
+## But before we write this final function I need to work on getting GO mappings from UniProt...
 
 
 
