@@ -1276,3 +1276,129 @@ makeOrgPackageFromNCBI <- function(version,
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+################################################################################
+## Major changes needed here to adapt this code.  Blast2GO has gone
+## commercial, and I need ensembl IDs whenever possible.
+
+
+################################################################################
+## Step 1: replace the blast2GO functionality with code that processes UniProt
+## There are files here that will help with this:
+## /home/mcarlson/TEMP/TEST_UniprotGOAnnots/
+
+################################################################################
+## Step 2: get ensemble data when making a new package.
+## To make this happen I need to be able to 'know' which species data
+## sets are available at ensembl, and at a couple of related marts. I
+## basically need a way to pair a tax ID with a specific mart/dataset.
+## Also, I will need to do this in a way that gets the latest release
+## every time.
+
+
+## I don't think I want to use biomart...  It would like kinda like this:
+## marts: ensembl, fungi_mart_XX, metazoa_mart_XX, plants_mart_XX, protists_mart_XX
+## datasets could then can be spooled and listed by taxID...
+## mart = useMart('ensembl', 'hsapiens_gene_ensembl')
+
+
+## lets make a helper to troll the ftp site and get ensembl to entrez
+## gene ID data.
+## but I want this to be more.  I want it to also return the taxIds as names...
+getFastaSpeciesDirs <- function(release=80){
+    baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
+    require(httr)
+    require(RCurl)
+    listing <- getURL(url=baseUrl, followlocation=TRUE, curl=curlHand)
+    listing<- strsplit(listing, "\n")[[1]]
+    cores <- listing[grepl(paste0("_core_",release,"_"), listing)]
+    coreDirs <- cores[!grepl('\\.', cores) & !grepl('\\:$', cores)]
+    .getDirOnly <- function(item){
+        dir <- unlist(strsplit(item, ' '))
+        dir[length(dir)]
+    }
+    res <-unlist(lapply(coreDirs, .getDirOnly))
+    specNames <- available.FastaEnsemblSpecies(res)
+    taxIds <- unlist(lapply(specNames, GenomeInfoDb:::.taxonomyId))
+    names(res) <- taxIds
+    res
+}
+## getFastaSpeciesDirs()
+
+
+## Helper for getting precise genus and species
+available.FastaEnsemblSpecies <- function(speciesDirs=NULL){
+    if(is.null(speciesDirs)){
+        speciesDirs <- getFastaSpeciesDirs()
+    }
+    species <- sub('_core_\\d+_\\d+','',speciesDirs)
+    genSpec <- gsub('_', ' ', species)
+    .upperCaseGenus <- function(str){
+        paste0(toupper(substr(str,start=1,stop=1)),
+               substr(str,start=2,stop=nchar(str)))
+    }
+    unlist(lapply(genSpec, .upperCaseGenus))
+}
+## Basically this is so that I can look up tax IDs like this:
+## library(GenomeInfoDb); specs <- available.FastaEnsemblSpecies();
+## lapply(specs, GenomeInfoDb:::.taxonomyId)
+
+
+
+## Next up: write function to pull down the gene.txt.gz file and
+## process it to a data.frame
+.getFastaData <- function(taxId, release=80){
+    baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
+    listDirs <- getFastaSpeciesDirs(release)
+    dir <- listDirs[names(listDirs) %in% taxId]
+    url <- paste0(baseUrl, dir,"/gene.txt.gz")
+    tmp <- tempfile()
+    ## Try several times to get the file if needed...
+    .tryDL(url,tmp)
+    colClasses <- c(rep("character", times=17 )) ## 17 columns
+    res <- read.delim(tmp,header=FALSE, sep="\t", #skip=1,
+                      stringsAsFactors=FALSE, quote="",
+                      colClasses = colClasses)
+    res <- unique(res[,c(8,14)])
+    ## some of the foreign keys are missing. We only want entrez genes
+    ## though which are always integers
+    res[[1]] <- as.integer(res[[1]])
+    ## then remove rows that have NAs
+    res <- res[!is.na(res[[1]]),]
+    ## Then name the cols
+    colnames(res) <- c('foreignKey','EnsID')
+    res
+}
+
+
+## And now we just need a function to populate a table etc.
+
+
+
+
+## ## This one shows how this stuff can be done
+## getGeneFiles <- function(release=80){
+##     baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
+##     require(httr)
+##     require(RCurl)
+##     curlHand <- httr::handle_find(baseUrl)$handle
+##     url <- paste0(baseUrl, "ailuropoda_melanoleuca_core_80_1/")
+##     listing <- getURL(url=url, followlocation=TRUE, customrequest="LIST -R",
+##                       curl=curlHand)
+##     listing<- strsplit(listing, "\n")[[1]]
+##     listing[grep(' gene.txt.gz$', listing)]
+## }
