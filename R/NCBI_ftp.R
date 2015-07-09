@@ -219,7 +219,7 @@
 }
 
 ## helpers for checking if NCBI 'cache database' is full (or not).
-.setNCBIDateStamp <- function(NCBIcon, tableName){
+.setNCBIDateStamp  <- function(NCBIcon, tableName){
     tblNm <- paste0(tableName,'_date') 
     vals = data.frame('date'=as.character(Sys.Date()))
     dbWriteTable(NCBIcon, name=tblNm, value=vals, overwrite=TRUE)
@@ -938,9 +938,9 @@ OLD_makeOrgPackageFromNCBI <- function(version,
              stringsAsFactors=FALSE)
 }
 
-## get Alternative GO Data for organisms where this data is not
-## already at NCBI
-.getAltGOData <- function(NCBIcon, NCBIFilesDir, tax_id){
+
+## Helper to get alternate GO data from UniProt and add it to the NCBI DB.
+.downloadAndPopulateAltGOData <- function(NCBIcon, NCBIFilesDir){
     ## 1st step download the data and put it into the NCBI DB as a table.
     url <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
     require(RCurl)
@@ -963,8 +963,19 @@ OLD_makeOrgPackageFromNCBI <- function(version,
     sql <- paste0("INSERT INTO altGO (EntrezGene,GO,NCBItaxon) ",
                   "VALUES(?,?,?)")
     .populateBaseTable(NCBIcon, sql, data, "metadata")
-    ## TODO: Don't forget to stamp out a date table
+    ## And don't forget to stamp out a date table
+    .setNCBIDateStamp(NCBIcon, 'altGO')
+}
 
+
+## get Alternative GO Data for organisms where this data is not
+## already at NCBI
+.getAltGOData <- function(NCBIcon, NCBIFilesDir, tax_id){
+    ## First get the data and populate it (if necessary)
+    if(!.isNCBICurrentWith(NCBIcon, 'altGO') ||
+       !.isNCBIPopulatedWith(NCBIcon, 'altGO')){
+        .downloadAndPopulateAltGOData(NCBIcon, NCBIFilesDir)
+    }
     ## Then get out the data that we *want* using another query with the tax_id
     sql <- paste0("SELECT EntrezGene, GO FROM altGO WHERE NCBItaxon = '",
                   tax_id,"'")
@@ -973,9 +984,9 @@ OLD_makeOrgPackageFromNCBI <- function(version,
     GOs <- strsplit(res$GO,split="; ")
     goLens <- unlist(lapply(GOs, length))
     entrez <- rep(res$EntrezGene, times=goLens)
-    data.frame(entrez=entrez, go=unlist(GOs), stringsAsFactors=FALSE)
-
-    ## TODO: append the EVIDENCE too match this
+    evidence <- rep("IEA", times=length(entrez))
+    data.frame(gene_id=entrez, go_id=unlist(GOs), evidence=evidence,
+               stringsAsFactors=FALSE)
 }
 
 
