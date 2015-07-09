@@ -938,6 +938,46 @@ OLD_makeOrgPackageFromNCBI <- function(version,
              stringsAsFactors=FALSE)
 }
 
+## get Alternative GO Data for organisms where this data is not
+## already at NCBI
+.getAltGOData <- function(NCBIcon, NCBIFilesDir, tax_id){
+    ## 1st step download the data and put it into the NCBI DB as a table.
+    url <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
+    require(RCurl)
+    dest <- file.path(NCBIFilesDir, "idmapping_selected.tab.gz")
+    f = CFILE(dest, mode="wb")
+    curlPerform(url = url, writedata = f@ref)  ## close(f) ## not needed?
+    ## now put that file in to the DB
+    ## TODO: set up tables and insert...
+      dbGetQuery(NCBIcon, paste(
+       "CREATE TABLE IF NOT EXISTS altGO", 
+       "(EntrezGene TEXT NOT NULL,
+         GO TEXT NOT NULL,
+         NCBItaxon TEXT NOT NULL)"))
+    dbGetQuery(NCBIcon, "CREATE INDEX geneidAltGO on altGO(EntrezGene)")
+    dbGetQuery(NCBIcon, "CREATE INDEX taxidAltGO on altGO(NCBItaxon)")
+    ## Then populate that table
+    colClasses <- c("NULL","NULL","character","NULL","NULL","NULL","character","NULL","NULL","NULL","NULL","NULL","character","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL","NULL")
+    data <-  read.delim(dest, header=FALSE, sep="\t", quote="",
+                        stringsAsFactors=FALSE, colClasses=colClasses)
+    sql <- paste0("INSERT INTO altGO (EntrezGene,GO,NCBItaxon) ",
+                  "VALUES(?,?,?)")
+    .populateBaseTable(NCBIcon, sql, data, "metadata")
+    ## TODO: Don't forget to stamp out a date table
+
+    ## Then get out the data that we *want* using another query with the tax_id
+    sql <- paste0("SELECT EntrezGene, GO FROM altGO WHERE NCBItaxon = '",
+                  tax_id,"'")
+    res <- dbGetQuery(NCBIcon, sql)
+    ## THEN, we have to unpack the GO terms (expand them) 
+    GOs <- strsplit(res$GO,split="; ")
+    goLens <- unlist(lapply(GOs, length))
+    entrez <- rep(res$EntrezGene, times=goLens)
+    data.frame(entrez=entrez, go=unlist(GOs), stringsAsFactors=FALSE)
+
+    ## TODO: append the EVIDENCE too match this
+}
+
 
 ## Helper to get complete list of entrez gene IDs
 .mkGIdQ <- function(tax_id, tableName){
@@ -1054,6 +1094,7 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
     
 
 
+    
     ## go has to be done in two separate steps so that if we get
     ## nothing back we can look for results from blast2GO.
     goDat <- .extract(rawData,
@@ -1061,7 +1102,15 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                       keepCols=c('gene_id','go_id','evidence'))
     if(dim(goDat)[1] == 0){## then try Blast2GO
         ## get all accessions together
-        goDat <- .getBlast2GO(tax_id, data[['refseq']], data[['accessions']]) 
+
+##############################################################
+## Here is where we need to (sometimes) get GO data)
+## .getAltGOData() needs to get data, populate the table and then
+## extract the data based on the tax_id as a data.frame to be assigned
+## into goDat...
+        
+        goDat <- .getAltGOData(NCBIcon, NCBIFilesDir, tax_id) 
+##        goDat <- .getBlast2GO(tax_id, data[['refseq']], data[['accessions']]) 
     }
     ## and .rename already checks to make sure there actually ARE GO IDs
     data <- .rename(data,
