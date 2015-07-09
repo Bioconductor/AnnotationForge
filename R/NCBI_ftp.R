@@ -1120,7 +1120,17 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                     goDat,
                     newName='go',
                     newCols=c("GID","GO","EVIDENCE"))
-    
+
+
+    ## If we have ensembl gene ids as data, then lets include it too
+    ## TODO: pass the release info in to here)
+    if(tax_id %in% names(available.ensembl.datasets())){
+        ensDat <- .getEnsemblData(taxId=tax_id)
+        data <- .rename(data,
+                        ensDat,
+                        newName='ensembl',
+                        newCols=c("GID","ENSEMBL"))
+    }
     
     ## unigene needs custom extraction of relevant genes ONLY (do last)
     if(.doWeNeedUnigene(tax_id)){
@@ -1344,30 +1354,11 @@ makeOrgPackageFromNCBI <- function(version,
 
 ################################################################################
 ################################################################################
-## Major changes needed here to adapt this code.  Blast2GO has gone
-## commercial, and I need ensembl IDs whenever possible.
-
-
-################################################################################
-## Step 1: replace the blast2GO functionality with code that processes UniProt
-## There are files here that will help with this:
-## /home/mcarlson/TEMP/TEST_UniprotGOAnnots/
-
-
-
-
-################################################################################
-## Step 2: get ensembl data when making a new package.
-## To make this happen I need to be able to 'know' which species data
-## sets are available at ensembl, and at a couple of related marts. I
-## basically need a way to pair a tax ID with a specific mart/dataset.
-## Also, I will need to do this in a way that gets the latest release
-## every time.
-
+## Code for adding Ensembl IDs for those species supported by ensembl
+## with GTF files.
 
 ## lets make a helper to troll the ftp site and get ensembl to entrez
-## gene ID data.
-## but I want this to be more.  I want it to also return the taxIds as names...
+## gene ID data.  The names will be tax ids...
 getFastaSpeciesDirs <- function(release=80){
     baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
     require(httr)
@@ -1409,15 +1400,8 @@ available.FastaEnsemblSpecies <- function(speciesDirs=NULL){
 ## lapply(specs, GenomeInfoDb:::.taxonomyId)
 
 
-## PROBLEM: this dir does not seem to have any entrez gene data?
 
-## So It really seems like I can't use this data without some extra
-## information about how to map from the ensembl gene ID to the entrez
-## gene ID.  (Which the display_xref_id is NOT)
-
-
-
-## helper for parsing strings into
+## helper for parsing strings into g.species format
 g.species <- function(str){
     strVec <- unlist(strsplit(str, split=' '))
     firstLetter <- tolower(substr(strVec[1],start=1,stop=1))
@@ -1426,14 +1410,14 @@ g.species <- function(str){
 }
 
 
-## the available.datasets function takes 20 seconds to make a small
+## the available.ensembl.datasets function takes 20 seconds to make a small
 ## vector.  So stash the results here for faster reuse/access on
 ## subsequent calls
 ensemblDatasets <- new.env(hash=TRUE, parent=emptyenv())
-## populate the above with: available.datasets()
+## populate the above with: available.ensembl.datasets()
 
 ## I want to get the availble datasets for all the available fasta species.
-available.datasets <- function(){
+available.ensembl.datasets <- function(){
     ## if the package wide vector is not empty, return it now.
     if(!exists('ensDatSets', envir=ensemblDatasets)){
         require(biomaRt)
@@ -1454,14 +1438,16 @@ available.datasets <- function(){
 
 
 ## ## now get those from the ensembl marts
-
 .getEnsemblData <- function(taxId, release=80){
     require(biomaRt)
-    datSets <- available.datasets()
+    datSets <- available.ensembl.datasets()
     datSet <- datSets[names(datSets) %in% taxId]
     ens <- useMart('ensembl', datSet)
-    res <- getBM(attributes=c("ensembl_gene_id", "entrezgene"), mart=ens)
+    res <- getBM(attributes=c("entrezgene","ensembl_gene_id"), mart=ens)
     res <- res[!is.na(res$entrezgene),]
+    colnames(res) <- c("gene_id","ensembl")
+    res[['gene_id']] <- as.character(res[['gene_id']])
+    res[['ensembl']] <- as.character(res[['ensembl']])
     unique(res)
 }
 
