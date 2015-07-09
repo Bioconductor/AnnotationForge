@@ -1380,6 +1380,7 @@ getFastaSpeciesDirs <- function(release=80){
     baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
     require(httr)
     require(RCurl)
+    curlHand <- getCurlHandle()
     listing <- getURL(url=baseUrl, followlocation=TRUE, curl=curlHand)
     listing<- strsplit(listing, "\n")[[1]]
     cores <- listing[grepl(paste0("_core_",release,"_"), listing)]
@@ -1434,13 +1435,14 @@ g.species <- function(str){
 
 ## I want to get the availble datasets for all the available fasta species.
 available.datasets <- function(){
+    require(biomaRt)
     fastaSpecs <- available.FastaEnsemblSpecies()
     g.specs <- unlist(lapply(fastaSpecs, g.species))
     ftpStrs <- paste0(g.specs, "_gene_ensembl")
     names(ftpStrs) <- names(g.specs)
     ## then get listing of the dataSets
     ens <- useMart('ensembl')
-    datSets <- listDatasets(mart)$dataset
+    datSets <- listDatasets(ens)$dataset
     ## so which of the datSets are also in the FTP site?
     ## (when initially tested these two groups were perfectly synced)
     ftpStrs[ftpStrs %in% datSets]
@@ -1454,10 +1456,15 @@ available.datasets <- function(){
 .getEnsemblData <- function(taxId, release=80){
     datSets <- available.datasets()
     datSet <- datSets[names(datSets) %in% taxId]
-    mart <- useMart('ensembl', datSet)
-    res <- getBM(attributes=c("ensembl_gene_id", "entrezgene"), mart=mart)
+    ens <- useMart('ensembl', datSet)
+    res <- getBM(attributes=c("ensembl_gene_id", "entrezgene"), mart=ens)
+    res <- res[!is.na(res$entrezgene),]
     unique(res)
 }
+
+
+
+
 
 
 
