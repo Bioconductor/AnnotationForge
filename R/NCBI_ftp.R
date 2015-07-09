@@ -1112,16 +1112,8 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                       keepTable='gene2go.gz',
                       keepCols=c('gene_id','go_id','evidence'))
     if(dim(goDat)[1] == 0){## then try Blast2GO
-        ## get all accessions together
-
-##############################################################
-## Here is where we need to (sometimes) get GO data)
-## .getAltGOData() needs to get data, populate the table and then
-## extract the data based on the tax_id as a data.frame to be assigned
-## into goDat...
-        
+        ## get all accessions together        
         goDat <- .getAltGOData(NCBIcon, NCBIFilesDir, tax_id) 
-##        goDat <- .getBlast2GO(tax_id, data[['refseq']], data[['accessions']]) 
     }
     ## and .rename already checks to make sure there actually ARE GO IDs
     data <- .rename(data,
@@ -1433,27 +1425,38 @@ g.species <- function(str){
     paste0(firstLetter, theLast)
 }
 
+
+## the available.datasets function takes 20 seconds to make a small
+## vector.  So stash the results here for faster reuse/access on
+## subsequent calls
+ensemblDatasets <- new.env(hash=TRUE, parent=emptyenv())
+## populate the above with: available.datasets()
+
 ## I want to get the availble datasets for all the available fasta species.
 available.datasets <- function(){
-    require(biomaRt)
-    fastaSpecs <- available.FastaEnsemblSpecies()
-    g.specs <- unlist(lapply(fastaSpecs, g.species))
-    ftpStrs <- paste0(g.specs, "_gene_ensembl")
-    names(ftpStrs) <- names(g.specs)
-    ## then get listing of the dataSets
-    ens <- useMart('ensembl')
-    datSets <- listDatasets(ens)$dataset
-    ## so which of the datSets are also in the FTP site?
-    ## (when initially tested these two groups were perfectly synced)
-    ftpStrs[ftpStrs %in% datSets]
+    ## if the package wide vector is not empty, return it now.
+    if(!exists('ensDatSets', envir=ensemblDatasets)){
+        require(biomaRt)
+        fastaSpecs <- available.FastaEnsemblSpecies()
+        g.specs <- unlist(lapply(fastaSpecs, g.species))
+        ftpStrs <- paste0(g.specs, "_gene_ensembl")
+        names(ftpStrs) <- names(g.specs)
+        ## then get listing of the dataSets
+        ens <- useMart('ensembl')
+        datSets <- listDatasets(ens)$dataset
+        ## so which of the datSets are also in the FTP site?
+        ## (when initially tested these two groups were perfectly synced)
+        assign("ensDatSets", ftpStrs[ftpStrs %in% datSets],
+               envir=ensemblDatasets)
+    }
+    get('ensDatSets', envir=ensemblDatasets)
 }
 
+
 ## ## now get those from the ensembl marts
-## datSets <- available.datasets()
-## enses <- rep('ensembl', times=length(datSets))
-## marts <- mapply(FUN=useMart, enses, dataset=datSets)
 
 .getEnsemblData <- function(taxId, release=80){
+    require(biomaRt)
     datSets <- available.datasets()
     datSet <- datSets[names(datSets) %in% taxId]
     ens <- useMart('ensembl', datSet)
