@@ -1103,8 +1103,6 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                     newName='accessions',
                     newCols=c('GID', 'ACCNUM'))
     
-
-
     
     ## go has to be done in two separate steps so that if we get
     ## nothing back we can look for results from blast2GO.
@@ -1247,6 +1245,10 @@ makeOrgPackageFromNCBI <- function(version,
     ## return handle to the db name
     dbname
 }
+
+
+
+
 
 
 
@@ -1457,6 +1459,7 @@ available.ensembl.datasets <- function(){
 
 
 
+## Some very olde code that I should probably delete (abandoned idea)
 
 ## Next up: write function to pull down the gene.txt.gz file and
 ## process it to a data.frame
