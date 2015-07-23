@@ -1275,66 +1275,66 @@ makeOrgPackageFromNCBI <- function(version,
 ## gos = dbGetQuery(NCBIcon, 'SELECT tax_id from gene2go'); g = as.character(gos[[1]]); gf <- as.factor(g); tabg = table(gf)
 
 
-## CONCLUSIONS:
-## I need code to process which taxIDs I can reasonably make into a recipe.
-## 1) Look in gene2GO - these TaxIDs we will do.
-## 2) For remaining taxIDs - do they have refseq OR genbank acccession?  If not, drop them as it won't be posible to use blast2GO
-## 3) For those taxIDs that have RS or GB IDs, try to get data from blast2GO.  If no data comes down, drop them from the list.
+## ## CONCLUSIONS:
+## ## I need code to process which taxIDs I can reasonably make into a recipe.
+## ## 1) Look in gene2GO - these TaxIDs we will do.
+## ## 2) For remaining taxIDs - do they have refseq OR genbank acccession?  If not, drop them as it won't be posible to use blast2GO
+## ## 3) For those taxIDs that have RS or GB IDs, try to get data from blast2GO.  If no data comes down, drop them from the list.
 
 
-## So rather than making the function 'picky', I will just limit the
-## recipe to only be run on certain tax IDs (prescreened as above).
-## AND I will create a function to do that prescreening.
+## ## So rather than making the function 'picky', I will just limit the
+## ## recipe to only be run on certain tax IDs (prescreened as above).
+## ## AND I will create a function to do that prescreening.
 
 
-## STEP 1:
-## This helper will just get the taxIDs that we have GO data for.
-.getCoreTaxIds <- function(NCBIFilesDir=getwd()){
-    ## 1st get the NCBI database (it probably already exists and if
-    ## not you will need it later anyways)
-    files = .primaryFiles() 
-    NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
-    .makeBaseDBFromDLs(files, "192222", NCBIcon, getwd())
-    ## now get the list of taxIDs that we know are supported
-    dbGetQuery(NCBIcon, "SELECT DISTINCT tax_id FROM gene2go;")[[1]]
-}
-## taxIDs = AnnotationForge:::.getCoreTaxIds()
+## ## STEP 1:
+## ## This helper will just get the taxIDs that we have GO data for.
+## .getCoreTaxIds <- function(NCBIFilesDir=getwd()){
+##     ## 1st get the NCBI database (it probably already exists and if
+##     ## not you will need it later anyways)
+##     files = .primaryFiles() 
+##     NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
+##     .makeBaseDBFromDLs(files, "192222", NCBIcon, getwd())
+##     ## now get the list of taxIDs that we know are supported
+##     dbGetQuery(NCBIcon, "SELECT DISTINCT tax_id FROM gene2go;")[[1]]
+## }
+## ## taxIDs = AnnotationForge:::.getCoreTaxIds()
 
 
 
 
-## STEP 2:
-## This helper will find out which of our remaining TaxIDs even have
-## the ability to be mapped onto blast2GO.
-.getBlast2GOViableTaxIDs <- function(NCBIFilesDir=getwd()){
-    ## 1st get the NCBI database (it probably already exists and if
-    ## not you will need it later anyways)
-    files = .primaryFiles() 
-    NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
-    .makeBaseDBFromDLs(files, "192222", NCBIcon, getwd())
-    ## now get the list of taxIDs that we know are supported
-    sql <- paste0('SELECT DISTINCT tax_id FROM gene2accession UNION ',
-                  'SELECT DISTINCT tax_id FROM gene2refseq')
-    viableTaxIds <- unique(dbGetQuery(NCBIcon, sql)[[1]])
-    ## Then drop the core Tax IDs since I won't need to get those again.
-    coretaxIDs <- .getCoreTaxIds()
-    ## So we only want these ones:
-    viableTaxIds[!viableTaxIds %in% coretaxIDs]
-}
-## otherIDs = AnnotationForge:::.getBlast2GOViableTaxIDs()
+## ## STEP 2:
+## ## This helper will find out which of our remaining TaxIDs even have
+## ## the ability to be mapped onto blast2GO.
+## .getBlast2GOViableTaxIDs <- function(NCBIFilesDir=getwd()){
+##     ## 1st get the NCBI database (it probably already exists and if
+##     ## not you will need it later anyways)
+##     files = .primaryFiles() 
+##     NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
+##     .makeBaseDBFromDLs(files, "192222", NCBIcon, getwd())
+##     ## now get the list of taxIDs that we know are supported
+##     sql <- paste0('SELECT DISTINCT tax_id FROM gene2accession UNION ',
+##                   'SELECT DISTINCT tax_id FROM gene2refseq')
+##     viableTaxIds <- unique(dbGetQuery(NCBIcon, sql)[[1]])
+##     ## Then drop the core Tax IDs since I won't need to get those again.
+##     coretaxIDs <- .getCoreTaxIds()
+##     ## So we only want these ones:
+##     viableTaxIds[!viableTaxIds %in% coretaxIDs]
+## }
+## ## otherIDs = AnnotationForge:::.getBlast2GOViableTaxIDs()
 
 
-## STEP 3:
-## This helper is just for calling Blast2GO to see which of the viable
-## taxIDs are actually supported
-.testBlast2GO <- function(tax_id){
-    url = paste("http://www.b2gfar.org/_media/species:data:",
-      tax_id,".annot.zip",sep="")
-    tmp <- tempfile()
-    ##try once to DL the file.
-    .tryDL2(url,tmp, times=1)
-}
-## results <- unlist(lapply(otherIDs, AnnotationForge:::.testBlast2GO)); names(results) <- otherIDs; save(results, file='viableIDs.rda')
+## ## STEP 3:
+## ## This helper is just for calling Blast2GO to see which of the viable
+## ## taxIDs are actually supported
+## .testBlast2GO <- function(tax_id){
+##     url = paste("http://www.b2gfar.org/_media/species:data:",
+##       tax_id,".annot.zip",sep="")
+##     tmp <- tempfile()
+##     ##try once to DL the file.
+##     .tryDL2(url,tmp, times=1)
+## }
+## ## results <- unlist(lapply(otherIDs, AnnotationForge:::.testBlast2GO)); names(results) <- otherIDs; save(results, file='viableIDs.rda')
 
 
 
@@ -1412,6 +1412,15 @@ g.species <- function(str){
 }
 
 
+## helper to make sure that we *have* entrez gene IDs to map to at ensembl!
+.ensemblMapsToEntrezId <- function(taxId, datSets){
+    require(biomaRt)
+    datSet <- datSets[names(datSets) %in% taxId]
+    ens <- useMart('ensembl', datSet)
+    at <- listAttributes(ens)
+    any(grepl('entrezgene',at$name))
+}
+
 ## the available.ensembl.datasets function takes 20 seconds to make a small
 ## vector.  So stash the results here for faster reuse/access on
 ## subsequent calls
@@ -1432,11 +1441,20 @@ available.ensembl.datasets <- function(){
         datSets <- listDatasets(ens)$dataset
         ## so which of the datSets are also in the FTP site?
         ## (when initially tested these two groups were perfectly synced)
-        assign("ensDatSets", ftpStrs[ftpStrs %in% datSets],
+        datSets <- ftpStrs[ftpStrs %in% datSets]
+        ## Friendly message
+        message(wmsg(paste0( "Please be patient while we work out which ",
+                            "organisms can be annotated with ensembl IDs. ")))
+        ## Remove dataSets that don't map to EntrezIds:
+        legitTaxIdxs <- unlist(lapply(names(datSets), .ensemblMapsToEntrezId,
+                                      datSets=datSets))
+        datSets <- datSets[legitTaxIdxs]
+        assign("ensDatSets", datSets,
                envir=ensemblDatasets)
     }
     get('ensDatSets', envir=ensemblDatasets)
 }
+
 
 
 ## ## now get those from the ensembl marts
