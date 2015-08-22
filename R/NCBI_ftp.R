@@ -968,6 +968,25 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 }
 
 
+## Helper to allow splitting of a two collumn data frame where
+## either column may have "; " separated values 
+splitBy <- function(data, splitCol=1){
+    splits <- strsplit(data[[splitCol]],split="; ")
+    splitLens <- unlist(lapply(splits, length))
+
+    if(splitCol==1){
+        dups <- rep(data[[2]], times=splitLens)
+        data <- data.frame(eg_id=unlist(splits), go_id=dups, 
+                           stringsAsFactors=FALSE)
+    }
+    if(splitCol==2){
+        dups <- rep(data[[1]], times=splitLens)
+        data <- data.frame(eg_id=dups, go_id=unlist(splits), 
+                           stringsAsFactors=FALSE)
+    }
+    data
+}
+
 ## get Alternative GO Data for organisms where this data is not
 ## already at NCBI
 .getAltGOData <- function(NCBIcon, NCBIFilesDir, tax_id){
@@ -981,11 +1000,23 @@ OLD_makeOrgPackageFromNCBI <- function(version,
                   tax_id,"'")
     res <- dbGetQuery(NCBIcon, sql)
     ## THEN, we have to unpack the GO terms (expand them) 
-    GOs <- strsplit(res$GO,split="; ")
-    goLens <- unlist(lapply(GOs, length))
-    entrez <- rep(res$EntrezGene, times=goLens)
-    evidence <- rep("IEA", times=length(entrez))
-    data.frame(gene_id=entrez, go_id=unlist(GOs), evidence=evidence,
+    ## GOs <- strsplit(res$GO,split="; ")
+    ## goLens <- unlist(lapply(GOs, length))
+    ## entrez <- rep(res$EntrezGene, times=goLens)
+    ## evidence <- rep("IEA", times=length(entrez))
+    ## data.frame(gene_id=entrez, go_id=unlist(GOs), evidence=evidence,
+    ##            stringsAsFactors=FALSE)
+
+    ## 1st fix: DROP values where there is no entrez gene ID
+    res <- res[res$EntrezGene!="",]
+    ## new helper to split two column data frames at will...
+    data <- splitBy(res, splitCol=2)
+    ## then split it the other way too fully expand it:
+    data <- splitBy(data, splitCol=1)
+
+    ## then finally append the final column
+    evidence <- rep("IEA", times=dim(data)[[1]])
+    data.frame(gene_id=data[[1]], go_id=data[[2]], evidence=evidence,
                stringsAsFactors=FALSE)
 }
 
