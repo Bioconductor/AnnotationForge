@@ -1008,7 +1008,15 @@ splitBy <- function(data, splitCol=1){
     ##            stringsAsFactors=FALSE)
 
     ## 1st fix: DROP values where there is no entrez gene ID
-    res <- res[res$EntrezGene!="",]
+    res <- res[res$EntrezGene!="",] ## IF no entrez gene IDs, return empty? :(
+    ## The following clause means some of the OrgDbs will not have GO mappings
+    ## (unless we also filter out based on this BEFORE we process)
+    ## other case is that there are missing GO's ...  :(
+    res <- res[res$GO!="",]
+    if(dim(res)[1] ==0){evidence <- rep("IEA", times=dim(res)[[1]])
+         return(data.frame(gene_id=res[[1]], go_id=res[[2]],
+            evidence=evidence, stringsAsFactors=FALSE))}
+
     ## new helper to split two column data frames at will...
     data <- splitBy(res, splitCol=2)
     ## then split it the other way too fully expand it:
