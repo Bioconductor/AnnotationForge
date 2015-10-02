@@ -705,7 +705,7 @@ popYEASTDB <- function(prefix,
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
     appendKEGG(db, subStrs=subStrs, printSchema=printSchema)
     appendEC(db, subStrs=subStrs, printSchema=printSchema)
-    appendYeastPfam(db, subStrs=subStrs, printSchema=printSchema)
+    ##appendYeastPfam(db, subStrs=subStrs, printSchema=printSchema)
     appendYeastSmart(db, subStrs=subStrs, printSchema=printSchema)
     appendYeastInterpro(db, subStrs=subStrs, printSchema=printSchema)
     appendYeastRejectORF(db, subStrs=subStrs, printSchema=printSchema)
