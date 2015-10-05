@@ -495,7 +495,7 @@ So we can do something like below:
 <<ourConn2>>=
 hom.Hs.inp.db$conn
 ## or better we can use a helper function to wrap this:
-AnnotationDbi:::dbconn(hom.Hs.inp.db)
+AnnotationDbi::dbconn(hom.Hs.inp.db)
 ## or we can just call the provided convenience function 
 ## from when this package loads:
 hom.Hs.inp_dbconn()
@@ -513,7 +513,7 @@ pair of useful methods are the \Rfunction{dbListTables} and
 database.
 
 <<dbListTables>>=
-con <- AnnotationDbi:::dbconn(hom.Hs.inp.db)
+con <- AnnotationDbi::dbconn(hom.Hs.inp.db)
 head(dbListTables(con))
 dbListFields(con, "Mus_musculus")
 @ 
@@ -744,7 +744,7 @@ extract identifiers.  How could we do that?
 <<columns,eval=FALSE>>=
 .cols <- function(x)
 {
-    con <- AnnotationDbi:::dbconn(x)
+    con <- AnnotationDbi::dbconn(x)
     list <- dbListTables(con)
     ## drop unwanted tables
     unwanted <- c("map_counts","map_metadata","metadata")
@@ -783,7 +783,7 @@ keytypes(hom.Hs.inp.db)
 ## refactor of .cols
 .getLCcolnames <- function(x)
 {
-    con <- AnnotationDbi:::dbconn(x)
+    con <- AnnotationDbi::dbconn(x)
     list <- dbListTables(con)
     ## drop unwanted tables
     unwanted <- c("map_counts","map_metadata","metadata")
@@ -829,7 +829,7 @@ columns(hom.Hs.inp.db)
     tabNames <- .getTableNames(x)
     lckeytype <- names(tabNames[tabNames %in% keytype])
     ## get a connection
-    con <- AnnotationDbi:::dbconn(x)
+    con <- AnnotationDbi::dbconn(x)
     sql <- paste("SELECT inp_id FROM",lckeytype, "WHERE species!='HOMSA'")
     res <- dbGetQuery(con, sql)
     res <- as.vector(t(res))

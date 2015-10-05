@@ -34,7 +34,7 @@
 ## helper to populate missing map_metadata from org packages for olde templates
 .cloneMapMetadata <- function(con, orgPkgName){
     ## 1st we need to extract the map_metadata
-    orgCon <- AnnotationDbi:::dbconn(eval(parse(text=orgPkgName)))
+    orgCon <- AnnotationDbi::dbconn(eval(parse(text=orgPkgName)))
     mapValues <- dbGetQuery(orgCon, "SELECT * FROM map_metadata")
     ## then get value for accnum and append it
     orgSchema <- .getOrgSchema(orgPkgName)
