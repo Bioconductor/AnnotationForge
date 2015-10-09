@@ -1051,21 +1051,18 @@ appendPfam <- function(db, subStrs, printSchema){
 
   message(cat("Appending Pfam"))
     
-  sql<- paste("CREATE TABLE pfam (",
-              "_id INTEGER NOT NULL,",
-              subStrs[["cntrTab"]],
-              ## ipi no longer supported
-              ## "ipi_id CHAR(11),"
-              "pfam_id CHAR(7) NULL,",
-              "FOREIGN KEY (_id) REFERENCES ",
-              subStrs[["cntrTab"]],
-              "(_id));") 
+  sql<- paste("    CREATE TABLE pfam (
+      _id INTEGER NOT NULL,                         -- REFERENCES ", subStrs[["cntrTab"]],"
+      ipi_id CHAR(11),                     -- IPI accession number
+      pfam_id CHAR(7) NULL,                         -- Pfam ID
+      FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
+    );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
   dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO pfam
-     SELECT g._id as _id, i.pfam_id
+     SELECT g._id as _id, i.ipi_id, i.pfam_id
      FROM ", subStrs[["cntrTab"]]," as g, anno.pfam as i
      WHERE g._id=i._id
      ORDER BY g._id;
@@ -1094,21 +1091,18 @@ appendProsite <- function(db, subStrs, printSchema){
 
   message(cat("Appending Prosite"))
     
-  sql<- paste("CREATE TABLE prosite (",
-              "_id INTEGER NOT NULL,",
-              subStrs[["cntrTab"]],
-              ## IPI no longer supported
-              ##"ipi_id CHAR(11),"
-              "prosite_id CHAR(7) NULL,",
-              "FOREIGN KEY (_id) REFERENCES",
-              subStrs[["cntrTab"]],
-              "(_id));") 
+  sql<- paste("    CREATE TABLE prosite (
+      _id INTEGER NOT NULL,                         -- REFERENCES ", subStrs[["cntrTab"]],"
+      ipi_id CHAR(11),                     -- IPI accession number
+      prosite_id CHAR(7) NULL,                      -- PROSITE ID
+      FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
+    );") 
   if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
   dbGetQuery(db, sql)
 
   sql<- paste("
     INSERT INTO prosite
-     SELECT g._id as _id, i.prosite_id
+     SELECT g._id as _id, i.ipi_id, i.prosite_id
      FROM ", subStrs[["cntrTab"]]," as g, anno.prosite as i
      WHERE g._id=i._id
      ORDER BY g._id;
