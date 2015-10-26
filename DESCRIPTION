@@ -3,15 +3,15 @@ Title: Code for Building Annotation Database Packages
 Description: Provides code for generating Annotation packages and
 	     their databases.  Packages produced are intended to be
 	     used with AnnotationDbi.
-Version: 1.13.0
+Version: 1.13.1
 Author: Marc Carlson, Herve Pages
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 Depends: R (>= 2.7.0), methods, utils, BiocGenerics (>= 0.15.10),
         Biobase (>= 1.17.0), AnnotationDbi (>= 1.31.19), org.Hs.eg.db
 Imports: methods, utils, DBI, RSQLite, BiocGenerics, S4Vectors, Biobase
-Suggests: DBI (>= 0.2-4), RSQLite (>= 0.6-4), XML, RCurl, hgu95av2.db,
-        human.db0, affy, Homo.sapiens, hom.Hs.inp.db, GO.db, BiocStyle,
-        knitr
+Suggests: DBI (>= 0.2-4), RSQLite (>= 0.6-4), XML, RCurl, biomaRt, httr,
+        GenomeInfoDb, affy, hgu95av2.db, human.db0, Homo.sapiens, 
+        hom.Hs.inp.db, GO.db, BiocStyle, knitr
 Collate: AnnDbPkg-maker.R sqlForge_utils.R sqlForge_baseMapBuilder.R
         sqlForge_schemaGen.R sqlForge_tableBuilder.R
         sqlForge_makeAnnPkgs.R sqlForge_wrapBaseDBPkgs.R

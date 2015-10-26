@@ -177,28 +177,26 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
                             species=NULL,
                             goTable=NA,
                             databaseOnly=FALSE){
-    ## drop any rownames on all data.frames
-    data <- lapply(data, function(x){rownames(x) <- NULL; x})
 
-    ## Data has to meet some strict criteria.
-    ## check that it's a list of data.frames.
-    dataClasses <- unique(sapply(data, class))
-    if(!is.list(data) || dataClasses!="data.frame")
-        stop("'...' must be a named set of data.frame objects")
-    ## There must be unique names for each data.frame. (
-    if(length(unique(names(data))) != length(data))
-        stop("All elements of '...' must be a named")
-    ## None of the list names is allowed to be "genes", "metadata" 
+    ## unique names for all 'data'
+    if (length(unique(names(data))) != length(data))
+        stop("All elements of '...' must have unique names")
     blackListedNames <- c("genes","metadata")
-    if(any(names(data) %in% blackListedNames))
-       stop("'genes' and 'metadata' are reserved.  Please choose different names for elements of '...'.")
-    ## The data.frames should NOT be allowed to have missing/redundant rows...
-    lengthsUni <- sapply(data, function(x){dim(unique(x))[1]})
-    lengthsRaw <- sapply(data, function(x){dim(x)[1]})
-    if(any(lengthsUni != lengthsRaw))
-        stop("data.frames passed in to '...' should not contain redundant rows")
-    ## There must be colnames for each data.frame.(they must each be
-    ## unique)
+    if (any(names(data) %in% blackListedNames))
+       stop("'genes' and 'metadata' are reserved. Please choose different ",
+            "names for elements of '...'.")
+    ## coerce to data.frame
+    data <- lapply(data, as.data.frame)
+
+    ## drop rownames, no duplicated rows
+    data <- lapply(data, function(x){
+                rownames(x) <- NULL
+                if (any(duplicated(x)))
+                    stop("data.frames in '...' cannot contain duplicated rows")
+                x
+            })
+
+    ## unique colnames for each data.frame
     .noGID <- function(x){x[!(x %in% "GID")]}
     colnamesUni <- unique(.noGID(unlist(sapply(data, colnames))))
     colnamesAll <- .noGID(unlist(sapply(data, colnames)))
