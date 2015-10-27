@@ -15,18 +15,30 @@
   \url{http://www.genome.ad.jp/kegg/}
 }
 
-\examples{
-  x <- @ANNOBJPREFIX@ARACYC
-  # Get the tair identifiers that are mapped to pathways
-  mapped_tairs <- mappedkeys(x)
-  # Convert to a list
-  xx <- as.list(x[mapped_tairs])
-  if(length(xx) > 0) {
-    # Get the pathways for the first five tairs
-    xx[1:5]
-    # For the first tair
-    xx[[1]]
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
   }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@ARACYC
+# Get the tair identifiers that are mapped to pathways
+mapped_tairs <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_tairs])
+if(length(xx) > 0) {
+  # Get the pathways for the first five tairs
+  xx[1:5]
+  # For the first tair
+  xx[[1]]
+}
 }
 
 \keyword{datasets}

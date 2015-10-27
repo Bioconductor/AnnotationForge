@@ -8,25 +8,39 @@
   by the probe identifiers are involved. Information is obtained from
   AraCyc.
 }
+
 \details{
   Annotation based on data provided by: @ARACYCSOURCE@
 }
+
 \references{
   \url{http://www.genome.ad.jp/kegg/}
 }
 
-\examples{
-  x <- @ANNOBJPREFIX@ARACYC
-  # Get the probe identifiers that are mapped to pathways
-  mapped_probes <- mappedkeys(x)
-  # Convert to a list
-  xx <- as.list(x[mapped_probes])
-  if(length(xx) > 0) {
-    # Get the pathways for the first five probes
-    xx[1:5]
-    # For the first probe
-    xx[[1]]
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
   }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@ARACYC
+# Get the probe identifiers that are mapped to pathways
+mapped_probes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_probes])
+if(length(xx) > 0) {
+  # Get the pathways for the first five probes
+  xx[1:5]
+  # For the first probe
+  xx[[1]]
+}
 }
 
 \keyword{datasets}

@@ -20,28 +20,42 @@
   Mappings were based on data provided by: @PMIDSOURCE@
 
 }
+
 \references{
   \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-        x <- @ANNOBJPREFIX@PMID
-        # Get the tair identifiers that are mapped to any PubMed ID
-        mapped_genes <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_genes])
-    if(length(xx) > 0){
-        # The tair identifiers for the first two elements of XX
-        xx[1:2]
-        # Get the first one
-        xx[[1]]
-        if(interactive() && !is.null(xx[[1]]) && !is.na(xx[[1]])
-           && require(annotate)){
-            # Gets article information as XML files
-            xmls <- pubmed(xx[[1]], disp = "data")
-            # Views article information using a browser
-            pubmed(xx[[1]], disp = "browser")
-        }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@PMID
+# Get the tair identifiers that are mapped to any PubMed ID
+mapped_genes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_genes])
+if(length(xx) > 0){
+    # The tair identifiers for the first two elements of XX
+    xx[1:2]
+    # Get the first one
+    xx[[1]]
+    if(interactive() && !is.null(xx[[1]]) && !is.na(xx[[1]])
+        && require(annotate)){
+        # Gets article information as XML files
+        xmls <- pubmed(xx[[1]], disp = "data")
+        # Views article information using a browser
+        pubmed(xx[[1]], disp = "browser")
     }
+}
 }
 \keyword{datasets}
 

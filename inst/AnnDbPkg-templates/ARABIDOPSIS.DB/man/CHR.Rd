@@ -16,18 +16,30 @@
   
 }
 
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-        x <- @ANNOBJPREFIX@CHR
-        # Get the tair identifiers that are mapped to a chromosome
-        mapped_tairs <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_tairs])
-        if(length(xx) > 0) {
-          # Get the CHR for the first five tairs
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@CHR
+# Get the tair identifiers that are mapped to a chromosome
+mapped_tairs <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_tairs])
+if(length(xx) > 0) {
+  # Get the CHR for the first five tairs
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
 }
 \keyword{datasets}
 

@@ -20,7 +20,7 @@
   package is a strict dependency for chip packages as this is where the
   gene cetric information is ultimately extracted from.  The full
   package name will always be this string plus the extension ".db".  But
-  most programatic acces will not require this extension, so its more
+  most programatic access will not require this extension, so its more
   convenient to leave it out.
 }
 \examples{

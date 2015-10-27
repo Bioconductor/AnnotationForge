@@ -25,17 +25,30 @@
 \references{
 \url{http://www.genome.ad.jp/kegg/}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-    # Convert the object to a list
-    xx <- as.list(@ANNOBJPREFIX@PATH2PROBE)
-    # Remove pathway identifiers that do not map to any probe id
-    xx <- xx[!is.na(xx)]
-    if(length(xx) > 0){
-        # The probe identifiers for the first two elements of XX
-        xx[1:2]
-        # Get the first one
-        xx[[1]]
-    } 
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+# Convert the object to a list
+xx <- as.list(@ANNOBJPREFIX@PATH2PROBE)
+# Remove pathway identifiers that do not map to any probe id
+xx <- xx[!is.na(xx)]
+if(length(xx) > 0){
+    # The probe identifiers for the first two elements of XX
+    xx[1:2]
+    # Get the first one
+    xx[[1]]
+} 
 }
 
 \keyword{datasets}

@@ -20,21 +20,33 @@
   
 }
 
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-    # Convert the object to a list
-    xx <- as.list(@ANNOBJPREFIX@PMID2PROBE)
-    if(length(xx) > 0){
-        # The probe identifiers for the first two elements of XX
-        xx[1:2]
-        # Get the first one
-        xx[[1]]
-        if(interactive() && require(annotate)){
-            # Gets article information as XML files for a PubMed id
-            xmls <- pubmed(names(xx)[1], disp = "data")
-            # Views article information using a browser
-            pubmed(names(xx)[1], disp = "browser")
-        }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+# Convert the object to a list
+xx <- as.list(@ANNOBJPREFIX@PMID2PROBE)
+if(length(xx) > 0){
+    # The probe identifiers for the first two elements of XX
+    xx[1:2]
+    # Get the first one
+    xx[[1]]
+    if(interactive() && require(annotate)){
+        # Gets article information as XML files for a PubMed id
+        xmls <- pubmed(names(xx)[1], disp = "data")
+        # Views article information using a browser
+        pubmed(names(xx)[1], disp = "browser")
     }
+}
 }
 
 \keyword{datasets}

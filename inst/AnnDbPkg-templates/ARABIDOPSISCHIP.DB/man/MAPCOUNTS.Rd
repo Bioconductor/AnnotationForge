@@ -21,21 +21,32 @@
 }
 
 \seealso{
-  \code{\link[AnnotationDbi:Bimap-keys]{mappedkeys}},
-  \code{\link[AnnotationDbi:Bimap-keys]{count.mappedkeys}},
-  \code{\link[AnnotationDbi:AnnDbPkg-checker]{checkMAPCOUNTS}}
+}
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi:Bimap-keys]{mappedkeys}},
+    \item \code{\link[AnnotationDbi:Bimap-keys]{count.mappedkeys}},
+    \item \code{\link[AnnotationDbi:AnnDbPkg-checker]{checkMAPCOUNTS}}
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
 }
 
 \examples{
-  @ANNOBJPREFIX@MAPCOUNTS
-  mapnames <- names(@ANNOBJPREFIX@MAPCOUNTS)
-  @ANNOBJPREFIX@MAPCOUNTS[mapnames[1]]
-  x <- get(mapnames[1])
-  sum(!is.na(as.list(x)))
-  count.mappedkeys(x)   # much faster!
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
 
-  ## Check the "map count" of all the maps in package @PKGNAME@
-  checkMAPCOUNTS("@PKGNAME@")
+## Bimap interface:
+@ANNOBJPREFIX@MAPCOUNTS
+mapnames <- names(@ANNOBJPREFIX@MAPCOUNTS)
+@ANNOBJPREFIX@MAPCOUNTS[mapnames[1]]
+x <- get(mapnames[1])
+sum(!is.na(as.list(x)))
+count.mappedkeys(x)   # much faster!
+
+## Check the "map count" of all the maps in package @PKGNAME@
+checkMAPCOUNTS("@PKGNAME@")
 }
 
 \keyword{datasets}
