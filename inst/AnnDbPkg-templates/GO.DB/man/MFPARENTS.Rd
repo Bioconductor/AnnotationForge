@@ -9,6 +9,7 @@
   direct parent term is a more general GO term that immediately precedes
   the given GO term in the DAG.
 }
+
 \details{
   Each GO MF term is mapped to a named vector of GO MF terms. The name
   associated with the parent term will be either \emph{isa}, \emph{hasa} or \emph{partof},
@@ -24,26 +25,40 @@
   Mappings were based on data provided by: @MFPARENTSSOURCE@
   
 }
+
 \references{
   \url{http://www.geneontology.org/} and
   \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} 
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-    # Convert the object to a list
-    xx <- as.list(@ANNOBJPREFIX@MFPARENTS)
-    # Remove GO identifiers that do not have any parent
-    xx <- xx[!is.na(xx)]
-    if(length(xx) > 0){
-        # Get the parent GO identifiers for the first elents of xx
-        goids <- xx[[1]]
-        # Find out the GO terms for the first parent goid
-        GOID(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Term(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Synonym(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Secondary(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Definition(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Ontology(@ANNOBJPREFIX@TERM[[goids[1]]])
-    }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+# Convert the object to a list
+xx <- as.list(@ANNOBJPREFIX@MFPARENTS)
+# Remove GO identifiers that do not have any parent
+xx <- xx[!is.na(xx)]
+if(length(xx) > 0){
+    # Get the parent GO identifiers for the first elents of xx
+    goids <- xx[[1]]
+    # Find out the GO terms for the first parent goid
+    GOID(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Term(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Synonym(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Secondary(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Definition(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Ontology(@ANNOBJPREFIX@TERM[[goids[1]]])
+}
 }
 \keyword{datasets}
 

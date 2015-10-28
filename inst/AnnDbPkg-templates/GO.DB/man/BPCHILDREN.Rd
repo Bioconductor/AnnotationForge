@@ -20,26 +20,40 @@ This data set describes associations between GO molecular function (BP)
   Mappings were based on data provided by: @BPCHILDRENSOURCE@
 
 }
+
 \references{
 \url{http://www.geneontology.org/} and
 \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} 
 }
-\examples{
-  # Convert the object to a list
-  xx <- as.list(@ANNOBJPREFIX@BPCHILDREN)
-  # Remove GO IDs that do not have any children
-  xx <- xx[!is.na(xx)]
-  if(length(xx) > 0){
-     # Get the parent GO IDs for the first elents of xx
-        goids <- xx[[1]]
-        # Find out the GO terms for the first parent goid
-        GOID(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Term(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Synonym(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Secondary(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Definition(@ANNOBJPREFIX@TERM[[goids[1]]])
-        Ontology(@ANNOBJPREFIX@TERM[[goids[1]]])
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
   }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+# Convert the object to a list
+xx <- as.list(@ANNOBJPREFIX@BPCHILDREN)
+# Remove GO IDs that do not have any children
+xx <- xx[!is.na(xx)]
+if(length(xx) > 0){
+    # Get the parent GO IDs for the first elents of xx
+    goids <- xx[[1]]
+    # Find out the GO terms for the first parent goid
+    GOID(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Term(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Synonym(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Secondary(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Definition(@ANNOBJPREFIX@TERM[[goids[1]]])
+    Ontology(@ANNOBJPREFIX@TERM[[goids[1]]])
+}
 }
 \keyword{datasets}
 

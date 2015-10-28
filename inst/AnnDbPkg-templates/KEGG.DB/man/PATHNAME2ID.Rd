@@ -12,21 +12,34 @@
   length 1.  
 
   Mappings were based on data provided by: @PATHNAME2IDSOURCE@
-
 }
+
 \references{
 \url{ftp://ftp.genome.ad.jp/pub/kegg/pathways}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-	xx <- as.list(@ANNOBJPREFIX@PATHNAME2ID)
-	if(length(xx) > 0){
-		# get the value for the first key
-		xx[[1]]
-		# Get the values for a few keys
-		if(length(xx) >= 3){
-			xx[1:3]
-		}
-	}
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+xx <- as.list(@ANNOBJPREFIX@PATHNAME2ID)
+if(length(xx) > 0){
+    # get the value for the first key
+    xx[[1]]
+    # Get the values for a few keys
+    if(length(xx) >= 3){
+    	xx[1:3]
+    }
+}
 }
 \keyword{datasets}
 

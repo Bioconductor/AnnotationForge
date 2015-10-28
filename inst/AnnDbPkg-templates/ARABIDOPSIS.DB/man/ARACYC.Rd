@@ -8,9 +8,11 @@
   by the tair identifiers are involved. Information is obtained from
   AraCyc.
 }
+
 \details{
   Annotation based on data provided by: @ARACYCSOURCE@
 }
+
 \references{
   \url{http://www.genome.ad.jp/kegg/}
 }

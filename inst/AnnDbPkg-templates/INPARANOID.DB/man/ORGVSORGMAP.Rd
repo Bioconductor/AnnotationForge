@@ -128,76 +128,89 @@
     used.  An exception may occur in the future if a new model organism
     has a very similar genus and species name to an existing one.
 }
+
 \references{
 \url{http://inparanoid.sbc.su.se/download/current/sqltables}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-        x <- @ANNOBJPREFIX@APIME
-        # Get honeybee IDs that are paralogous to the pkg IDs
-        mapped_IDs <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_IDs])
-        if(length(xx) > 0) {
-          # Get the paralogs for the first five genes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
 
-        #Now for the reverse map (honeybee IDs back to pkg paralog)
-        x <- revmap(@ANNOBJPREFIX@APIME)
-        mapped_IDs <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_IDs])
-        if(length(xx) > 0) {
-          # Get the paralogs for the first five IDs
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }         
+## Bimap interface:
+x <- @ANNOBJPREFIX@APIME
+# Get honeybee IDs that are paralogous to the pkg IDs
+mapped_IDs <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_IDs])
+if(length(xx) > 0) {
+  # Get the paralogs for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
 
-    \dontrun{
-        #For the most common organisms, we try to ensure that you can
-        #map back to an Entrez Gene ID by providing you with necessary
-        #maps in the related organism based annotation packages.  The
-        #following example shows how to get from an Entrez Gene ID for
-        #Human to Entrez Gene IDs for Mouse even though inparanoid does
-        #not map to Entrez Gene IDs for either of these species.
+#Now for the reverse map (honeybee IDs back to pkg paralog)
+x <- revmap(@ANNOBJPREFIX@APIME)
+mapped_IDs <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_IDs])
+if(length(xx) > 0) {
+  # Get the paralogs for the first five IDs
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}         
 
-        #You will have to include the appropriate packages for
-        #humans:
-        library("org.Hs.eg.db")
-        #and for mouse:
-        library("org.Mm.eg.db")
-        #And of course you will need the inparanoid package:
-        library("hom.Hs.inp.db")
+\dontrun{
+#For the most common organisms, we try to ensure that you can
+#map back to an Entrez Gene ID by providing you with necessary
+#maps in the related organism based annotation packages.  The
+#following example shows how to get from an Entrez Gene ID for
+#Human to Entrez Gene IDs for Mouse even though inparanoid does
+#not map to Entrez Gene IDs for either of these species.
 
-        #Start with some Human Entrez Gene IDs
-        humanEGIds <- c("4488","4487")
+#You will have to include the appropriate packages for
+#humans:
+library("org.Hs.eg.db")
+#and for mouse:
+library("org.Mm.eg.db")
+#And of course you will need the inparanoid package:
+library("hom.Hs.inp.db")
 
-        #Inparanoid uses ensembl protein IDs so start with
-        #those. Notice that there will be many protein IDs returned for
-        #a typical gene since there are many possible translations.
-        humanProtIds <- mget(humanEGIds,org.Hs.egENSEMBLPROT)
+#Start with some Human Entrez Gene IDs
+humanEGIds <- c("4488","4487")
 
-        #Map the IDs that we can from inparanoid. Notice that by design,
-        #inparanoid only represents each gene product with a single
-        #translation product. Therefore your list could slim down a lot
-        #during this step.  Also, if the thing you are trying to match
-        #up at this step has less than 100\% seed status, you will not
-        #find it in this step.
-        rawMouseProtIds <- mget(unlist(humanProtIds),hom.Hs.inpMUSMU,ifnotfound=NA)
-        #This also means that we need to clean up the NAs from our result
-        mouseProtIds <- rawMouseProtIds[!is.na(rawMouseProtIds)]
+#Inparanoid uses ensembl protein IDs so start with
+#those. Notice that there will be many protein IDs returned for
+#a typical gene since there are many possible translations.
+humanProtIds <- mget(humanEGIds,org.Hs.egENSEMBLPROT)
 
-        #Then use the mouse organism based packages to convert these IDs
-        #back to an Entrez Gene ID again (this time for mouse). 
-        mouseEGIds <- mget(unlist(mouseProtIds),
-                           org.Mm.egENSEMBLPROT2EG,ifnotfound=NA)
-        #Now go ahead and have a look at the output
-        mouseEGIds
-    }
+#Map the IDs that we can from inparanoid. Notice that by design,
+#inparanoid only represents each gene product with a single
+#translation product. Therefore your list could slim down a lot
+#during this step.  Also, if the thing you are trying to match
+#up at this step has less than 100\% seed status, you will not
+#find it in this step.
+rawMouseProtIds <- mget(unlist(humanProtIds),hom.Hs.inpMUSMU,ifnotfound=NA)
+#This also means that we need to clean up the NAs from our result
+mouseProtIds <- rawMouseProtIds[!is.na(rawMouseProtIds)]
 
+#Then use the mouse organism based packages to convert these IDs
+#back to an Entrez Gene ID again (this time for mouse). 
+mouseEGIds <- mget(unlist(mouseProtIds),
+                   org.Mm.egENSEMBLPROT2EG,ifnotfound=NA)
+#Now go ahead and have a look at the output
+mouseEGIds
+}
 }
 \keyword{datasets}
 

@@ -16,14 +16,27 @@ terms in defined by Gene Ontology Consortium and their definition are obsolete
 \references{
   \url{http://www.ncbi.nlm.nih.gov/LocusLink} 
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-    # Convert the object to a list
-    xx <- as.list(@ANNOBJPREFIX@TERM)
-    if(length(xx) > 0){
-        # Get the TERMS for the first elent of xx
-        GOID(xx[[1]])
-        Ontology(xx[[1]])
-    }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+# Convert the object to a list
+xx <- as.list(@ANNOBJPREFIX@TERM)
+if(length(xx) > 0){
+    # Get the TERMS for the first elent of xx
+    GOID(xx[[1]])
+    Ontology(xx[[1]])
+}
 }
 \keyword{datasets}
 

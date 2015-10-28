@@ -48,31 +48,44 @@
   the entrez gene identifier that corresponds to the gene that produces
   that enzyme. The name of the vector corresponds to the EC number. 
 }
+
 \references{
 \url{ftp://ftp.genome.ad.jp/pub/kegg/pathways}
 }
-\examples{
-    x <- @ANNOBJPREFIX@ENZYME
-    # Get the entrez gene identifiers that are mapped to an EC number 
-    mapped_genes <- mappedkeys(x)
-    # Convert to a list
-    xx <- as.list(x[mapped_genes])
-    if(length(xx) > 0) {
-      # Get the ENZYME for the first five genes
-      xx[1:5]
-      # Get the first one
-      xx[[1]]
-    }
-    # For the reverse map:
-    # Convert to a list
-    xx <- as.list(@ANNOBJPREFIX@ENZYME2EG)
-    if(length(xx) > 0){
-       # Gets the entrez gene identifiers for the first five enzyme
-       #commission numbers
-       xx[1:5]
-       # Get the first one
-       xx[[1]]
-    }
 
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@ENZYME
+# Get the entrez gene identifiers that are mapped to an EC number 
+mapped_genes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_genes])
+if(length(xx) > 0) {
+  # Get the ENZYME for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+# For the reverse map:
+# Convert to a list
+xx <- as.list(@ANNOBJPREFIX@ENZYME2EG)
+if(length(xx) > 0){
+   # Gets the entrez gene identifiers for the first five enzyme
+   #commission numbers
+   xx[1:5]
+   # Get the first one
+   xx[[1]]
+}
 }
 \keyword{datasets}

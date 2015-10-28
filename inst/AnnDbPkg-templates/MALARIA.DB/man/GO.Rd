@@ -60,8 +60,6 @@
   are available in a separate data package named GO.
   
   Mappings were based on data provided by: @GOSOURCE@
-
-
   
   For the reverse map GO2ORF, each GO term maps to a named vector of
   ORF identifiers. A GO identifier may be mapped to the same
@@ -70,35 +68,48 @@
   terms and other information are available in a separate data package
   named GO.
 }
-\seealso{
-  \code{\link{@ANNOBJPREFIX@GO2ALLORFS}}.
-}
+
 \references{
 \url{ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/}
 }
-\examples{
-    x <- @ANNOBJPREFIX@GO
-    # Get the ORF identifiers that are mapped to a GO ID
-    mapped_genes <- mappedkeys(x)
-    # Convert to a list
-    xx <- as.list(x[mapped_genes])
-    if(length(xx) > 0) {
-        # Try the first one
-        got <- xx[[1]]           
-        got[[1]][["GOID"]]
-        got[[1]][["Ontology"]]
-        got[[1]][["Evidence"]]
-    }
-    # For the reverse map:
-    # Convert to a list
-    xx <- as.list(@ANNOBJPREFIX@GO2ORF)
-    if(length(xx) > 0){
-        # Gets the ORF ids for the top 2nd and 3nd GO identifiers
-        goids <- xx[2:3]
-        # Gets the ORF ids for the first element of goids
-        goids[[1]]
-        # Evidence code for the mappings
-        names(goids[[1]])
-    }
+
+\seealso{
+  \itemize{
+    \item \code{\link{@ANNOBJPREFIX@GO2ALLORFS}}.
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
 }
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@GO
+# Get the ORF identifiers that are mapped to a GO ID
+mapped_genes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_genes])
+if(length(xx) > 0) {
+    # Try the first one
+    got <- xx[[1]]           
+    got[[1]][["GOID"]]
+    got[[1]][["Ontology"]]
+    got[[1]][["Evidence"]]
+}
+# For the reverse map:
+# Convert to a list
+xx <- as.list(@ANNOBJPREFIX@GO2ORF)
+if(length(xx) > 0){
+    # Gets the ORF ids for the top 2nd and 3nd GO identifiers
+    goids <- xx[2:3]
+    # Gets the ORF ids for the first element of goids
+    goids[[1]]
+    # Evidence code for the mappings
+    names(goids[[1]])
+}
+}
+
 \keyword{datasets}

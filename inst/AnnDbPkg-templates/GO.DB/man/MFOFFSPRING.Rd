@@ -20,19 +20,33 @@
   Mappings were based on data provided by: @MFOFFSPRINGSOURCE@
 
 }
+
 \references{
 \url{http://www.geneontology.org/} and
 \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} 
 }
-\examples{
-  # Convert the object to a list
-  xx <- as.list(@ANNOBJPREFIX@MFOFFSPRING)
-  # Remove GO identifiers that do not have any offspring
-  xx <- xx[!is.na(xx)]
-  if(length(xx) > 0){
-    # Get the offspring GO identifiers for the first two elents of xx
-  goids <- xx[1:2]
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
   }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+# Convert the object to a list
+xx <- as.list(@ANNOBJPREFIX@MFOFFSPRING)
+# Remove GO identifiers that do not have any offspring
+xx <- xx[!is.na(xx)]
+if(length(xx) > 0){
+  # Get the offspring GO identifiers for the first two elents of xx
+goids <- xx[1:2]
+}
 }
 \keyword{datasets}
 

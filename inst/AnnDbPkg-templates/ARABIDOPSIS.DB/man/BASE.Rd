@@ -3,11 +3,11 @@
 \alias{@ANNOBJPREFIX@}
 \title{Bioconductor annotation data package}
 \description{
-  
+ 
   Welcome to the @ANNOBJPREFIX@.db annotation Package.  The purpose of
   this package is to provide detailed information about the
   @ANNOBJPREFIX@ platform. This package is updated biannually.
-  
+ 
   Objects in this package are accessed using the \code{select()} interface.
   See ?select in the AnnotationDbi package for details.
 }
@@ -31,4 +31,5 @@ columns(@ANNOBJPREFIX@.db)
 ## use of select().
 ls("package:@ANNOBJPREFIX@.db")
 }
+
 \keyword{datasets}

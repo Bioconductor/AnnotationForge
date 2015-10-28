@@ -57,20 +57,35 @@
   relationships indicate that the genes from the child terms would be
   the same kind of thing.
 }
+
 \references{
 \url{ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/}
 }
-\examples{
-    # Convert to a list
-    xx <- as.list(@ANNOBJPREFIX@GO2ALLORFS)
-    if(length(xx) > 0){
-        # Gets the ORF identifiers for the top 2nd and 3nd GO identifiers
-        goids <- xx[2:3]
-        # Gets all the ORF identifiers for the first element of goids
-        goids[[1]]
-        # Evidence code for the mappings
-        names(goids[[1]])
-    }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
 }
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+# Convert to a list
+xx <- as.list(@ANNOBJPREFIX@GO2ALLORFS)
+if(length(xx) > 0){
+    # Gets the ORF identifiers for the top 2nd and 3nd GO identifiers
+    goids <- xx[2:3]
+    # Gets all the ORF identifiers for the first element of goids
+    goids[[1]]
+    # Evidence code for the mappings
+    names(goids[[1]])
+}
+}
+
 \keyword{datasets}
 
