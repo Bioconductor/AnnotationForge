@@ -7,6 +7,7 @@
   between a given GO identifier and all Entrez Gene identifiers annotated at that
   GO term or one of its children in the GO ontology.
 }
+
 \details{
   GO consists of three ontologies---molecular function (MF),
   biological process (BP), and cellular component (CC).  All ontologies
@@ -87,5 +88,6 @@ if(length(xx) > 0){
     names(goids[[1]])
 }
 }
+
 \keyword{datasets}
 

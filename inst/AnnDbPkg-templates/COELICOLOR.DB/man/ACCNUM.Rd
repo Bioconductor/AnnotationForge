@@ -8,8 +8,8 @@
 }
 \details{
   This object is a simple mapping of Entrez Gene identifiers
-  \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to all possible GenBank 
-  accession numbers.
+  \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to all possible
+  GenBank accession numbers.
 
   Mappings were based on data provided by: @ACCNUMSOURCE@
 }

@@ -23,33 +23,47 @@
   Mappings were based on data provided by: @MAPSOURCE@
 
 }
+
 \references{
   \url{http://www.ncbi.nlm.nih.gov}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-        x <- @ANNOBJPREFIX@MAP
-        # Get the entrez gene identifiers that are mapped to any cytoband
-        mapped_genes <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_genes])
-        if(length(xx) > 0) {
-          # Get the ids for the first five genes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
-        #For the reverse map @ANNOBJPREFIX@MAP2EG
-        x <- @ANNOBJPREFIX@MAP2EG
-        # Get the cytobands that are mapped to any entrez gene id
-        mapped_bands <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_bands])
-        if(length(xx) > 0) {
-          # Get the bands for the first five genes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@MAP
+# Get the entrez gene identifiers that are mapped to any cytoband
+mapped_genes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_genes])
+if(length(xx) > 0) {
+  # Get the ids for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+#For the reverse map @ANNOBJPREFIX@MAP2EG
+x <- @ANNOBJPREFIX@MAP2EG
+# Get the cytobands that are mapped to any entrez gene id
+mapped_bands <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_bands])
+if(length(xx) > 0) {
+  # Get the bands for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
 }
 \keyword{datasets}
 

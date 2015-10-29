@@ -13,21 +13,33 @@
   the vector will contain an \code{NA}.
   
   Mappings were based on data provided by: @CHRSOURCE@
-  
+}
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
 }
 
 \examples{
-        x <- @ANNOBJPREFIX@CHR
-        # Get the probe identifiers that are mapped to a chromosome
-        mapped_probes <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_probes])
-        if(length(xx) > 0) {
-          # Get the CHR for the first five probes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@CHR
+# Get the probe identifiers that are mapped to a chromosome
+mapped_probes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_probes])
+if(length(xx) > 0) {
+  # Get the CHR for the first five probes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
 }
+}
+
 \keyword{datasets}
 

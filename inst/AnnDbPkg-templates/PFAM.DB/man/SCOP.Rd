@@ -16,21 +16,34 @@
   of sequences and structures. J. Mol. Biol. 247, 536-540  
 }
 \references{\url{http://www.sanger.ac.uk/Software/Pfam/} and
-  \url{ftp://ftp.sanger.ac.uk/pub/databases/Pfam/current_release/userman.txt}}
-\examples{
-
-        #To map from PFAM to SCOP:
-        x <- @ANNOBJPREFIX@SCOP
-        # Get the PFAM identifiers that are mapped to a SCOP
-        mapped_keys <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_keys])
-        if(length(xx) > 0) {
-          # Get the SCOP info for the first five PFAM IDs
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
-
+  \url{ftp://ftp.sanger.ac.uk/pub/databases/Pfam/current_release/userman.txt}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+#To map from PFAM to SCOP:
+x <- @ANNOBJPREFIX@SCOP
+# Get the PFAM identifiers that are mapped to a SCOP
+mapped_keys <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_keys])
+if(length(xx) > 0) {
+  # Get the SCOP info for the first five PFAM IDs
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+}
+
 \keyword{datasets}

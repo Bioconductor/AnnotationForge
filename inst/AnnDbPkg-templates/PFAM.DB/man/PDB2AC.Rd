@@ -16,21 +16,34 @@
   Research  ,  28  pp. 235-242 (2000)
 }
 \references{\url{http://www.sanger.ac.uk/Software/Pfam/} and
-  \url{ftp://ftp.sanger.ac.uk/pub/databases/Pfam/current_release/userman.txt}}
-\examples{
-
-        #To map from PDB to PFAM IDs:
-        x <- @ANNOBJPREFIX@PDB2AC
-        # Get the PDB identifiers that are mapped to a PFAM ID
-        mapped_keys <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_keys])
-        if(length(xx) > 0) {
-          # Get the PDB ID for the first five CAZYs
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
-
+  \url{ftp://ftp.sanger.ac.uk/pub/databases/Pfam/current_release/userman.txt}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+#To map from PDB to PFAM IDs:
+x <- @ANNOBJPREFIX@PDB2AC
+# Get the PDB identifiers that are mapped to a PFAM ID
+mapped_keys <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_keys])
+if(length(xx) > 0) {
+  # Get the PDB ID for the first five CAZYs
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+}
+
 \keyword{datasets}

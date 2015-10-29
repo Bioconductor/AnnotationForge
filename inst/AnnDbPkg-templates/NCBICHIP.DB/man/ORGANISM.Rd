@@ -23,9 +23,23 @@
   most programatic acces will not require this extension, so its more
   convenient to leave it out.
 }
-\examples{
-  @ANNOBJPREFIX@ORGANISM
-  @ANNOBJPREFIX@ORGPKG
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
 }
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+@ANNOBJPREFIX@ORGANISM
+@ANNOBJPREFIX@ORGPKG
+}
+
 \keyword{datasets}
 

@@ -50,10 +50,24 @@
   
   Mappings were based on data provided by: @GO2ALLEGSSOURCE@
 }
+
 \references{
 \url{ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
     # Convert to a list
     xx <- as.list(@ANNOBJPREFIX@GO2ALLEGS)
     if(length(xx) > 0){

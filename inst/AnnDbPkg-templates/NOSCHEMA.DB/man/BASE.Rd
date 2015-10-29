@@ -5,10 +5,9 @@
 \description{
 
   Welcome to the @ANNOBJPREFIX@.db annotation Package.  This is an
-  organism specific package.  The purpose is to provide detailed
+  organism specific package. The purpose is to provide detailed
   information about the species abbreviated in the second part of the
-  package name @ANNOBJPREFIX@.db.  "Hs" is for Homo sapiens.  This
-  package is updated biannually.
+  package name @ANNOBJPREFIX@.db. This package is updated biannually.
 
   To learn more about this package, users are encouraged to learn about
   the select, columns, keys and keytypes methods.  These are described

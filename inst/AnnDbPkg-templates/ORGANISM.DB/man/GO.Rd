@@ -9,6 +9,7 @@
   associate the child terms from the GO ontology with the gene.  Only
   the directly evidenced terms are represented here.
 }
+
 \details{
   Each Entrez Gene identifier is mapped to a list of lists.  The
   names on the outer list are GO identifiers.  Each inner list
@@ -69,16 +70,16 @@
   named GO.
 }
 
+\references{
+\url{ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/}
+}
+
 \seealso{
   \itemize{
     \item \code{\link{@ANNOBJPREFIX@GO2ALLEGS}}.
     \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
           the \code{select()} interface.
   }
-}
-
-\references{
-\url{ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/}
 }
 
 \examples{
@@ -111,4 +112,5 @@ if(length(xx) > 0){
     names(goids[[1]])
 }
 }
+
 \keyword{datasets}

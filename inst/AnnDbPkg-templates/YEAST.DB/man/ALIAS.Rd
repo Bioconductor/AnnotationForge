@@ -13,23 +13,36 @@
   aliases, the vector will contain \code{NA}.
   
   Annotation based on data provided by: @ALIASSOURCE@
-
 }
+
 \references{
 \url{http://www.yeastgenome.org/DownloadContents.shtml}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-    x <- @ANNOBJPREFIX@ALIAS
-    # Get the probe identifiers that are mapped to alias names
-    mapped_probes <- mappedkeys(x)
-    # Convert to a list
-    xx <- as.list(x[mapped_probes])
-    if(length(xx) > 0) {
-        # Get the alias names for the first five probes
-        xx[1:5]
-        # For the first probe
-        xx[[1]]
-    }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@ALIAS
+# Get the probe identifiers that are mapped to alias names
+mapped_probes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_probes])
+if(length(xx) > 0) {
+    # Get the alias names for the first five probes
+    xx[1:5]
+    # For the first probe
+    xx[[1]]
+}
 }
 \keyword{datasets}
 

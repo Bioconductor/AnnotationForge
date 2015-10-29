@@ -92,35 +92,51 @@
     database.
   
 }
-\references{\url{http://www.sanger.ac.uk/Software/Pfam/} and
-  \url{ftp://ftp.sanger.ac.uk/pub/databases/Pfam/current_release/userman.txt}}
+
+\references{
+  \url{http://www.sanger.ac.uk/Software/Pfam/} and
+  \url{ftp://ftp.sanger.ac.uk/pub/databases/Pfam/current_release/userman.txt}
+}
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-        #To map from PFAM to CAZYs:
-        x <- @ANNOBJPREFIX@CAZY
-        # Get the PFAM identifiers that are mapped to a CAZY
-        mapped_keys <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_keys])
-        if(length(xx) > 0) {
-          # Get the CAZY for the first five PFAM IDs
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
 
-        #Or to use the DE mapping:
-        x <- @ANNOBJPREFIX@DE
-        # Get the PFAM identifiers that are mapped to a DE
-        mapped_keys <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_keys])
-        if(length(xx) > 0) {
-          # Get the DE for the first five PFAM IDs
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+## Bimap interface:
+#To map from PFAM to CAZYs:
+x <- @ANNOBJPREFIX@CAZY
+# Get the PFAM identifiers that are mapped to a CAZY
+mapped_keys <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_keys])
+if(length(xx) > 0) {
+  # Get the CAZY for the first five PFAM IDs
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
 
-        #etc.
+#Or to use the DE mapping:
+x <- @ANNOBJPREFIX@DE
+# Get the PFAM identifiers that are mapped to a DE
+mapped_keys <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_keys])
+if(length(xx) > 0) {
+  # Get the DE for the first five PFAM IDs
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+
+#etc.
 }
 \keyword{datasets}

@@ -7,9 +7,8 @@
   Welcome to the @ANNOBJPREFIX@.db annotation Package.  This is an
   organism specific package.  The purpose is to provide detailed
   information about the species abbreviated in the second part of the
-  package name @ANNOBJPREFIX@.db.  "Hs" is for Homo sapiens.  This
-  package is updated biannually.
-  
+  package name @ANNOBJPREFIX@.db. This package is updated biannually.
+ 
   Objects in this package are accessed using the \code{select()} interface.
   See ?select in the AnnotationDbi package for details.
 }
@@ -33,5 +32,5 @@ columns(@ANNOBJPREFIX@.db)
 ## use of select().
 ls("package:@ANNOBJPREFIX@.db")
 }
-\keyword{datasets}
 
+\keyword{datasets}

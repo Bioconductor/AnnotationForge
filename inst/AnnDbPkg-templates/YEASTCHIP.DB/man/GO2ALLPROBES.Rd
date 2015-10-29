@@ -53,20 +53,34 @@
   @GO2ALLPROBESSOURCE@
   
 }
+
 \references{
 \url{ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-    # Convert to a list
-    xx <- as.list(@ANNOBJPREFIX@GO2ALLPROBES)
-    if(length(xx) > 0){
-        # Gets the probe identifiers for the top 2nd and 3nd GO identifiers
-        goids <- xx[2:3]
-        # Gets all the probe identifiers for the first element of goids
-        goids[[1]]
-        # Evidence code for the mappings
-        names(goids[[1]])
-    }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+# Convert to a list
+xx <- as.list(@ANNOBJPREFIX@GO2ALLPROBES)
+if(length(xx) > 0){
+    # Gets the probe identifiers for the top 2nd and 3nd GO identifiers
+    goids <- xx[2:3]
+    # Gets all the probe identifiers for the first element of goids
+    goids[[1]]
+    # Evidence code for the mappings
+    names(goids[[1]])
+}
 }
 \keyword{datasets}
 

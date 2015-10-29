@@ -24,27 +24,39 @@
   Mappings were based on data provided by: @ENSEMBLSOURCE@
 }
 
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-    x <- @ANNOBJPREFIX@ENSEMBL
-    # Get the SGD gene IDs that are mapped to an Ensembl ID
-    mapped_genes <- mappedkeys(x)
-    # Convert to a list
-    xx <- as.list(x[mapped_genes])
-    if(length(xx) > 0) {
-      # Get the Ensembl gene IDs for the first five genes
-      xx[1:5]
-      # Get the first one
-      xx[[1]]
-    }
-    #For the reverse map ENSEMBL2ORF:
-    # Convert to a list
-    xx <- as.list(@ANNOBJPREFIX@ENSEMBL2ORF)
-    if(length(xx) > 0){
-       # Gets the SGD gene IDs for the first five Ensembl IDs
-       xx[1:5]
-       # Get the first one
-       xx[[1]]
-    }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@ENSEMBL
+# Get the SGD gene IDs that are mapped to an Ensembl ID
+mapped_genes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_genes])
+if(length(xx) > 0) {
+  # Get the Ensembl gene IDs for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+#For the reverse map ENSEMBL2ORF:
+# Convert to a list
+xx <- as.list(@ANNOBJPREFIX@ENSEMBL2ORF)
+if(length(xx) > 0){
+   # Gets the SGD gene IDs for the first five Ensembl IDs
+   xx[1:5]
+   # Get the first one
+   xx[[1]]
+}
 }
 \keyword{datasets}
 

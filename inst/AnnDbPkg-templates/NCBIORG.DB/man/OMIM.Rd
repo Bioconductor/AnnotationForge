@@ -21,35 +21,49 @@
   Mappings were based on data provided by: @OMIMSOURCE@
 
 }
+
 \references{
   \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene}
   \url{http://www3.ncbi.nlm.nih.gov/entrez/query.fcgi?db=OMIM}
 }
-\examples{
-        x <- @ANNOBJPREFIX@OMIM
-        # Get the entrez gene identifiers that are mapped to a OMIM ID
-        mapped_genes <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_genes])
-        if(length(xx) > 0) {
-          # Get the OMIM for the first five genes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
 
-        # For the reverse map:
-        x <- @ANNOBJPREFIX@OMIM2EG
-        # Get the OMIM IDs that are mapped to the entrez gene IDs
-        mapped_OMIMs <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_OMIMs])
-        if(length(xx) > 0) {
-          # Get the entrez gene ID for the first five genes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@OMIM
+# Get the entrez gene identifiers that are mapped to a OMIM ID
+mapped_genes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_genes])
+if(length(xx) > 0) {
+  # Get the OMIM for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+
+# For the reverse map:
+x <- @ANNOBJPREFIX@OMIM2EG
+# Get the OMIM IDs that are mapped to the entrez gene IDs
+mapped_OMIMs <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_OMIMs])
+if(length(xx) > 0) {
+  # Get the entrez gene ID for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
 }
 
 \keyword{datasets}

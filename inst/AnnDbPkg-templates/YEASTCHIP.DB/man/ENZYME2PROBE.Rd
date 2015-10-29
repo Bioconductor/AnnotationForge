@@ -42,19 +42,34 @@
   Mappings were based on data provided by: @ENZYME2PROBESOURCE@
 
 }
+
 \references{
 \url{ftp://ftp.genome.ad.jp/pub/kegg/pathways}
 }
-\examples{
-    # Convert to a list
-    xx <- as.list(@ANNOBJPREFIX@ENZYME2PROBE)
-   if(length(xx) > 0){
-       # Gets the probe identifiers for the first five enzyme
-       #commission numbers
-       xx[1:5]
-       # Get the first one
-       xx[[1]]
-    }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
 }
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+# Convert to a list
+xx <- as.list(@ANNOBJPREFIX@ENZYME2PROBE)
+if(length(xx) > 0){
+    # Gets the probe identifiers for the first five enzyme
+    #commission numbers
+    xx[1:5]
+    # Get the first one
+    xx[[1]]
+}
+}
+
 \keyword{datasets}
 

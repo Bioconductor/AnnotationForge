@@ -60,20 +60,33 @@
 
 }
 
-\examples{
-        x <- @ANNOBJPREFIX@GO
-        # Get the probe identifiers that are mapped to a GO ID
-        mapped_probes <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_probes])
-        if(length(xx) > 0) {
-            # Try the firest one
-            got <- xx[[1]]           
-            got[[1]][["GOID"]]
-            got[[1]][["Ontology"]]
-            got[[1]][["Evidence"]]
-
-        }
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
 }
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@GO
+# Get the probe identifiers that are mapped to a GO ID
+mapped_probes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_probes])
+if(length(xx) > 0) {
+    # Try the firest one
+    got <- xx[[1]]           
+    got[[1]][["GOID"]]
+    got[[1]][["Ontology"]]
+    got[[1]][["Evidence"]]
+
+}
+}
+
 \keyword{datasets}
 

@@ -23,20 +23,32 @@
   multiple locations.
  
   Mappings were based on data provided by: @CHRLOCSOURCE@
-  
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-        x <- @ANNOBJPREFIX@CHRLOC
-        # Get the entrez gene identifiers that are mapped to chromosome locations
-        mapped_genes <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_genes])
-        if(length(xx) > 0) {
-          # Get the CHRLOC for the first five genes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@CHRLOC
+# Get the entrez gene identifiers that are mapped to chromosome locations
+mapped_genes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_genes])
+if(length(xx) > 0) {
+  # Get the CHRLOC for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
 }
 \keyword{datasets}
 

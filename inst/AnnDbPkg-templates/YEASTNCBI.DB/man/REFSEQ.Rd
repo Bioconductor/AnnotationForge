@@ -42,35 +42,49 @@
   Mappings were based on data provided by: @REFSEQSOURCE@
 
 }
+
 \references{
     \url{http://www.ncbi.nlm.nih.gov}
     \url{http://www.ncbi.nlm.nih.gov/RefSeq/} 
 }
-\examples{
-        x <- @ANNOBJPREFIX@REFSEQ
-        # Get the entrez gene identifiers that are mapped to any RefSeq ID
-        mapped_genes <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_genes])
-        if(length(xx) > 0) {
-          # Get the REFSEQ for the first five genes
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
 
-        # For the reverse map:
-        x <- @ANNOBJPREFIX@REFSEQ2EG
-        # Get the RefSeq identifier that are mapped to an entrez gene ID
-        mapped_seqs <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_seqs])
-        if(length(xx) > 0) {
-          # Get the entrez gene for the first five Refseqs
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@REFSEQ
+# Get the entrez gene identifiers that are mapped to any RefSeq ID
+mapped_genes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_genes])
+if(length(xx) > 0) {
+  # Get the REFSEQ for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+
+# For the reverse map:
+x <- @ANNOBJPREFIX@REFSEQ2EG
+# Get the RefSeq identifier that are mapped to an entrez gene ID
+mapped_seqs <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_seqs])
+if(length(xx) > 0) {
+  # Get the entrez gene for the first five Refseqs
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
 }
 
 \keyword{datasets}

@@ -29,27 +29,39 @@
   mapping data at NCBI.
 }
 
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
 \examples{
-    x <- @ANNOBJPREFIX@ENSEMBL
-    # Get the entrez gene IDs that are mapped to an Ensembl ID
-    mapped_genes <- mappedkeys(x)
-    # Convert to a list
-    xx <- as.list(x[mapped_genes])
-    if(length(xx) > 0) {
-      # Get the Ensembl gene IDs for the first five genes
-      xx[1:5]
-      # Get the first one
-      xx[[1]]
-    }
-    #For the reverse map ENSEMBL2EG:
-    # Convert to a list
-    xx <- as.list(@ANNOBJPREFIX@ENSEMBL2EG)
-    if(length(xx) > 0){
-       # Gets the entrez gene IDs for the first five Ensembl IDs
-       xx[1:5]
-       # Get the first one
-       xx[[1]]
-    }
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+x <- @ANNOBJPREFIX@ENSEMBL
+# Get the entrez gene IDs that are mapped to an Ensembl ID
+mapped_genes <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_genes])
+if(length(xx) > 0) {
+  # Get the Ensembl gene IDs for the first five genes
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+#For the reverse map ENSEMBL2EG:
+# Convert to a list
+xx <- as.list(@ANNOBJPREFIX@ENSEMBL2EG)
+if(length(xx) > 0){
+   # Gets the entrez gene IDs for the first five Ensembl IDs
+   xx[1:5]
+   # Get the first one
+   xx[[1]]
+}
 }
 \keyword{datasets}
 

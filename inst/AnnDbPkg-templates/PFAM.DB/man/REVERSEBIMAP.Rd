@@ -94,34 +94,47 @@
   
 }
 \references{\url{http://www.sanger.ac.uk/Software/Pfam/} and
-  \url{ftp://ftp.sanger.ac.uk/pub/databases/Pfam/current_release/userman.txt}}
-\examples{
-        #To map from CAZY to PFAM IDs:
-        x <- @ANNOBJPREFIX@CAZY2AC
-        # Get the CAZY identifiers that are mapped to a PFAM ID
-        mapped_keys <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_keys])
-        if(length(xx) > 0) {
-          # Get the PFAM ID for the first five CAZYs
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
-
-        #Or to use the DE2AC mapping:
-        x <- @ANNOBJPREFIX@DE2AC
-        # Get the Descriptions that are mapped to a PFAM ID
-        mapped_keys <- mappedkeys(x)
-        # Convert to a list
-        xx <- as.list(x[mapped_keys])
-        if(length(xx) > 0) {
-          # Get the PFAM ID for the first five DEs
-          xx[1:5]
-          # Get the first one
-          xx[[1]]
-        }
-
-        #etc.
+  \url{ftp://ftp.sanger.ac.uk/pub/databases/Pfam/current_release/userman.txt}
 }
+
+\seealso{
+  \itemize{
+    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
+          the \code{select()} interface.
+  }
+}
+
+\examples{
+## select() interface:
+## Objects in this package can be accessed using the select() interface
+## from the AnnotationDbi package. See ?select for details.
+
+## Bimap interface:
+#To map from CAZY to PFAM IDs:
+x <- @ANNOBJPREFIX@CAZY2AC
+# Get the CAZY identifiers that are mapped to a PFAM ID
+mapped_keys <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_keys])
+if(length(xx) > 0) {
+  # Get the PFAM ID for the first five CAZYs
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+
+#Or to use the DE2AC mapping:
+x <- @ANNOBJPREFIX@DE2AC
+# Get the Descriptions that are mapped to a PFAM ID
+mapped_keys <- mappedkeys(x)
+# Convert to a list
+xx <- as.list(x[mapped_keys])
+if(length(xx) > 0) {
+  # Get the PFAM ID for the first five DEs
+  xx[1:5]
+  # Get the first one
+  xx[[1]]
+}
+}
+
 \keyword{datasets}
