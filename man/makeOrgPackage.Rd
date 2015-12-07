@@ -24,7 +24,8 @@
     species=NULL,
     NCBIFilesDir=getwd(),
     databaseOnly=FALSE,
-    useDeprecatedStyle=FALSE)
+    useDeprecatedStyle=FALSE,
+    rebuildCache=TRUE)
 }
 
 \arguments{
@@ -46,8 +47,19 @@
   will actually work.  Should we use the older database and package
   style (with bimaps)? (TRUE or FALSE) Also: this can't work with
   unsupported organisms}
+  \item{rebuildCache}{Logical. When TRUE, the cache of local files is 
+  refreshed each day. When FALSE, the package is created from existing files 
+  in \code{outputDir} and nothing is downloaded. Used internally
+  and for testing.}
 }
 
+\details{
+  \code{makeOrgPackageFromNCBI} downloads multiple files and assembles a 12 GB
+  database in \code{NCBIFilesDir}. The first time the function is run it may
+  take over an hour; subsequent calls reuse files from the cache and are
+  much faster. The default behavior of \code{makeOrgPackageFromNCBI} attempts to 
+  refresh the cached files each day (suppress with \code{rebuildCache = FALSE}).
+}
 
 \value{Nothing returned to the R session. Just creates an organism
 annotation package.}

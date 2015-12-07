@@ -246,7 +246,7 @@
 }
 
 ##########################################################
-.downloadData <- function (file, tax_id, NCBIFilesDir) {
+.downloadData <- function (file, tax_id, NCBIFilesDir, rebuildCache) {
   ## names(file) is something like: "gene2go.gz"
   message(paste("Getting data for ",names(file),sep=""))
   tableName <- sub(".gz","",names(file))
@@ -258,10 +258,13 @@
   }else{
       NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
   }
-  ## if DB table is not fresh OR if table is not populated
-  if(!.isNCBICurrentWith(NCBIcon, tableName) ||
-     !.isNCBIPopulatedWith(NCBIcon, tableName)){
-      tmp <- .getFiles(NCBIFilesDir, file, url, NCBIcon, tableName)
+
+  if (rebuildCache) {
+      ## if DB table is not fresh OR if table is not populated
+      if(!.isNCBICurrentWith(NCBIcon, tableName) ||
+         !.isNCBIPopulatedWith(NCBIcon, tableName)){
+          tmp <- .getFiles(NCBIFilesDir, file, url, NCBIcon, tableName)
+      }
   }
   ## get the data from the DB
   message(paste0("extracting only data for our organism from : " ,tableName))
@@ -511,8 +514,10 @@
 
 ## need code to generate a table for each of the
 ## file below is like: files[1] or files[2]
-.createTEMPNCBIBaseTable <- function (con, file, tax_id, NCBIFilesDir) {
-  data <- .downloadData(file, tax_id, NCBIFilesDir=NCBIFilesDir)
+.createTEMPNCBIBaseTable <- function (con, file, tax_id, 
+                                      NCBIFilesDir, rebuildCache) {
+  data <- .downloadData(file, tax_id, NCBIFilesDir=NCBIFilesDir, 
+                        rebuildCache=rebuildCache)
   table <- sub(".gz$","",names(file))
   if(is.null(table)) stop("Unable to infer a table name.")
   cols <- .generateCols(file)
@@ -536,9 +541,10 @@
 }
 
 ## Download all the data files and make the cache DB
-.setupBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir){
+.setupBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir, rebuildCache){
   for(i in seq_len(length(files))){
-    .createTEMPNCBIBaseTable(con, files[i], tax_id, NCBIFilesDir=NCBIFilesDir)
+    .createTEMPNCBIBaseTable(con, files[i], tax_id, NCBIFilesDir=NCBIFilesDir,
+                             rebuildCache=rebuildCache)
   }
   con
 }
@@ -640,7 +646,7 @@
 #########################################################################
 
 makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir,
-                              outputDir){
+                              outputDir, rebuildCache=TRUE){
   require(RSQLite)
   require(GO.db)
   dbFileName <- paste0(.generateOrgDbName(genus,species),".sqlite")
@@ -653,7 +659,8 @@ makeOrgDbFromNCBI <- function(tax_id, genus, species, NCBIFilesDir,
   ## IF ANY OF THESE gets moved in the source files
   ## then things will be in the wrong place!
   files = .primaryFiles()
-  .setupBaseDBFromDLs(files, tax_id, con, NCBIFilesDir=NCBIFilesDir)
+  .setupBaseDBFromDLs(files, tax_id, con, NCBIFilesDir=NCBIFilesDir,
+                      rebuildCache=rebuildCache)
   
   ## Add metadata:
   .addMetadata(con, tax_id, genus, species) 
@@ -757,7 +764,8 @@ OLD_makeOrgPackageFromNCBI <- function(version,
                                tax_id,
                                genus,
                                species,
-                               NCBIFilesDir){
+                               NCBIFilesDir,
+                               rebuildCache){
   message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds).  The cache will try to rebuild once per day.")
   ## Arguement checking:
   if(!.isSingleString(version))
@@ -778,7 +786,7 @@ OLD_makeOrgPackageFromNCBI <- function(version,
       stop("'NCBIFilesDir' argument needs to be a single string or NULL")
        
   makeOrgDbFromNCBI(tax_id=tax_id, genus=genus, species=species,
-                    NCBIFilesDir=NCBIFilesDir, outputDir)
+                    NCBIFilesDir=NCBIFilesDir, outputDir, rebuildCache)
   
   dbName <- .generateOrgDbName(genus,species)
   dbfile <- paste(dbName, ".sqlite", sep="")
@@ -818,7 +826,8 @@ OLD_makeOrgPackageFromNCBI <- function(version,
 }
 
 ## loop through and make the tables
-.makeBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir){
+.makeBaseDBFromDLs <- function(files, tax_id, con, NCBIFilesDir, 
+                               rebuildCache=TRUE){
     data <- list()
     ## Here test if we need to bother with unigene (shorten out from
     ## files if not)
@@ -827,7 +836,8 @@ OLD_makeOrgPackageFromNCBI <- function(version,
    }
     ## Then get/update the data
     for(i in seq_len(length(files))){
-        res <- .downloadData(files[i], tax_id, NCBIFilesDir=NCBIFilesDir)
+        res <- .downloadData(files[i], tax_id, NCBIFilesDir=NCBIFilesDir, 
+                             rebuildCache=rebuildCache)
         data[[i]] <- res
     }
     names(data) <- names(files)
@@ -989,11 +999,13 @@ splitBy <- function(data, splitCol=1){
 
 ## get Alternative GO Data for organisms where this data is not
 ## already at NCBI
-.getAltGOData <- function(NCBIcon, NCBIFilesDir, tax_id){
-    ## First get the data and populate it (if necessary)
-    if(!.isNCBICurrentWith(NCBIcon, 'altGO') ||
-       !.isNCBIPopulatedWith(NCBIcon, 'altGO')){
-        .downloadAndPopulateAltGOData(NCBIcon, NCBIFilesDir)
+.getAltGOData <- function(NCBIcon, NCBIFilesDir, tax_id, rebuildCache){
+    if (rebuildCache) {
+        ## First get the data and populate it (if necessary)
+        if(!.isNCBICurrentWith(NCBIcon, 'altGO') ||
+           !.isNCBIPopulatedWith(NCBIcon, 'altGO')){
+            .downloadAndPopulateAltGOData(NCBIcon, NCBIFilesDir)
+        }
     }
     ## Then get out the data that we *want* using another query with the tax_id
     sql <- paste0("SELECT EntrezGene, GO FROM altGO WHERE NCBItaxon = '",
@@ -1049,15 +1061,16 @@ splitBy <- function(data, splitCol=1){
 
 ## Helper to make a list of data frames from the NCBI cache database
 ## (which it will also make if needed)
-prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
-                                outputDir){
+prepareDataFromNCBI <- function(tax_id, NCBIFilesDir, outputDir, rebuildCache)
+{
     ## Get list of files that need to be processed 
     files = .primaryFiles()
     NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
-    rawData <- .makeBaseDBFromDLs(files, tax_id, NCBIcon, NCBIFilesDir)
+    rawData <- .makeBaseDBFromDLs(files, tax_id, NCBIcon, NCBIFilesDir, 
+                                  rebuildCache)
     data = list() ## so I can pass them back
     ## now post-process the data list into proper data frames for each
-    
+
     ## pubmed
     data <- .procDat(rawData,
                      keepTable='gene2pubmed.gz',
@@ -1079,7 +1092,9 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                      data,
                      newName='gene_info',
                      newCols=c('GID', 'GENENAME','SYMBOL'))
-    
+ 
+    if (!length(data))
+        stop(paste0("no information found for species with tax id ", tax_id))
     ## entrez genes (special code to ensure we have them all)
     egIDs <- .getAllEnrezGeneIdsFromNCBI(tax_id, NCBIcon)
     egData <- data.frame(GID=egIDs, ENTREZID=egIDs,stringsAsFactors=FALSE)
@@ -1087,7 +1102,7 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                     egData,
                     newName='entrez_genes',
                     newCols=c('GID', 'ENTREZID'))
-    
+ 
     ## Alias table needs to contain both symbols AND stuff from synonyms
     ## For alias I need to massage the synonyms field from gene_info
     ## and add it to symbols from the same.
@@ -1104,7 +1119,10 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                           keepCols=c('gene_id','symbol'))
     colnames(aliasDat) <- NULL
     colnames(symbolDat) <- NULL
-    faliasDat <- unique(rbind(as.matrix(aliasDat), as.matrix(symbolDat)))
+    if (nrow(aliasDat) == 0L)
+        faliasDat <- as.matrix(symbolDat)
+    else
+        faliasDat <- unique(rbind(as.matrix(aliasDat), as.matrix(symbolDat)))
     rownames(faliasDat) <- NULL
     data <- .rename(data,
                     as.data.frame(faliasDat, stringsAsFactors=FALSE),
@@ -1150,7 +1168,7 @@ prepareDataFromNCBI <- function(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
                       keepCols=c('gene_id','go_id','evidence'))
     if(dim(goDat)[1] == 0){## then try Blast2GO
         ## get all accessions together        
-        goDat <- .getAltGOData(NCBIcon, NCBIFilesDir, tax_id) 
+        goDat <- .getAltGOData(NCBIcon, NCBIFilesDir, tax_id, rebuildCache) 
     }
     ## and .rename already checks to make sure there actually ARE GO IDs
     data <- .rename(data,
@@ -1195,9 +1213,10 @@ NEW_makeOrgPackageFromNCBI <- function(version,
                                        genus,
                                        species,
                                        NCBIFilesDir,
-                                       databaseOnly){
-  message("If this is the 1st time you have run this function, it may take a long time (over an hour) to download needed files and assemble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds).  The cache will try to rebuild once per day.")
-  ## Arguement checking:
+                                       databaseOnly,
+                                       rebuildCache){
+  message("If files are not cached locally this may take awhile.emble a 12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls to this function should be faster (seconds).  The cache will try to rebuild once per day.")
+  ## Argument checking:
   if(!.isSingleString(version))
       stop("'version' must be a single string")
   if(!.isSingleString(maintainer))
@@ -1221,11 +1240,8 @@ NEW_makeOrgPackageFromNCBI <- function(version,
       species <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['species']] 
       species <- gsub(' ', '.', species)
   }
-  
-  
-  data <- prepareDataFromNCBI(tax_id=tax_id, NCBIFilesDir=NCBIFilesDir,
-                              outputDir)
-  
+ 
+  data <- prepareDataFromNCBI(tax_id, NCBIFilesDir, outputDir, rebuildCache)
   dbName <- .generateOrgDbName(genus,species)
   dbfile <- paste0(dbName, ".sqlite")
 
@@ -1271,15 +1287,18 @@ makeOrgPackageFromNCBI <- function(version,
                                    species=NULL,
                                    NCBIFilesDir=getwd(),
                                    databaseOnly=FALSE,
-                                   useDeprecatedStyle=FALSE){
+                                   useDeprecatedStyle=FALSE,
+                                   rebuildCache=TRUE){
     if(useDeprecatedStyle==TRUE){
         dbname <- OLD_makeOrgPackageFromNCBI(version,maintainer,author,
                                              outputDir,tax_id,genus,
-                                             species,NCBIFilesDir)
+                                             species,NCBIFilesDir,
+                                             rebuildCache=rebuildCache)
     }else{
         dbname <- NEW_makeOrgPackageFromNCBI(version,maintainer,author,
                                              outputDir,tax_id,genus,species,
-                                             NCBIFilesDir,databaseOnly)
+                                             NCBIFilesDir,databaseOnly,
+                                             rebuildCache=rebuildCache)
     }
     ## return handle to the db name
     dbname
@@ -1509,53 +1528,3 @@ available.ensembl.datasets <- function(){
     res[['ensembl']] <- as.character(res[['ensembl']])
     unique(res)
 }
-
-
-
-
-
-
-
-## Some very olde code that I should probably delete (abandoned idea)
-
-## Next up: write function to pull down the gene.txt.gz file and
-## process it to a data.frame
-## .getFastaData <- function(taxId, release=80){
-##     baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
-##     listDirs <- getFastaSpeciesDirs(release)
-##     dir <- listDirs[names(listDirs) %in% taxId]
-##     url <- paste0(baseUrl, dir,"/gene.txt.gz")
-##     tmp <- tempfile()
-##     ## Try several times to get the file if needed...
-##     .tryDL(url,tmp)
-##     colClasses <- c(rep("character", times=17 )) ## 17 columns
-##     res <- read.delim(tmp,header=FALSE, sep="\t", #skip=1,
-##                       stringsAsFactors=FALSE, quote="",
-##                       colClasses = colClasses)
-##     res <- unique(res[,c(8,14)])
-##     ## some of the foreign keys are missing. We only want entrez genes
-##     ## though which are always integers
-##     res[[1]] <- as.integer(res[[1]])
-##     ## then remove rows that have NAs
-##     res <- res[!is.na(res[[1]]),]
-##     ## Then name the cols
-##     colnames(res) <- c('foreignKey','EnsID')
-##     res
-## }
-
-
-## And now we just need a function to populate a table etc.
-## But before we write this final function I need to work on getting GO mappings from UniProt...
-
-## ## This one shows how this stuff can be done
-## getGeneFiles <- function(release=80){
-##     baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
-##     require(httr)
-##     require(RCurl)
-##     curlHand <- httr::handle_find(baseUrl)$handle
-##     url <- paste0(baseUrl, "ailuropoda_melanoleuca_core_80_1/")
-##     listing <- getURL(url=url, followlocation=TRUE, customrequest="LIST -R",
-##                       curl=curlHand)
-##     listing<- strsplit(listing, "\n")[[1]]
-##     listing[grep(' gene.txt.gz$', listing)]
-## }
