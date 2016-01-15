@@ -1,7 +1,12 @@
 ## Just a utility to prevent empty IDs from ever causing any more mayhem
 cleanSrcMap <- function(file) {
-    fileVals <- read.delim(file=file, header=FALSE, sep="\t", quote="", colClasses = "character")
+    fileVals <- read.delim(file=file, header=FALSE, sep="\t", quote="", 
+                           colClasses = "character")
     fileVals <- fileVals[fileVals[,1]!='',]
+    invalid <- which(is.na(fileVals[,1]))
+    if (any(invalid))
+        stop(paste0("invalid probe value in 'fileName' at row(s): ",
+                    paste(invalid, collapse=',')))
 
     ##For the case where someone puts no value in, we need things to be an NA
     fileVals[!is.na(fileVals[,2]) & fileVals[,2]=='',2] <- NA
@@ -99,9 +104,9 @@ labelDuplicatedProbes <- function(frame){
 }
 
 
-probe2gene <- function(baseMap, otherSrc,
-			baseMapType=c("gb", "ug", "eg", "refseq", "gbNRef", "image"), 
-			chipMapSrc, chipSrc, pkgName, outputDir=".", allowHomologyGene=FALSE) {
+probe2gene <- function(baseMap, otherSrc, baseMapType=c("gb", "ug", "eg", 
+                       "refseq", "gbNRef", "image"), chipMapSrc, chipSrc, 
+                       pkgName, outputDir=".", allowHomologyGene=FALSE) {
         ## message(cat(paste("Using '",chipSrc,"' for chipSrc.", sep="")))
 	baseMapType <- match.arg(baseMapType)
         require("RSQLite")
