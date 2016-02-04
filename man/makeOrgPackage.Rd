@@ -25,32 +25,50 @@
     NCBIFilesDir=getwd(),
     databaseOnly=FALSE,
     useDeprecatedStyle=FALSE,
-    rebuildCache=TRUE)
+    rebuildCache=TRUE,
+    verbose=TRUE)
 }
 
 \arguments{
-  \item{version}{What is the version number for this package?}
-  \item{maintainer}{Who is the package maintainer? (must include email to be 
-    valid)}
-  \item{author}{Who is the creator of this package?}
-  \item{outputDir}{A path where the package source should be assembled.}
-  \item{tax_id}{The Taxonomy ID that represents your organism.  (NCBI has
-  a nice online browser for finding the one you need)}
-  \item{genus}{Single string indicating the genus.}
-  \item{species}{Single string indicating the species.}
-  \item{NCBIFilesDir}{If you want the files to be saved locally that
-  were used to make your DB, then specify a directory here.  Otherwise
-  leave this NULL.  This argument is mostly useful for troubleshooting
-  since many of the files are large.  Most users should ignore it.}
-  \item{databaseOnly}{Only generate a DB without a package (TRUE or FALSE)}
-  \item{useDeprecatedStyle}{For legacy support in those cases where it
-  will actually work.  Should we use the older database and package
-  style (with bimaps)? (TRUE or FALSE) Also: this can't work with
-  unsupported organisms}
-  \item{rebuildCache}{Logical. When TRUE, the cache of local files is 
-  refreshed each day. When FALSE, the package is created from existing files 
-  in \code{outputDir} and nothing is downloaded. Used internally
-  and for testing.}
+  \item{version}{
+    Package version in 'x.y.z' format.
+  }
+  \item{maintainer}{
+    Package maintainer followed by email
+  }
+  \item{author}{
+    Creator of package.
+  }
+  \item{outputDir}{
+    Path where the package source should be assembled.
+  }
+  \item{tax_id}{
+    The Taxonomy ID that represents the organism.
+  }
+  \item{genus}{
+    Single string indicating the genus.
+  }
+  \item{species}{
+    Single string indicating the species.
+  }
+  \item{NCBIFilesDir}{
+    When a path is given, the files used to create the DB are saved locally.
+  }
+  \item{databaseOnly}{
+    When TRUE, a DB is created without the package infrastructure. Used
+    for OrgDb packages hosted on AnnotationHub.
+  }
+  \item{useDeprecatedStyle}{
+    Legacy support for older package style with bimaps.
+  }
+  \item{rebuildCache}{
+    When TRUE, the files used to create the DB are refreshed 
+    (i.e., re-downloaded) if the timestamp is greater than 24 hours old. When 
+    FALSE, the temporary NCBI.sqlite DB and final package are re-generated 
+    from local files in \code{outputDir}. Used internally and for testing.}
+  \item{verbose}{
+    When TRUE, status messages are printed.
+  }
 }
 
 \details{

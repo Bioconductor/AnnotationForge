@@ -163,24 +163,15 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
 ## the arguments are named).  This can be switched from the list later
 ## by just trapping what is in ... and passing it on as a named list.
 ## like this:  data <- list(...)
+.makeOrgPackage <- function(data, version, maintainer, author,
+                            outputDir=getwd(), tax_id, genus=NULL,
+                            species=NULL, goTable=NA,
+                            databaseOnly=FALSE, verbose=TRUE) {
 
-## TODO: this should return the path to the created dir so that the
-## user can just call install.packages(on that filepath).
-
-.makeOrgPackage <- function(data,
-                            version,
-                            maintainer,
-                            author,
-                            outputDir = getwd(),
-                            tax_id,
-                            genus=NULL,
-                            species=NULL,
-                            goTable=NA,
-                            databaseOnly=FALSE){
-
-    ## unique names for all 'data'
+    ## unique names
     if (length(unique(names(data))) != length(data))
         stop("All elements of '...' must have unique names")
+    ## expired names
     blackListedNames <- c("genes","metadata")
     if (any(names(data) %in% blackListedNames))
        stop("'genes' and 'metadata' are reserved. Please choose different ",
@@ -197,20 +188,25 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
             })
 
     ## unique colnames for each data.frame
-    .noGID <- function(x){x[!(x %in% "GID")]}
+    .noGID <- function(x) x[!(x %in% "GID")]
     colnamesUni <- unique(.noGID(unlist(sapply(data, colnames))))
     colnamesAll <- .noGID(unlist(sapply(data, colnames)))
     names(colnamesAll) <- NULL
     if(any(colnamesUni != colnamesAll))
-        stop("data.frames should have completely unique names for all fields that are not the primary gene id 'GID'")
-    ## The 1st column of each data.frame must be a gene ID  (GID)
+        stop(paste0("data.frames should have completely unique names for all ",
+                    "fields that are not the primary gene id 'GID'"))
+    ## first column of each data.frame must be gene ID (GID)
     colnameGIDs <- sapply(data, function(x){colnames(x)[1]})
     if(any(colnameGIDs != "GID"))
         stop("The 1st column must always be the gene ID 'GID'")
-    ## The GID columns all have to be the same type.
-    GIDCols <- unique(sapply(data, function(x){class(x[["GID"]])}))
+    ## check GID type 
+    GIDCols <- unique(sapply(data, 
+        function(x) class(x[["GID"]])
+    ))
     if(length(GIDCols) >1)
-        stop("The type of data in the 'GID' columns must be the same for all data.frames")
+        stop(paste0("The type of data in the 'GID' columns must be the same ",
+                    "for all data.frames"))
+
     ## check other arguments
     if(!.isSingleString(version))
         stop("'version' must be a single string")
@@ -226,27 +222,28 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
         stop("'genus' must be a single string or NULL")
     if(!.isSingleStringOrNull(species))
         stop("'species' must be a single string or NULL")
+    ## only an NA internally - a NULL is what would have come in from outside...
     if(!.isSingleStringOrNA(goTable))
-        stop("'goTable' argument needs to be a single string or NULL") ## only an NA internally - a NULL is what would have come in from outside...
+        stop("'goTable' argument needs to be a single string or NULL") 
     if(!is.na(goTable) && !(goTable %in% names(data)))
-        stop("When definined, 'goTable' needs to be a table name from the named data.frames passed in to '...'")
+        stop("'goTable' must be a name from the data.frames passed in '...'")
     
-    ## if genus or species are null, then we should get them now.
-    if(is.null(genus)){genus <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['genus']] }
-    if(is.null(species)){
+    ## genus and species
+    if(is.null(genus))
+        genus <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['genus']] 
+    if(is.null(species)) {
         species <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['species']]
         species <- gsub(' ','.', species)
     }
-
     
-    ## generate name from the genus and species
     dbName <- .generateOrgDbName(genus,species)
-    ## this becomes the file name for the DB
     dbFileName <- file.path(outputDir,paste0(dbName, ".sqlite"))
-    ## Then make the DB
     makeOrgDbFromDataFrames(data, tax_id, genus, species, dbFileName, goTable)
         
-    if(databaseOnly==FALSE){
+    if(databaseOnly) {
+        ## return the path to the database file
+        file.path(outputDir,dbFileName)
+    } else {
         seed <- new("AnnDbPkgSeed",
                     Package= paste0(dbName,".db"),
                     Version=version,
@@ -268,12 +265,8 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
         file.remove(dbFileName)
         ## return the path to the dir that was just created.
         file.path(outputDir,paste0(dbName,".db"))
-    }else{
-        ## return the path to the database file
-        file.path(outputDir,dbFileName)
     }
 }
-
 
 
 ## function to make the package:
@@ -297,7 +290,7 @@ makeOrgPackage <- function(...,
                     tax_id=tax_id,
                     genus=genus,
                     species=species,
-                    goTable=goTable)
+                    goTable=goTable, verbose=verbose)
 }
 
 
