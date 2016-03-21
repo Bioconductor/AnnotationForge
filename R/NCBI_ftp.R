@@ -5,6 +5,7 @@
 #########################################################################
 
 ## This makes the central table of an EG DB.
+## FIXME: confirm no ';' separated multiple GID values
 .makeCentralTable <- function(entrez, con){
   message("Populating genes table:")
   sql<- paste("    CREATE TABLE IF NOT EXISTS genes (

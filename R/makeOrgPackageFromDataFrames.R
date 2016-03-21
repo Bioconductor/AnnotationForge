@@ -91,7 +91,7 @@
     data[,c("GID","GO","EVIDENCE","ONTOLOGY")]
 }
 
-## helper to prepare/filter data for two GO tables.
+## helper to prepare/filter data for two GO tables: 'go' and 'go_all'.
 .makeNewGOTables <- function(con, goTable, goData){
     ## So 1st drop the old go table
     dbGetQuery(con, paste0("DROP TABLE ",goTable,";"))
