@@ -1,4 +1,5 @@
 wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
+  anndbi_version <- installed.packages()['AnnotationDbi','Version']
 
   #human.db0
   vals <- list(ANNOBJPREFIX="human",
@@ -6,9 +7,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="human",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Homo_sapiens",
-               ANNDBIVERSION="1.1.15",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -25,9 +26,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="mouse",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Mus_musculus",
-               ANNDBIVERSION="1.1.15",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -44,9 +45,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="rat",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Rattus_norvegicus",
-               ANNDBIVERSION="1.1.15",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -63,9 +64,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="fly",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Drosophila_melanogaster",
-               ANNDBIVERSION="1.1.15",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -82,9 +83,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="yeast",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Saccharomyces_cerevisiae",
-               ANNDBIVERSION="1.1.15",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -102,9 +103,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="arabidopsis",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Arabidopsis_thaliana",
-               ANNDBIVERSION="1.1.15",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -121,9 +122,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="malaria",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Plasmodium_falciparum",
-               ANNDBIVERSION="1.1.28",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -140,9 +141,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="zebrafish",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Danio_rerio",
-               ANNDBIVERSION="1.1.28",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -159,9 +160,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="canine",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Canis_familiaris",
-               ANNDBIVERSION="1.1.28",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -178,9 +179,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="bovine",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Bos_taurus",
-               ANNDBIVERSION="1.1.28",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -198,9 +199,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="E coli K12 Strain",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Escherichia_coli",
-               ANNDBIVERSION="1.1.28",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -217,9 +218,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="E coli Sakai Strain",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Escherichia_coli",
-               ANNDBIVERSION="1.1.28",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -236,9 +237,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="worm",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Caenorhabditis_elegans",
-               ANNDBIVERSION="1.1.28",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -254,9 +255,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="pig",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Sus_scrofa",
-               ANNDBIVERSION="1.1.28",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -272,9 +273,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="chicken",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Gallus_gallus",
-               ANNDBIVERSION="1.1.28",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -291,9 +292,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
 ##                SPECIES="yeast",
 ##                AUTHOR="Marc Carlson, Nianhua Li, Herve Pages",
 ##                PKGVERSION=version,
-##                LIC="The Artistic License, Version 2.0",
+##                LIC="Artistic-2.0",
 ##                BIOCVIEWS="AnnotationData, Saccharomyces_cerevisiae",
-##                ANNDBIVERSION="1.1.28",
+##                ANNDBIVERSION=anndbi_version,
 ##                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
 ##   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
 ##   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -310,9 +311,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="chimp",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Pan_troglodytes",
-               ANNDBIVERSION="1.7.0",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -329,9 +330,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="rhesus",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Macaca_Mulatta",
-               ANNDBIVERSION="1.7.0",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -349,9 +350,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="anopheles",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Anopheles_gambiae",
-               ANNDBIVERSION="1.7.0",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
@@ -367,9 +368,9 @@ wrapBaseDBPackages <- function (dbPath, destDir = ".", version) {
                SPECIES="xenopus",
                AUTHOR="Bioconductor Core Team",
                PKGVERSION=version,
-               LIC="The Artistic License, Version 2.0",
+               LIC="Artistic-2.0",
                BIOCVIEWS="AnnotationData, Xenopus_laevis",
-               ANNDBIVERSION="1.7.0",
+               ANNDBIVERSION=anndbi_version,
                MAINTAINER="Bioconductor Package Maintainer <maintainer@bioconductor.org>")
   pkgName= paste(vals[["ANNOBJPREFIX"]],".db0",sep="")
   template=paste(system.file(package = "AnnotationForge"), "/AnnDbPkg-templates/BASEPKG.DB", sep="")
