@@ -1693,7 +1693,8 @@ appendArabidopsisGenes <- function(db, subStrs, printSchema){
   else{
     sql<- paste("
       INSERT INTO genes
-      SELECT * FROM anno.genes;
+      SELECT * FROM anno.genes
+      WHERE gene_id is not null;
        ")
     dbGetQuery(db, sql)
   }
