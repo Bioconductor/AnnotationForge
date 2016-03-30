@@ -1,3 +1,4 @@
+## NOTE: (I belive) this code is for ChipDb package only.
 
 ##TODO: make these so that they look for the correct kind of chipSrc and chipMapSrc files...  Probably this should be tied to these databases being downloadable to a standard place using biocLite.  For now, its a parameter, but there can be a default location added later.
 

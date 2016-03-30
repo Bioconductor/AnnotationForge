@@ -30,8 +30,7 @@
 \examples{
 \dontrun{
   ##Make all of the intermediate DBs and place the new packages right here.
-  wrapBaseDBPackages(dbPath = "/mnt/cpb_anno/mcarlson/proj/sqliteGen/nli/annosrc/db/",
-                     destDir = ".")
+  wrapBaseDBPackages(dbPath, destDir = ".")
 }
 }
 

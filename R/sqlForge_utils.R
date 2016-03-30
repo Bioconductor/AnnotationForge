@@ -1,12 +1,14 @@
 ## Function to get all these populate functions out of the namespace.
 populateDB = function(schema, ...){
     switch(schema,           
+           ## ChipDb packages 
            "HUMANCHIP_DB" = return(AnnotationForge:::popHUMANCHIPDB(...)),
            "MOUSECHIP_DB"  = return(AnnotationForge:::popMOUSECHIPDB(...)),
            "RATCHIP_DB"  = return(AnnotationForge:::popRATCHIPDB(...)),
            "FLYCHIP_DB"  = return(AnnotationForge:::popFLYCHIPDB(...)),
            "YEASTCHIP_DB"  = return(AnnotationForge:::popYEASTCHIPDB(...)),
-           "ZEBRAFISHCHIP_DB"  = return(AnnotationForge:::popZEBRAFISHCHIPDB(...)),
+           "ZEBRAFISHCHIP_DB" = 
+               return(AnnotationForge:::popZEBRAFISHCHIPDB(...)),
            "ECOLICHIP_DB"  = return(AnnotationForge:::popECOLICHIPDB(...)),
            "CANINECHIP_DB"  = return(AnnotationForge:::popCANINECHIPDB(...)),
            "BOVINECHIP_DB"  = return(AnnotationForge:::popBOVINECHIPDB(...)),
@@ -14,8 +16,9 @@ populateDB = function(schema, ...){
            "PIGCHIP_DB"  = return(AnnotationForge:::popPIGCHIPDB(...)),
            "CHICKENCHIP_DB"  = return(AnnotationForge:::popCHICKENCHIPDB(...)),
            "XENOPUSCHIP_DB"  = return(AnnotationForge:::popXENOPUSCHIPDB(...)),
-           "ARABIDOPSISCHIP_DB"  = return(AnnotationForge:::popARABIDOPSISCHIPDB(...)),
-           
+           "ARABIDOPSISCHIP_DB" = 
+               return(AnnotationForge:::popARABIDOPSISCHIPDB(...)),
+           ## OrgDb packages 
            "HUMAN_DB"  = return(AnnotationForge:::popHUMANDB(...)),
            "MALARIA_DB"  = return(AnnotationForge:::popMALARIADB(...)),
            "MOUSE_DB"  = return(AnnotationForge:::popMOUSEDB(...)),
@@ -29,7 +32,7 @@ populateDB = function(schema, ...){
            "PIG_DB"  = return(AnnotationForge:::popPIGDB(...)),
            "CHICKEN_DB"  = return(AnnotationForge:::popCHICKENDB(...)),
            "ARABIDOPSIS_DB"  = return(AnnotationForge:::popARABIDOPSISDB(...)),
-           "ECOLI_DB"  = return(AnnotationForge:::popECOLIDB(...)),           
+           "ECOLI_DB"  = return(AnnotationForge:::popECOLIDB(...)),
            "CHIMP_DB"  = return(AnnotationForge:::popCHIMPDB(...)),
            "RHESUS_DB"  = return(AnnotationForge:::popRHESUSDB(...)),
            "RHESUSCHIP_DB" = return(AnnotationForge:::popRHESUSCHIPDB(...)),
@@ -38,7 +41,7 @@ populateDB = function(schema, ...){
           )
 }
 
-
+## FIXME: Is this defunct? No other code in AnnotationForge calls it ... ?
 ## Function to get all the make***CHIP_DB functions out of the namespace.
 makeDBPackage = function(schema, ...){
     switch(schema,           

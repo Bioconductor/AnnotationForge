@@ -336,6 +336,7 @@ appendGeneInfo <- function(db, subStrs, printSchema){
      SELECT g._id as _id, i.gene_name, i.symbol
      FROM ", subStrs[["cntrTab"]]," as g, anno.gene_info as i
      WHERE g._id=i._id
+     AND i.gene_name is not null
      ORDER BY g._id;
      ") 
   dbGetQuery(db, sql)
