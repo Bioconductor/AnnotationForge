@@ -44,7 +44,6 @@
 ## from the AnnotationDbi package. See ?select for details.
 
 ## Bimap interface:
-x <- @ANNOBJPREFIX@ARACYCENZYME
 # Convert the object to a list
 xx <- as.list(@ANNOBJPREFIX@BPPARENTS)
 # Remove GO IDs that do not have any parent
