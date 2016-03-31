@@ -1168,126 +1168,126 @@ manufacturer: Affymetrix
 ### Fields marked with an (*) are required.
 
 Package: org.Hs.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Hs.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Hs.eg.sqlite
 AnnObjPrefix: org.Hs.eg
 AnnObjTarget: Human
 species: Human
 biocViews: AnnotationData, Homo_sapiens, humanLLMappings
 
 Package: org.Pf.plasmo.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: MALARIA.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Pf.plasmo.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Pf.plasmo.sqlite
 AnnObjPrefix: org.Pf.plasmo
 AnnObjTarget: Malaria
 species: Malaria
 biocViews: AnnotationData, Plasmodium_falciparum
 
 Package: org.Mm.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Mm.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Mm.eg.sqlite
 AnnObjPrefix: org.Mm.eg
 AnnObjTarget: Mouse
 species: Mouse
 biocViews: AnnotationData, Mus_musculus, mouseLLMappings
 
 Package: org.Rn.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Rn.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Rn.eg.sqlite
 AnnObjPrefix: org.Rn.eg
 AnnObjTarget: Rat
 species: Rat
 biocViews: AnnotationData, Rattus_norvegicus, ratLLMappings
 
 Package: org.Dm.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Dm.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Dm.eg.sqlite
 AnnObjPrefix: org.Dm.eg
 AnnObjTarget: Fly
 species: Fly
 biocViews: AnnotationData, Drosophila_melanogaster
 
 Package: org.Sc.sgd.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: YEAST.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Sc.sgd.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Sc.sgd.sqlite
 AnnObjPrefix: org.Sc.sgd
 AnnObjTarget: Yeast
 species: Yeast
 biocViews: AnnotationData, Saccharomyces_cerevisiae
 
 Package: org.Dr.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Dr.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Dr.eg.sqlite
 AnnObjPrefix: org.Dr.eg
 AnnObjTarget: Zebrafish
 species: Zebrafish
 biocViews: AnnotationData, Danio_rerio
 
 Package: org.EcK12.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.EcK12.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.EcK12.eg.sqlite
 AnnObjPrefix: org.EcK12.eg
 AnnObjTarget: E coli
 species: E coli strain K12
 biocViews: AnnotationData, Escherichia_coli
 
 Package: org.EcSakai.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.EcSakai.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.EcSakai.eg.sqlite
 AnnObjPrefix: org.EcSakai.eg
 AnnObjTarget: E coli
 species: E coli strain Sakai
 biocViews: AnnotationData, Escherichia_coli
 
 Package: org.Cf.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Cf.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Cf.eg.sqlite
 AnnObjPrefix: org.Cf.eg
 AnnObjTarget: Canine
 species: Canine
 biocViews: AnnotationData, Canis_familiaris
 
 Package: org.Bt.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Bt.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Bt.eg.sqlite
 AnnObjPrefix: org.Bt.eg
 AnnObjTarget: Bovine
 species: Bovine
 biocViews: AnnotationData, Bos_taurus
 
 Package: org.Ce.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Ce.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Ce.eg.sqlite
 AnnObjPrefix: org.Ce.eg
 AnnObjTarget: Worm
 species: Worm
 biocViews: AnnotationData, Caenorhabditis_elegans
 
 Package: org.Ss.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Ss.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Ss.eg.sqlite
 AnnObjPrefix: org.Ss.eg
 AnnObjTarget: Pig
 species: Pig
 biocViews: AnnotationData, Sus_scrofa
 
 Package: org.Gg.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Gg.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Gg.eg.sqlite
 AnnObjPrefix: org.Gg.eg
 AnnObjTarget: Chicken
 species: Chicken
@@ -1295,64 +1295,63 @@ biocViews: AnnotationData, Gallus_gallus
 
 
 Package: org.Sco.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: COELICOLOR.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Sco.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Sco.eg.sqlite
 AnnObjPrefix: org.Sco.eg
 AnnObjTarget: Streptomyces coelicolor
 species: Streptomyces coelicolor
 biocViews: AnnotationData, Streptomyces_coelicolor
 
-
 Package: org.Sc.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: YEASTNCBI.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Sc.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Sc.eg.sqlite
 AnnObjPrefix: org.Sc.eg
 AnnObjTarget: Yeast
 species: Yeast
 biocViews: AnnotationData, Saccharomyces_cerevisiae
 
 Package: org.Pt.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Pt.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Pt.eg.sqlite
 AnnObjPrefix: org.Pt.eg
 AnnObjTarget: Chimp
 species: Chimp
 biocViews: AnnotationData, Pan_troglodytes
 
 Package: org.Mmu.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Mmu.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Mmu.eg.sqlite
 AnnObjPrefix: org.Mmu.eg
 AnnObjTarget: Rhesus
 species: Rhesus
 biocViews: AnnotationData, Macaca_mulatta
 
 Package: org.At.tair.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: ARABIDOPSIS.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.At.tair.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.At.tair.sqlite
 AnnObjPrefix: org.At.tair
 AnnObjTarget: Arabidopsis
 species: Arabidopsis
 biocViews: AnnotationData, Arabidopsis_thaliana
 
 Package: org.Ag.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Ag.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Ag.eg.sqlite
 AnnObjPrefix: org.Ag.eg
 AnnObjTarget: Anopheles
 species: Anopheles
 biocViews: AnnotationData, Anopheles_gambiae
 
 Package: org.Xl.eg.db
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: NCBIORG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/org.Xl.eg.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/org.Xl.eg.sqlite
 AnnObjPrefix: org.Xl.eg
 AnnObjTarget: Xenopus
 species: Xenopus
@@ -1393,9 +1392,9 @@ biocViews: AnnotationData, Xenopus_laevis
 
 Package: GO.db
 Title: A set of annotation maps describing the entire Gene Ontology
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: GO.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/GO.sqlite 
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/GO.sqlite 
 AnnObjPrefix: GO
 AnnObjTarget: GO
 biocViews: AnnotationData, FunctionalAnnotation
@@ -1543,9 +1542,9 @@ biocViews: AnnotationData, Caenorhabditis_elegans
 
 Package: PFAM.db
 Title: A set of protein ID mappings for PFAM
-Version: 3.2.1
+Version: 3.3.0
 PkgTemplate: PFAM.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/PFAM.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/sanctionedSqlite/PFAM.sqlite
 AnnObjPrefix: PFAM
 AnnObjTarget: Human
 species: Human
