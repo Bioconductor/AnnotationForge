@@ -23,7 +23,6 @@
 ## select() interface:
 ## Objects in this package can be accessed using the select() interface
 ## from the AnnotationDbi package. See ?select for details.
-columns(@ANNOBJPREFIX@.db)
 
 ## Bimap interface:
 ## The 'old style' of interacting with these objects is manipulation as 
