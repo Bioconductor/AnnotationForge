@@ -5,7 +5,7 @@ Version: @PKGVERSION@
 Author: Roxane Legaie
 Maintainer: Roxane Legaie <R.Legaie@warwick.ac.uk>
 Depends: R (>= 2.7.0), methods, AnnotationDbi (>= @ANNDBIVERSION@)
-Suggests: annotate, RUnit
+Suggests: DBI, annotate, RUnit
 Imports: methods, AnnotationDbi
 License: @LIC@
 organism: @ORGANISM@

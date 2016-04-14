@@ -1,4 +1,5 @@
 testForGOSourceMismatches <- function(){
+  require("DBI")
   require("GO.db")
   require("annotate")
   require("@PKGNAME@")

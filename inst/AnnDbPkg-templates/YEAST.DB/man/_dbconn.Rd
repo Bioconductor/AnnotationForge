@@ -73,6 +73,7 @@
 }
 
 \examples{
+  library(DBI)
   ## Count the number of rows in the "sgd" table:
   dbGetQuery(@ANNOBJPREFIX@_dbconn(), "SELECT COUNT(*) FROM sgd")
 

@@ -6,5 +6,6 @@ Author: @AUTHOR@
 Maintainer: @MAINTAINER@
 Depends: R (>= 2.7.0), methods, AnnotationDbi (>= @ANNDBIVERSION@)
 Imports: methods, AnnotationDbi
+Suggests: DBI
 License: @LIC@
 biocViews: @BIOCVIEWS@
