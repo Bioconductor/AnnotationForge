@@ -41,6 +41,7 @@ you. Here is how these IDs should look if you were to read them into
 R:
 
 <<FileDemo>>=
+library(RSQLite)
 library(AnnotationForge)
 read.table(system.file("extdata", "hcg110_ID",
                        package="AnnotationDbi"),

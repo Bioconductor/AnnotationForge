@@ -51,6 +51,7 @@ tells you about what kinds of values you can retrieve as columns in
 the final result.
 
 <<Homo.sapiens>>=
+library(RSQLite)
 library(Homo.sapiens)
 columns(Homo.sapiens)
 @ 
