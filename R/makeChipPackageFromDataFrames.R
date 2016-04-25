@@ -191,24 +191,24 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
     require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
     con <- dbConnect(SQLite(), dbFileName)
-    AnnotationForge:::.createMetadataTables(con)
+    .createMetadataTables(con)
     
     ## then find out what kind of DB we are building and make matching thing.
     orgSchema <- .getOrgSchema(orgPkgName)
     chipSchema <- .getChipSchema(orgSchema)
     if(orgSchema == 'NOSCHEMA_DB'){
         ## Make probes table
-        AnnotationForge:::.makeProbesTable(probeFrame, con)
+        .makeProbesTable(probeFrame, con)
         ## Add metadata with new schema
-        AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species,
+        .addEssentialMetadata(con, tax_id, genus, species,
                                                 schema=chipSchema,
                                                 type="ChipDb",centralID="GID")
     }else if(orgSchema %in% supportedNCBItypes()){
         ## supports the classic "ENTREZID" based legacy org packages
-        AnnotationForge:::.makeLegacyProbesTable(probeFrame, con, orgPkgName,
+        .makeLegacyProbesTable(probeFrame, con, orgPkgName,
                                                  optionalAccessionsFrame)
         centralID <- .getChipCentralID(orgPkgName)
-        AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species,
+        .addEssentialMetadata(con, tax_id, genus, species,
                                                 schema=chipSchema,
                                                 type="ChipDb",
                                                 centralID=centralID)
@@ -217,7 +217,7 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
     }
     ## Add org package info to metadata
     shortPkgName <- sub(".db","",orgPkgName)
-    AnnotationForge:::.addMeta(con, "ORGPKGDEP", shortPkgName)
+    .addMeta(con, "ORGPKGDEP", shortPkgName)
     
 }
 

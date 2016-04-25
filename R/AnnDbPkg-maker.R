@@ -65,7 +65,7 @@ initWithDbMetada <- function(x, dbfile)
     )
     dbconn <- dbFileConnect(dbfile)
     on.exit(dbFileDisconnect(dbconn))
-    metadata <- AnnotationDbi:::dbGetTable(dbconn, "metadata")
+    metadata <- dbGetTable(dbconn, "metadata")
     if (!identical(colnames(metadata), c("name", "value")))
         stop("\"metadata\" table has unexpected col names")
     if (any(duplicated(metadata$name))) {
@@ -133,7 +133,7 @@ initWithDbDoc <- function(dbfile)
 {
     dbconn <- dbFileConnect(dbfile)
     on.exit(dbFileDisconnect(dbconn))
-    map_metadata <- AnnotationDbi:::dbGetTable(dbconn, "map_metadata")
+    map_metadata <- dbGetTable(dbconn, "map_metadata")
     map_metadata
 }
 
@@ -212,16 +212,14 @@ loadAnnDbPkgIndex <- function(file)
 ## This function takes the seed and lists the Mappings
 listMappings <- function(x, type){
   ## get seeds
-##   seeds <- eval(parse(text=paste("AnnotationDbi:::",x@DBschema,
-##                         "_AnnDbBimap_seeds", sep="")))
   schema <- x@DBschema ## schema will be like "HUMANCHIP_DB" or "HUMAN_DB"
   if(type=="ChipDb"){
-    orgDbName <- AnnotationDbi:::getOrgPkgForSchema(schema)
-    allSeeds <- AnnotationDbi:::NCBICHIP_DB_SeedGenerator(orgDbName)
+    orgDbName <- getOrgPkgForSchema(schema)
+    allSeeds <- NCBICHIP_DB_SeedGenerator(orgDbName)
   }else if(type=="OrgDb"){
-    allSeeds <- AnnotationDbi:::NCBIORG_DB_SeedGenerator()
+    allSeeds <- NCBIORG_DB_SeedGenerator()
   }
-  seeds <- AnnotationDbi:::.filterSeeds(allSeeds, schema, type)
+  seeds <- filterSeeds(allSeeds, schema, type)
   ## Then get the names
   unlist(lapply(seeds, function(x){return(x$objName)}))
 }
@@ -331,7 +329,7 @@ setGeneric("makeAnnDbPkg", signature="x",
     if(x@DBschema=="NOCHIPSCHEMA_DB"){
         org_pkg <- as.character(.getOrgDepFromMetadata(dbfile))
     }else{
-        org_pkg <- paste0(AnnotationDbi:::getOrgPkgForSchema(x@DBschema),".db")
+        org_pkg <- paste0(getOrgPkgForSchema(x@DBschema),".db")
     }
   }else{
     org_version <- "no org version date"
@@ -430,20 +428,10 @@ setMethod("makeAnnDbPkg", "AnnDbPkgSeed",
 }
 
 setMethod("makeAnnDbPkg", "list",
-          function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
+    function(x, dbfile, dest_dir=".", no.man=FALSE, ...) {
             .makeAnnDbPkgList(x, dbfile, dest_dir=dest_dir, no.man=no.man, ...)
-          }
-          )
-
-
-### 'x' can be a regular expression.
-### Typical use:
-###   > library(AnnotationDbi)
-###   > makeAnnDbPkg(c("hgu95av2.db", "hgu133a2.db"))
-### or to make all the packages:
-###   > makeAnnDbPkg(".*") # a character vector of length 1 is treated as a
-###                        # regular expression
-###
+    }
+)
 
 .makeAnnDbPkgs <- function(x, dbfile, dest_dir=".", no.man=FALSE, ...){
   if (missing(dbfile)) {

@@ -22,7 +22,8 @@
                  tax_id,
                  genus=NULL,
                  species=NULL,
-                 goTable=NULL)
+                 goTable=NULL,
+                 verbose=TRUE)
 }
 
 \arguments{
@@ -56,6 +57,7 @@
   gene IDs, GO IDs and evidence codes respectively.  GO IDs should be
   formatted like this to work with other DBs in the project:
   \'GO:XXXXXXX\'. }
+  \item{verbose}{When TRUE progress messages are displayed.}
 }
 
 

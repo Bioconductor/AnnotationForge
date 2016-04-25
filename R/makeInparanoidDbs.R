@@ -174,22 +174,6 @@
     dbCommit(con)
 }
 
-## map metadata is also something I don't need to inp8 (no more maps)
-## .makeMapMetadata <- function(){
-##     meta <- read.delim(system.file('extdata','inp8_metadata',
-##                                    package='AnnotationForge'),
-##                        sep="\t", header=TRUE, stringsAsFactors=FALSE)
-## }
-
-## .makeMetadata <- function(con, species){
-##     ## make regular metadata.
-##     .makeBasicMetadata(con)
-##     ## make the map_metadata
-##     .makeMapMetadata(con)
-##     ## make the map_counts ???  - I am guessing that I don't even want this.
-## }
-
-
 ## function to make a set of tables.
 makeInpDb <- function(dir, dataDir="."){
     ## Start by getting all the data we need
@@ -226,78 +210,3 @@ makeInpDb <- function(dir, dataDir="."){
     ## return the name of the DB connection for external saving
     DBNAME
 }
-
-
-
-## This part of the file will contain the code to make all the
-## Inparanoid DBs by knowing about where the resources live online and
-## then asking for each one in turn.
-
-
-## makeInpDbs <- function(dataDir="."){
-##     curLoc <- 'http://inparanoid.sbc.su.se/download/current/Orthologs/'
-##     subDirs <- .getSubDirs(curLoc)
-##     ## minor filtering
-##     ## subDirs <- subDirs[!(subDirs %in% c('stderr/'))]
-##     ## species <- sub("/","",subDirs)
-##     ## allDirs <- paste0(curLoc, subDirs)
-##     ## ## for each AllDir, we want to make a DB with:
-##     ## lapply(allDirs, makeInpDb, dataDir)
-
-##     ## JUST for now: lets just make the ones we supported before (for testing)
-##     traditional <- c('A.thaliana','C.elegans','D.melanogaster','D.rerio','H.sapiens','M.musculus','R.norvegicus','S.cerevisiae')
-##     allDirs <- paste0(curLoc, traditional,"/")
-
-    
-##     lapply(allDirs, makeInpDb, dataDir)
-    
-## }
-
-
-## Test this out
-## library(InparanoidBaseBuilder); makeInpDbs()
-
-###############################################################################
-
-
-
-
-
-## Then from the DB you can do this
-## library(AnnotationDbi); hom.Homo_sapiens.inp8.db <- loadDb('hom.Homo_sapiens.inp8.sqlite')
-
-
-## test keytypes and columns()
-## keytypes(hom.Homo_sapiens.inp8.db)
-##
-## RESULTS are TOO short.  :(
-
-## This *appears* to work...
-## k = head(keys(hom.Homo_sapiens.inp8.db, keytype="PONGO_ABELII"))
-
-## This doesn't work right (in part, because of 5 letter code holdover stuff)
-## I need to make some simpler methods for inparanoid8 stuff...
-## select(hom.Homo_sapiens.inp8.db, keys=k, columns="MUS_MUSCULUS", keytype="PONGO_ABELII")
-
-
-## TODO: add Organism and species to the metadata!
-
-
-
-### TEST again:
-## library(AnnotationForge);
-## debug(makeInpDb);
-## makeInpDb(dir="http://inparanoid.sbc.su.se/download/current/Orthologs/A.aegypti/", dataDir=".")
-## debug(AnnotationForge:::.lookupTableName)
-
-
-
-## library(AnnotationForge);
-## debug(AnnotationForge:::.cleanupFiles);
-## debug(makeInpDb);
-## debug(AnnotationForge:::.popInpTable);
-## example(makeInpDb)
-
-## I need to have the db able to be saved
-## library(AnnotationForge);
-## db <- makeInpDb(dir="http://inparanoid.sbc.su.se/download/current/Orthologs/A.aegypti/", dataDir=tempdir())

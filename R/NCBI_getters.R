@@ -143,10 +143,7 @@ getGOInfo <- function(doc){
   GOIds
 }
 
-
-
 getGeneStuff <- function(entrezGenes, dir = "files"){
-  require(XML)
   baseUrl <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?"
   xsep <- paste(entrezGenes, collapse=",")
   url <- paste(baseUrl,"db=gene&id=",xsep,"&retmode=xml", sep="")
@@ -154,7 +151,7 @@ getGeneStuff <- function(entrezGenes, dir = "files"){
   ## NOW we have to parse the available XML
   EGSet <- xmlParse(url)
 
-## Here we will save the files out to a dir
+  ## Here we will save the files out to a dir
   miniDocs <- lapply(getNodeSet(EGSet, "//Entrezgene"), xmlDoc)
   wd <- getwd()
   path <- paste(wd, dir, sep="/")
@@ -165,7 +162,7 @@ getGeneStuff <- function(entrezGenes, dir = "files"){
     saveXML( miniDocs[[i]], file = paths[[i]])
   }
   setwd(wd)
-  
+ 
   ## attempt to remove miniDocs each time?
   ## (something tells me this is a token gesture only)
   rm(miniDocs)

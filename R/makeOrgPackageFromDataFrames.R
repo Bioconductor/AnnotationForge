@@ -77,7 +77,7 @@
   value<- c("2.1",schema,paste(genus,species),paste(genus,species),
             centralID,tax_id,
             type,"AnnotationDbi")
-  AnnotationForge:::.addMeta(con, name, value)
+  .addMeta(con, name, value)
 }
 
 .addOntologyData <- function(data){
@@ -130,20 +130,20 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
     require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
     con <- dbConnect(SQLite(), dbFileName)
-    AnnotationForge:::.createMetadataTables(con)
+    .createMetadataTables(con)
     ## TODO: why can't I drop these (investigate)
 #    dbGetQuery(con, "DROP TABLE map_counts;")
 #    dbGetQuery(con, "DROP TABLE map_metadata;")
     
     ## gather all GIDs together and make the genes table
     genes <- unique(unlist(unname(lapply(data, "[", 'GID'))))
-    AnnotationForge:::.makeGenesTable(genes, con)
+    .makeGenesTable(genes, con)
     
     ## Then do each data.frame in turn
     mapply(FUN=.makeTable, data, names(data), MoreArgs=list(con=con))
         
     ## Add metadata but keep it very basic
-    AnnotationForge:::.addEssentialMetadata(con, tax_id, genus, species)
+    .addEssentialMetadata(con, tax_id, genus, species)
         
     ## when we have a goTable, we make special GO tables
     if(goTable %in% names(data)){
@@ -278,7 +278,8 @@ makeOrgPackage <- function(...,
                            tax_id,
                            genus=NULL,
                            species=NULL,
-                           goTable=NULL){
+                           goTable=NULL,
+                           verbose=TRUE){
     if(is.null(goTable)){goTable <- NA}
     ## get all the arguments into a list
     data <- list(...)

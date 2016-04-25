@@ -1,10 +1,13 @@
-#import(methods)
-#import(utils)
+import(methods)
+import(utils)
 import(Biobase)
 import(DBI)
 import(RSQLite)
 import(BiocGenerics)
 import(S4Vectors)
+import(AnnotationDbi)
+import(XML)
+
 
 exportClasses(
     ## from R/AnnDbPkg-maker.R
