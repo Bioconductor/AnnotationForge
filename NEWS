@@ -1,74 +1,87 @@
- 	**************************************************
-	*						 *
-	*	        1.8.0 SERIES NEWS		 *
-	*						 *
-	**************************************************
+CHANGES IN VERSION 1.14.0
+------------------------
+
+NEW FEATURES
+
+    o build 'alias' table in OrgDbs sqlite db for frog, chimp, rhesus and 
+      mosquito
+
+MODIFICATIONS
+
+    o update AnnDbPkg template man to reference select() interface
+
+    o work on makeOrgPackageFromNCBI:
+      - error early when tax id is not found in gene_info.gz
+      - add 'rebuildCache' arg to control repeated downloads
+      - remove old code and comments
+      - update man page
+
+    o add PFAM and PROSITE man pages to NCBICHIP  and NCBIORG package 
+      templates
+
+    o allow passing of directory location in wrapBaseDBPackages()
+
+    o change format of licence; report current version of AnnotationDbi
+
+    o modify appendArabidopsisGenes() to check for null 'gene_id'
+
+    o add DBI to 'Suggests'; load DBI in _dbconn man page
+
+    o load SQLite in vignettes; no longer free from 
+      AnnotationDbi::dbFileConnect()
+
+
+CHANGES IN VERSION 1.8.0
+------------------------
 
 NEW FEATURES
 
     o Adds support for making orgDb objects/databases for all NCBI
-    taxIDs where there is sufficient data (for adding to
-    AnnotationHub).  This makes objects for 1100 organisms.
+      taxIDs where there is sufficient data (for adding to
+      AnnotationHub).  This makes objects for 1100 organisms.
 
 
- 	**************************************************
-	*						 *
-	*	        1.6.0 SERIES NEWS		 *
-	*						 *
-	**************************************************
+CHANGES IN VERSION 1.6.0
+------------------------
 
 NEW FEATURES
 
     o Adds support for a generalized makeChipPackage() function so
-    that users with a probe that maps to an ID can make a chip package
-    providing only that they have access to an org package (no .db0
-    package required).
+      that users with a probe that maps to an ID can make a chip package
+      providing only that they have access to an org package (no .db0
+      package required).
 
     o Adds support for making new inparanoid8 databases (for loading
-    into AnnotationHub)
+      into AnnotationHub)
 
 
-
- 	**************************************************
-	*						 *
-	*	        1.4.0 SERIES NEWS		 *
-	*						 *
-	**************************************************
+CHANGES IN VERSION 1.4.0
+------------------------
 
 NEW FEATURES
 
     o adds more general mechanism for creating organism packages.
-    makeOrgPackage() will now allow users to pass in a series of
-    data.frames, and (provided that they are formatted correctly) will
-    compile those into a gene-centric organism package.  The aim is to
-    provide a more general mechanism for people who are working on
-    organisms that are off the beaten path.
+      makeOrgPackage() will now allow users to pass in a series of
+      data.frames, and (provided that they are formatted correctly) will
+      compile those into a gene-centric organism package.  The aim is to
+      provide a more general mechanism for people who are working on
+      organisms that are off the beaten path.
 
     o updates to the documentation (new vignettes) to better clarify
-    how users who need to make new organism packages should do so.
+      how users who need to make new organism packages should do so.
 
 
- 	**************************************************
-	*						 *
-	*	        1.0.0 SERIES NEWS		 *
-	*						 *
-	**************************************************
+CHANGES IN VERSION 1.0.0
+------------------------
 
-
-		AnnotationForge VERSION 1.0.0
-
-
-PKG FEATURES
-
-    o	All of the code that used to live in AnnotationDbi but was
-        primarily involved in the creation of new annotation packages
-        now lives here.
+    o All of the code that used to live in AnnotationDbi but was
+      primarily involved in the creation of new annotation packages
+      now lives here.
 
 NEW FEATURES
 
     o New biocViews tags have been added to the code that generates all
-    the new Annotation packages.  These allow users to search
-    annotation packages by the type of annotation package that they
-    are.  So for example you can now quickly list only the
-    TranscriptDb packages by using the web site.
-
+      the new Annotation packages.  These allow users to search
+      annotation packages by the type of annotation package that they
+      are.  So for example you can now quickly list only the
+      TranscriptDb packages by using the web site.
