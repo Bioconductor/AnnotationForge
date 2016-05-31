@@ -6,11 +6,17 @@
 \title{Number of mapped keys for the maps in package @PKGNAME@}
 
 \description{
+  DEPRECATED. Counts in the MAPCOUNT table are out of sync and should
+  not be used.
+
   @ANNOBJPREFIX@MAPCOUNTS provides the "map count" (i.e. the
   count of mapped keys) for each map in package @PKGNAME@.
 }
 
-\details{  
+\details{ 
+  DEPRECATED. Counts in the MAPCOUNT table are out of sync and should
+  not be used.
+
   This "map count" information is precalculated and stored in the
   package annotation DB. This allows some quality control and is used by
   the \code{\link[AnnotationDbi:AnnDbPkg-checker]{checkMAPCOUNTS}}
@@ -18,35 +24,6 @@
   methods (like \code{count.mappedkeys(x)} or
   \code{sum(!is.na(as.list(x)))}) for getting the "map count" of a given
   map.
-}
-
-\seealso{
-}
-\seealso{
-  \itemize{
-    \item \code{\link[AnnotationDbi:Bimap-keys]{mappedkeys}},
-    \item \code{\link[AnnotationDbi:Bimap-keys]{count.mappedkeys}},
-    \item \code{\link[AnnotationDbi:AnnDbPkg-checker]{checkMAPCOUNTS}}
-    \item \code{\link[AnnotationDbi]{AnnotationDb-class}} for use of
-          the \code{select()} interface.
-  }
-}
-
-\examples{
-## select() interface:
-## Objects in this package can be accessed using the select() interface
-## from the AnnotationDbi package. See ?select for details.
-
-## Bimap interface:
-@ANNOBJPREFIX@MAPCOUNTS
-mapnames <- names(@ANNOBJPREFIX@MAPCOUNTS)
-@ANNOBJPREFIX@MAPCOUNTS[mapnames[1]]
-x <- get(mapnames[1])
-sum(!is.na(as.list(x)))
-count.mappedkeys(x)   # much faster!
-
-## Check the "map count" of all the maps in package @PKGNAME@
-checkMAPCOUNTS("@PKGNAME@")
 }
 
 \keyword{datasets}

@@ -12,7 +12,6 @@ allSuite <- defineTestSuite(name="allSuite",
                             rngKind="default",
                             rngNormalKind="default")
 
-## results <- capture.output(runTestSuite(allSuite))
 runTestSuite(allSuite)
 
 q(runLast=FALSE)
