@@ -294,7 +294,8 @@ filterManPages <- function(doc_template_names, maps, x){
 ###
 
 setGeneric("makeAnnDbPkg", signature="x",
-    function(x, dbfile, dest_dir=".", no.man=FALSE, ...) standardGeneric("makeAnnDbPkg")
+    function(x, dbfile, dest_dir=".", no.man=FALSE, ...) 
+        standardGeneric("makeAnnDbPkg")
 )
 
 ## helper to extract metadata

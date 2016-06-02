@@ -21,7 +21,7 @@ exportMethods(
 
 export(
     ## from R/AnnDbPkg-maker.R
-    loadAnnDbPkgIndex,
+    loadAnnDbPkgIndex, makeAnnDbPkg,
        
     ## help functions for making sqlite files
     populateDB, 

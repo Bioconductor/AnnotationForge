@@ -1,4 +1,5 @@
 ## verify probes and genes exist (for the chip packages)
+library(DBI)
 getProbes <- function(){
     require("@PKGNAME@")
     as.numeric(dbGetQuery(dbconn(@PKGNAME@),
