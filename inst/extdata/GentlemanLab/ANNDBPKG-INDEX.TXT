@@ -35,7 +35,7 @@
 Package: hcg110.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hcg110.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hcg110.sqlite
 AnnObjPrefix: hcg110
 species: Human
 manufacturer: Affymetrix
@@ -43,7 +43,7 @@ manufacturer: Affymetrix
 Package: hgfocus.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgfocus.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgfocus.sqlite
 AnnObjPrefix: hgfocus
 species: Human
 manufacturer: Affymetrix
@@ -51,7 +51,7 @@ manufacturer: Affymetrix
 Package: hgu133a2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu133a2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu133a2.sqlite
 AnnObjPrefix: hgu133a2
 species: Human
 manufacturer: Affymetrix
@@ -59,7 +59,7 @@ manufacturer: Affymetrix
 Package: hgu133a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu133a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu133a.sqlite
 AnnObjPrefix: hgu133a
 species: Human
 manufacturer: Affymetrix
@@ -67,7 +67,7 @@ manufacturer: Affymetrix
 Package: hgu133b.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu133b.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu133b.sqlite
 AnnObjPrefix: hgu133b
 species: Human
 manufacturer: Affymetrix
@@ -75,7 +75,7 @@ manufacturer: Affymetrix
 Package: hgu133plus2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu133plus2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu133plus2.sqlite
 AnnObjPrefix: hgu133plus2
 species: Human
 manufacturer: Affymetrix
@@ -83,7 +83,7 @@ manufacturer: Affymetrix
 Package: hgu219.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu219.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu219.sqlite
 AnnObjPrefix: hgu219
 species: Human
 manufacturer: Affymetrix
@@ -91,7 +91,7 @@ manufacturer: Affymetrix
 Package: hgu95a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu95a.sqlite
 AnnObjPrefix: hgu95a
 species: Human
 manufacturer: Affymetrix
@@ -99,7 +99,7 @@ manufacturer: Affymetrix
 Package: hgu95av2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95av2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu95av2.sqlite
 AnnObjPrefix: hgu95av2
 species: Human
 manufacturer: Affymetrix
@@ -107,7 +107,7 @@ manufacturer: Affymetrix
 Package: hgu95b.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95b.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu95b.sqlite
 AnnObjPrefix: hgu95b
 species: Human
 manufacturer: Affymetrix
@@ -115,7 +115,7 @@ manufacturer: Affymetrix
 Package: hgu95c.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95c.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu95c.sqlite
 AnnObjPrefix: hgu95c
 species: Human
 manufacturer: Affymetrix
@@ -123,7 +123,7 @@ manufacturer: Affymetrix
 Package: hgu95d.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95d.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu95d.sqlite
 AnnObjPrefix: hgu95d
 species: Human
 manufacturer: Affymetrix
@@ -131,7 +131,7 @@ manufacturer: Affymetrix
 Package: hgu95e.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgu95e.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgu95e.sqlite
 AnnObjPrefix: hgu95e
 species: Human
 manufacturer: Affymetrix
@@ -139,7 +139,7 @@ manufacturer: Affymetrix
 Package: hu35ksuba.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu35ksuba.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hu35ksuba.sqlite
 AnnObjPrefix: hu35ksuba
 species: Human
 manufacturer: Affymetrix
@@ -147,7 +147,7 @@ manufacturer: Affymetrix
 Package: hu35ksubb.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu35ksubb.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hu35ksubb.sqlite
 AnnObjPrefix: hu35ksubb
 species: Human
 manufacturer: Affymetrix
@@ -155,7 +155,7 @@ manufacturer: Affymetrix
 Package: hu35ksubc.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu35ksubc.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hu35ksubc.sqlite
 AnnObjPrefix: hu35ksubc
 species: Human
 manufacturer: Affymetrix
@@ -163,7 +163,7 @@ manufacturer: Affymetrix
 Package: hu35ksubd.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu35ksubd.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hu35ksubd.sqlite
 AnnObjPrefix: hu35ksubd
 species: Human
 manufacturer: Affymetrix
@@ -171,7 +171,7 @@ manufacturer: Affymetrix
 Package: hthgu133a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hthgu133a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hthgu133a.sqlite
 AnnObjPrefix: hthgu133a
 species: Human
 manufacturer: Affymetrix
@@ -179,7 +179,7 @@ manufacturer: Affymetrix
 Package: hthgu133b.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hthgu133b.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hthgu133b.sqlite
 AnnObjPrefix: hthgu133b
 species: Human
 manufacturer: Affymetrix
@@ -187,7 +187,7 @@ manufacturer: Affymetrix
 Package: hu6800.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hu6800.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hu6800.sqlite
 AnnObjPrefix: hu6800
 species: Human
 manufacturer: Affymetrix
@@ -195,7 +195,7 @@ manufacturer: Affymetrix
 Package: u133x3p.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/u133x3p.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/u133x3p.sqlite
 AnnObjPrefix: u133x3p
 species: Human
 manufacturer: Affymetrix
@@ -206,7 +206,7 @@ manufacturer: Affymetrix
 Package: hgug4100a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4100a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgug4100a.sqlite
 AnnObjPrefix: hgug4100a
 species: Human
 manufacturer: Agilent
@@ -214,7 +214,7 @@ manufacturer: Agilent
 Package: hgug4101a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4101a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgug4101a.sqlite
 AnnObjPrefix: hgug4101a
 species: Human
 manufacturer: Agilent
@@ -222,7 +222,7 @@ manufacturer: Agilent
 Package: hgug4110b.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4110b.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgug4110b.sqlite
 AnnObjPrefix: hgug4110b
 species: Human
 manufacturer: Agilent
@@ -230,7 +230,7 @@ manufacturer: Agilent
 Package: hgug4111a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4111a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgug4111a.sqlite
 AnnObjPrefix: hgug4111a
 species: Human
 manufacturer: Agilent
@@ -238,7 +238,7 @@ manufacturer: Agilent
 Package: hgug4112a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgug4112a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgug4112a.sqlite
 AnnObjPrefix: hgug4112a
 species: Human
 manufacturer: Agilent
@@ -246,7 +246,7 @@ manufacturer: Agilent
 Package: HsAgilentDesign026652.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/HsAgilentDesign026652.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/HsAgilentDesign026652.sqlite
 AnnObjPrefix: HsAgilentDesign026652
 species: Human
 manufacturer: Agilent
@@ -257,7 +257,7 @@ manufacturer: Agilent
 Package: hguatlas13k.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hguatlas13k.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hguatlas13k.sqlite
 AnnObjPrefix: hguatlas13k
 species: Human
 manufacturer: Clontech
@@ -268,7 +268,7 @@ manufacturer: Clontech
 Package: hguqiagenv3.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hguqiagenv3.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hguqiagenv3.sqlite
 AnnObjPrefix: hguqiagenv3
 species: Human
 manufacturer: Qiagen
@@ -279,7 +279,7 @@ manufacturer: Qiagen
 Package: hgubeta7.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hgubeta7.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hgubeta7.sqlite
 AnnObjPrefix: hgubeta7
 species: Human
 biocViews: AnnotationData, CustomArray, Homo_sapiens
@@ -287,7 +287,7 @@ biocViews: AnnotationData, CustomArray, Homo_sapiens
 Package: hguDKFZ31.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/hguDKFZ31.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/hguDKFZ31.sqlite
 AnnObjPrefix: hguDKFZ31
 species: Human
 biocViews: AnnotationData, CustomArray, Homo_sapiens
@@ -296,7 +296,7 @@ Package: HuO22.db
 Title: FHCRC Genomics Shared Resource HuO22 Annotation Data (HuO22)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/HuO22.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/HuO22.sqlite
 AnnObjPrefix: HuO22
 species: Human
 manufacturer: FHCRC Genomics Shared Resource
@@ -305,7 +305,7 @@ Package: JazaeriMetaData.db
 Title: A data package containing annotation data for JazaeriMetaData
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/JazaeriMetaData.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/JazaeriMetaData.sqlite
 AnnObjPrefix: JazaeriMetaData
 species: Human
 manufacturer: National Cancer Institute
@@ -314,7 +314,7 @@ Package: Norway981.db
 Title: Norway981 http://genome-www5.stanford.edu/ Annotation Data (Norway981)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Norway981.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/Norway981.sqlite
 AnnObjPrefix: Norway981
 species: Human
 manufacturer: Stanford Microarray Database
@@ -323,7 +323,7 @@ Package: OperonHumanV3.db
 Title: FHCRC Nelson Lab OperonHumanV3 Annotation Data (OperonHumanV3)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/OperonHumanV3.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/OperonHumanV3.sqlite
 AnnObjPrefix: OperonHumanV3
 species: Human
 manufacturer: FHCRC Nelson Lab
@@ -332,7 +332,7 @@ Package: PartheenMetaData.db
 Title: PartheenMetaData http://swegene.onk.lu.se Annotation Data (PartheenMetaData)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/PartheenMetaData.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/PartheenMetaData.sqlite
 AnnObjPrefix: PartheenMetaData
 species: Human
 manufacturer: Swegene DNA Microarray Resource Centre, Lund, Sweden
@@ -341,7 +341,7 @@ Package: pedbarrayv9.db
 Title: FHCRC Nelson Lab pedbarrayv9 Annotation Data (pedbarrayv9)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/pedbarrayv9.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/pedbarrayv9.sqlite
 AnnObjPrefix: pedbarrayv9
 species: Human
 manufacturer: FHCRC Nelson Lab
@@ -350,7 +350,7 @@ Package: pedbarrayv10.db
 Title: FHCRC Nelson Lab pedbarrayv10 Annotation Data (pedbarrayv10)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/pedbarrayv10.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/pedbarrayv10.sqlite
 AnnObjPrefix: pedbarrayv10
 species: Human
 manufacturer: FHCRC Nelson Lab
@@ -359,7 +359,7 @@ Package: Roberts2005Annotation.db
 Title: Roberts2005Annotation Annotation Data (Roberts2005Annotation)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Roberts2005Annotation.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/Roberts2005Annotation.sqlite
 AnnObjPrefix: Roberts2005Annotation
 species: Human
 manufacturer: Roberts2005Annotation
@@ -368,7 +368,7 @@ Package: SHDZ.db
 Title: SHDZ http://genome-www5.stanford.edu/ Annotation Data (SHDZ)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/SHDZ.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/SHDZ.sqlite
 AnnObjPrefix: SHDZ
 species: Human
 manufacturer: Stanford Microarray Database
@@ -377,7 +377,7 @@ Package: POCRCannotation.db
 Title: A package containing metadata for POCRC arrays
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/POCRCannotation.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/POCRCannotation.sqlite
 AnnObjPrefix: POCRCannotation
 species: Human
 manufacturer: CUSTOM
@@ -386,7 +386,7 @@ Package: Hs6UG171.db
 Title: A package containing metadata for Hs6UG171 arrays
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Hs6UG171.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/Hs6UG171.sqlite
 AnnObjPrefix: Hs6UG171
 species: Human
 manufacturer: CUSTOM
@@ -395,7 +395,7 @@ Package: LAPOINTE.db
 Title: A package containing metadata for LAPOINTE arrays
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/LAPOINTE.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/LAPOINTE.sqlite
 AnnObjPrefix: LAPOINTE
 species: Human
 manufacturer: CUSTOM
@@ -427,7 +427,7 @@ manufacturer: CUSTOM
 Package: mgu74a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgu74a.sqlite
 AnnObjPrefix: mgu74a
 species: Mouse
 manufacturer: Affymetrix
@@ -435,7 +435,7 @@ manufacturer: Affymetrix
 Package: mgu74av2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74av2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgu74av2.sqlite
 AnnObjPrefix: mgu74av2
 species: Mouse
 manufacturer: Affymetrix
@@ -443,7 +443,7 @@ manufacturer: Affymetrix
 Package: mgu74b.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74b.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgu74b.sqlite
 AnnObjPrefix: mgu74b
 species: Mouse
 manufacturer: Affymetrix
@@ -451,7 +451,7 @@ manufacturer: Affymetrix
 Package: mgu74bv2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74bv2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgu74bv2.sqlite
 AnnObjPrefix: mgu74bv2
 species: Mouse
 manufacturer: Affymetrix
@@ -459,7 +459,7 @@ manufacturer: Affymetrix
 Package: mgu74c.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74c.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgu74c.sqlite
 AnnObjPrefix: mgu74c
 species: Mouse
 manufacturer: Affymetrix
@@ -467,7 +467,7 @@ manufacturer: Affymetrix
 Package: mgu74cv2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgu74cv2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgu74cv2.sqlite
 AnnObjPrefix: mgu74cv2
 species: Mouse
 manufacturer: Affymetrix
@@ -475,7 +475,7 @@ manufacturer: Affymetrix
 Package: moe430a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/moe430a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/moe430a.sqlite
 AnnObjPrefix: moe430a
 species: Mouse
 manufacturer: Affymetrix
@@ -483,7 +483,7 @@ manufacturer: Affymetrix
 Package: moe430b.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/moe430b.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/moe430b.sqlite
 AnnObjPrefix: moe430b
 species: Mouse
 manufacturer: Affymetrix
@@ -491,7 +491,7 @@ manufacturer: Affymetrix
 Package: mouse4302.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mouse4302.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mouse4302.sqlite
 AnnObjPrefix: mouse4302
 species: Mouse
 manufacturer: Affymetrix
@@ -499,7 +499,7 @@ manufacturer: Affymetrix
 Package: mouse430a2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mouse430a2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mouse430a2.sqlite
 AnnObjPrefix: mouse430a2
 species: Mouse
 manufacturer: Affymetrix
@@ -507,7 +507,7 @@ manufacturer: Affymetrix
 Package: mu11ksuba.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu11ksuba.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mu11ksuba.sqlite
 AnnObjPrefix: mu11ksuba
 species: Mouse
 manufacturer: Affymetrix
@@ -515,7 +515,7 @@ manufacturer: Affymetrix
 Package: mu11ksubb.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu11ksubb.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mu11ksubb.sqlite
 AnnObjPrefix: mu11ksubb
 species: Mouse
 manufacturer: Affymetrix
@@ -523,7 +523,7 @@ manufacturer: Affymetrix
 Package: mu19ksuba.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu19ksuba.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mu19ksuba.sqlite
 AnnObjPrefix: mu19ksuba
 species: Mouse
 manufacturer: Affymetrix
@@ -531,7 +531,7 @@ manufacturer: Affymetrix
 Package: mu19ksubb.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu19ksubb.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mu19ksubb.sqlite
 AnnObjPrefix: mu19ksubb
 species: Mouse
 manufacturer: Affymetrix
@@ -539,7 +539,7 @@ manufacturer: Affymetrix
 Package: mu19ksubc.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mu19ksubc.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mu19ksubc.sqlite
 AnnObjPrefix: mu19ksubc
 species: Mouse
 manufacturer: Affymetrix
@@ -550,7 +550,7 @@ manufacturer: Affymetrix
 Package: mgug4104a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgug4104a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgug4104a.sqlite
 AnnObjPrefix: mgug4104a
 species: Mouse
 manufacturer: Agilent
@@ -558,7 +558,7 @@ manufacturer: Agilent
 Package: mgug4120a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgug4120a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgug4120a.sqlite
 AnnObjPrefix: mgug4120a
 species: Mouse
 manufacturer: Agilent
@@ -566,7 +566,7 @@ manufacturer: Agilent
 Package: mgug4121a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgug4121a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgug4121a.sqlite
 AnnObjPrefix: mgug4121a
 species: Mouse
 manufacturer: Agilent
@@ -574,7 +574,7 @@ manufacturer: Agilent
 Package: mgug4122a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mgug4122a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mgug4122a.sqlite
 AnnObjPrefix: mgug4122a
 species: Mouse
 manufacturer: Agilent
@@ -582,7 +582,7 @@ manufacturer: Agilent
 Package: MmAgilentDesign026655.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/MmAgilentDesign026655.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/MmAgilentDesign026655.sqlite
 AnnObjPrefix: MmAgilentDesign026655
 species: Mouse
 manufacturer: Agilent
@@ -593,7 +593,7 @@ manufacturer: Agilent
 Package: mguatlas5k.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mguatlas5k.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mguatlas5k.sqlite
 AnnObjPrefix: mguatlas5k
 species: Mouse
 manufacturer: Clontech
@@ -605,7 +605,7 @@ Package: mpedbarray.db
 Title: FHCRC Nelson Lab mpedbarray Annotation Data (mpedbarray)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/mpedbarray.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/mpedbarray.sqlite
 AnnObjPrefix: mpedbarray
 species: Mouse
 manufacturer: FHCRC Nelson Lab
@@ -614,7 +614,7 @@ Package: Mu15v1.db
 Title: FHCRC Genomics Shared Resource Mu15v1 Annotation Data (Mu15v1)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Mu15v1.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/Mu15v1.sqlite
 AnnObjPrefix: Mu15v1
 species: Mouse
 manufacturer: FHCRC Genomics Shared Resource
@@ -623,7 +623,7 @@ Package: Mu22v3.db
 Title: FHCRC Genomics Shared Resource Mu22v3 Annotation Data (Mu22v3)
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/Mu22v3.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/Mu22v3.sqlite
 AnnObjPrefix: Mu22v3
 species: Mouse
 manufacturer: FHCRC Genomics Shared Resource
@@ -655,7 +655,7 @@ manufacturer: FHCRC Genomics Shared Resource
 Package: rae230a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rae230a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rae230a.sqlite
 AnnObjPrefix: rae230a
 species: Rat
 manufacturer: Affymetrix
@@ -663,7 +663,7 @@ manufacturer: Affymetrix
 Package: rae230b.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rae230b.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rae230b.sqlite
 AnnObjPrefix: rae230b
 species: Rat
 manufacturer: Affymetrix
@@ -671,7 +671,7 @@ manufacturer: Affymetrix
 Package: rat2302.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rat2302.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rat2302.sqlite
 AnnObjPrefix: rat2302
 species: Rat
 manufacturer: Affymetrix
@@ -679,7 +679,7 @@ manufacturer: Affymetrix
 Package: rgu34a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgu34a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rgu34a.sqlite
 AnnObjPrefix: rgu34a
 species: Rat
 manufacturer: Affymetrix
@@ -687,7 +687,7 @@ manufacturer: Affymetrix
 Package: rgu34b.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgu34b.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rgu34b.sqlite
 AnnObjPrefix: rgu34b
 species: Rat
 manufacturer: Affymetrix
@@ -695,7 +695,7 @@ manufacturer: Affymetrix
 Package: rgu34c.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgu34c.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rgu34c.sqlite
 AnnObjPrefix: rgu34c
 species: Rat
 manufacturer: Affymetrix
@@ -703,7 +703,7 @@ manufacturer: Affymetrix
 Package: rnu34.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rnu34.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rnu34.sqlite
 AnnObjPrefix: rnu34
 species: Rat
 manufacturer: Affymetrix
@@ -711,7 +711,7 @@ manufacturer: Affymetrix
 Package: rtu34.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rtu34.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rtu34.sqlite
 AnnObjPrefix: rtu34
 species: Rat
 manufacturer: Affymetrix
@@ -722,7 +722,7 @@ manufacturer: Affymetrix
 Package: rgug4105a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgug4105a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rgug4105a.sqlite
 AnnObjPrefix: rgug4105a
 species: Rat
 manufacturer: Agilent
@@ -730,7 +730,7 @@ manufacturer: Agilent
 Package: rgug4130a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgug4130a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rgug4130a.sqlite
 AnnObjPrefix: rgug4130a
 species: Rat
 manufacturer: Agilent
@@ -738,7 +738,7 @@ manufacturer: Agilent
 Package: rgug4131a.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rgug4131a.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rgug4131a.sqlite
 AnnObjPrefix: rgug4131a
 species: Rat
 manufacturer: Agilent
@@ -746,7 +746,7 @@ manufacturer: Agilent
 Package: RnAgilentDesign028282.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/RnAgilentDesign028282.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/RnAgilentDesign028282.sqlite
 AnnObjPrefix: RnAgilentDesign028282
 species: Rat
 manufacturer: Agilent
@@ -757,7 +757,7 @@ manufacturer: Agilent
 Package: rguatlas4k.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/rguatlas4k.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/rguatlas4k.sqlite
 AnnObjPrefix: rguatlas4k
 species: Rat
 manufacturer: Clontech
@@ -786,7 +786,7 @@ manufacturer: Clontech
 Package: drosgenome1.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/drosgenome1.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/drosgenome1.sqlite
 AnnObjPrefix: drosgenome1
 species: Fly
 manufacturer: Affymetrix
@@ -794,7 +794,7 @@ manufacturer: Affymetrix
 Package: drosophila2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/drosophila2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/drosophila2.sqlite
 AnnObjPrefix: drosophila2
 species: Fly
 manufacturer: Affymetrix
@@ -802,7 +802,7 @@ manufacturer: Affymetrix
 Package: indac.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/indac.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/indac.sqlite
 AnnObjPrefix: indac
 species: Fly
 manufacturer: INDAC
@@ -837,7 +837,7 @@ manufacturer: INDAC
 Package: yeast2.db
 Version: 3.2.2
 PkgTemplate: YEASTCHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/yeast2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/yeast2.sqlite
 AnnObjPrefix: yeast2
 species: Yeast
 manufacturer: Affymetrix
@@ -845,7 +845,7 @@ manufacturer: Affymetrix
 Package: ygs98.db
 Version: 3.2.2
 PkgTemplate: YEASTCHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/ygs98.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/ygs98.sqlite
 AnnObjPrefix: ygs98
 species: Yeast
 manufacturer: Affymetrix
@@ -880,7 +880,7 @@ manufacturer: Affymetrix
 Package: ag.db
 Version: 3.2.2
 PkgTemplate: ARABIDOPSISCHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/ag.sqlite 
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/ag.sqlite 
 AnnObjPrefix: ag
 species: Arabidopsis
 manufacturer: Affymetrix
@@ -888,7 +888,7 @@ manufacturer: Affymetrix
 Package: ath1121501.db
 Version: 3.2.2
 PkgTemplate: ARABIDOPSISCHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/ath1121501.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/ath1121501.sqlite
 AnnObjPrefix: ath1121501
 species: Arabidopsis
 manufacturer: Affymetrix
@@ -918,7 +918,7 @@ manufacturer: Affymetrix
 Package: zebrafish.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/zebrafish.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/zebrafish.sqlite
 AnnObjPrefix: zebrafish
 species: Zebrafish
 manufacturer: Affymetrix
@@ -948,7 +948,7 @@ manufacturer: Affymetrix
 Package: canine.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/canine.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/canine.sqlite
 AnnObjPrefix: canine
 species: Canine
 manufacturer: Affymetrix
@@ -956,7 +956,7 @@ manufacturer: Affymetrix
 Package: canine2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/canine2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/canine2.sqlite
 AnnObjPrefix: canine2
 species: Canine
 manufacturer: Affymetrix
@@ -986,7 +986,7 @@ manufacturer: Affymetrix
 Package: celegans.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/celegans.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/celegans.sqlite
 AnnObjPrefix: celegans
 species: Worm
 manufacturer: Affymetrix
@@ -1016,7 +1016,7 @@ manufacturer: Affymetrix
 Package: chicken.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/chicken.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/chicken.sqlite
 AnnObjPrefix: chicken
 species: Chicken
 manufacturer: Affymetrix
@@ -1046,7 +1046,7 @@ manufacturer: Affymetrix
 Package: bovine.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/bovine.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/bovine.sqlite
 AnnObjPrefix: bovine
 species: Bovine
 manufacturer: Affymetrix
@@ -1077,7 +1077,7 @@ manufacturer: Affymetrix
 Package: porcine.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/porcine.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/porcine.sqlite
 AnnObjPrefix: porcine
 species: Pig
 manufacturer: Affymetrix
@@ -1108,7 +1108,7 @@ manufacturer: Affymetrix
 Package: xlaevis.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/xlaevis.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/xlaevis.sqlite
 AnnObjPrefix: xlaevis
 species: Xenopus
 manufacturer: Affymetrix
@@ -1138,7 +1138,7 @@ manufacturer: Affymetrix
 Package: ecoli2.db
 Version: 3.2.2
 PkgTemplate: NCBICHIP.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/ecoli2.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/ecoli2.sqlite
 AnnObjPrefix: ecoli2
 species: Escherichia coli
 manufacturer: Affymetrix
@@ -1368,7 +1368,7 @@ biocViews: AnnotationData, Xenopus_laevis
 ### Title: SGD centric annotation maps for Yeast
 ### Version: 3.2.2
 ### PkgTemplate: YEASTLEGACY.DB
-### DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/YEAST.sqlite
+### DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/YEAST.sqlite
 ### AnnObjPrefix: YEAST
 ### AnnObjTarget: Yeast
 ### species: Yeast
@@ -1419,7 +1419,7 @@ Package: KEGG.db
 Title: A set of annotation maps for KEGG
 Version: 3.2.2
 PkgTemplate: KEGG.DB
-DBfile: /mnt/cpb_anno/mcarlson/sanctionedSqlite/KEGG.sqlite
+DBfile: /home/ubuntu/cpb_anno/AnnotationBuildPipeline/newPipe/old_code/2015.10.07/KEGG.sqlite
 AnnObjPrefix: KEGG
 AnnObjTarget: KEGG
 biocViews: AnnotationData, FunctionalAnnotation
