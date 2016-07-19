@@ -16,7 +16,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the human.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="HUMANCHIP_DB",
                      ORGANISM="Homo sapiens",
                      SPECIES="Human",
@@ -65,7 +65,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the mouse.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="MOUSECHIP_DB",
                      ORGANISM="Mus musculus",
                      SPECIES="Mouse",
@@ -113,7 +113,7 @@
                            maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the rat.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="RATCHIP_DB",
                      ORGANISM="Rattus norvegicus",
                      SPECIES="Rat",
@@ -163,7 +163,7 @@
                            maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the fly.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="FLYCHIP_DB",
                      ORGANISM="Drosophila melanogaster",
                      SPECIES="Fly",
@@ -211,7 +211,7 @@
                                    maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the arabidopsis.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="ARABIDOPSISCHIP_DB",
                      ORGANISM="Arabidopsis thaliana",
                      SPECIES="Arabidosis",
@@ -255,7 +255,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the yeast.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="YEASTCHIP_DB",
                      ORGANISM="Saccharomyces cerevisiae",
                      SPECIES="Yeast",
@@ -302,7 +302,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the zebrafish.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="ZEBRAFISHCHIP_DB",
                      ORGANISM="Danio rerio",
                      SPECIES="Zebrafish",
@@ -352,7 +352,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the ecoliK12.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="ECOLICHIP_DB",
                      ORGANISM="Escherichia coli",
                      SPECIES="E coli",
@@ -403,7 +403,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the canine.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="CANINECHIP_DB",
                      ORGANISM="Canis familiaris",
                      SPECIES="Canine",
@@ -453,7 +453,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the bovine.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="BOVINECHIP_DB",
                      ORGANISM="Bos taurus",
                      SPECIES="Bovine",
@@ -503,7 +503,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the worm.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="WORMCHIP_DB",
                      ORGANISM="Caenorhabditis elegans",
                      SPECIES="Worm",
@@ -552,7 +552,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the pig.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="PIGCHIP_DB",
                      ORGANISM="Sus scrofa",
                      SPECIES="Pig",
@@ -601,7 +601,7 @@
                              maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the chicken.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="CHICKENCHIP_DB",
                      ORGANISM="Gallus gallus",
                      SPECIES="Chicken",
@@ -650,7 +650,7 @@
                             maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the xenopus.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="XENOPUSCHIP_DB",
                      ORGANISM="Xenopus laevis",
                      SPECIES="Xenopus",
@@ -699,7 +699,7 @@
                            maintainer = "Bioconductor Package Maintainer <maintainer@bioconductor.org>"){
 
     if(outputDir!="." && file.access(outputDir)[[1]]!=0){stop("Selected outputDir '", outputDir,"' does not exist.")}
-    
+    if(!file.exists(chipSrc)) stop("You must first install the rhesus.db0 package!\n\n", call. = FALSE)
     metaDataSrc <- c(DBSCHEMA="RHESUSCHIP_DB",
                      ORGANISM="Macaca mulatta",
                      SPECIES="Rhesus",
