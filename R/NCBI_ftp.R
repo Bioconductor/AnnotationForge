@@ -1491,11 +1491,10 @@ makeOrgPackageFromNCBI <- function(version,
 ## gene ID data.  The names will be tax ids...
 getFastaSpeciesDirs <- function(release=80){
     baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-",release,"/mysql/")
-    require(httr)
-    require(RCurl)
-    curlHand <- getCurlHandle()
-    listing <- getURL(url=baseUrl, followlocation=TRUE, curl=curlHand)
-    listing<- strsplit(listing, "\n")[[1]]
+    stopifnot(requireNamespace("RCurl"))
+    curlHand <- RCurl::getCurlHandle()
+    listing <- RCurl::getURL(url=baseUrl, followlocation=TRUE, curl=curlHand)
+    listing<- strsplit(listing, "\r?\n")[[1]]
     cores <- listing[grepl(paste0("_core_",release,"_"), listing)]
     coreDirs <- cores[!grepl('\\.', cores) & !grepl('\\:$', cores)]
     .getDirOnly <- function(item){
