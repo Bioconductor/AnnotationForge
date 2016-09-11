@@ -3,7 +3,7 @@ Title: Code for Building Annotation Database Packages
 Description: Provides code for generating Annotation packages and
         their databases.  Packages produced are intended to be
         used with AnnotationDbi.
-Version: 1.15.6
+Version: 1.15.7
 Author: Marc Carlson, Herve Pages
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 Depends: R (>= 2.7.0), methods, utils, BiocGenerics (>= 0.15.10),
@@ -23,3 +23,4 @@ Collate: AnnDbPkg-maker.R sqlForge_utils.R sqlForge_baseMapBuilder.R
 License: Artistic-2.0
 biocViews: Annotation, Infrastructure
 VignetteBuilder: knitr
+BuildKeepEmpty: TRUE
