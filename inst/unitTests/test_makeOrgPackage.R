@@ -54,18 +54,19 @@ test_addOntologyData <- function(){
 
 test_expandGOFrame <- function(){
     goData <- data[[goTable]]
-    goData <- goData[goData[["GO"]] %in% Lkeys(GOTERM),]
+    goData <- goData[goData[["GO"]] %in% Lkeys(GO.db::GOTERM),]
     goData <- AnnotationForge:::.addOntologyData(goData)
     gbp <- goData[goData$ONTOLOGY=="BP",c("GID","GO","EVIDENCE")]
     names(gbp) <- c("gene_id","go_id","evidence")
-    require(GO.db)
-    res <- AnnotationForge:::.expandGOFrame(gbp, GOBPANCESTOR)
+    res <- AnnotationForge:::.expandGOFrame(gbp, GO.db::GOBPANCESTOR)
     checkTrue(dim(res)[1] > dim(goData)[1]) ## expansion must have happened
     checkTrue(all(names(res) == c('gene_id','go_id','evidence')))
 }
 
 
 test_makeOrgPackage <- function(){
+    outputDir <- tempfile()
+    stopifnot(dir.create(outputDir))
     pkgNm <- AnnotationForge:::makeOrgPackage(gene_info=fSym,
                                        chromosome=fChr,
                                        go=fGO,

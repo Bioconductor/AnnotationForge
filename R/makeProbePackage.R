@@ -65,7 +65,7 @@
 getProbeDataAffy <- function(arraytype, datafile,
                              pkgname = NULL, comparewithcdf = FALSE)
 {
-  require(affy) || stop("Could not load library affy.")
+  loadNamespace("affy")
 
   if(missing(datafile)) {
     datafile <- paste(arraytype, "_probe_tab", sep="")
@@ -76,8 +76,8 @@ getProbeDataAffy <- function(arraytype, datafile,
     }
   }
 
-  arraytype = cleancdfname(arraytype, addcdf=FALSE)
-  cdfname   = cleancdfname(arraytype)
+  arraytype = affy::cleancdfname(arraytype, addcdf=FALSE)
+  cdfname   = affy::cleancdfname(arraytype)
   if (is.null(pkgname))
     pkgname = paste(arraytype, "probe", sep="")
   int <- integer(0)
@@ -204,7 +204,7 @@ makeProbePackage <- function(arraytype,
                              species,
                              pkgname = NULL,
                              outdir  = ".",
-                             force = FALSE, quiet = FALSE, check = TRUE, build = TRUE, unlink = TRUE, ...)
+                             quiet = FALSE, check = TRUE, build = TRUE, unlink = TRUE, ...)
 {
   ## Bureucracy: check arguments
   if (missing(maintainer) || !is.character(maintainer))
@@ -286,8 +286,7 @@ makeProbePackage <- function(arraytype,
   if (build) {
     if (!quiet)
       cat("Building the package.\n")
-    buildOut <- system(paste(R_exe, "CMD build", ifelse(force, "-force", ""),
-                             pkgname), intern=TRUE)
+    buildOut <- system(paste(R_exe, "CMD build"), intern=TRUE)
   }
   setwd(cdir)
   return(pkgname)

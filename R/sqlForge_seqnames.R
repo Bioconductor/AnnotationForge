@@ -43,7 +43,7 @@ writeTable <- function(specString, con){
                      header=TRUE, sep="\t",
                      colClasses="character", check.names=FALSE)
   message("Creating table: ",specString)
-  sqliteWriteTable(con, specString, value = data, row.names = FALSE)
+  dbWriteTable(con, specString, value = data, row.names = FALSE)
 }
 
 
@@ -54,7 +54,6 @@ writeTable <- function(specString, con){
 ## 'where' defines the path to the created DB.
 
 regenDb <- function(where){
-  require(RSQLite)
   con <- dbConnect("SQLite", dbname=file.path(where,"seqnames.sqlite"))
   ## list files in the extData/tabfiles dir
   dfs <- system.file("seqnames-template","inst","extdata","dataFiles",
@@ -72,7 +71,6 @@ regenDb <- function(where){
 
 ## A function to create the a new DB from the template.
 generateSeqnames.db <- function(version, outdir="."){
-  require(RSQLite)
   ## use creatPackage (from Biobase)
   symbolValues <- list(VERSION=version,
                        ANNOTATIONDBIVERSION = "1.19.4")

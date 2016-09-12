@@ -7,27 +7,28 @@
 ## this file is here:  http://inparanoid.sbc.su.se/download/current/sequences/species.mapping.inparanoid8
 
 ## helper to get a single dir listing.
-.getSubDirs <- function(dir){
-  ## now get the dir
-  require(RCurl)
-  require(XML)
-  ## So I need to make a handler that collects the parts I want:
-  getLinks = function() { 
-      links = character() 
-      list(a = function(node, ...) { 
-          links <<- c(links, xmlGetAttr(node, "href"))
-          node 
-      }, 
-           links = function()links)
-  }
-  ## now get the links (sub dirs)   
-  h1 = getLinks()
-  htmlTreeParse(dir, handlers = h1)
-  res <- h1$links() ## base result
-  ## some filtering
-  res <- res[!(res %in% c("?C=N;O=D", "?C=M;O=A", "?C=S;O=A", "?C=D;O=A",
-                          "/download/current/"))]
-  res
+.getSubDirs <- function(dir)
+{
+    ## now get the dir
+    loadNamespace("RCurl")
+    loadNamespace("XML")
+    ## So I need to make a handler that collects the parts I want:
+    getLinks = function() {
+        links = character()
+        list(a = function(node, ...) {
+            links <<- c(links, XML::xmlGetAttr(node, "href"))
+            node
+        },
+        links = function()links)
+    }
+    ## now get the links (sub dirs)
+    h1 = getLinks()
+    XML::htmlTreeParse(dir, handlers = h1)
+    res <- h1$links() ## base result
+    ## some filtering
+    res <- res[!(res %in% c("?C=N;O=D", "?C=M;O=A", "?C=S;O=A", "?C=D;O=A",
+                            "/download/current/"))]
+    res
 }
 
 
@@ -181,7 +182,6 @@ makeInpDb <- function(dir, dataDir="."){
     ## temp hack if you don't want to re-DL the files each time    
     ## files = dir('.', pattern='*.tgz')
     ## set up for a database
-    require("RSQLite")
     ## the connection is for the KIND of DB
     abbrevSpeciesName <- sub("-.*.tgz$","",files[1])
     ## abbrevSpeciesName <- sub("^InParanoid.","",abbrevSpeciesName)

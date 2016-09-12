@@ -135,20 +135,22 @@
                     MANUFACTURERURL="the manufacturerUrl")  
 
   ##Builds the org.Hs.eg sqlite:
-  populateDB("HUMAN_DB",
-             prefix="org.Hs.eg",
-             chipSrc = "/mnt/cpb_anno/mcarlson/proj/mcarlson/sqliteGen/annosrc/db/chipsrc_human.sqlite",
-             metaDataSrc = my_metaDataSrc,
-             printSchema=TRUE)
+  populateDB(
+    "HUMAN_DB",
+    prefix="org.Hs.eg",
+    chipSrc = "~/proj/mcarlson/sqliteGen/annosrc/db/chipsrc_human.sqlite",
+    metaDataSrc = my_metaDataSrc,
+    printSchema=TRUE)
 
 
   ##Builds hgu95av2.sqlite:
-  populateDB("HUMANCHIP_DB",
-             affy=TRUE,
-             prefix="hgu95av2",
-             fileName="/mnt/cpb_anno/mcarlson/proj/mcarlson/sqliteGen/srcFiles/hgu95av2/HG_U95Av2.na27.annot.csv",
-             metaDataSrc=my_metaDataSrc,
-             baseMapType="gbNRef")
+  populateDB(
+      "HUMANCHIP_DB",
+      affy=TRUE,
+      prefix="hgu95av2",
+      fileName="~/proj/mcarlson/sqliteGen/srcFiles/hgu95av2/HG_U95Av2.na27.annot.csv",
+      metaDataSrc=my_metaDataSrc,
+      baseMapType="gbNRef")
 
 
   ##Builds the ag.sqlite:
@@ -159,11 +161,12 @@
 
 
   ##Builds yeast2.sqlite:  
-  populateDB("YEASTCHIP_DB",
-              affy=TRUE,
-              prefix="yeast2",
-              fileName="/mnt/cpb_anno/mcarlson/proj/mcarlson/sqliteGen/srcFiles/yeast2/Yeast_2.na27.annot.csv",
-              metaDataSrc=metaDataSrc)
+  populateDB(
+      "YEASTCHIP_DB",
+      affy=TRUE,
+      prefix="yeast2",
+      fileName="~/proj/mcarlson/sqliteGen/srcFiles/yeast2/Yeast_2.na27.annot.csv",
+      metaDataSrc=metaDataSrc)
 
 }
 }

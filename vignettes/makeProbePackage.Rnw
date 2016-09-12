@@ -54,8 +54,7 @@ makeProbePackage("HG-U95Av2",
                  outdir     = outdir,
                  maintainer = me,
                  species    = species,
-                 version    = "0.0.1", 
-                 force      = TRUE)
+                 version    = "0.0.1")
 dir(outdir)
 @
 

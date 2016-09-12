@@ -82,8 +82,8 @@
 
 .addOntologyData <- function(data){
     ## And then make the new ones.
-    require(GO.db)
-    goOnts <- select(GO.db, as.character(data$GO), "ONTOLOGY")
+    db <- loadNamespace("GO.db")[["GO.db"]]
+    goOnts <- select(db, as.character(data$GO), "ONTOLOGY")
     if(dim(goOnts)[1] == dim(data)[1]){
         data <- cbind(data, goOnts)
     }else{stop("Ontology should be 1:1 with GOIDs")}
@@ -99,7 +99,7 @@
     goData <- .addOntologyData(goData)
     ## now filter that for terms that are "too new"
     message("Dropping GO IDs that are too new for the current GO.db")
-    goData <- goData[goData[["GO"]] %in% Lkeys(GOTERM),]
+    goData <- goData[goData[["GO"]] %in% Lkeys(GO.db::GOTERM),]
     ## Then make the 1st table
     .makeTable(goData, "go", con=con)
 
@@ -109,9 +109,9 @@
     gmf <- goData[goData$ONTOLOGY=="MF",c("GID","GO","EVIDENCE")]
     names(gbp) <- names(gcc) <- names(gmf) <- c("gene_id","go_id","evidence")
     ## then recycle older expand function
-    bpAll <- .expandGOFrame(gbp, GOBPANCESTOR)
-    mfAll <- .expandGOFrame(gmf, GOMFANCESTOR)
-    ccAll <- .expandGOFrame(gcc, GOCCANCESTOR)
+    bpAll <- .expandGOFrame(gbp, GO.db::GOBPANCESTOR)
+    mfAll <- .expandGOFrame(gmf, GO.db::GOMFANCESTOR)
+    ccAll <- .expandGOFrame(gcc, GO.db::GOCCANCESTOR)
     ## then combine
     goAllData <- rbind(bpAll,ccAll,mfAll)
     names(goAllData) <- c("GID","GO","EVIDENCE")
@@ -127,7 +127,6 @@
 makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, 
                                     dbFileName, goTable){
     ## set up DB connection 
-    require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
     con <- dbConnect(SQLite(), dbFileName)
     .createMetadataTables(con)

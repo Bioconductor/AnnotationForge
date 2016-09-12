@@ -99,7 +99,7 @@
 
   ## check to make sure we don't have unequal arguments
   if(length(dbTagPath) != length(resIDPath))
-    Stop("result and dbTag (checking) paths must have same number of elements")
+    stop("result and dbTag (checking) paths must have same number of elements")
 
   if(length(dbTagPath) == 1){
     results <- unlist(lapply(srcDocs, .checkRetrieveNode,
@@ -495,9 +495,9 @@ getEntrezGenesFromTaxId <- function(taxId){
                      indFields = c("_id", "go_id"))
     
     ## Now expand the three data.frames to incl all ancestor terms 
-    bp_all <- .expandGOFrame(bp, GOBPANCESTOR)
-    mf_all <- .expandGOFrame(mf, GOMFANCESTOR)
-    cc_all <- .expandGOFrame(cc, GOCCANCESTOR)
+    bp_all <- .expandGOFrame(bp, GO.db::GOBPANCESTOR)
+    mf_all <- .expandGOFrame(mf, GO.db::GOMFANCESTOR)
+    cc_all <- .expandGOFrame(cc, GO.db::GOCCANCESTOR)
     
     .makeSimpleTable(bp_all, table = "go_bp_all", con, fieldNameLens=c(10,3),
                      indFields = c("_id", "go_id"))

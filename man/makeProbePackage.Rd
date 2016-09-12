@@ -10,7 +10,7 @@ makeProbePackage(arraytype,
     species,
     pkgname = NULL,
     outdir  = ".",
-    force = FALSE, quiet = FALSE,
+    quiet = FALSE,
     check = TRUE, build = TRUE, unlink = TRUE, \dots)
 }
 \arguments{
@@ -27,7 +27,6 @@ makeProbePackage(arraytype,
   \item{pkgname}{Character. Name of the package. If missing, a name is
     created from \code{arraytype}.}
   \item{outdir}{Character. Path where the package is to be written.}
-  \item{force}{Logical. If \code{TRUE} overrides possible warnings}
   \item{quiet}{Logical. If \code{TRUE} do not print statements on progress on the console}
   \item{check}{Logical. If \code{TRUE} call \code{R CMD check} on the package}
   \item{build}{Logical. If \code{TRUE} call \code{R CMD build} on the package}
@@ -57,8 +56,7 @@ makeProbePackage("HG-U95Av2",
                  maintainer = me, 
                  version    = "0.0.1",
                  species    = "Homo_sapiens", 
-		 check      = FALSE,
-                 force      = TRUE)
+                 check      = FALSE)
 dir(outdir)
 }
 \keyword{IO}

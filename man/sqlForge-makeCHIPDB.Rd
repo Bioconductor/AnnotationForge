@@ -100,18 +100,19 @@
 \examples{
 \dontrun{
 ##Build the hgu95av2.db package
-makeDBPackage("HUMANCHIP_DB",
-              affy = TRUE,
-              prefix = "hgu95av2",
-              fileName = "/mnt/cpb_anno/mcarlson/proj/mcarlson/sqliteGen/srcFiles/hgu95av2/HG_U95Av2_annot.csv.070824",
-              otherSrc = c(
-                EA="/mnt/cpb_anno/mcarlson/proj/mcarlson/sqliteGen/srcFiles/hgu95av2/hgu95av2.EA.txt",
-                UMICH="/mnt/cpb_anno/mcarlson/proj/mcarlson/sqliteGen/srcFiles/hgu95av2/hgu95av2_UMICH.txt"),
-              baseMapType = "gbNRef",
-              version = "1.0.0",
-              manufacturer = "Affymetrix",
-              chipName = "hgu95av2",
-              manufacturerUrl = "http://www.affymetrix.com")
+makeDBPackage(
+    "HUMANCHIP_DB",
+    affy = TRUE,
+    prefix = "hgu95av2",
+    fileName = "~/proj/mcarlson/sqliteGen/srcFiles/hgu95av2/HG_U95Av2_annot.csv.070824",
+    otherSrc = c(
+        EA="~/proj/mcarlson/sqliteGen/srcFiles/hgu95av2/hgu95av2.EA.txt",
+        UMICH="~/proj/mcarlson/sqliteGen/srcFiles/hgu95av2/hgu95av2_UMICH.txt"),
+    baseMapType = "gbNRef",
+    version = "1.0.0",
+    manufacturer = "Affymetrix",
+    chipName = "hgu95av2",
+    manufacturerUrl = "http://www.affymetrix.com")
 }
 }
 

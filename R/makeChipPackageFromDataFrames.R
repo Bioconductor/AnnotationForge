@@ -188,7 +188,6 @@ makeChipDbFromDataFrame <- function(probeFrame, orgPkgName, tax_id,
     probeFrame <- cbind(probeFrame, multiple)
 
     ## set up DB connection 
-    require(RSQLite)
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
     con <- dbConnect(SQLite(), dbFileName)
     .createMetadataTables(con)

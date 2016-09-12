@@ -109,7 +109,6 @@ probe2gene <- function(baseMap, otherSrc, baseMapType=c("gb", "ug", "eg",
                        pkgName, outputDir=".", allowHomologyGene=FALSE) {
         ## message(cat(paste("Using '",chipSrc,"' for chipSrc.", sep="")))
 	baseMapType <- match.arg(baseMapType)
-        require("RSQLite")
 	drv <- dbDriver("SQLite")
 	outputFile <- file.path(outputDir, paste(pkgName, "sqlite", sep="."))	
 	db <- dbConnect(drv, outputFile)
@@ -350,7 +349,6 @@ getMapForYeastChipPkg <- function(affy, fileName, pkgName, outputDir=".") {
                         targetDir=outputDir) ##,
                         ##outputPrefix=pkgName)
     }
-        require("RSQLite")
 	drv <- dbDriver("SQLite")
 	outputFile <- file.path(outputDir, paste(pkgName, "sqlite", sep="."))	
 	db <- dbConnect(drv, outputFile)
@@ -394,7 +392,6 @@ getMapForArabidopsisChipPkg <- function(affy, fileName, pkgName, chipMapSrc, out
     #ever make two arrays for arabidposis.
     #if this changes, then the database and this function will need to be updated (this is unlikely however)
     #for non-affy functions, the map will be read in "as is" and used to make a package.
-        require("RSQLite")
 	drv <- dbDriver("SQLite")
 	outputFile <- file.path(outputDir, paste(pkgName, "sqlite", sep="."))	
 	db <- dbConnect(drv, outputFile)
@@ -439,7 +436,6 @@ makeUniversalMapping <- function(pkgName,
                                 outputDir=".") {
 
 	## The rest of this will just make a map of ALL the EGs
-        require("RSQLite")
         drv <- dbDriver("SQLite")
         outputFile <- file.path(outputDir, paste(pkgName, "sqlite", sep="."))
         db <- dbConnect(drv, outputFile)
