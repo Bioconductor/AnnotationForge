@@ -22,7 +22,7 @@
 }
 
 \references{
-  \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed}
+  \url{https://www.ncib.nlm.nih.gov/entrez/query.fcgi?db=PubMed}
 }
 
 \seealso{

@@ -23,7 +23,7 @@ This data set describes associations between GO molecular function (BP)
 
 \references{
 \url{http://www.geneontology.org/} and
-\url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} 
+\url{https://www.ncib.nlm.nih.gov/entrez/query.fcgi?db=gene} 
 }
 
 \seealso{

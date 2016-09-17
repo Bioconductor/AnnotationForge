@@ -7,7 +7,7 @@
 }
 \details{
   This object is a simple mapping of Systematic ORF identifiers
-  \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to Uniprot
+  \url{https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to Uniprot
   Accession Numbers.
 
   Mappings were based on data provided by: @UNIPROTSOURCE@

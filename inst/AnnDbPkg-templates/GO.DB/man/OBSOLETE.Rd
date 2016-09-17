@@ -14,7 +14,7 @@ terms in defined by Gene Ontology Consortium and their definition are obsolete
 
 }
 \references{
-  \url{http://www.ncbi.nlm.nih.gov/LocusLink} 
+  \url{https://www.ncib.nlm.nih.gov/LocusLink} 
 }
 
 \seealso{

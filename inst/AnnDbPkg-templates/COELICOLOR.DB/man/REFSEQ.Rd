@@ -36,7 +36,7 @@
 
   Where XXXXX is a sequence of integers.
 
-  NCBI \url{http://www.ncbi.nlm.nih.gov/RefSeq/} allows users to query
+  NCBI \url{https://www.ncbi.nlm.nih.gov/RefSeq/} allows users to query
   the RefSeq database using RefSeq identifiers.
 
   Mappings were based on data provided by: @REFSEQSOURCE@
@@ -44,8 +44,8 @@
 }
 
 \references{
-    \url{http://www.ncbi.nlm.nih.gov}
-    \url{http://www.ncbi.nlm.nih.gov/RefSeq/} 
+    \url{https://www.ncbi.nlm.nih.gov}
+    \url{https://www.ncbi.nlm.nih.gov/RefSeq/} 
 }
 
 \seealso{

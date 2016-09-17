@@ -8,7 +8,7 @@
 }
 \details{
   This object is a simple mapping of Entrez Gene identifiers
-  \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to Ensembl
+  \url{https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to Ensembl
   protein accession numbers.
 
   Mappings were based on data provided by:

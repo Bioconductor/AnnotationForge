@@ -59,7 +59,7 @@
      MEROPS: the peptidase database. Nucleic Acids Res. 32 Database
      issue, D160-D164
 
-  MIM:  MIM (a.k.a. OMIM, <URL: http://www.ncbi.nlm.nih.gov/omim/>) is a
+  MIM:  MIM (a.k.a. OMIM, <URL: https://www.ncbi.nlm.nih.gov/omim/>) is a
      catalog of human genes and genetic disorders authored and edited by
      Dr. Victor A. McKusick and his colleagues at Johns Hopkins and
      elsewhere. Reference:  <MIM> MIM: McKusick, V.A.: Mendelian
@@ -76,7 +76,7 @@
 
   PROSITEPROFILE:  A list of associated PROSITE PROFILE ID.
 
-  RM:  Reference Medline (<URL: http://www.ncbi.nlm.nih.gov/PubMed/>)
+  RM:  Reference Medline (<URL: https://www.ncbi.nlm.nih.gov/PubMed/>)
 
   SMART:  SMART (a Simple Modular Architecture Research Tool, <URL:
     http://smart.embl-heidelberg.de/>) allows the identification and

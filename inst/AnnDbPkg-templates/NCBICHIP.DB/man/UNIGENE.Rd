@@ -18,7 +18,7 @@
 }
 
 \references{
-  \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene}
+  \url{https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene}
 }
 
 \seealso{

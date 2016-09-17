@@ -34,7 +34,7 @@
 }
 
 \references{
-  \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed}
+  \url{https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed}
 }
 
 \seealso{

@@ -24,7 +24,7 @@
 }
 
 \references{
-  \url{http://www.ncbi.nlm.nih.gov}
+  \url{https://www.ncbi.nlm.nih.gov}
 }
 
 \seealso{

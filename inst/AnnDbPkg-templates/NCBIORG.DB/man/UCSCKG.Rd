@@ -10,7 +10,7 @@
 
 \details{
   This object is a simple mapping of Entrez Gene identifiers
-  \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to UCSC
+  \url{https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene} to UCSC
   "Known Gene" Accession Numbers.  Please be advised that UCSC "Known
   Genes" are not more like putative transcripts transcript identifiers
   than they are gene identifiers.  

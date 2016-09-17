@@ -22,8 +22,8 @@
 }
 
 \references{
-  \url{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene}
-  \url{http://www3.ncbi.nlm.nih.gov/entrez/query.fcgi?db=OMIM}
+  \url{https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene}
+  \url{https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=OMIM}
 }
 
 \seealso{

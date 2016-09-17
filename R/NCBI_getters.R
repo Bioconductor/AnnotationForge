@@ -144,12 +144,12 @@ getGOInfo <- function(doc){
 }
 
 getGeneStuff <- function(entrezGenes, dir = "files"){
-  baseUrl <- "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?"
+  baseUrl <- "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?"
   xsep <- paste(entrezGenes, collapse=",")
   url <- paste(baseUrl,"db=gene&id=",xsep,"&retmode=xml", sep="")
 
   ## NOW we have to parse the available XML
-  EGSet <- xmlParse(url)
+  EGSet <- xmlParse(getURL(url, followlocation=TRUE))
 
   ## Here we will save the files out to a dir
   miniDocs <- lapply(getNodeSet(EGSet, "//Entrezgene"), xmlDoc)
@@ -366,10 +366,10 @@ getGeneStuff <- function(entrezGenes, dir = "files"){
 ## get EGs from an NCBI tax ID
 getEntrezGenesFromTaxId <- function(taxId){
   ## 1st retrieve the WebEnv and QueryKey values
-  url1 <- paste("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gene&term=txid",taxId,"%5Borgn%5D+AND+alive%5Bprop%5D&usehistory=y", sep="")
+  url1 <- paste("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gene&term=txid",taxId,"%5Borgn%5D+AND+alive%5Bprop%5D&usehistory=y", sep="")
    
   ## NOW we have to parse the available XML
-  XML <- xmlParse(url1)
+  XML <- xmlParse(getURL(url1, followlocation=TRUE))
   ## Some tags can only occur once per gene
   ## TODO: wire up the xpath for this
   webEnv <- unlist(xpathApply(XML, "//WebEnv", xmlValue))
@@ -377,7 +377,7 @@ getEntrezGenesFromTaxId <- function(taxId){
 
   ## Then assemble the final URL
   url2 <- paste(
-     "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=gene&WebEnv=",
+     "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=gene&WebEnv=",
      webEnv, "&query_key=", queryKey, "&rettype=uilist&retmode=text", sep="")
   readLines(url2)
 }
