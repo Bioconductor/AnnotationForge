@@ -1,10 +1,4 @@
-\name{AnnDbPkg-maker}
-
-\alias{AnnDbPkg-maker}
-
-\alias{AnnDbPkgSeed}
-\alias{class:AnnDbPkgSeed}
-\alias{AnnDbPkgSeed-class}
+\name{makeAnnDbPkg}
 
 \alias{makeAnnDbPkg}
 \alias{makeAnnDbPkg,AnnDbPkgSeed-method}
@@ -12,11 +6,14 @@
 \alias{makeAnnDbPkg,character-method}
 \alias{loadAnnDbPkgIndex}
 
+\alias{AnnDbPkgSeed}
+\alias{class:AnnDbPkgSeed}
+\alias{AnnDbPkgSeed-class}
 
-\title{Creates an SQLite-based annotation package}
+\title{Create an SQLite-based annotation package}
 
 \description{
-  Creates an SQLite-based annotation package from an SQLite file.
+  Create an SQLite-based annotation package from an SQLite file.
 }
 
 \usage{
@@ -46,7 +43,6 @@
     Extra args used for extra filtering.
   }
 }
-
 
 \seealso{
   \link{AnnDbPkg-checker}

@@ -1100,6 +1100,7 @@ OLD_makeOrgPackageFromNCBI <-
         )")
     dbGetQuery(NCBIcon, "CREATE INDEX geneidAltGO on altGO(EntrezGene)")
     dbGetQuery(NCBIcon, "CREATE INDEX taxidAltGO on altGO(NCBItaxon)")
+    ## Select fields 3 (EntrezGene), 7(GO) and 13 (NCBI-taxon)
     colClasses <- c("NULL","NULL","character","NULL","NULL","NULL",
                     "character","NULL","NULL","NULL","NULL","NULL",
                     "character","NULL","NULL","NULL","NULL","NULL",
