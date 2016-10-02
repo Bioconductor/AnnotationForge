@@ -217,7 +217,7 @@ listMappings <- function(x, type){
     orgDbName <- getOrgPkgForSchema(schema)
     allSeeds <- NCBICHIP_DB_SeedGenerator(orgDbName)
   }else if(type=="OrgDb"){
-    allSeeds <- NCBIORG_DB_SeedGenerator()
+    allSeeds <- AnnotationDbi:::NCBIORG_DB_SeedGenerator()
   }
   seeds <- filterSeeds(allSeeds, schema, type)
   ## Then get the names
