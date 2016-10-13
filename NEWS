@@ -1,3 +1,47 @@
+CHANGES IN VERSION 1.16.0
+------------------------
+
+NEW FEATURES
+
+    o add check that required db0 package is installed in makeDBPackage()
+
+    o add script to create viableIDs data file
+
+MODIFICATIONS
+
+    o remove outdated unit test and deprecate MAPCOUNTS in ChipDb
+      package templates
+
+    o update ChipDb package templates to load DBI in unit tests
+
+    o allow build without --keep-empty-dirs flag
+
+    o misc code cleanup
+      - No duplicate dependencies in DESCRIPTION
+      - resolve symbols in name space
+      - re-usable unit tests (new rather than reuse of temporary files)
+      - avoid unnecesary paste(), e.g, message(paste())
+      - use of loadNamespace() rather than require()
+      - avoid 1:n iterations
+      - formatting, e.g., of SQL and if () {} else {}
+ 
+    o remove unused tests/runalltests.Rout.save file in 
+      AnnDbPkg-templates
+ 
+    o use https: rather than http: for NCBI access
+ 
+    o rename R code and man page files consistent with high level functions
+
+    o bump OrgDb version for 3.4 release
+
+    o add explicit AnnotationDbi:::NCBIORG_DB_SeedGenerator()
+
+
+BUG FIXES
+
+    o getFastaSpeciesDirs() trims '\r' on Windows
+
+
 CHANGES IN VERSION 1.14.0
 ------------------------
 
