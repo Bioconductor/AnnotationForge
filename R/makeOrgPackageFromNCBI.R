@@ -196,14 +196,14 @@
 }
 
 .writeToNCBIDB <-
-    function(NCBIcon, tableName, tmp, file)
+    function(NCBIcon, tableName, filepath, file)
 {
     colClasses <- rep("character", times= length(unlist(file)))
     nrows <- 1000000
     overwrite <- TRUE
     append <- FALSE
     ## first chunk
-    filecon <- file(description=tmp, open="r")
+    filecon <- file(description=filepath, open="r")
     vals <- read.delim(filecon, header=FALSE, sep="\t", skip=1, nrows=nrows,
                        stringsAsFactors=FALSE, quote="", colClasses=colClasses)
     repeat {
@@ -301,8 +301,11 @@
     ## NCBI connection
     if (is.null(NCBIFilesDir)) {
         NCBIcon <- dbConnect(SQLite(), dbname = tempfile())
+        tmp <- tempfile()
     } else {
-        NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
+        NCBIcon <- dbConnect(SQLite(),
+                             dbname = file.path(NCBIFilesDir, "NCBI.sqlite"))
+        tmp <- file.path(NCBIFilesDir, names(file))
     }
     tableName <- sub(".gz","",names(file))
 
@@ -311,15 +314,15 @@
         url <- paste0("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/", names(file))
         ## if DB table is not fresh OR if table is not populated
         if (!.isNCBICurrentWith(NCBIcon, tableName) ||
-           !.isNCBIPopulatedWith(NCBIcon, tableName)) {
+            !.isNCBIPopulatedWith(NCBIcon, tableName)) {
             if (verbose)
                 message("rebuilding the cache")
-            tmp <- .getFiles(NCBIFilesDir, file, url, tableName)
+            .tryDL(url, tmp)
         }
-    } else tmp <- file.path(NCBIFilesDir, names(file))
+    }
 
     ## write to NCBI.sqlite db
-    .writeToNCBIDB(NCBIcon, tableName, tmp, file)
+    .writeToNCBIDB(NCBIcon, tableName, filepath=tmp, file)
     if ("tax_id" %in% unlist(file)) {
         .indexTaxIds(NCBIcon, tableName)
     }
@@ -766,7 +769,7 @@ makeOrgDbFromNCBI <-
              rebuildCache=TRUE, verbose=TRUE)
 {
     dbFileName <- paste0(.generateOrgDbName(genus,species), ".sqlite")
-    dbFileName <- file.path(outputDir, dbFileName)
+    dbFileName <- file.path(NCBIFilesDir, dbFileName)
     if (file.exists(dbFileName)) { file.remove(dbFileName) }
     con <- dbConnect(SQLite(), dbFileName)
     .createMetadataTables(con)  ## just makes the tables
@@ -957,7 +960,9 @@ OLD_makeOrgPackageFromNCBI <-
     ## get/update the data
     data <- list(length(files))
     if (verbose)
-        message("starting download for ",length(files), " data files")
+        message("starting download for ", sprintf("\n[%d] %s",
+                                                  seq_along(files),
+                                                  names(files)))
     for(i in seq_len(length(files))) {
         res <- .downloadData(files[i], tax_id, NCBIFilesDir=NCBIFilesDir,
                              rebuildCache=rebuildCache, verbose=verbose)
@@ -1251,7 +1256,8 @@ prepareDataFromNCBI <-
 {
     ## Files that need to be processed
     files <- .primaryFiles()
-    NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
+    NCBIcon <- dbConnect(SQLite(),
+                         dbname = file.path(NCBIFilesDir, "NCBI.sqlite"))
     rawData <- .makeBaseDBFromDLs(files, tax_id, NCBIcon, NCBIFilesDir,
                                   rebuildCache, verbose)
     data <- list()
