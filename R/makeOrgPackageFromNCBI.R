@@ -19,8 +19,8 @@
 
     gene_id <- data.frame(entrez) ## TODO: data.frame() necessary???
     sql<- "INSERT INTO genes(gene_id) VALUES(?);"
-    dbBegin(con)
-    dbGetPreparedQuery(con, sql, gene_id)
+    dbBegin(con)                        
+    dbGetQuery(con, sql, unclass(unname(gene_id)))
     dbCommit(con)
     message("genes table filled")
 }
@@ -358,7 +358,7 @@
     function(con, sql, data, table)
 {
     dbBegin(con)
-    dbGetPreparedQuery(con, sql, data)
+    dbGetQuery(con, sql, unclass(unname(data)))
     dbCommit(con)
     message("table ", table, " filled")
 }
@@ -1213,7 +1213,7 @@ splitBy <-
     res <- res[!res$EntrezGene == "" | res$GO == "", ]
     if (nrow(res) == 0)
         return(data.frame(gene_id="", go_id="", evidence="",
-                          stringsAsFactors=FALSE))
+                          stringsAsFactors=FALSE)[FALSE,])
 
     ## split two column data frames at will...
     data <- splitBy(res, splitCol=2)

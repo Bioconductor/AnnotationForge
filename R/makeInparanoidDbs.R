@@ -134,7 +134,7 @@
        " (clust_id,clu2,species,score,inp_id,seed_status) VALUES
         (?,?,?,?,?,?)")
     dbBegin(con)
-    dbGetPreparedQuery(con, sql, clnVals)
+    dbGetQuery(con, sql, unclass(unname(clnVals)))
     dbCommit(con)
 }
 
@@ -171,7 +171,7 @@
     meta[meta$name=='SPECIES','value'] <- species
     sql<- paste0("INSERT INTO metadata VALUES (:name, :value)")
     dbBegin(con)
-    dbGetPreparedQuery(con, sql, bind.data = meta)
+    dbGetQuery(con, sql, unclass(unname(meta)))
     dbCommit(con)
 }
 

@@ -12,7 +12,7 @@
   sql <- paste("INSERT INTO probes(PROBEID, GID, is_multiple)",
                "VALUES(?,?,?);")
   dbBegin(con)
-  dbGetPreparedQuery(con, sql, values)
+  dbGetQuery(con, sql, unclass(unname(values)))
   dbCommit(con)
   dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS Fgenes ON probes (GID)")
@@ -64,7 +64,7 @@
                   source_date)",
                  "VALUES(?,?,?,?);")
     dbBegin(con)
-    dbGetPreparedQuery(con, sql, mapValues)
+    dbGetQuery(con, sql, unclass(unname(mapValues)))
     dbCommit(con)
 }
 
@@ -84,7 +84,7 @@
   psql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
                "VALUES(?,?,?);")
   dbBegin(con)
-  dbGetPreparedQuery(con, psql, values)
+  dbGetQuery(con, psql, unclass(unname(values)))
   dbCommit(con)
   dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS Fgenes ON probes (gene_id)")
@@ -104,7 +104,7 @@
       asql <- paste("INSERT INTO accessions (probe_id, accession)",
                    "VALUES(?,?);")
       dbBegin(con)
-      dbGetPreparedQuery(con, asql, values)
+      dbGetQuery(con, asql, unclass(unname(values)))
       dbCommit(con)
       ## If there are probes that were mentioned in
       ## accessionsFrame that were NOT mentioned in
@@ -119,7 +119,7 @@
                         "VALUES(:probe_id,:is_multiple);")
           ## may have to switch NA to NULL
           dbBegin(con)
-          dbGetPreparedQuery(con, ssql, newVals)
+          dbGetQuery(con, ssql, unclass(unname(newVals)))
           dbCommit(con)
       }
   }

@@ -10,7 +10,7 @@
   geneid <- data.frame(genes) ## TODO: data.frame() necessary???
   sql<- paste("INSERT INTO genes(GID) VALUES(?);")
   dbBegin(con)
-  dbGetPreparedQuery(con, sql, geneid)
+  dbGetQuery(con, sql, unclass(unname(geneid)))
   dbCommit(con)
   dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS genes__id_ind ON genes (_id)")    
