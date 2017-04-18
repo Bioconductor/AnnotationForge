@@ -1,3 +1,19 @@
+CHANGES IN VERSION 1.18.0
+------------------------
+
+MODIFICATIONS
+
+    o RSQLite deprecated dbGetPreparedQuery/dbSendPreparedQuery; Updated with
+    dbGetQuery/dbSendQuery/dbBind/dbFetch
+
+    o update for building BioC 3.5
+
+BUG FIXES
+
+    o Resolve tmp issue, change outputDir to NCBIFilesDir
+
+    o Fixed a bug in makeOrgPackageFromNCBI when there are no GO terms
+
 CHANGES IN VERSION 1.16.0
 ------------------------
 
