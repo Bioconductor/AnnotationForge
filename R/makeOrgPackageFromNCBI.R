@@ -19,7 +19,7 @@
 
     gene_id <- data.frame(entrez) ## TODO: data.frame() necessary???
     sql<- "INSERT INTO genes(gene_id) VALUES(?);"
-    dbBegin(con)                        
+    dbBegin(con)
     dbGetQuery(con, sql, unclass(unname(gene_id)))
     dbCommit(con)
     message("genes table filled")
@@ -318,11 +318,11 @@
             if (verbose)
                 message("rebuilding the cache")
             .tryDL(url, tmp)
+            ## write to NCBI.sqlite db
+            .writeToNCBIDB(NCBIcon, tableName, filepath=tmp, file)
         }
     }
 
-    ## write to NCBI.sqlite db
-    .writeToNCBIDB(NCBIcon, tableName, filepath=tmp, file)
     if ("tax_id" %in% unlist(file)) {
         .indexTaxIds(NCBIcon, tableName)
     }
@@ -1194,7 +1194,7 @@ splitBy <-
        !.isNCBIPopulatedWith(NCBIcon, 'altGO')) {
         .downloadAndPopulateAltGOData(NCBIcon, NCBIFilesDir, rebuildCache)
     }
-
+    
     ## Then get out the data that we *want* using another query with the tax_id
     sql <- paste0("
         SELECT EntrezGene, GO
