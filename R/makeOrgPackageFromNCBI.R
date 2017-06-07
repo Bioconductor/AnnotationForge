@@ -1210,7 +1210,7 @@ splitBy <-
     ##            stringsAsFactors=FALSE)
 
     ## DROP records with no entrez gene ID or no GO ID
-    res <- res[!res$EntrezGene == "" | res$GO == "", ]
+    res <- res[!(res$EntrezGene == "" | res$GO == ""), ]
     if (nrow(res) == 0)
         return(data.frame(gene_id="", go_id="", evidence="",
                           stringsAsFactors=FALSE)[FALSE,])
