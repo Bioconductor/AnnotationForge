@@ -754,7 +754,7 @@
              "tax_id", "gene_id", "symbol", "locus_tag", "synonyms", "dbXrefs",
              "chromosome", "map_location", "description", "gene_type",
              "nomenclature_symbol", "nomenclature_name", "nomenclature_status",
-             "other_designations", "modification_date"),
+             "other_designations", "modification_date","feature_type"),
          gene2go.gz=c(
              "tax_id", "gene_id", "go_id", "evidence", "go_qualifier",
              "go_description", "pubmed_id", "category"))
