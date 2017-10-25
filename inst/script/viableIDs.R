@@ -34,7 +34,8 @@ altTaxIDs = .getAltTaxIds()
 ## Step 3: combine all taxIds and remove ones that we already
 ## have as packages:
 .getPackageOrgDbTaxIds <- function(){
-    orgDbs <- .GetOrgDbs()
+#    orgDbs <- .GetOrgDbs()
+    orgDbs <-AnnotationHubData:::.getOrgDbs()
     as.integer(unlist(lapply(orgDbs,
                 function(x){m <- metadata(x); m[m$name=='TAXID', 2] })))
 }
