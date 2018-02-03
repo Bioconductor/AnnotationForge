@@ -13,7 +13,7 @@
   dbGetQuery(con, sql, unclass(unname(geneid)))
   dbCommit(con)
   dbGetQuery(con,
-                 "CREATE INDEX IF NOT EXISTS genes__id_ind ON genes (_id)")    
+                 "CREATE INDEX IF NOT EXISTS genes__id_ind ON genes (_id)")
   dbGetQuery(con,
                  "CREATE INDEX IF NOT EXISTS genes_GID_ind ON genes (GID)")
   message("genes table filled")
@@ -55,9 +55,9 @@
     dbGetQuery(con,
         paste0("CREATE INDEX IF NOT EXISTS ",
               table,"_",indFields[i],"_ind ON ",table,
-              " (",indFields[i],");"))    
+              " (",indFields[i],");"))
     }
-    
+
     ## drop the temp table
     dbGetQuery(con, "DROP TABLE temp;")
   }
@@ -124,26 +124,26 @@
 
 ## function to put together the database.
 ## This takes a named list of data.frames.
-makeOrgDbFromDataFrames <- function(data, tax_id, genus, species, 
+makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
                                     dbFileName, goTable){
-    ## set up DB connection 
+    ## set up DB connection
     if(file.exists(dbFileName)){ file.remove(dbFileName) }
     con <- dbConnect(SQLite(), dbFileName)
     .createMetadataTables(con)
     ## TODO: why can't I drop these (investigate)
 #    dbGetQuery(con, "DROP TABLE map_counts;")
 #    dbGetQuery(con, "DROP TABLE map_metadata;")
-    
+
     ## gather all GIDs together and make the genes table
     genes <- unique(unlist(unname(lapply(data, "[", 'GID'))))
     .makeGenesTable(genes, con)
-    
+
     ## Then do each data.frame in turn
     mapply(FUN=.makeTable, data, names(data), MoreArgs=list(con=con))
-        
+
     ## Add metadata but keep it very basic
     .addEssentialMetadata(con, tax_id, genus, species)
-        
+
     ## when we have a goTable, we make special GO tables
     if(goTable %in% names(data)){
         ## Extra checks for go table (when specified)
@@ -198,8 +198,8 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
     colnameGIDs <- sapply(data, function(x){colnames(x)[1]})
     if(any(colnameGIDs != "GID"))
         stop("The 1st column must always be the gene ID 'GID'")
-    ## check GID type 
-    GIDCols <- unique(sapply(data, 
+    ## check GID type
+    GIDCols <- unique(sapply(data,
         function(x) class(x[["GID"]])
     ))
     if(length(GIDCols) >1)
@@ -223,22 +223,22 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
         stop("'species' must be a single string or NULL")
     ## only an NA internally - a NULL is what would have come in from outside...
     if(!.isSingleStringOrNA(goTable))
-        stop("'goTable' argument needs to be a single string or NULL") 
+        stop("'goTable' argument needs to be a single string or NULL")
     if(!is.na(goTable) && !(goTable %in% names(data)))
         stop("'goTable' must be a name from the data.frames passed in '...'")
-    
+
     ## genus and species
     if(is.null(genus))
-        genus <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['genus']] 
+        genus <- GenomeInfoDb:::lookup_organism_by_tax_id(tax_id)[['genus']]
     if(is.null(species)) {
-        species <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['species']]
+        species <- GenomeInfoDb:::lookup_organism_by_tax_id(tax_id)[['species']]
         species <- gsub(' ','.', species)
     }
-    
+
     dbName <- .generateOrgDbName(genus,species)
     dbFileName <- file.path(outputDir,paste0(dbName, ".sqlite"))
     makeOrgDbFromDataFrames(data, tax_id, genus, species, dbFileName, goTable)
-        
+
     if(databaseOnly) {
         ## return the path to the database file
         file.path(outputDir,dbFileName)
@@ -256,9 +256,9 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
                     manufacturerUrl = "no manufacturer",
                     manufacturer = "no manufacturer",
                     chipName = "no manufacturer")
-        
+
         makeAnnDbPkg(seed, dbFileName, dest_dir=outputDir)
-        
+
         ## cleanup
         message("Now deleting temporary database file")
         file.remove(dbFileName)

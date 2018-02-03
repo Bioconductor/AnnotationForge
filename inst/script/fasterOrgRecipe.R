@@ -231,7 +231,7 @@ ids <- ids[!(ids %in% '4513')]
 ## need to find offenders
 lookup <- function(id){
     message(paste0("looking up value for: ", id))
-    AnnotationForge:::.lookupSpeciesFromTaxId(id)
+    AnnotationForge:::lookup_organism_by_tax_id(id)
 }
 res <- lapply(ids,lookup)
 

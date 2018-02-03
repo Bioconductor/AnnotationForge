@@ -1449,9 +1449,9 @@ NEW_makeOrgPackageFromNCBI <-
 
     ## genus and species
     if (is.null(genus))
-        genus <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['genus']]
+        genus <- GenomeInfoDb:::lookup_organism_by_tax_id(tax_id)[['genus']]
     if (is.null(species)) {
-        species <- GenomeInfoDb:::.lookupSpeciesFromTaxId(tax_id)[['species']]
+        species <- GenomeInfoDb:::lookup_organism_by_tax_id(tax_id)[['species']]
         species <- gsub(' ', '.', species)
     }
 
