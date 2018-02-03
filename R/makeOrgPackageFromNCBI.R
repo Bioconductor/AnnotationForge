@@ -1531,7 +1531,8 @@ getFastaSpeciesDirs <-
     }
     res <-unlist(lapply(coreDirs, .getDirOnly))
     specNames <- available.FastaEnsemblSpecies(res)
-    taxIds <- unlist(lapply(specNames, GenomeInfoDb:::.taxonomyId))
+    taxIds <- unlist(lapply(specNames,
+                            GenomeInfoDb:::lookup_tax_id_by_organism))
     names(res) <- taxIds
     res
 }
@@ -1554,7 +1555,7 @@ available.FastaEnsemblSpecies <-
 }
 ## Basically this is so that I can look up tax IDs like this:
 ## library(GenomeInfoDb); specs <- available.FastaEnsemblSpecies();
-## lapply(specs, GenomeInfoDb:::.taxonomyId)
+## lapply(specs, GenomeInfoDb:::lookup_tax_id_by_organism)
 
 ## helper for parsing strings into g.species format
 g.species <-
