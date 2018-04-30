@@ -45,7 +45,7 @@
   schemas.
 }
 
-\author{H. Pages and Marc Carlson}
+\author{Hervé Pagès and Marc Carlson}
 
 \examples{
   # Get the list of BSgenome data packages currently available:

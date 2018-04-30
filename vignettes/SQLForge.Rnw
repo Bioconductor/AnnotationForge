@@ -12,7 +12,7 @@ BiocStyle::latex()
 @
 
 \title{Creating a New Annotation Package using SQLForge}
-\author{Marc Carlson, Herve Pages, Nianhua Li}
+\author{Marc Carlson, Hervé Pagès, Nianhua Li}
 
 
 
