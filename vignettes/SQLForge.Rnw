@@ -121,11 +121,11 @@ that database to make custom packages.  To list all the supported organism
 \section{How to use SQLForge}
 
 Once you know the name of the package that you need, you can get the
-latest .db0 package for your organism by using biocLite() like this.
+latest .db0 package for your organism by using BiocManager::install(): 
 
 <<GetIntermedDB, eval=FALSE>>=
-source("http://bioconductor.org/biocLite.R")
-biocLite("human.db0")
+library(BiocManager)
+install("human.db0")
 @
 
 <<checkforhumandb0, echo=FALSE>>=
@@ -147,7 +147,7 @@ packagesit on the web site here:
 Once you know the name of the package you need, you can install it like before.
 
 <<GetOrg.db, eval=FALSE>>=
-biocLite("org.Hs.eg.db")
+install("org.Hs.eg.db")
 @
 
 All the supported organisms with a .db0 package, will also have a

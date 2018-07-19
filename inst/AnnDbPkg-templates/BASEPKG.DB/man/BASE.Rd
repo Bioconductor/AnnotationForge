@@ -22,8 +22,8 @@
   # You should never have to use this package for anything directly.
   # Its purpose is only to put the latest databases into a consistent
   # location so that the sqlForge code can build annotation packages from
-  # them.  All you should ever have to do is use biocLite to obtain this
-  # package and then use the appropriate wrapper functions from
+  # them.  All you should ever have to do is use BiocManager::install()
+  # to obtain this package and then use the appropriate wrapper functions from
   # AnnotationDbi.  Some examples Include:
   # makeHUMANCHIP_DB(), makeMOUSECHIP_DB(), makeRATCHIP_DB(),
   # makeFLYCHIP_DB(), makeYEASTCHIP_DB(), makeARABIDOPSISCHIP_DB()

@@ -3,8 +3,6 @@
 ##Get the latest (this step is slow)
 ##1st make sure that we have the latest packages installed
 ##(after they have been pushed)
-## source("http://bioconductor.org/biocLite.R")
-##biocLite(pkgs)
 
 
 ##TO UPDATE: just go to the directory meant to hold the new schemas (be sure

@@ -53,8 +53,8 @@
 
   \dontrun{
     # Make your choice and install like this:
-    source("http://bioconductor.org/biocLite.R")
-    biocLite("human.db0")
+    library(BiocManager)
+    install("human.db0")
   }
 
   # Get the list of chip DB schemas:

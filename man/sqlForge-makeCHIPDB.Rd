@@ -11,7 +11,7 @@
   sqlite database produced.  All makeXXXXChip_DB functions REQUIRE that
   you previously have installed the appropriate XXXX.db0 package.  Call
   the function available.db0pkgs() to see what your options are, and
-  then install the appropriate package with biocLite().
+  then install the appropriate package with BiocManager::install().
 }
 
 \usage{

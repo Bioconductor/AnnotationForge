@@ -3,7 +3,7 @@ Title: Code for Building Annotation Database Packages
 Description: Provides code for generating Annotation packages and
         their databases.  Packages produced are intended to be
         used with AnnotationDbi.
-Version: 1.23.1
+Version: 1.23.2
 Encoding: UTF-8
 Author: Marc Carlson, Hervé Pagès
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
@@ -13,7 +13,7 @@ Imports: DBI, RSQLite, XML, S4Vectors, RCurl
 Suggests: biomaRt, httr, GenomeInfoDb, Biostrings, affy, 
         hgu95av2.db, human.db0, org.Hs.eg.db,
         Homo.sapiens, hom.Hs.inp.db, GO.db, 
-        BiocStyle, knitr
+        BiocStyle, knitr, BiocManager
 Collate: makeAnnDbPkg.R sqlForge_utils.R sqlForge_baseMapBuilder.R
         sqlForge_schemaGen.R sqlForge_tableBuilder.R
         sqlForge_makeAnnPkgs.R sqlForge_wrapBaseDBPkgs.R
