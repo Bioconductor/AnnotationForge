@@ -237,7 +237,7 @@ getUniprotGoodies  <- function(query, columns)
 \subsection{Parsing XML}
 
 Data for the previous example were downloaded from Uniprot in
-tab-delimited format. This is a convienent output to work with
+tab-delimited format. This is a convenient output to work with
 but unfortunately not always available. XML is still very
 common and it is useful to have some familiarity with parsing
 it. In this section we give a brief overview to using the
@@ -268,12 +268,14 @@ instead of R objects.
 <<xml_tree>>=
 library(XML)
 uri <- "http://www.uniprot.org/uniprot/?query=P13368+or+Q6GZX4&format=xml"
-xml <- xmlTreeParse(uri, useInternalNodes=TRUE)
+fl <- tempfile()
+download.file(uri, fl)
+xml <- xmlTreeParse(fl, useInternalNodes=TRUE)
 @
 
 \paragraph{XML namespace:}
-XML pages can have namespaces which facilatate the use of
-different XML vocabularies by resolving conflicts arrising
+XML pages can have namespaces which facilitate the use of
+different XML vocabularies by resolving conflicts arising
 from identical tags. Namepaces are represented by a uri
 pointing to an XML schema page. When a namespace is defined
 on a node in an XML document it must be included in the XPath
