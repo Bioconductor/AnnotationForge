@@ -901,8 +901,10 @@ OLD_makeOrgPackageFromNCBI <-
         stop("'author' must be a single string")
     if (outputDir!="." && file.access(outputDir)[[1]]!=0) {
         stop("Selected outputDir '", outputDir,"' does not exist.")}
-    if (!.isSingleString(tax_id))
-        stop("'tax_id' must be a single string")
+    if(!(isSingleNumber(tax_id) || .isSingleString(tax_id)))
+        stop("'tax_id' must be a single integer")
+    if (!is.integer(tax_id))
+        tax_id <- as.integer(tax_id)
     if (!.isSingleString(genus))
         stop("'genus' must be a single string")
     if (!.isSingleString(species))
@@ -1438,8 +1440,10 @@ NEW_makeOrgPackageFromNCBI <-
         stop("'author' must be a single string")
     if (outputDir!="." && file.access(outputDir)[[1]]!=0) {
         stop("Selected outputDir '", outputDir,"' does not exist.")}
-    if (!.isSingleString(tax_id))
-        stop("'tax_id' must be a single string")
+    if(!(isSingleNumber(tax_id) || .isSingleString(tax_id)))
+        stop("'tax_id' must be a single integer")
+    if (!is.integer(tax_id))
+        tax_id <- as.integer(tax_id)
     if (!.isSingleStringOrNull(genus))
         stop("'genus' must be a single string or NULL")
     if (!.isSingleStringOrNull(species))
