@@ -378,7 +378,8 @@ setGeneric("makeAnnDbPkg", signature="x",
       if (length(map_names) != 0)
         symvals <- c(symvals, getSymbolValuesForManPages(map_names, dbfile))
     } else {
-      unlink(man_dir, recursive=TRUE)
+      doc_template_names <- list()
+      # unlink(man_dir, recursive=TRUE) # Dont delete template!
     }
   }
   if (any(duplicated(names(symvals)))) {
