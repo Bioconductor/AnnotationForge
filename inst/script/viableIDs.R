@@ -36,8 +36,11 @@ altTaxIDs = .getAltTaxIds()
 .getPackageOrgDbTaxIds <- function(){
 #    orgDbs <- .GetOrgDbs()
     orgDbs <-AnnotationHubData:::.getOrgDbs()
-    as.integer(unlist(lapply(orgDbs,
-                function(x){m <- metadata(x); m[m$name=='TAXID', 2] })))
+#    as.integer(unlist(lapply(orgDbs,
+#                function(x){m <- metadata(x); m[m$name=='TAXID', 2] })))
+    as.integer(AnnotationHubData:::.orgDbPkgMetadataFromObjs(orgDbs,
+                                                             "3.8")$taxonomyId)
+
 }
 
 existingOrgPkgTaxIds <- .getPackageOrgDbTaxIds()
@@ -72,4 +75,3 @@ save(results, file='viableIDs.rda')
 ## head(sort(taxidTable, decreasing=TRUE))
 ## The length of the allTaxIDs vector is: 555345!
 ## Match the existing tax IDs with a third function:
-
