@@ -1,5 +1,5 @@
 Package: AnnotationForge
-Title: Code for Building Annotation Database Packages
+Title: Tools for building SQLite-based annotation data packages
 Description: Provides code for generating Annotation packages and
         their databases.  Packages produced are intended to be
         used with AnnotationDbi.
