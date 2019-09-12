@@ -39,7 +39,7 @@ altTaxIDs = .getAltTaxIds()
 #    as.integer(unlist(lapply(orgDbs,
 #                function(x){m <- metadata(x); m[m$name=='TAXID', 2] })))
     as.integer(AnnotationHubData:::.orgDbPkgMetadataFromObjs(orgDbs,
-                                                             "3.8")$taxonomyId)
+                                                             "3.9")$taxonomyId)
 
 }
 

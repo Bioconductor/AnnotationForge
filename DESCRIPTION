@@ -1,9 +1,9 @@
 Package: AnnotationForge
-Title: Code for Building Annotation Database Packages
+Title: Tools for building SQLite-based annotation data packages
 Description: Provides code for generating Annotation packages and
         their databases.  Packages produced are intended to be
         used with AnnotationDbi.
-Version: 1.25.1
+Version: 1.27.1
 Encoding: UTF-8
 Author: Marc Carlson, Hervé Pagès
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
