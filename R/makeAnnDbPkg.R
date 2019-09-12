@@ -357,9 +357,9 @@ setGeneric("makeAnnDbPkg", signature="x",
                   ORGPKGDEP=org_pkg
                   )
   man_dir <- file.path(template_path, "man")
+  doc_template_names <- list.files(man_dir, "\\.Rd$")
   if (file.exists(man_dir)) {
     if (!no.man) {
-      doc_template_names <- list.files(man_dir, "\\.Rd$")
       #is_static <- doc_template_names %in% c("_dbconn.Rd", "_dbfile.Rd")
       #doc_template_names <- doc_template_names[!is_static]
 
@@ -378,7 +378,8 @@ setGeneric("makeAnnDbPkg", signature="x",
       if (length(map_names) != 0)
         symvals <- c(symvals, getSymbolValuesForManPages(map_names, dbfile))
     } else {
-      unlink(man_dir, recursive=TRUE)
+      doc_template_names <- list()
+      unlink(man_dir, recursive=TRUE) # delete template
     }
   }
   if (any(duplicated(names(symvals)))) {
