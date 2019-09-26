@@ -35,6 +35,7 @@ altTaxIDs = .getAltTaxIds()
 ## have as packages:
 .getPackageOrgDbTaxIds <- function(){
 #    orgDbs <- .GetOrgDbs()
+# if orgDbs are not downloaded yet, do .getOrgDbs(TRUE)
     orgDbs <-AnnotationHubData:::.getOrgDbs()
 #    as.integer(unlist(lapply(orgDbs,
 #                function(x){m <- metadata(x); m[m$name=='TAXID', 2] })))
