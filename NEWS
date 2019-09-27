@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.28.0
+------------------------
+
+NEW FEATURES
+
+    o (version 1.27.1) `makeOrgPackage()` supports GO ontologies.
+
+
 CHANGES IN VERSION 1.18.0
 ------------------------
 

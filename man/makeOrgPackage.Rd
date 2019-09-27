@@ -52,12 +52,12 @@
   that argument.  When you specify this, \code{makeOrgPackage} will
   process that data.frame to remove extra GO terms (that are too new for
   the current GO.db) and also will generate a table for GOALL data
-  (based on ancestor terms for each mapping from GO.db).  This table
-  will also be checked to make sure that it has exactly THREE columns,
-  that must be named GID, GO and EVIDENCE.  These must correspond to the
-  gene IDs, GO IDs and evidence codes respectively.  GO IDs should be
-  formatted like this to work with other DBs in the project:
-  \'GO:XXXXXXX\'. }
+  (based on ancestor terms for each mapping from GO.db) and for each
+  ontology.  This table will also be checked to make sure that it has
+  exactly THREE columns, that must be named GID, GO and EVIDENCE.  These
+  must correspond to the gene IDs, GO IDs and evidence codes
+  respectively.  GO IDs should be formatted like this to work with other
+  DBs in the project: \'GO:XXXXXXX\'. }
   \item{verbose}{When TRUE progress messages are displayed.}
 }
 

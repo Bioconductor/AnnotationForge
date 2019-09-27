@@ -104,20 +104,32 @@
     .makeTable(goData, "go", con=con)
 
     ## Then prepare data for the 2nd (go_all) table
-    gbp <- goData[goData$ONTOLOGY=="BP",c("GID","GO","EVIDENCE")]
-    gcc <- goData[goData$ONTOLOGY=="CC",c("GID","GO","EVIDENCE")]
-    gmf <- goData[goData$ONTOLOGY=="MF",c("GID","GO","EVIDENCE")]
-    names(gbp) <- names(gcc) <- names(gmf) <- c("gene_id","go_id","evidence")
+    cidx <- c("GID","GO","EVIDENCE")
+
+    gbp <- goData[goData$ONTOLOGY=="BP", cidx]
+    gcc <- goData[goData$ONTOLOGY=="CC", cidx]
+    gmf <- goData[goData$ONTOLOGY=="MF", cidx]
+
+    .makeTable(gbp, "go_bp", con = con)
+    .makeTable(gcc, "go_cc", con = con)
+    .makeTable(gmf, "go_mf", con = con)
+
+    names(gbp) <- names(gcc) <- names(gmf) <-
+        c("gene_id","go_id","evidence")
     ## then recycle older expand function
     bpAll <- .expandGOFrame(gbp, GO.db::GOBPANCESTOR)
     mfAll <- .expandGOFrame(gmf, GO.db::GOMFANCESTOR)
     ccAll <- .expandGOFrame(gcc, GO.db::GOCCANCESTOR)
     ## then combine
     goAllData <- rbind(bpAll,ccAll,mfAll)
-    names(goAllData) <- c("GID","GO","EVIDENCE")
+    names(bpAll) <- names(mfAll) <- names(ccAll) <- names(goAllData) <-
+        c("GID","GO","EVIDENCE")
     goAllData <- .addOntologyData(goAllData)
     names(goAllData) <- c("GID","GOALL","EVIDENCEALL","ONTOLOGYALL")
-    ## Then make the 2nd table
+    ## Then make the '*_all' tables
+    .makeTable(bpAll, "go_bp_all", con = con)
+    .makeTable(ccAll, "go_cc_all", con = con)
+    .makeTable(mfAll, "go_mf_all", con = con)
     .makeTable(goAllData, "go_all", con=con)
 }
 
@@ -149,7 +161,7 @@ makeOrgDbFromDataFrames <- function(data, tax_id, genus, species,
         ## Extra checks for go table (when specified)
         goData <- data[[goTable]]
         if(!all(names(goData) == c("GID", "GO", "EVIDENCE")))
-      stop("'goTable' must have three columns called 'GID','GO' and 'EVIDENCE'")
+            stop("'goTable' must have three columns called 'GID','GO' and 'EVIDENCE'")
         if(any(!grepl("^GO:", as.character(goData$GO))))
             stop("'goTable' GO Ids must be formatted like 'GO:XXXXXXX'")
         .makeNewGOTables(con, goTable, goData)
