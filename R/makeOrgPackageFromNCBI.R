@@ -1627,7 +1627,7 @@ available.ensembl.datasets <-
     datSet <- datSets[names(datSets) %in% taxId]
     ens <- biomaRt::useMart('ensembl', datSet)
     res <- biomaRt::getBM(
-        attributes=c("entrezgene","ensembl_gene_id"),
+        attributes=c("entrezgene_id","ensembl_gene_id"),
         mart=ens)
     res <- res[!is.na(res$entrezgene),]
     colnames(res) <- c("gene_id","ensembl")
