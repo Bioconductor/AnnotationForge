@@ -1094,7 +1094,9 @@ OLD_makeOrgPackageFromNCBI <-
 {
     dest <- file.path(NCBIFilesDir, "idmapping_selected.tab.gz")
     if (rebuildCache) {
-        url <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
+        #url <-
+        #"ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
+        url <- "https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
         loadNamespace("RCurl")
         f <- RCurl::CFILE(dest, mode="wb")
         RCurl::curlPerform(url = url, writedata = f@ref)
