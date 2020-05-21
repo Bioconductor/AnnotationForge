@@ -311,7 +311,11 @@
 
     ## download
     if (rebuildCache) {
-        url <- paste0("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/", names(file))
+        if(names(file) == "gene2unigene"){
+            url <- paste0("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/ARCHIVE/", names(file))
+        }else{
+            url <- paste0("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/", names(file))
+        }
         ## if DB table is not fresh OR if table is not populated
         if (!.isNCBICurrentWith(NCBIcon, tableName) ||
             !.isNCBIPopulatedWith(NCBIcon, tableName)) {
@@ -1094,9 +1098,15 @@ OLD_makeOrgPackageFromNCBI <-
 {
     dest <- file.path(NCBIFilesDir, "idmapping_selected.tab.gz")
     if (rebuildCache) {
-        #url <-
-        #"ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
+        #  This url has been flaky in the past
+        #  See https://www.uniprot.org/downloads
+        #  Troublshooting in the past involved temporarily changing this url
+        #     to use the https protcol url:
+        #     https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz
+        # This affects running the TwoBit script as well as the NonStandardOrgs
+        # at release time
         url <- "https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
+        #url <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
         loadNamespace("RCurl")
         f <- RCurl::CFILE(dest, mode="wb")
         RCurl::curlPerform(url = url, writedata = f@ref)
