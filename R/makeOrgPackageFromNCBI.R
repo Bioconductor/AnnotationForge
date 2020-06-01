@@ -466,85 +466,6 @@
     }
 }
 
-## Use when there is no GO data
-.getBlast2GOData <-
-    function(tax_id, con)
-{
-    url = paste0(
-        "http://www.b2gfar.org/_media/species:data:", tax_id, ".annot.zip")
-    tmp <- tempfile()
-    ##download.file(url, tmp, quiet=TRUE)
-    .tryDL(url,tmp)
-    vals <- read.delim(unzip(tmp), header=FALSE, sep="\t", quote="",
-                       stringsAsFactors=FALSE)
-    ## I will need to so extra stuff here to match up categories etc.
-    ## (vals has to look like gene2go would, and I have to join to refseq and to
-    ## accession just to get my EGs)
-    RSVals <- vals[grep("refseq",vals[,4]),c(2,3)]
-    GBVals <- vals[grep("genbank",vals[,4]),c(2,6)]
-    colnames(GBVals) <- colnames(RSVals) <- c("go_id","accession")
-    tables <- dbGetQuery(con,"SELECT * FROM sqlite_master")$name
-
-    if (!any(c("gene2refseq","gene2accession") %in% tables)) {
-        stop("It is impossible to match blasted GO terms with NCBI accessions.")
-    } else {
-        if ("gene2refseq" %in% tables) {
-            g2rs <- dbGetQuery(con, "
-                SELECT gene_id, protein_accession
-                FROM gene2refseq")
-            g2rs[,2] <- sub("\\.\\d+$","",g2rs[,2])
-            vals <- merge(RSVals,g2rs, by.x="accession",
-                          by.y="protein_accession")
-        }
-        if ("gene2accession" %in% tables) {
-            g2ac <- dbGetQuery(con, "
-                SELECT gene_id, protein_accession
-                FROM gene2accession")
-            gb <- merge(GBVals,g2ac, by.x="accession",
-                        by.y="protein_accession")
-            if ("gene2refseq" %in% tables) {
-                vals <- rbind(vals, gb)
-            } else {
-                vals <- gb
-            }
-        }
-    }
-
-    ## Add to the metadata:
-    name <- c("BL2GOSOURCEDATE","BL2GOSOURCENAME","BL2GOSOURCEURL")
-    value<- c(date(),"blast2GO","http://www.blast2go.de/")
-    .addMeta(con, name, value)
-
-    ## modify and then add back to map_metadata
-    map_name <- c("GO2EG", "GO2ALLEGS")
-    source_name <- c(rep("blast2GO",2))
-    source_url <- c(rep("http://www.blast2go.de/",2))
-    source_date <- c(rep(date(),2))
-    .addMapMeta(con, map_name, source_name, source_url, source_date)
-
-    ## then assemble the data back together to make it look like gene2go so
-    ## it can be inserted there.
-    rlen <- dim(vals)[1]
-    data <-data.frame(tax_id = rep(tax_id, rlen),
-                      gene_id = as.character(vals[["gene_id"]]),
-                      go_id = vals[["go_id"]],
-                      evidence = rep("IEA", rlen),
-                      go_qualifier = rep("-", rlen),
-                      go_description = rep("-", rlen),
-                      pubmed_id = rep("-", rlen),
-                      category = Ontology(vals[["go_id"]]),
-                      stringsAsFactors=FALSE)
-    data[,8] <- sub("BP","Process",data[,8])
-    data[,8] <- sub("CC","Component",data[,8])
-    data[,8] <- sub("MF","Function",data[,8])
-    ## cleanup of file left behind by unzip() operation.
-    if (file.exists(paste0(tax_id, ".annot"))) {
-        file.remove(paste0(tax_id, ".annot"))
-    }
-    ## return data
-    data
-}
-
 ## need to be able to generate the columns data from the files and the types.
 .generateCols <-
     function (file)
@@ -637,15 +558,6 @@
     message("Populating ", table," table:")
     sql <- .generateTempTableINSERTStatement(file)
     if (dim(data)[1] != 0) { ## ie. there has to be SOME data...
-        .populateBaseTable(con, sql, data, table)
-    } else if (dim(data)[1] == 0 && names(file)=="gene2go.gz") { ## blast2GO?
-        message("getting blast2GO data as a substitute for ", table)
-        data <- .getBlast2GOData(tax_id, con)
-        sql <- "
-            INSERT INTO gene2go (
-                tax_id, gene_id, go_id, evidence, go_qualifier, go_description,
-                pubmed_id, category
-            ) VALUES(?,?,?,?,?,?,?,?);"
         .populateBaseTable(con, sql, data, table)
     } else {
         message("No data available for table ", table)
