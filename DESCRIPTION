@@ -3,7 +3,7 @@ Title: Tools for building SQLite-based annotation data packages
 Description: Provides code for generating Annotation packages and
         their databases.  Packages produced are intended to be
         used with AnnotationDbi.
-Version: 1.31.1
+Version: 1.31.2
 Encoding: UTF-8
 Author: Marc Carlson, Hervé Pagès
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
