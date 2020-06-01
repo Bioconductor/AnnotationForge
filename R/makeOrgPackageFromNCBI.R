@@ -698,7 +698,7 @@
         SELECT count(DISTINCT g.gene_id)
         FROM ", table, " AS t, genes AS g
         WHERE t._id=g._id AND t.", field, " NOT NULL")
-    dbGetQuery(con,sql)
+    dbGetQuery(con,sql)[[1]]
 }
 
 ## when we want to know how many of something there is (reverse mapping?)
@@ -709,7 +709,7 @@
         SELECT COUNT(DISTINCT t.", field, ")
         FROM ", table, " AS t, genes AS g
         WHERE t._id=g._id AND t.", field, " NOT NULL")
-    dbGetQuery(con,sql)
+    dbGetQuery(con,sql)[[1]]
 }
 
 
@@ -717,24 +717,29 @@
 .addMapCounts <-
     function(con, tax_id, genus, species)
 {
-    map_name <- c("GENENAME","SYMBOL","SYMBOL2EG","CHR","REFSEQ","REFSEQ2EG",
-                  "UNIGENE","UNIGENE2EG","GO","GO2EG","GO2ALLEGS","ALIAS2EG",
-                  "TOTAL")
-    count <- c(.computeSimpleEGMapCounts(con, "gene_info", "gene_name"),
-               .computeSimpleEGMapCounts(con, "gene_info", "symbol"),
-               .computeSimpleMapCounts(con, "gene_info", "symbol"),
-               .computeSimpleEGMapCounts(con, "chromosomes", "chromosome"),
-               .computeSimpleEGMapCounts(con, "refseq", "accession"),
-               .computeSimpleMapCounts(con, "refseq", "accession"),
-               .computeSimpleEGMapCounts(con, "unigene", "unigene_id"),
-               .computeSimpleMapCounts(con, "unigene", "unigene_id"),
-               .computeSimpleEGMapCounts(con, "accessions", "accession"),
-               .computeSimpleMapCounts(con, "accessions", "accession"),
-                                        #GO ones
-               .computeSimpleEGMapCounts(con, "alias", "alias_symbol"),
-               dbGetQuery(con,"SELECT count(DISTINCT gene_id) FROM genes")
-               )
-    data = data.frame(map_name,count,stringsAsFactors=FALSE)
+    count <- c(
+        GENENAME = .computeSimpleEGMapCounts(con, "gene_info", "gene_name"),
+        SYMBOL = .computeSimpleEGMapCounts(con, "gene_info", "symbol"),
+        SYMBOL2EG = .computeSimpleMapCounts(con, "gene_info", "symbol"),
+        CHR = .computeSimpleEGMapCounts(con, "chromosomes", "chromosome"),
+        ACCNUM = .computeSimpleEGMapCounts(con, "accessions", "accession"),
+        REFSEQ = .computeSimpleEGMapCounts(con, "refseq", "accession"),
+        REFSEQ2EG = .computeSimpleMapCounts(con, "refseq", "accession"),
+        PMID = .computeSimpleEGMapCounts(con, "pubmed", "pubmed_id"),
+        PMID2EG = .computeSimpleMapCounts(con, "pubmed", "pubmed_id"),
+        UNIGENE = .computeSimpleEGMapCounts(con, "unigene", "unigene_id"),
+        UNIGENE2EG = .computeSimpleMapCounts(con, "unigene", "unigene_id"),
+        ALIAS2EG = .computeSimpleMapCounts(con, "alias", "alias_symbol"),
+        GO = .computeSimpleEGMapCounts(con, "go", "go_id"),
+        GO2EG = .computeSimpleMapCounts(con, "go", "go_id"),
+        GO2ALLEGS = .computeSimpleMapCounts(con, "go_all", "go_id"),
+        TOTAL = dbGetQuery(con,"SELECT count(DISTINCT gene_id) FROM genes")[[1]]
+    )
+    data = data.frame(
+        map_names = names(count),
+        count = unname(count),
+        row.names = NULL
+    )
     sql <- "INSERT INTO map_counts (map_name,count) VALUES(?,?)"
     .populateBaseTable(con, sql, data, "map_counts")
 }
