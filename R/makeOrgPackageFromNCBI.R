@@ -173,8 +173,12 @@
     loadNamespace("RCurl")
     if (!RCurl::url.exists(url))
         stop("URL '", url, "' does not exist")
-    binRes <- RCurl::getBinaryURL(url)
-    writeBin(binRes, con=tmp)
+##    binRes <- RCurl::getBinaryURL(url)
+##    writeBin(binRes, con=tmp)
+
+    f = CFILE(tmp, mode="wb")
+    curlPerform(url = url, writedata = f@ref)
+    close(f)
 }
 
 .tryDL <-
