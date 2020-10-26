@@ -176,9 +176,9 @@
 ##    binRes <- RCurl::getBinaryURL(url)
 ##    writeBin(binRes, con=tmp)
 
-    f = CFILE(tmp, mode="wb")
-    curlPerform(url = url, writedata = f@ref)
-    close(f)
+    f = RCurl::CFILE(tmp, mode="wb")
+    RCurl::curlPerform(url = url, writedata = f@ref)
+    RCurl::close(f)
 }
 
 .tryDL <-
