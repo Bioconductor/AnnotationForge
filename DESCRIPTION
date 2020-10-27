@@ -3,7 +3,11 @@ Title: Tools for building SQLite-based annotation data packages
 Description: Provides code for generating Annotation packages and
         their databases.  Packages produced are intended to be
         used with AnnotationDbi.
+biocViews: Annotation, Infrastructure
+URL: https://bioconductor.org/packages/AnnotationForge
+BugReports: https://github.com/Bioconductor/AnnotationForge/issues
 Version: 1.31.3
+License: Artistic-2.0
 Encoding: UTF-8
 Author: Marc Carlson, Hervé Pagès
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
@@ -14,6 +18,8 @@ Suggests: biomaRt, httr, GenomeInfoDb (>= 1.17.1), Biostrings, affy,
         hgu95av2.db, human.db0, org.Hs.eg.db,
         Homo.sapiens, hom.Hs.inp.db, GO.db,
         BiocStyle, knitr, BiocManager
+VignetteBuilder: knitr
+BuildKeepEmpty: TRUE
 Collate: makeAnnDbPkg.R sqlForge_utils.R sqlForge_baseMapBuilder.R
         sqlForge_schemaGen.R sqlForge_tableBuilder.R
         sqlForge_makeAnnPkgs.R sqlForge_wrapBaseDBPkgs.R
@@ -21,7 +27,3 @@ Collate: makeAnnDbPkg.R sqlForge_utils.R sqlForge_baseMapBuilder.R
         makeOrgPackage.R makeChipPackageFromDataFrames.R
         makeOrgPackageFromNCBI.R NCBI_getters.R makeInparanoidDbs.R
         test_AnnotationForge_package.R
-License: Artistic-2.0
-biocViews: Annotation, Infrastructure
-VignetteBuilder: knitr
-BuildKeepEmpty: TRUE
