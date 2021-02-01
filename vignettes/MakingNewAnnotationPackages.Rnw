@@ -1,5 +1,5 @@
 %\VignetteIndexEntry{AnnotationForge: Creating select Interfaces for custom Annotation resources}
-%\VignetteDepends{Homo.sapiens,hom.Hs.inp.db}
+%\VignetteDepends{Homo.sapiens}
 %\VignetteEngine{knitr::knitr}
 
 \documentclass[11pt]{article}
@@ -479,29 +479,20 @@ connection you need to do something like this:
 <<classicConn,results='hide'>>=
 drv <- SQLite()
 library("org.Hs.eg.db")
-con_hs <- dbConnect(drv, dbname=system.file("extdata", "org.Hs.eg.sqlite",
-                        package = "org.Hs.eg.db"))
+con_hs <- dbConnect(drv, dbname=org.Hs.eg_dbfile())
 con_hs
-dbDisconnect(con_hs)
 @
 %%
-But in our case the connection has already been created here as part
-of the object that was generated when the package was loaded:
+In cases where the connection is created on package load, we can do
+something like below:
 %%
-<<ourConn>>=
-require(hom.Hs.inp.db)
-str(hom.Hs.inp.db)
-@
-%%
-So we can do something like below:
-%%
-<<ourConn2>>=
-hom.Hs.inp.db$conn
+<<ourConn2,eval=FALSE>>=
+org.Hs.eg.db$conn
 ## or better we can use a helper function to wrap this:
-AnnotationDbi::dbconn(hom.Hs.inp.db)
+AnnotationDbi::dbconn(org.Hs.eg.db)
 ## or we can just call the provided convenience function 
 ## from when this package loads:
-hom.Hs.inp_dbconn()
+org.Hs.eg_dbconn()
 @
 
 \subsection{Getting data out}
@@ -516,9 +507,8 @@ pair of useful methods are the \Rfunction{dbListTables} and
 database.
 
 <<dbListTables>>=
-con <- AnnotationDbi::dbconn(hom.Hs.inp.db)
-head(dbListTables(con))
-dbListFields(con, "Mus_musculus")
+head(dbListTables(con_hs))
+dbListFields(con_hs, "alias")
 @ 
 %%
 For actually executing SQL to retrieve data, you probably want to
@@ -526,7 +516,7 @@ use something like \Rfunction{dbGetQuery}.  The only caveat is that this
 will actually require you to know a little SQL.
 %%
 <<dbGetQuery>>=
-dbGetQuery(con, "SELECT * FROM metadata")
+dbGetQuery(con_hs, "SELECT * FROM metadata")
 @ 
 
 \subsection{Some basic SQL}
@@ -617,62 +607,56 @@ underlying database from \R.  How should we go about this?  Well the
 1st thing we always want to know are what tables are present.  We
 already know how to learn this:
 <<dbListTables2>>=
-head(dbListTables(con))
+head(dbListTables(con_hs))
 @ 
 And we also know that once we have a table we are curious about, we
 can then look up it's fields using \Rfunction{dbListFields}
 <<dbListFields2>>=
-dbListFields(con, "Apis_mellifera")
+dbListFields(con_hs, "chromosomes")
 @ 
 And once we know something about which fields are present in a table,
 we can compose a SQL query.  perhaps the most straightforward query is
 just to get all the results from a given table.  We know that the SQL
 for that should look like:
 \begin{verbatim}
-    SELECT * FROM Apis_mellifera;
+    SELECT * FROM chromosomes;
 \end{verbatim}
 So we can now call a query like that from R by using \Rfunction{dbGetQuery}: 
 <<dbGetQuery2>>=
-head(dbGetQuery(con, "SELECT * FROM Apis_mellifera"))
+head(dbGetQuery(con_hs, "SELECT * FROM chromosomes"))
 @ 
 
 \begin{Exercise}
   Now use what you have learned to explore the
-  \Biocannopkg{hom.Hs.inp.db} database.  The formal scientific name for
-  one of the mosquitoes that carry the malaria parasite is Anopheles
-  gambiae.  Now find the table for that organism in the
-  \Biocannopkg{hom.Hs.inp.db} database and extract it into R.  How many
-  species are present in this table?  Inparanoid uses a five letter
-  designation for each species that is composed of the 1st 2 letters
-  of the genus followed by the 1st 3 letters of the species.  Using
-  this fact, write a SQL query that will retrieve only records from
-  this table that are from humans (Homo sapiens).
+  \Biocannopkg{org.Hs.eg.db} database. Now find the table for chromosome
+  locations in the \Biocannopkg{org.Hs.eg.db} database and extract it into R.
+  How many chromosomes are present in this table? Write a SQL query that will
+  retrieve chromosome locations from this table that are in chromosome 1.
 \end{Exercise}
 \begin{Solution}
 <<Anopheles,eval=FALSE>>=
-head(dbGetQuery(con, "SELECT * FROM Anopheles_gambiae"))
+head(dbGetQuery(con_hs, "SELECT * FROM chromosome_locations"))
 ## Then only retrieve human records
 ## Query: SELECT * FROM Anopheles_gambiae WHERE species='HOMSA'
-head(dbGetQuery(con, "SELECT * FROM Anopheles_gambiae WHERE species='HOMSA'"))
-dbDisconnect(con)
+head(dbGetQuery(con_hs, "SELECT * FROM chromosome_locations WHERE seqname='1'"))
+dbDisconnect(con_hs)
 @
 \end{Solution}
 
 \section{Setting up a package to expose a SQLite database object}
 
 For the sake of simplicity, lets look at an existing example of this
-in the \Biocannopkg{hom.Hs.inp.db} package.  If you download this
-tarball from the website you can see that it contains a .sqlite
-database inside of the inst/extdata directory.  There are a couple of
-important details though about this database.  The 1st is that we
+in the \Biocannopkg{org.Hs.eg.db} package. This package contains a
+.sqlite database inside of the extdata directory.  There are a couple of
+important details though about databases like these.  The 1st is that we
 recommend that the database have the same name as the package, but end
 with the extension .sqlite.  The second detail is that we recommend
 that the metadata table contain some important fields.  This is the
-metadata from the current \Biocannopkg{hom.Hs.inp.db} package.
+metadata from the current \Biocannopkg{org.Hs.eg.db} package.
 
 <<getMetadata, echo=FALSE>>=
-library(hom.Hs.inp.db)
-hom.Hs.inp_dbInfo()
+library(org.Hs.eg.db)
+org.Hs.eg_dbInfo()
 @
 
 As you can see there are a number of very useful fields stored in the
@@ -691,25 +675,23 @@ enable \Rfunction{loadDb} to find it.
 
 Once you have set up the metadata you will need to create a class for
 your package that extends the \Rclass{AnnotationDb} class.  In the
-case of the hom.Hs.inp.db package, the class is defined to be a
-\Rclass{InparanoidDb} class. This code is inside of
-\Biocpkg{AnnotationDbi}.
+case of the org.Hs.eg.db package, the class is defined to be a
+\Rclass{OrgDb} class. 
 
-<<referenceClass,eval=FALSE>>=
-.InparanoidDb <-
-    setRefClass("InparanoidDb", contains="AnnotationDb")
+<<OrgDbClass,eval=FALSE>>=
+showClass("OrgDb")
 @
 
 Finally the \Rfunction{.onLoad} call for your package will have to
 contain code that will call the \Rfunction{loadDb} method.  This is what
-it currently looks like in the \Biocannopkg{hom.Hs.inp.db} package.
+it currently looks like in the \Biocannopkg{org.Hs.eg.db} package.
 
 <<onLoad,eval=FALSE>>=
 sPkgname <- sub(".db$","",pkgname)
 db <- loadDb(system.file("extdata", paste(sPkgname,
                ".sqlite",sep=""), package=pkgname, lib.loc=libname),
                packageName=pkgname)
-dbNewname <- AnnotationDbi:::dbObjectName(pkgname,"InparanoidDb")
+dbNewname <- AnnotationDbi:::dbObjectName(pkgname,"OrgDb")
 ns <- asNamespace(pkgname)
 assign(dbNewname, db, envir=ns)
 namespaceExport(ns, dbNewname)
@@ -740,7 +722,7 @@ also be warranted.
 \subsection{Examples: creating a \Rfunction{columns} and \Rfunction{keytypes} method}
 
 Now lets suppose that we want to define a \Rfunction{columns} method for
-our \Rclass{hom.Hs.inp.db} object. And lets also suppose that we want
+our \Rclass{org.Hs.eg.db} object. And lets also suppose that we want
 is for it to tell us about the actual organisms for which we can
 extract identifiers.  How could we do that?
 
@@ -752,16 +734,16 @@ extract identifiers.  How could we do that?
     ## drop unwanted tables
     unwanted <- c("map_counts","map_metadata","metadata")
     list <- list[!list %in% unwanted]
+    # use on.exit to disconnect
+    # on.exit(dbDisconnect(con))
     ## Then just to format things in the usual way
-    list <- toupper(list)
-    dbDisconnect(con)
-    list
+    toupper(list)
 }
 
 ## Then make this into a method
-setMethod("columns", "InparanoidDb", .cols(x))
+setMethod("columns", "OrgDb", .cols(x))
 ## Then we can call it
-columns(hom.Hs.inp.db)
+columns(org.Hs.eg.db)
 @
 
 Notice again how I formatted the output to all uppercase characters?
@@ -771,17 +753,17 @@ this means that we will have to do a tiny bit of extra work when we
 implement out other methods.
 
 \begin{Exercise}
-  Now use what you have learned to try and define a method for
-  \Rfunction{keytypes} on \Rclass{hom.Hs.inp.db}.  The keytypes method
+  Now use what you have learned to define a method for
+  \Rfunction{keytypes} on \Rclass{org.Hs.eg.db}.  The keytypes method
   should return the same results as columns (in this case).  What if you
   needed to translate back to the lowercase table names?  Also write
   an quick helper function to do that.
 \end{Exercise}
 \begin{Solution}
 <<keytypes,eval=FALSE>>=
-setMethod("keytypes", "InparanoidDb", .cols(x))
+setMethod("keytypes", "OrgDb", function(x) .cols(x))
 ## Then we can call it
-keytypes(hom.Hs.inp.db)
+keytypes(org.Hs.eg.db)
 
 ## refactor of .cols
 .getLCcolnames <- function(x)
@@ -790,9 +772,9 @@ keytypes(hom.Hs.inp.db)
     list <- dbListTables(con)
     ## drop unwanted tables
     unwanted <- c("map_counts","map_metadata","metadata")
-    list <- list[!list %in% unwanted]
-    dbDisconnect(con)
-    list
+    # use on.exit to disconnect
+    # on.exit(dbDisconnect(con))
+    list[!list %in% unwanted]
 }
 .cols <- function(x)
 {
@@ -801,7 +783,7 @@ keytypes(hom.Hs.inp.db)
     toupper(list)
 }
 ## Test:
-columns(hom.Hs.inp.db)
+columns(org.Hs.eg.db)
 
 ## new helper function:
 .getTableNames <- function(x)
@@ -811,18 +793,20 @@ columns(hom.Hs.inp.db)
     names(UC) <- LC
     UC
 }
-.getTableNames(hom.Hs.inp.db)
+.getTableNames(org.Hs.eg.db)
 @
 \end{Solution}
 
 \subsection{Example: creating a \Rfunction{keys} method}
 
 \begin{Exercise}
-  Now define a method for \Rfunction{keys} on \Rclass{hom.Hs.inp.db}.
-  The keys method should return the keys from a given organism based
-  on the appropriate keytype.  Since each table has rows that
-  correspond to both human and non-human IDs, it will be necessary to
-  filter out the human rows from the result
+  Now define a method for \Rfunction{keys} on the example
+  \Rclass{org.Hs.eg.db}. This function can be a helper function to make it
+  easy to extract column values after filtering the rows. The keys method
+  should return the keys from a given organism based on the appropriate
+  keytype. For example, if a table has rows that correspond to both human and
+  non-human IDs, it will be necessary to filter out the human rows from the
+  result.
 \end{Exercise}
 \begin{Solution}
 <<keys,eval=FALSE>>=
@@ -833,16 +817,16 @@ columns(hom.Hs.inp.db)
     lckeytype <- names(tabNames[tabNames %in% keytype])
     ## get a connection
     con <- AnnotationDbi::dbconn(x)
-    sql <- paste("SELECT inp_id FROM",lckeytype, "WHERE species!='HOMSA'")
+    sql <- paste("SELECT _id FROM", lckeytype, "WHERE species != 'HOMSA'")
     res <- dbGetQuery(con, sql)
     res <- as.vector(t(res))
     dbDisconnect(con)
     res
 }
 
-setMethod("keys", "InparanoidDb", .keys(x, keytype))
-## Then we can call it
-keys(hom.Hs.inp.db, "TRICHOPLAX_ADHAERENS")
+setMethod("keys", "ExampleDbClass", .keys)
+## Then we would call it
+keys(example.db, "TRICHOPLAX_ADHAERENS")
 @
 \end{Solution}
 
