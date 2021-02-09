@@ -192,13 +192,26 @@ you can easily see how once you read the documentation for a given
 RESTful interface, you can start to retrieve the data in \R.  Here is
 an example.
 
+<<BFC_manage,echo=FALSE>>=
+.get_file <- function(fullUri) {
+    bfc <- BiocFileCache::BiocFileCache()
+    urifile <- BiocFileCache::bfcquery(
+        bfc, query = fullUri, exact = TRUE
+    )[["rpath"]]
+    if (!length(urifile))
+        urifile <- BiocFileCache::bfcadd(bfc, fullUri, fullUri)
+    urifile
+}
+@
+
 <<URI Example>>=
    uri <- 'http://www.uniprot.org/uniprot/?query='
    ids <- c('P13368', 'Q6GZX4')
    idStr <- paste(ids, collapse="+or+")
    format <- '&format=tab'
    fullUri <- paste0(uri,idStr,format)
-   read.delim(fullUri)
+   uquery <- .get_file(fullUri)
+   read.delim(uquery)
 @ 
 
 \begin{Exercise}
@@ -840,11 +853,6 @@ your own.
 
 
 \subsection{Making a new connection}
-
-First, lets close the connection to our other DB:
-<<dbDisconnect>>=
-   dbDisconnect(con)
-@ 
 
 Then lets make a new database.  Notice that we specify the database
 name with "dbname" This allows it to be written to disc instead of

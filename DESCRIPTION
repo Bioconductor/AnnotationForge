@@ -17,7 +17,7 @@ Imports: DBI, RSQLite, XML, S4Vectors, RCurl
 Suggests: biomaRt, httr, GenomeInfoDb (>= 1.17.1), Biostrings, affy,
         hgu95av2.db, human.db0, org.Hs.eg.db,
         Homo.sapiens, GO.db,
-        BiocStyle, knitr, BiocManager
+        BiocStyle, knitr, BiocManager, BiocFileCache
 VignetteBuilder: knitr
 BuildKeepEmpty: TRUE
 Collate: makeAnnDbPkg.R sqlForge_utils.R sqlForge_baseMapBuilder.R
