@@ -315,6 +315,68 @@ appendAccessions <- function(db, subStrs, printSchema){
   message(cat("Found",count,"Entrez Gene Accessions"))  
 }
 
+## make the genetype table (only used by the EG packages)
+
+appendGenetype <- function(db, subStrs, printSchema){
+
+  message(cat("Appending Gene types"))
+    
+  sql<- paste("    CREATE TABLE genetype (
+      _id INTEGER NOT NULL,                         -- REFERENCES ", subStrs[["cntrTab"]],"
+      gene_type VARCHAR(20) NOT NULL,               -- NCBI gene type
+      FOREIGN KEY (_id) REFERENCES ", subStrs[["cntrTab"]]," (_id)
+    );") 
+  if(printSchema==TRUE){write(sql, file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
+  dbGetQuery(db, sql)
+
+  sql<- paste("
+    INSERT INTO genetype
+     SELECT DISTINCT g._id, a.gene_type
+     FROM ", subStrs[["cntrTab"]]," as g CROSS JOIN anno.genetype as a
+     WHERE g._id=a._id;
+     ") 
+  dbGetQuery(db, sql)
+
+  sql<- paste("    CREATE INDEX Fgenetype ON genetype (_id);") 
+  if(printSchema==TRUE){write(paste(sql,"\n"), file=paste(subStrs[["outDir"]],"/",subStrs[["prefix"]],".sql", sep=""), append=TRUE)}
+  dbGetQuery(db, sql)
+
+  #map_metadata
+  sql<- paste("
+    INSERT INTO map_metadata
+     SELECT * FROM anno.map_metadata
+     WHERE map_name = 'ACCNUM';
+    ") 
+  dbGetQuery(db, sql)
+
+  #map_counts
+
+
+  sql<- paste("
+    INSERT INTO map_counts
+     SELECT 'ACCNUM2EG', COUNT(DISTINCT accession)
+     FROM accessions AS a INNER JOIN ", subStrs[["cntrTab"]]," AS g
+     WHERE a._id=g._id;
+    ") 
+  dbGetQuery(db, sql)
+
+
+  sqlCount<- paste("
+     SELECT 'ACCNUM', COUNT(DISTINCT gene_id)
+     FROM ", subStrs[["cntrTab"]]," AS g INNER JOIN accessions AS a
+     WHERE g._id=a._id;
+    ")
+  
+  sql<- paste("INSERT INTO map_counts",sqlCount)
+  dbGetQuery(db, sql)
+
+  count = as.integer(dbGetQuery(db,sqlCount)[2])
+  
+##   count = makeMapCounts(db, "ACCNUM","accession","accessions AS a",paste(subStrs[["cntrTab"]],"AS g"),"WHERE g._id=a._id")
+##   makeMapCounts(db, "ACCNUM2EG","gene_id",paste(subStrs[["cntrTab"]],"AS g"),"accessions AS a","WHERE g._id=a._id")
+  message(cat("Found",count,"Entrez Gene Accessions"))  
+}
+
 
 
 ## Make the gene info table
