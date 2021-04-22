@@ -345,7 +345,7 @@ appendGenetype <- function(db, subStrs, printSchema){
   sql<- paste("
     INSERT INTO map_metadata
      SELECT * FROM anno.map_metadata
-     WHERE map_name = 'ACCNUM';
+     WHERE map_name = 'GENETYPE';
     ") 
   dbGetQuery(db, sql)
 
@@ -362,8 +362,8 @@ appendGenetype <- function(db, subStrs, printSchema){
 
 
   sqlCount<- paste("
-     SELECT 'ACCNUM', COUNT(DISTINCT gene_id)
-     FROM ", subStrs[["cntrTab"]]," AS g INNER JOIN accessions AS a
+     SELECT 'GENETYPE', COUNT(DISTINCT gene_id)
+     FROM ", subStrs[["cntrTab"]]," AS g INNER JOIN genetypes AS a
      WHERE g._id=a._id;
     ")
   
@@ -374,7 +374,7 @@ appendGenetype <- function(db, subStrs, printSchema){
   
 ##   count = makeMapCounts(db, "ACCNUM","accession","accessions AS a",paste(subStrs[["cntrTab"]],"AS g"),"WHERE g._id=a._id")
 ##   makeMapCounts(db, "ACCNUM2EG","gene_id",paste(subStrs[["cntrTab"]],"AS g"),"accessions AS a","WHERE g._id=a._id")
-  message(cat("Found",count,"Entrez Gene Accessions"))  
+  message(cat("Found",count,"Entrez Gene Gene_types"))  
 }
 
 
