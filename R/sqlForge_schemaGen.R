@@ -52,6 +52,7 @@ popHUMANCHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -103,6 +104,7 @@ popHUMANDB <- function(prefix,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -182,6 +184,7 @@ popMOUSECHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -234,6 +237,7 @@ popMOUSEDB <- function(prefix,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -314,6 +318,7 @@ popRATCHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -364,6 +369,7 @@ popRATDB <- function(prefix,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -542,6 +548,7 @@ popFLYCHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -594,6 +601,7 @@ popFLYDB <- function(prefix,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1056,6 +1064,7 @@ popCANINECHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1104,6 +1113,7 @@ popCANINEDB <- function(prefix,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1180,6 +1190,7 @@ popBOVINECHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1230,6 +1241,7 @@ popBOVINEDB <- function(prefix,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1308,6 +1320,7 @@ popWORMCHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1436,6 +1449,7 @@ popPIGCHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
     appendKEGG(db, subStrs=subStrs, printSchema=printSchema)
@@ -1482,6 +1496,7 @@ popPIGDB <- function(prefix,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
     appendKEGG(db, subStrs=subStrs, printSchema=printSchema)
@@ -1556,6 +1571,7 @@ popCHICKENCHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1607,6 +1623,7 @@ popCHICKENDB <- function(prefix,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1669,6 +1686,7 @@ popCHIMPDB <- function(prefix,
     appendRefseq(db, subStrs=subStrs, printSchema=printSchema)
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
 ##     appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1746,6 +1764,7 @@ popRHESUSCHIPDB <- function(affy,
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1795,6 +1814,7 @@ popRHESUSDB <- function(prefix,
     appendRefseq(db, subStrs=subStrs, printSchema=printSchema)
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
 ##     appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1926,7 +1946,8 @@ popXENOPUSCHIPDB <- function(affy,
     appendChromosomes(db, subStrs=subStrs, printSchema=printSchema)
     appendRefseq(db, subStrs=subStrs, printSchema=printSchema)
     appendPubmed(db, subStrs=subStrs, printSchema=printSchema)
-    appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    ##appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
 ##     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
@@ -1984,6 +2005,7 @@ popXENOPUSDB <- function(prefix,
     ## Defunct as of BioC 3.13
     ## appendUnigene(db, subStrs=subStrs, printSchema=printSchema)
 ##     appendChrlengths(db, subStrs=subStrs, printSchema=printSchema)
+    appendGenetype(db, subStrs=subStrs, printSchema=printSchema)
     appendGO(db, subStrs=subStrs, printSchema=printSchema)
     appendGOALL(db, subStrs=subStrs, printSchema=printSchema) 
     appendKEGG(db, subStrs=subStrs, printSchema=printSchema)
