@@ -15,12 +15,12 @@
             _id INTEGER PRIMARY KEY,
             gene_id VARCHAR(10) NOT NULL UNIQUE           -- Entrez Gene ID
         );"
-    dbGetQuery(con, sql)
+    dbExecute(con, sql)
 
     gene_id <- data.frame(entrez) ## TODO: data.frame() necessary???
     sql<- "INSERT INTO genes(gene_id) VALUES(?);"
     dbBegin(con)
-    dbGetQuery(con, sql, unclass(unname(gene_id)))
+    dbExecute(con, sql, unclass(unname(gene_id)))
     dbCommit(con)
     message("genes table filled")
 }
@@ -40,7 +40,7 @@
         ", tableFieldLines, "
         FOREIGN KEY (_id)
         REFERENCES genes (_id));")
-    dbGetQuery(con, sql)
+    dbExecute(con, sql)
 }
 
 .makeSimpleTable <-
@@ -69,17 +69,17 @@
             FROM genes AS g, temp AS t
             WHERE g.gene_id=t.gene_id
             ORDER BY g._id;");
-        dbGetQuery(con, sql)
+        dbExecute(con, sql)
 
         ## Add index to all fields in indFields (default is all)
         for(i in seq_len(length(indFields))) {
-            dbGetQuery(con, paste0("
+            dbExecute(con, paste0("
                 CREATE INDEX IF NOT EXISTS ", table, "_", indFields[i], "_ind
                 ON ", table, " (", indFields[i], ");"))
         }
 
         ## drop the temp table
-        dbGetQuery(con, "DROP TABLE temp;")
+        dbExecute(con, "DROP TABLE temp;")
     }
     message(paste(table,"table filled"))
 }
@@ -244,7 +244,7 @@
     sql <- paste0("
         CREATE INDEX IF NOT EXISTS ", tableName, "_taxId
         ON ", tableName, " (tax_id);")
-    dbGetQuery(NCBIcon, sql)
+    dbExecute(NCBIcon, sql)
 }
 
 .getFiles <-
@@ -367,7 +367,7 @@
     function(con, sql, data, table)
 {
     dbBegin(con)
-    dbGetQuery(con, sql, unclass(unname(data)))
+    dbExecute(con, sql, unclass(unname(data)))
     dbCommit(con)
     message("table ", table, " filled")
 }
@@ -377,7 +377,7 @@
     function(con,table, field)
 {
     indName <-paste("ind", table, field, sep="_")
-    dbGetQuery(con, paste("
+    dbExecute(con, paste("
         CREATE INDEX IF NOT EXISTS", indName, "
         ON", table, "(", field, ")"))
 }
@@ -386,19 +386,19 @@
 .createMetadataTables <-
     function(con)
 {
-    dbGetQuery(con, "
+    dbExecute(con, "
         CREATE TABLE IF NOT EXISTS metadata (
             name VARCHAR(80) PRIMARY KEY,
             value VARCHAR(255)
         );")
-    dbGetQuery(con, "
+    dbExecute(con, "
         CREATE TABLE IF NOT EXISTS map_metadata (
             map_name VARCHAR(80) NOT NULL,
             source_name VARCHAR(80) NOT NULL,
             source_url VARCHAR(255) NOT NULL,
             source_date VARCHAR(20) NOT NULL
          );")
-    dbGetQuery(con, "
+    dbExecute(con, "
         CREATE TABLE IF NOT EXISTS map_counts (
             map_name VARCHAR(80) PRIMARY KEY,
             count INTEGER NOT NULL
@@ -463,7 +463,7 @@
         FROM map_metadata
         WHERE map_name='GO2EG'")
     if ("Gene Ontology" %in% goSrcs & "blast2GO" %in% goSrcs) {
-        dbGetQuery(con, "
+        dbExecute(con, "
             DELETE FROM map_metadata
             WHERE map_name = 'GO2EG'
                 AND source_name='Gene Ontology'")
@@ -557,7 +557,7 @@
         stop("Unable to infer a table name.")
     cols <- .generateCols(file)
     sql<- paste("CREATE TABLE IF NOT EXISTS ", table, " (",cols,");")
-    dbGetQuery(con, sql)
+    dbExecute(con, sql)
 
     message("Populating ", table," table:")
     sql <- .generateTempTableINSERTStatement(file)
@@ -586,7 +586,7 @@
     fileNames <- sub(".gz", "", fileNames)
     message("dropping table", fileNames)
     for(i in seq_len(length(fileNames))) {
-        dbGetQuery(con, paste("DROP TABLE IF EXISTS", fileNames[i]))
+        dbExecute(con, paste("DROP TABLE IF EXISTS", fileNames[i]))
     }
 }
 
@@ -778,7 +778,7 @@ makeOrgDbFromNCBI <-
     ## Drop all the older tables (which will include the original "gene_info").
     .dropOldTables(con,names(files))
     ## Rename "gene_info_temp" to be just "gene_info":
-    dbGetQuery(con,"ALTER TABLE gene_info_temp RENAME TO gene_info")
+    dbExecute(con,"ALTER TABLE gene_info_temp RENAME TO gene_info")
     ## add GO views to the DB
     makeGOViews(con)
 
@@ -1030,14 +1030,14 @@ OLD_makeOrgPackageFromNCBI <-
         RCurl::curlPerform(url = url, writedata = f@ref)
     }
     ## create table and set up indices
-    dbGetQuery(NCBIcon, "
+    dbExecute(NCBIcon, "
         CREATE TABLE IF NOT EXISTS altGO (
             EntrezGene TEXT NOT NULL,
             GO TEXT NOT NULL,
             NCBItaxon TEXT NOT NULL
         )")
-    dbGetQuery(NCBIcon, "CREATE INDEX IF NOT EXISTS geneidAltGO on altGO(EntrezGene)")
-    dbGetQuery(NCBIcon, "CREATE INDEX IF NOT EXISTS taxidAltGO on altGO(NCBItaxon)")
+    dbExecute(NCBIcon, "CREATE INDEX IF NOT EXISTS geneidAltGO on altGO(EntrezGene)")
+    dbExecute(NCBIcon, "CREATE INDEX IF NOT EXISTS taxidAltGO on altGO(NCBItaxon)")
     ## Select fields 3 (EntrezGene), 7(GO) and 13 (NCBI-taxon)
     colClasses <- c("NULL","NULL","character","NULL","NULL","NULL",
                     "character","NULL","NULL","NULL","NULL","NULL",

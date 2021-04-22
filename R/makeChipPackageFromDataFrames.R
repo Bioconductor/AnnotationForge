@@ -6,17 +6,17 @@
       GID VARCHAR(10) NULL,           -- GENEID
       is_multiple SMALLINT NOT NULL           -- matches multiple genes?
     );")
-  dbGetQuery(con, sql)
+  dbExecute(con, sql)
 
   values <- data.frame(probeFrame) 
   sql <- paste("INSERT INTO probes(PROBEID, GID, is_multiple)",
                "VALUES(?,?,?);")
   dbBegin(con)
-  dbGetQuery(con, sql, unclass(unname(values)))
+  dbExecute(con, sql, unclass(unname(values)))
   dbCommit(con)
-  dbGetQuery(con,
+  dbExecute(con,
                  "CREATE INDEX IF NOT EXISTS Fgenes ON probes (GID)")
-  dbGetQuery(con,
+  dbExecute(con,
                  "CREATE INDEX IF NOT EXISTS Fprobes ON probes (PROBEID)")
   message("probes table filled and indexed")
 }
@@ -59,12 +59,12 @@
       source_url VARCHAR(255) NOT NULL,
       source_date VARCHAR(20) NOT NULL
     );")
-    dbGetQuery(con, sql)
+    dbExecute(con, sql)
     sql <- paste("INSERT INTO map_metadata(map_name, source_name, source_url,
                   source_date)",
                  "VALUES(?,?,?,?);")
     dbBegin(con)
-    dbGetQuery(con, sql, unclass(unname(mapValues)))
+    dbExecute(con, sql, unclass(unname(mapValues)))
     dbCommit(con)
 }
 
@@ -78,17 +78,17 @@
       gene_id VARCHAR(10) NULL,           -- Gene ID
       is_multiple SMALLINT NOT NULL           -- matches multiple genes?
     );")
-  dbGetQuery(con, sql)
+  dbExecute(con, sql)
 
   values <- data.frame(probeFrame) 
   psql <- paste("INSERT INTO probes(probe_id, gene_id, is_multiple)",
                "VALUES(?,?,?);")
   dbBegin(con)
-  dbGetQuery(con, psql, unclass(unname(values)))
+  dbExecute(con, psql, unclass(unname(values)))
   dbCommit(con)
-  dbGetQuery(con,
+  dbExecute(con,
                  "CREATE INDEX IF NOT EXISTS Fgenes ON probes (gene_id)")
-  dbGetQuery(con,
+  dbExecute(con,
                  "CREATE INDEX IF NOT EXISTS Fprobes ON probes (probe_id)")
   ## now set up correct map_metadata
   .cloneMapMetadata(con, orgPkgName)
@@ -96,7 +96,7 @@
 
   ###########################################################
   ## code for legacy accessions table
-  dbGetQuery(con, "CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20))")
+  dbExecute(con, "CREATE TABLE accessions (probe_id VARCHAR(80),accession VARCHAR(20))")
   ## accessionsFrame will either be null or we will need to insert it
   if(!is.null(accessionsFrame)){
       message("Populating accessions table:")
@@ -104,7 +104,7 @@
       asql <- paste("INSERT INTO accessions (probe_id, accession)",
                    "VALUES(?,?);")
       dbBegin(con)
-      dbGetQuery(con, asql, unclass(unname(values)))
+      dbExecute(con, asql, unclass(unname(values)))
       dbCommit(con)
       ## If there are probes that were mentioned in
       ## accessionsFrame that were NOT mentioned in
@@ -119,11 +119,11 @@
                         "VALUES(:probe_id,:is_multiple);")
           ## may have to switch NA to NULL
           dbBegin(con)
-          dbGetQuery(con, ssql, unclass(unname(newVals)))
+          dbExecute(con, ssql, unclass(unname(newVals)))
           dbCommit(con)
       }
   }
-  dbGetQuery(con, "CREATE INDEX Fgbprobes ON accessions (probe_id)")
+  dbExecute(con, "CREATE INDEX Fgbprobes ON accessions (probe_id)")
 }
 
 

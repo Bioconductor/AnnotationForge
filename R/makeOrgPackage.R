@@ -5,16 +5,16 @@
       _id INTEGER PRIMARY KEY,
       GID VARCHAR(10) NOT NULL UNIQUE           -- Gene ID
     );")
-  dbGetQuery(con, sql)
+  dbExecute(con, sql)
 
   geneid <- data.frame(genes) ## TODO: data.frame() necessary???
   sql<- paste("INSERT INTO genes(GID) VALUES(?);")
   dbBegin(con)
-  dbGetQuery(con, sql, unclass(unname(geneid)))
+  dbExecute(con, sql, unclass(unname(geneid)))
   dbCommit(con)
-  dbGetQuery(con,
+  dbExecute(con,
                  "CREATE INDEX IF NOT EXISTS genes__id_ind ON genes (_id)")
-  dbGetQuery(con,
+  dbExecute(con,
                  "CREATE INDEX IF NOT EXISTS genes_GID_ind ON genes (GID)")
   message("genes table filled")
 }
@@ -48,18 +48,18 @@
      FROM genes AS g, temp AS t
      WHERE g.GID=t.GID
      ORDER BY g._id;")
-    dbGetQuery(con, sql)
+    dbExecute(con, sql)
 
     ## Add index to all fields in indFields (default is all)
     for(i in seq_len(length(indFields))){
-    dbGetQuery(con,
+    dbExecute(con,
         paste0("CREATE INDEX IF NOT EXISTS ",
               table,"_",indFields[i],"_ind ON ",table,
               " (",indFields[i],");"))
     }
 
     ## drop the temp table
-    dbGetQuery(con, "DROP TABLE temp;")
+    dbExecute(con, "DROP TABLE temp;")
   }
   message(paste(table,"table filled"))
 }
@@ -94,7 +94,7 @@
 ## helper to prepare/filter data for two GO tables: 'go' and 'go_all'.
 .makeNewGOTables <- function(con, goTable, goData){
     ## So 1st drop the old go table
-    dbGetQuery(con, paste0("DROP TABLE ",goTable,";"))
+    dbExecute(con, paste0("DROP TABLE ",goTable,";"))
     ## add Ontologies data
     goData <- .addOntologyData(goData)
     ## now filter that for terms that are "too new"
