@@ -351,16 +351,6 @@ appendGenetype <- function(db, subStrs, printSchema){
 
   #map_counts
 
-
-  sql<- paste("
-    INSERT INTO map_counts
-     SELECT 'GENETYPE2EG', COUNT(DISTINCT gene_type)
-     FROM genetype AS a INNER JOIN ", subStrs[["cntrTab"]]," AS g
-     WHERE a._id=g._id;
-    ") 
-  dbExecute(db, sql)
-
-
   sqlCount<- paste("
      SELECT 'GENETYPE', COUNT(DISTINCT gene_id)
      FROM ", subStrs[["cntrTab"]]," AS g INNER JOIN genetype AS a
