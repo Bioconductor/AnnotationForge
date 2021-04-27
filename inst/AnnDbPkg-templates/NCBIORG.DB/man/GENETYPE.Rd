@@ -1,9 +1,8 @@
-\name{@ANNOBJPREFIX@SYMBOL}
-\alias{@ANNOBJPREFIX@SYMBOL}
-\alias{@ANNOBJPREFIX@SYMBOL2EG}
-\title{Map between Entrez Gene Identifiers and Gene Symbols}
+\name{@ANNOBJPREFIX@GENETYPE}
+\alias{@ANNOBJPREFIX@GENETYPE}
+\title{Map between Entrez Gene Identifiers and Gene Type}
 \description{
-  @ANNOBJPREFIX@SYMBOL is an R object that provides mappings between
+  @ANNOBJPREFIX@GENETYPE is an R object that provides mappings between
   entrez gene identifiers and gene types. 
 }
 \details{
