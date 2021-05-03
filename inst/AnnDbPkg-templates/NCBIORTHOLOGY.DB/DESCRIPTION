@@ -9,6 +9,5 @@ Suggests: DBI, annotate, RUnit
 Imports: methods, AnnotationDbi
 License: @LIC@
 organism: @ORGANISM@
-species: @SPECIES@
 biocViews: OrthologyDb, @BIOCVIEWS@
 
