@@ -1571,7 +1571,7 @@ Package: Orthology.db
 Title: Orthology mappings between species
 Version: 3.10.0
 PkgTemplate: NCBIORTHOLOGY.DB
-DBfile: /home/ubuntu/BioconductorAnnotationPipeline/newPipe/sanctionedSqlite/orthology.sqlite 
+DBfile: /home/ubuntu/BioconductorAnnotationPipeline/newPipe/sanctionedSqlite/Orthology.sqlite 
 AnnObjPrefix: Orthology
 AnnObjTarget: Orthology
 biocViews: AnnotationData, FunctionalAnnotation
