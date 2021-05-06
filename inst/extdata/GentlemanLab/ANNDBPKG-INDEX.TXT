@@ -1553,7 +1553,7 @@ biocViews: AnnotationData
 
 
 ### =========================================================================
-### NCBIORTHOLOGY_DB schema
+### ORTHOLOGY_DB schema
 ### ------------
 ###   Fields:
 ###     Package (*)
@@ -1570,7 +1570,7 @@ biocViews: AnnotationData
 Package: Orthology.db
 Title: Orthology mappings between species
 Version: 3.10.0
-PkgTemplate: NCBIORTHOLOGY.DB
+PkgTemplate: ORTHOLOGY.DB
 DBfile: /home/ubuntu/BioconductorAnnotationPipeline/newPipe/sanctionedSqlite/Orthology.sqlite 
 AnnObjPrefix: Orthology
 AnnObjTarget: Orthology
