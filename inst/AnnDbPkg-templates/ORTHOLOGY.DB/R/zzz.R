@@ -25,9 +25,7 @@ datacache <- new.env(hash=TRUE, parent=emptyenv())
     assign(dbNewname, txdb, envir=ns)
     namespaceExport(ns, dbNewname)
         
-    ## Create the AnnObj instances
-    ann_objs <- createAnnObjs.SchemaChoice("@DBSCHEMA@", "@ANNOBJPREFIX@", "@ANNOBJTARGET@", dbconn, datacache)
-    mergeToNamespaceAndExport(ann_objs, pkgname)
+
     packageStartupMessage(AnnotationDbi:::annoStartupMessages("@ANNOBJPREFIX@"))
 }
 
