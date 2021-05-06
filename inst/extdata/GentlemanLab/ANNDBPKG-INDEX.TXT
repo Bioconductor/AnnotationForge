@@ -1567,7 +1567,7 @@ biocViews: AnnotationData
 ###     biocViews (*)
 ### Fields marked with an (*) are required.
 
-Package: Orthology.db
+Package: Orthology.eg.db
 Title: Orthology mappings between species
 Version: 3.10.0
 PkgTemplate: NCBIORTHOLOGY.DB
