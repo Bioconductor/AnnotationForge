@@ -1024,7 +1024,8 @@ OLD_makeOrgPackageFromNCBI <-
         #  Troublshooting in the past involved temporarily changing this url
         #     to use the https protcol url:
         #     https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz
-        url <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
+        #url <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
+        url <- "https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
         loadNamespace("RCurl")
         f <- RCurl::CFILE(dest, mode="wb")
         RCurl::curlPerform(url = url, writedata = f@ref)

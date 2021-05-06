@@ -5,6 +5,20 @@
 ## built an NCBI.sqlite file. You may call the example in
 ## makeOrgPackageFromNCBI()
 
+## You can run on an EC2 instance or locally
+## If you run locally you will need at least 59G of space as of May 2021
+## the size of the files tends to increase slightly each release
+
+if(FALSE){
+    library(AnnotationForge)
+    makeOrgPackageFromNCBI(version = "0.1",author = "Some One <so@someplace.org>",
+                           maintainer = "Some One <so@someplace.org>",
+                           outputDir = ".",
+                           tax_id = "59729",
+                           genus = "Taeniopygia",
+                           species = "guttata")
+}
+
 ## STEP 1:
 ## This helper will just get the taxIDs that we already have GO data for.
 .getCoreTaxIds <- function(NCBIFilesDir=getwd()){
@@ -36,11 +50,11 @@ altTaxIDs = .getAltTaxIds()
 .getPackageOrgDbTaxIds <- function(){
 #    orgDbs <- .GetOrgDbs()
 # if orgDbs are not downloaded yet, do .getOrgDbs(TRUE)
-    orgDbs <-AnnotationHubData:::.getOrgDbs()
+    orgDbs <-AnnotationHubData:::.getOrgDbs(TRUE)
 #    as.integer(unlist(lapply(orgDbs,
 #                function(x){m <- metadata(x); m[m$name=='TAXID', 2] })))
     as.integer(AnnotationHubData:::.orgDbPkgMetadataFromObjs(orgDbs,
-                                                             "3.9")$taxonomyId)
+                                                             "3.13")$taxonomyId)
 
 }
 
