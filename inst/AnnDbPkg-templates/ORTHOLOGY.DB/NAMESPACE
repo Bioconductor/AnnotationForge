@@ -5,10 +5,9 @@ import(AnnotationDbi)
 ### created at load time are dynamically exported (refer to R/zzz.R for
 ### the details).
 export(
-    @ANNOBJPREFIX@,
     @ANNOBJPREFIX@_dbconn,
     @ANNOBJPREFIX@_dbfile,
     @ANNOBJPREFIX@_dbschema,
-    @ANNOBJPREFIX@_dbInfo,
+    @ANNOBJPREFIX@_dbInfo
 )
 
