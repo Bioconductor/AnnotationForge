@@ -138,6 +138,7 @@ initWithDbDoc <- function(dbfile)
         return(map_metadata)
     } else {
         return(NULL)
+    }
 }
 
 getSymbolValuesForManPages <- function(map_names, dbfile)
