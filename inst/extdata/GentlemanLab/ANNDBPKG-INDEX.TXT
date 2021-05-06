@@ -1563,7 +1563,6 @@ biocViews: AnnotationData
 ###     DBfile (*)
 ###     DBschema
 ###     AnnObjPrefix (*)
-###     AnnObjTarget (*)
 ###     biocViews (*)
 ### Fields marked with an (*) are required.
 
@@ -1572,8 +1571,7 @@ Title: Orthology mappings between species
 Version: 3.10.0
 PkgTemplate: ORTHOLOGY.DB
 DBfile: /home/ubuntu/BioconductorAnnotationPipeline/newPipe/sanctionedSqlite/Orthology.eg.sqlite 
-AnnObjPrefix: Orthology
-AnnObjTarget: Orthology
+AnnObjPrefix: Orthology.eg
 biocViews: AnnotationData, FunctionalAnnotation
 
 
