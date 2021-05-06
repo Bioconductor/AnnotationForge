@@ -144,7 +144,7 @@ initWithDbDoc <- function(dbfile)
 getSymbolValuesForManPages <- function(map_names, dbfile)
 {
     map_metadata <- initWithDbDoc(dbfile)
-    if(is.null(map_metadata)) return("")
+    if(is.null(map_metadata)) return(NULL)
     map_source <- sapply(map_names,
                          function(this_map)
                          {
@@ -391,6 +391,8 @@ setGeneric("makeAnnDbPkg", signature="x",
     str(symvals)
     stop("'symvals' contains duplicated symbols (see above)")
   }
+  ## Remove NA values
+  symvals <- symvals[!sapply(symvals, is.na)]
   .createAnnotPackage(x@Package,
                      destinationDir=dest_dir,
                      originDir=template_path,
