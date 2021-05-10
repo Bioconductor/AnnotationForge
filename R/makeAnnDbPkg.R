@@ -133,13 +133,18 @@ initWithDbDoc <- function(dbfile)
 {
     dbconn <- dbFileConnect(dbfile)
     on.exit(dbFileDisconnect(dbconn))
-    map_metadata <- dbGetTable(dbconn, "map_metadata")
-    map_metadata
+    if(dbExistsTable(dbconn, "map_metadata")){
+        map_metadata <- dbGetTable(dbconn, "map_metadata")
+        return(map_metadata)
+    } else {
+        return(NULL)
+    }
 }
 
 getSymbolValuesForManPages <- function(map_names, dbfile)
 {
     map_metadata <- initWithDbDoc(dbfile)
+    if(is.null(map_metadata)) return(NULL)
     map_source <- sapply(map_names,
                          function(this_map)
                          {
@@ -386,6 +391,8 @@ setGeneric("makeAnnDbPkg", signature="x",
     str(symvals)
     stop("'symvals' contains duplicated symbols (see above)")
   }
+  ## Remove NA values
+  symvals <- symvals[!sapply(symvals, is.na)]
   .createAnnotPackage(x@Package,
                      destinationDir=dest_dir,
                      originDir=template_path,

@@ -1552,3 +1552,26 @@ biocViews: AnnotationData
 
 
 
+### =========================================================================
+### ORTHOLOGY_DB schema
+### ------------
+###   Fields:
+###     Package (*)
+###     Title (*)
+###     Version (*)
+###     PkgTemplate: NCBIORTHOLOGY.DB
+###     DBfile (*)
+###     DBschema
+###     AnnObjPrefix (*)
+###     biocViews (*)
+### Fields marked with an (*) are required.
+
+Package: Orthology.eg.db
+Title: Orthology mappings between species
+Version: 3.10.0
+PkgTemplate: ORTHOLOGY.DB
+DBfile: /home/ubuntu/BioconductorAnnotationPipeline/newPipe/sanctionedSqlite/Orthology.eg.sqlite 
+AnnObjPrefix: Orthology.eg
+biocViews: AnnotationData, FunctionalAnnotation
+
+
