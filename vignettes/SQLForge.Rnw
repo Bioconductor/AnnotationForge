@@ -50,7 +50,7 @@ read.table(system.file("extdata", "hcg110_ID",
 
 
 In the example above, Genbank IDs are demonstrated.  But it is also
-possible to use entrez gene IDs, refseq IDs or unigene accessions as
+possible to use entrez gene IDs, or refseq IDs as
 the gene identifiers.  If refseq IDs are used, it is preferable to
 strip off the version extensions that can sometimes be added on by
 some vendors.  The version extensions are digits that are sometimes

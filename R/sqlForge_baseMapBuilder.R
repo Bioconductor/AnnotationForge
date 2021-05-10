@@ -104,7 +104,7 @@ labelDuplicatedProbes <- function(frame){
 }
 
 
-probe2gene <- function(baseMap, otherSrc, baseMapType=c("gb", "ug", "eg", 
+probe2gene <- function(baseMap, otherSrc, baseMapType=c("gb", "eg", 
                        "refseq", "gbNRef", "image"), chipMapSrc, chipSrc, 
                        pkgName, outputDir=".", allowHomologyGene=FALSE) {
         ## message(cat(paste("Using '",chipSrc,"' for chipSrc.", sep="")))
@@ -159,14 +159,6 @@ probe2gene <- function(baseMap, otherSrc, baseMapType=c("gb", "ug", "eg",
 			    "FROM curr_map as c, src.image_acc_from_uni as i",
 			    "WHERE c.gene_id=i.accession;", sep=" ", collapse="")
 		dbExecute(db, sql)
-	} else if (baseMapType=='ug') {
-                message(cat("baseMapType is ug"))
-		dbExecute(db, "INSERT INTO probe2acc SELECT probe_id, NULL FROM probes_ori;")
-		sql <- paste("INSERT INTO probe2gene",
-			    "SELECT c.probe_id, u.gene_id",
-			    "FROM curr_map as c, src.unigene as u",
-			    "WHERE c.gene_id=u.unigene_id;", sep=" ", collapse="")
-		dbExecute(db, sql)
 	} else if (baseMapType=='refseq') {
                 message(cat("baseMapType is refseq"))
 		dbExecute(db, "CREATE INDEX cm1 ON curr_map(probe_id);")
@@ -194,8 +186,8 @@ probe2gene <- function(baseMap, otherSrc, baseMapType=c("gb", "ug", "eg",
  		dbExecute(db, sql)
 		sql <- paste("INSERT INTO probe2gene ", 
 			    "SELECT c.probe_id, a.gene_id ",
-			    "FROM curr_map as c, src.accession_unigene as a",  #The HORRIBLY MISNAMED accession_unigene table contains refseq IDs as well as GenBank IDs but no unigene IDs!
-                            "WHERE c.gene_id=a.accession;", sep=" ", collapse="") #This name is not my fault!  NOT MY FAULT! - Marc
+			    "FROM curr_map as c, src.accession as a",
+                            "WHERE c.gene_id=a.accession;", sep=" ", collapse="")
 		dbExecute(db, sql)
 	}
         
@@ -214,11 +206,6 @@ probe2gene <- function(baseMap, otherSrc, baseMapType=c("gb", "ug", "eg",
         ##I need to know if there is refseq, unigene or GenBank data for the organism in question.
         tables = dbGetQuery(db, "SELECT name FROM src.sqlite_master;")       
         
-        ##The following will insert any unigene IDs into the database AS entrez gene IDs, (by joining with the other table)
-        if(length(grep("unigene",tables))>0){
-            sql <- "INSERT INTO probe2gene SELECT DISTINCT m.probe_id, u.gene_id FROM other as m INNER JOIN src.unigene as u WHERE m.gene_id=u.unigene_id;"
-            dbExecute(db, sql)
-        }
         ##The following will insert any missing refseq IDs into the database AS entrez gene IDs, (by joining with the other table)
         if(length(grep("refseq",tables))>0){
             sql <- "INSERT INTO probe2gene SELECT DISTINCT m.probe_id, r.gene_id FROM other as m INNER JOIN src.refseq as r WHERE m.gene_id=r.accession;"
