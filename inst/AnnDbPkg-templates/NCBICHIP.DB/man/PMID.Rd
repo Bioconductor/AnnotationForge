@@ -54,7 +54,7 @@ x <- @ANNOBJPREFIX@PMID
 # Get the probe identifiers that are mapped to any PubMed ID
 mapped_probes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_probes])
+xx <- as.list(x[mapped_probes][1:300])
 if(length(xx) > 0){
     # Get the PubMed identifiers for the first two probe identifiers
     xx[1:2]
@@ -69,8 +69,10 @@ if(length(xx) > 0){
     }
 }
 
+x <- @ANNOBJPREFIX@PMID2PROBE
+mapped_probes <- mappedkeys(x)
 # Now convert the reverse map object @ANNOBJPREFIX@PMID2PROBE to a list
-xx <- as.list(@ANNOBJPREFIX@PMID2PROBE)
+xx <- as.list(x[mapped_probes][1:300])
 if(length(xx) > 0){
     # Get the probe identifiers for the first two PubMed identifiers
     xx[1:2]

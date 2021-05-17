@@ -104,7 +104,7 @@ x <- @ANNOBJPREFIX@GO
 # Get the manufacturer identifiers that are mapped to a GO ID
 mapped_genes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_genes])
+xx <- as.list(x[mapped_genes][1:300])
 if(length(xx) > 0) {
     # Try the first one
     got <- xx[[1]]           
@@ -113,8 +113,10 @@ if(length(xx) > 0) {
     got[[1]][["Evidence"]]
 }
 # For the reverse map:
+x <- @ANNOBJPREFIX@GO2PROBE
+mapped_genes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(@ANNOBJPREFIX@GO2PROBE)
+xx <- as.list(x[mapped_genes][1:300])
 if(length(xx) > 0){
     # Gets the manufacturer ids for the top 2nd and 3nd GO identifiers
     goids <- xx[2:3]
@@ -123,8 +125,11 @@ if(length(xx) > 0){
     # Evidence code for the mappings
     names(goids[[1]])
 }
+
+x <- @ANNOBJPREFIX@GO2ALLPROBES
+mapped_genes <- mappedkeys(x)
 # Convert @ANNOBJPREFIX@GO2ALLPROBES to a list
-xx <- as.list(@ANNOBJPREFIX@GO2ALLPROBES)
+xx <- as.list(x[mapped_genes][1:300])
 if(length(xx) > 0){
 # Gets the manufacturer identifiers for the top 2nd and 3nd GO identifiers
     goids <- xx[2:3]

@@ -45,7 +45,7 @@ x <- @ANNOBJPREFIX@CHRLOC
 # Get the probe identifiers that are mapped to chromosome locations
 mapped_probes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_probes])
+xx <- as.list(x[mapped_probes][1:300]))
 if(length(xx) > 0) {
   # Get the CHRLOC for the first five probes
   xx[1:5]

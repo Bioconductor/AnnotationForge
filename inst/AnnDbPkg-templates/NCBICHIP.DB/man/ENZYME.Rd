@@ -75,7 +75,7 @@ x <- @ANNOBJPREFIX@ENZYME
 # Get the probe identifiers that are mapped to an EC number 
 mapped_probes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_probes])
+xx <- as.list(x[mapped_probes][1:3]])
 if(length(xx) > 0) {
   # Get the ENZYME for the first five probes
   xx[1:5]
@@ -84,7 +84,10 @@ if(length(xx) > 0) {
 }
 
 # Now convert @ANNOBJPREFIX@ENZYME2PROBE to a list to see inside
-xx <- as.list(@ANNOBJPREFIX@ENZYME2PROBE)
+x <- @ANNOBJPREFIX@ENZYME2PROBE
+mapped_probes <- mappedkeys(x)
+## convert to a list
+xx <- as.list(x[mapped_probes][1:3])
 if(length(xx) > 0){
    # Get the probe identifiers for the first five enzyme
    #commission numbers

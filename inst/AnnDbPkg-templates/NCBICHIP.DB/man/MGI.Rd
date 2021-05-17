@@ -30,7 +30,7 @@ x <- @ANNOBJPREFIX@MGI
 # Get the manufacturer IDs that are mapped to an MGI ID
 mapped_genes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_genes])
+xx <- as.list(x[mapped_genes][1:300])
 if(length(xx) > 0) {
   # Get the MGI IDs for the first five genes
   xx[1:5]
@@ -38,8 +38,10 @@ if(length(xx) > 0) {
   xx[[1]]
 }
 #For the reverse map MGI2EG:
+x <- @ANNOBJPREFIX@MGI2EG
+mapped_genes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(@ANNOBJPREFIX@MGI2PROBE)
+xx <- as.list(x[mapped_genes][1:300])
 if(length(xx) > 0){
    # Gets the manufacturer IDs for the first five MGI IDs
    xx[1:5]
