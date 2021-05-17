@@ -75,7 +75,7 @@ x <- @ANNOBJPREFIX@ENZYME
 # Get the probe identifiers that are mapped to an EC number 
 mapped_probes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_probes][1:3]])
+xx <- as.list(x[mapped_probes][1:3])
 if(length(xx) > 0) {
   # Get the ENZYME for the first five probes
   xx[1:5]
