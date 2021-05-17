@@ -33,7 +33,7 @@ x <- @ANNOBJPREFIX@CHR
 # Get the probe identifiers that are mapped to a chromosome
 mapped_probes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_probes][1:300]))
+xx <- as.list(x[mapped_probes][1:300])
 if(length(xx) > 0) {
   # Get the CHR for the first five probes
   xx[1:5]
