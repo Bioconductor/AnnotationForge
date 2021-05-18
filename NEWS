@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.34.0
+-------------------------
+
+NEW FEATURES
+
+    o Removed UniGene from OrgDb and ChipDb packages
+    o Added Gene Type table to OrgDb and ChipDb packages
+    o Added functionality to build Orthology.eg.db package which maps NCBI Gene IDs between species
+    o RSQLite deprecated usage of dbGetQuery for database altering statements; updated to use dbExecute instead
+
 CHANGES IN VERSION 1.28.0
 ------------------------
 
