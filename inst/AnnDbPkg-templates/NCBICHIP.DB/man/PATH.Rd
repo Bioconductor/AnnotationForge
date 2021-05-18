@@ -48,7 +48,7 @@ x <- @ANNOBJPREFIX@PATH
 # Get the probe identifiers that are mapped to a KEGG pathway ID
 mapped_probes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_probes])
+xx <- as.list(x[mapped_probes][1:300])
 if(length(xx) > 0) {
   # Get the PATH for the first five probes
   xx[1:5]
@@ -56,8 +56,10 @@ if(length(xx) > 0) {
   xx[[1]]
 }
 
+x <- @ANNOBJPREFIX@PATH
+mapped_probes <- mappedkeys(x)
 # Now convert the @ANNOBJPREFIX@PATH2PROBE object to a list
-xx <- as.list(@ANNOBJPREFIX@PATH2PROBE)
+xx <- as.list(x[mapped_probes][1:300])
 if(length(xx) > 0){
     # Get the probe identifiers for the first two pathway identifiers
     xx[1:2]

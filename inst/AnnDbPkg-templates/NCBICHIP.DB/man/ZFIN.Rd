@@ -31,7 +31,7 @@ x <- @ANNOBJPREFIX@ZFIN
 # Get the entrez gene IDs that are mapped to an Zfin ID
 mapped_genes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_genes])
+xx <- as.list(x[mapped_genes][1:300])
 if(length(xx) > 0) {
   # Get the Zfin IDs for the first five genes
   xx[1:5]

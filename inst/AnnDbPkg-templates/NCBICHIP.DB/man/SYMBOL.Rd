@@ -39,7 +39,7 @@ x <- @ANNOBJPREFIX@SYMBOL
 # Get the probe identifiers that are mapped to a gene symbol
 mapped_probes <- mappedkeys(x)
 # Convert to a list
-xx <- as.list(x[mapped_probes])
+xx <- as.list(x[mapped_probes][1:300])
 if(length(xx) > 0) {
   # Get the SYMBOL for the first five probes
   xx[1:5]
