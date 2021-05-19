@@ -17,7 +17,7 @@ checkTrue(getProbes() > 0,
 getGenes <- function(){
     require("@PKGNAME@")
     as.numeric(dbGetQuery(dbconn(@PKGNAME@),
-                 "SELECT count(DISTINCT gene_id) FROM probes"))
+                 "SELECT count(DISTINCT sgd_id) FROM probes"))
 }
 
 msg = paste("This package has no genes. This can be caused by a large number ",

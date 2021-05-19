@@ -6,7 +6,6 @@ Author: @AUTHOR@
 Maintainer: @MAINTAINER@
 Depends: R (>= 2.7.0), methods, AnnotationDbi (>= @ANNDBIVERSION@), @ORGPKGDEP@ (>= @ORGVERSION@)
 Suggests: DBI, annotate, RUnit
-Imports: methods, AnnotationDbi
 License: @LIC@
 organism: @ORGANISM@
 species: @SPECIES@

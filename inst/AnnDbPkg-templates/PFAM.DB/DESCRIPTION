@@ -6,7 +6,6 @@ Author: Marc Carlson, Ting-Yuan Liu, ChenWei Lin, Seth Falcon, Jianhua
         Zhang, James W. MacDonald
 Maintainer: @MAINTAINER@
 Depends: R (>= 2.7.0), methods, AnnotationDbi (>= @ANNDBIVERSION@)
-Imports: methods, AnnotationDbi
 Suggests: DBI
 License: @LIC@
 manufacturerUrl: @MANUFURL@
