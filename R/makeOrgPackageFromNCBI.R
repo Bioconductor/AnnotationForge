@@ -175,11 +175,14 @@
         stop("URL '", url, "' does not exist")
 ##    binRes <- RCurl::getBinaryURL(url)
 ##    writeBin(binRes, con=tmp)
-
-    f = RCurl::CFILE(tmp, mode="wb")
-    RCurl::curlPerform(url = url, writedata = f@ref)
-    RCurl::close(f)
-}
+    ## RCurl on Windows has TLS problems
+    ## Use download.file instead
+    ## f = RCurl::CFILE(tmp, mode="wb")
+    ##     RCurl::curlPerform(url = url, writedata = f@ref)
+    ##     RCurl::close(f)
+    options(timeout = max(1000, getOption("timeout")))
+    download.file(url, tmp, quiet = TRUE, mode = "wb")
+ }
 
 .tryDL <-
     function(url, tmp)
@@ -358,6 +361,7 @@
         sql <- paste0("SELECT * FROM ", tableName)
         vals <- dbGetQuery(NCBIcon, sql)
     }
+    dbDisconnect(NCBIcon)
     ## remove row_names col
     vals[,!(colnames(vals) %in% 'row_names')]
 }
@@ -784,6 +788,7 @@ makeOrgDbFromNCBI <-
 
     ## Add map_counts: (must happen at end)
     .addMapCounts(con, tax_id, genus, species)
+    dbDisconnect(con)
 
 }
 
@@ -1026,9 +1031,13 @@ OLD_makeOrgPackageFromNCBI <-
         #     https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz
         #url <- "ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
         url <- "https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/idmapping/idmapping_selected.tab.gz"
-        loadNamespace("RCurl")
-        f <- RCurl::CFILE(dest, mode="wb")
-        RCurl::curlPerform(url = url, writedata = f@ref)
+        ## RCurl has TLS problems on Windows use download.file instead
+        ## loadNamespace("RCurl")
+        ## f <- RCurl::CFILE(dest, mode="wb")
+        ## RCurl::curlPerform(url = url, writedata = f@ref)
+        options(timeout = max(1000, getOption("timeout")))
+        status <- download.file(url, dest, quiet = TRUE)
+        if(status != 0L) stop("Download of alternative GO data failed. Please retry!\n", call. = FALSE)
     }
     ## create table and set up indices
     dbExecute(NCBIcon, "
@@ -1348,6 +1357,7 @@ prepareDataFromNCBI <-
                         newName='unigene',
                         newCols=c('GID', 'UNIGENE'))
     }
+    dbDisconnect(NCBIcon)
     data
 }
 
@@ -1508,7 +1518,7 @@ g.species <-
 {
     loadNamespace("biomaRt")
     datSet <- datSets[names(datSets) %in% taxId]
-    ens <- biomaRt::useMart('ensembl', datSet)
+    ens <- biomaRt::useEnsembl('ensembl', datSet)
     at <- biomaRt::listAttributes(ens)
     any(grepl('entrezgene',at$name))
 }
@@ -1531,7 +1541,7 @@ available.ensembl.datasets <-
         ftpStrs <- paste0(g.specs, "_gene_ensembl")
         names(ftpStrs) <- names(g.specs)
         ## then get listing of the dataSets
-        ens <- biomaRt::useMart('ensembl')
+        ens <- biomaRt::useEnsembl('ensembl')
         datSets <- biomaRt::listDatasets(ens)$dataset
         ## so which of the datSets are also in the FTP site?
         ## (when initially tested these two groups were perfectly synced)
@@ -1556,7 +1566,7 @@ available.ensembl.datasets <-
     loadNamespace("biomaRt")
     datSets <- available.ensembl.datasets()
     datSet <- datSets[names(datSets) %in% taxId]
-    ens <- biomaRt::useMart('ensembl', datSet)
+    ens <- biomaRt::useEnsembl('ensembl', datSet)
     res <- biomaRt::getBM(
         attributes=c("entrezgene_id","ensembl_gene_id"),
         mart=ens)
