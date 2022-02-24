@@ -70,11 +70,21 @@
 }
 
 \details{
-  \code{makeOrgPackageFromNCBI} downloads multiple files and assembles a 12 GB
+  \code{makeOrgPackageFromNCBI} downloads multiple files and assembles a 50 GB
   database in \code{NCBIFilesDir}. The first time the function is run it may
-  take over an hour; subsequent calls reuse files from the cache and are
+  take well over an hour; subsequent calls reuse files from the cache and are
   much faster. The default behavior of \code{makeOrgPackageFromNCBI} attempts to 
-  refresh the cached files each day (suppress with \code{rebuildCache = FALSE}).
+  refresh the cached files each day (suppress with \code{rebuildCache =
+    FALSE}).
+
+  The files that are downloaded from NCBI may take longer to download
+  than the default timeout permits. We encourage users to set a
+  \code{options(timeout=xxx)`} to encourage the files to finish
+  downloading. Adjust the timelimit according to download speed and
+  capacity.
+
+  You will need ~62G free for downloading files and creating the
+  database as of February 2022.
 }
 
 \value{Nothing returned to the R session. Just creates an organism

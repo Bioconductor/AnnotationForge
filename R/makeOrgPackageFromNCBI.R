@@ -1368,7 +1368,7 @@ NEW_makeOrgPackageFromNCBI <-
 {
     if (rebuildCache)
         message("If files are not cached locally this may take ",
-                "awhile to assemble a 12 GB cache databse in the ",
+                "awhile to assemble a 48 GB cache databse in the ",
                 "NCBIFilesDir directory. Subsequent calls to this ",
                 "function should be faster (seconds). The cache will ",
                 "try to rebuild once per day.")
