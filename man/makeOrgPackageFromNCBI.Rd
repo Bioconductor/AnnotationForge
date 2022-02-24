@@ -70,12 +70,12 @@
 }
 
 \details{
-  \code{makeOrgPackageFromNCBI} downloads multiple files and assembles a 50 GB
+  \code{makeOrgPackageFromNCBI} downloads multiple files and assembles a 33 GB
   database in \code{NCBIFilesDir}. The first time the function is run it may
   take well over an hour; subsequent calls reuse files from the cache and are
   much faster. The default behavior of \code{makeOrgPackageFromNCBI} attempts to 
   refresh the cached files each day (suppress with \code{rebuildCache =
-    FALSE}).
+    FALSE}). 
 
   The files that are downloaded from NCBI may take longer to download
   than the default timeout permits. We encourage users to set a
@@ -83,8 +83,12 @@
   downloading. Adjust the timelimit according to download speed and
   capacity.
 
-  You will need ~62G free for downloading files and creating the
+  Depending on the organism, the database file could reach up to 49 G.
+  You will need ~62G free for downloading files and creating the largest
   database as of February 2022.
+
+  Some orgDbs are already provided through \code{AnnotationHub}. See
+  package \code{AnnotationHub::AnnotationHub}
 }
 
 \value{Nothing returned to the R session. Just creates an organism

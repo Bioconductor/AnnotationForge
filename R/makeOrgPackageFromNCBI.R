@@ -818,7 +818,7 @@ OLD_makeOrgPackageFromNCBI <-
     message(
         "If this is the 1st time you have run this function, it may take, a ",
         "long time (over an hour) to download needed files and assemble a ",
-        "12 GB cache databse in the NCBIFilesDir directory.  Subsequent calls ",
+        "33 GB cache databse in the NCBIFilesDir directory.  Subsequent calls ",
         "to this function should be faster (seconds).  The cache will try to ",
         "rebuild once per day.")
 
@@ -1368,10 +1368,14 @@ NEW_makeOrgPackageFromNCBI <-
 {
     if (rebuildCache)
         message("If files are not cached locally this may take ",
-                "awhile to assemble a 48 GB cache databse in the ",
+                "awhile to assemble a 33 GB cache databse in the ",
                 "NCBIFilesDir directory. Subsequent calls to this ",
                 "function should be faster (seconds). The cache will ",
-                "try to rebuild once per day.")
+                "try to rebuild once per day.",
+                "Please also see AnnotationHub for some pre-built",
+                "OrgDb downloads")
+    
+    
 
     if (!.isSingleString(version))
         stop("'version' must be a single string")
