@@ -25,8 +25,9 @@ if(FALSE){
     ## connect to the DB
     require(RSQLite)
     NCBIcon <- dbConnect(SQLite(), dbname = "NCBI.sqlite")
-    dbGetQuery(NCBIcon, "SELECT DISTINCT tax_id FROM gene2go;")[[1]]
+    res = dbGetQuery(NCBIcon, "SELECT DISTINCT tax_id FROM gene2go;")[[1]]
     dbDisconnect(NCBIcon)
+    res
 }
 coreIDs = .getCoreTaxIds()
 
@@ -41,8 +42,9 @@ coreIDs = .getCoreTaxIds()
     ## And also the gene related tax Ids
     sql <- paste0("SELECT distinct tax_id FROM gene_info")
     geneTaxIds <- dbGetQuery(NCBIcon, sql)[[1]]
-    intersect(goTaxIds, geneTaxIds)
+    tbl = intersect(goTaxIds, geneTaxIds)
     dbDisconnect(NCBIcon)
+    tbl
 }
 
 altTaxIDs = .getAltTaxIds()
@@ -75,8 +77,9 @@ allIds <- allIds[!(allIds %in% existingOrgPkgTaxIds)]
 
     ## now I just need to quantify the number of each type
     taxidTable <- table(giFullTaxIds)
-    names(sort(taxidTable, decreasing=TRUE))[1:1000]
+    tbl = names(sort(taxidTable, decreasing=TRUE))[1:1000]
     dbDisconnect(NCBIcon)
+    tbl
 }
 
 results <- .getSortedTaxIds(allIds)

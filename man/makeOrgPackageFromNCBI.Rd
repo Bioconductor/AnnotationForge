@@ -79,7 +79,7 @@
 
   The files that are downloaded from NCBI may take longer to download
   than the default timeout permits. We encourage users to set a
-  \code{options(timeout=xxx)`} to encourage the files to finish
+  \code{options(timeout=xxx)} to encourage the files to finish
   downloading. Adjust the timelimit according to download speed and
   capacity.
 
