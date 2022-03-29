@@ -195,12 +195,9 @@ an example.
 <<BFC_manage,echo=FALSE>>=
 .get_file <- function(fullUri) {
     bfc <- BiocFileCache::BiocFileCache()
-    urifile <- BiocFileCache::bfcquery(
-        bfc, query = fullUri, exact = TRUE
-    )[["rpath"]]
-    if (!length(urifile))
-        urifile <- BiocFileCache::bfcadd(bfc, fullUri, fullUri)
-    urifile
+    BiocFileCache::bfcrpath(
+        bfc, rname = fullUri, exact = TRUE, download = TRUE, rtype = "web"
+    )
 }
 @
 
