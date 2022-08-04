@@ -202,14 +202,14 @@ an example.
 @
 
 <<URI Example>>=
-   uri <- 'http://www.uniprot.org/uniprot/?query='
+   uri <- 'http://rest.uniprot.org/uniprotkb/search?query='
    ids <- c('P13368', 'Q6GZX4')
-   idStr <- paste(ids, collapse="+or+")
-   format <- '&format=tab'
+   idStr <- paste(ids, collapse=utils::URLencode(" OR "))
+   format <- '&format=tsv'
    fullUri <- paste0(uri,idStr,format)
    uquery <- .get_file(fullUri)
    read.delim(uquery)
-@ 
+@
 
 \begin{Exercise}
 If you use the columns argument you can also specify which columns you
