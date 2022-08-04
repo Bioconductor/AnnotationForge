@@ -277,7 +277,7 @@ instead of R objects.
 
 <<xml_tree>>=
 library(XML)
-uri <- "http://www.uniprot.org/uniprot/?query=P13368+or+Q6GZX4&format=xml"
+uri <- "http://rest.uniprot.org/uniprotkb/search?query=P13368%20OR%20Q6GZX4&format=xml"
 fl <- tempfile()
 download.file(uri, fl)
 xml <- xmlTreeParse(fl, useInternalNodes=TRUE)
