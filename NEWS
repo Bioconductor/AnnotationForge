@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.39.0
+-------------------------
+
+MODIFICATIONS
+
+    o 1.39.1 Update to REST query for uniprot
+    o 1.39.2 Update viableID.rda for upcoming release
+
 CHANGES IN VERSION 1.34.0
 -------------------------
 

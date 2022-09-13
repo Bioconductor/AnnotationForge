@@ -1520,6 +1520,8 @@ g.species <-
 .ensemblMapsToEntrezId <-
     function(taxId, datSets)
 {
+    message("TaxID: ",taxId) 
+    Sys.sleep(5)
     loadNamespace("biomaRt")
     datSet <- datSets[names(datSets) %in% taxId]
     ens <- biomaRt::useEnsembl('ensembl', datSet)
