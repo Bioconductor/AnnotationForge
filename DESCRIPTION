@@ -9,7 +9,11 @@ BugReports: https://github.com/Bioconductor/AnnotationForge/issues
 Version: 1.41.0
 License: Artistic-2.0
 Encoding: UTF-8
-Author: Marc Carlson, Hervé Pagès
+Authors@R: c(person("Marc", "Carlson", role=c("aut", "cre"),
+        person("Hervé", "Pagès", role=c("aut", "cre"),
+        person("Madelyn", "Carlson", role="ctb",
+        comment = "'Creating probe packages' vignette translation from 
+        Sweave to Rmarkdown / HTML"),))
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
 Depends: R (>= 2.7.0), methods, utils, BiocGenerics (>= 0.15.10),
         Biobase (>= 1.17.0), AnnotationDbi (>= 1.33.14)
