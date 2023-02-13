@@ -5,8 +5,8 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 package: AnnotationForge
 vignette: >
   %\VignetteIndexEntry{Creating probe packages}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 output:
   BiocStyle::html_document:
     number_sections: yes
