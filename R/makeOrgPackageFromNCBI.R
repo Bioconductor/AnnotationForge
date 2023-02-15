@@ -329,11 +329,12 @@
             if (verbose)
                 message("rebuilding the cache")
             .tryDL(url, tmp)
-            ## write to NCBI.sqlite db
-            .writeToNCBIDB(NCBIcon, tableName, filepath=tmp, file)
-            .setNCBIDateStamp(NCBIcon, tableName)
         }
     }
+    ## write to NCBI.sqlite db
+    .writeToNCBIDB(NCBIcon, tableName, filepath=tmp, file)
+    .setNCBIDateStamp(NCBIcon, tableName)
+    
 
     if ("tax_id" %in% unlist(file)) {
         .indexTaxIds(NCBIcon, tableName)
