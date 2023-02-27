@@ -1,0 +1,873 @@
+---
+title: "Creating select Interfaces for custom Annotation resources"
+author: 
+- name: "Marc Carlson"
+- name: "Valerie Obenchain"
+- name: "Paul Villafuerte"
+  affiliation: "Vignette translation from Sweave to Rmarkdown / HTML"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteIndexEntry{AnnotationForge: Creating select Interfaces for custom Annotation resources}
+  %\VignetteDepends{Homo.sapiens}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    number_sections: true
+    toc: true
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# Introduction
+
+The most common interface for retrieving data in `r Biocpkg('BiocParallel')` is now the `select` method. The
+interface provides a simple way of extracting data.
+
+There are really 4 methods that work together to allow a `select` interface. The
+1st one is `columns`, which tells you about what kinds of values you can retrieve
+as columns in the final result.
+
+```{r Homo.sapiens}
+library(RSQLite)
+library(Homo.sapiens)
+columns(Homo.sapiens)
+```
+
+The next method is `keytypes` which tells you the kinds of things that can be used
+as keys.
+
+```{r Homo.sapiens2}
+keytypes(Homo.sapiens)
+```
+
+The third method is `keys` which is used to retrieve all the viable keys of a
+particular type.
+
+```{r Homo.sapiens3}
+k <- head(keys(Homo.sapiens,keytype="ENTREZID"))
+k
+```
+
+And finally there is `select`, which extracts data by using values supplied by
+the other method.
+
+```{r}
+result <- select(Homo.sapiens, keys=k, 
+                 columns=c("TXNAME","TXSTART","TXSTRAND"), 
+                 keytype="ENTREZID")
+head(result)
+```
+
+But why would we want to implement these specific methods? It's a fair
+question. Why would we want to write a select interface for our
+annotation data? Why not just save a .rda file to the data directory and
+be done with it? There are basically two reasons for this. The 1st
+reason is convenience for end users. When your end users can access your
+data using the same four methods that they use everywhere else, they
+will have a more effortless time retrieving their data. And things that
+benefit your users benefit you.
+
+The second reason is that by enabling a consistent interface across all
+annotation resources, we allow for things to be used in a programmatic
+manner. By implementing a select interface, we are creating a universal
+API for the whole project.
+
+Lets look again at the example I described above and think about what is
+happening. The `r Biocpkg('Homo.sapiens')` package is able to integrate data from many different
+resources largely because the separate resources all implemented a
+select method. This allows the  `r Biocpkg('OrganismDbi')` package to pull together resources from `r Biocpkg('org.Hs.eg.db')`, `r Biocpkg('GO.db')`
+and `r Biocpkg('TxDb.Hsapiens.UCSC.hg19.knownGene')`.
+ 
+![Packages and relationships represented by the Homo.sapiens
+package](Homo_sapiens.pdf){#fig:dbtypes width=".75\\textwidth"}
+
+If these packages all exposed different interfaces for retrieving the
+data, then it would be a lot more challenging to retrieve it, and
+writing general code that retrieved the appropriate data would be a lost
+cause. So implementing a set of select methods is a way to convert your
+package from a data file into an actual resource.
+
+# Creating other kinds of Annotation packages
+
+A few more automated options already exist for generating specific kinds
+of annotation packages. For users who seek to make custom chip packages,
+users should see the *SQLForge: An easy way to create a new annotation
+package with a standard database schema.* in the `r Biocpkg('AnnotationForge')` package. And, for users
+who seek to make a probe package, there is another vignette called
+*Creating probe packages* that is also in the `r Biocpkg('AnnotationForge')` package. And finally, for
+custom organism packages users should look at the manual page for `makeOrgPackageFromNCBI`. This
+function will attempt to make you an simplified organism package from
+NCBI resources. However, this function is not meant as a way to refresh
+annotation packages between releases. It is only meant for people who
+are working on less popular model organisms (so that annotations can be
+made available in this format).
+
+But what if you had another kind of web resource or database and you
+wanted to expose it to the world using something like this `select` new method
+interface? How could you go about this?
+
+# Retrieving data from a web resource
+
+If you choose to expose a web resource, then you will need to learn some
+skills for retrieving that data from the web. The $R$ programming language
+has tools that can help you interact with web resources, pulling down
+files that are tab delimited or formatted as XML etc. There are also
+packages that can help you parse what you retrieve. In this section we
+will describe some of these resources in the context of the uniprot web
+service, and give examples to demonstrate how you can expose resources
+like this for your own purposes.
+
+These days many web services are exposed using a representational state
+transfer or RESTful interface. An example of this are the services
+offered at Uniprot. Starting with the uniprot base URI you can add
+details to simply indicate what it is that you wish to retrieve.
+
+So in the case of Uniprot the base URI for the service we want today is
+this:
+
+        http://www.uniprot.org/uniprot/
+
+This URI can be extended to retrieve individual uniprot records by
+specifying a query argument like this:
+
+        http://www.uniprot.org/uniprot/?query=P13368
+
+We can then request multiple records like this:
+
+        http://www.uniprot.org/uniprot/?query=P13368+or+Q6GZX4
+
+And we can ask that the records be returned to us in tabular form by
+adding another argument like this.
+
+        http://www.uniprot.org/uniprot/?query=P13368+or+Q6GZX4&format=tab
+
+As you might guess, each RESTful interface is a little different, but
+you can easily see how once you read the documentation for a given
+RESTful interface, you can start to retrieve the data in $R$. Here is an
+example.
+
+```{r BFC_manage, echo=FALSE}
+.get_file <- function(fullUri) {
+    bfc <- BiocFileCache::BiocFileCache()
+    BiocFileCache::bfcrpath(
+        bfc, rname = fullUri, exact = TRUE, download = TRUE, rtype = "web"
+    )
+}
+```
+
+```{r URI Example>, message=FALSE}
+   uri <- 'http://rest.uniprot.org/uniprotkb/search?query='
+   ids <- c('P13368', 'Q6GZX4')
+   idStr <- paste(ids, collapse=utils::URLencode(" OR "))
+   format <- '&format=tsv'
+   fullUri <- paste0(uri,idStr,format)
+   uquery <- .get_file(fullUri)
+   read.delim(uquery)
+```
+
+**Exercise 1**
+
+*If you use the columns argument you can also specify which columns you want
+returned. So for example, you can choose to only have the sequence and id columns
+returned like this:*
+
+        http://www.uniprot.org/uniprot/?query=P13368+or+Q6GZX4&format=tab
+
+*Use this detail about the uniprot web service along with what was
+learned above to write a function that takes a character vector of
+uniprot IDs and another character vector of columns arguments and then
+returns the appropriate values. Be careful to filter out any extra
+records that the service returns.*
+
+**Solution:**
+
+```{r web service code}
+getUniprotGoodies  <- function(query, columns)
+{
+    ## query and columns start as a character vectors
+    qstring <- paste(query, collapse="+or+")
+    cstring <- paste(columns, collapse=",")
+    uri <- 'http://www.uniprot.org/uniprot/?query='
+    fullUri <- paste0(uri,qstring,'&format=tab&columns=',cstring)
+    dat <- read.delim(fullUri, stringsAsFactors=FALSE)
+    ## now remove things that were not in the specific original query...
+    dat <- dat[dat[,1] %in% query,]
+    dat
+}
+```
+
+## Parsing XML
+
+Data for the previous example were downloaded from Uniprot in
+tab-delimited format. This is a convenient output to work with but
+unfortunately not always available. XML is still very common and it is
+useful to have some familiarity with parsing it. In this section we give
+a brief overview to using the *XML* package for navigating XML data.
+
+The *XML* package provides functions to parse XML in both the tree-based DOM
+(document object model) or the event-driven SAX (Simple API for XML). We
+will use the DOM approach. The XML is first parsed into a tree-structure
+where the different elements of the data are nodes. The elements are
+processed by traversing the tree and generating a user-level
+representation of the nodes. XPath syntax is used to traverse the nodes.
+A detailed description of XPath can be found at <http://www.w3.org/xml>.
+
+Retrieve the data:
+
+Data will be retrieved for the same id's as in the previous example.
+Unlike tab-delimited, the XML queries cannot be subset by column so the
+full record will be returned for each id. Details for what is possible
+with each type of data retrieval are found at
+<http://www.uniprot.org/faq/28>.
+
+Parse the XML into a tree structure with `xmlTreeParse`. When ` useInternalNodes=TRUE` and no `handlers` are specified the
+return value is a reference to C-level nodes. This storage mode allows
+us to traverse the tree of data in C instead of R objects.
+
+```{r xml_tree}
+library(XML)
+uri <- "http://rest.uniprot.org/uniprotkb/search?query=P13368%20OR%20Q6GZX4&format=xml"
+fl <- tempfile()
+download.file(uri, fl)
+xml <- xmlTreeParse(fl, useInternalNodes=TRUE)
+```
+
+XML namespace:
+
+XML pages can have namespaces which facilitate the use of different XML
+vocabularies by resolving conflicts arising from identical tags.
+Namepaces are represented by a uri pointing to an XML schema page. When
+a namespace is defined on a node in an XML document it must be included
+in the XPath expression.
+
+Use the `xmlNamespaceDefinitions` function to check if the XML has a namespace.
+
+```{r xml_namespace}
+defs <- xmlNamespaceDefinitions(xml, recurisve=TRUE)
+defs
+```
+
+The presence of uri's confirm there is a namespace. Alternatively we
+could have looked at the XML nodes for declarstions of the form `xmlns:myNamespace="http://www.namspace.org"`. We
+organize the namespaces and will use them directly in parsing.
+
+```{r xml_namespace_struct}
+ns <- structure(sapply(defs, function(x) x$uri), names=names(defs))
+```
+
+Parsing with XPath:
+
+There are two high level 'entry' nodes which represent the two id's
+requested in the original query.
+
+```{r xml_namespace2}
+entry <- getNodeSet(xml, "//ns:entry", "ns")
+xmlSize(entry)
+```
+
+To get an idea of the data structure we first list the attributes of the
+top nodes and extract the names. 
+
+```{r xml_xmlAttrs}
+nms <- xpathSApply(xml, "//ns:entry/ns:name", xmlValue, namespaces="ns")
+attrs <- xpathApply(xml, "//ns:entry", xmlAttrs, namespaces="ns")
+names(attrs) <- nms
+attrs
+```
+
+Next, inspect the direct children of each node. 
+
+```{r xml_xmlChildren}
+fun1 <- function(elt) unique(names(xmlChildren(elt)))
+xpathApply(xml, "//ns:entry", fun1, namespaces="ns")
+```
+
+Query Q6GZX4 has 2 'feature' nodes and query P13368 has 48.
+
+```{r xml_feature_type}
+Q6GZX4 <- "//ns:entry[ns:accession='Q6GZX4']/ns:feature"
+xmlSize(getNodeSet(xml, Q6GZX4, namespaces="ns"))
+
+P13368 <- "//ns:entry[ns:accession='P13368']/ns:feature"
+xmlSize(getNodeSet(xml, P13368, namespaces="ns"))
+```
+
+List all possible values for the 'type' attribute of the 'feature'
+nodes. 
+
+```{r xml_feature_type2}
+path <- "//ns:feature"
+unique(xpathSApply(xml, path, xmlGetAttr, "type", namespaces="ns"))
+```
+
+XPath allows the construction of complex queries to pull out specific
+subsets of data. Here we extract the features with 'type=sequence
+conflict' for query P13368. 
+
+```{r xml_feature_type_P13368}
+path <- "//ns:entry[ns:accession='P13368']/ns:feature[@type='sequence conflict']"
+data.frame(t(xpathSApply(xml, path, xmlAttrs, namespaces="ns")))
+```
+
+Put the sequences in an AAStringSet and add the names.
+
+```{r xml_sequence}
+library(Biostrings)
+path <- "//ns:entry/ns:sequence"
+seqs <- xpathSApply(xml, path, xmlValue, namespaces="ns")
+aa <- AAStringSet(unlist(lapply(seqs, function(elt) gsub("\n", "", elt)),
+    use.names=FALSE))
+names(aa) <- nms
+aa
+```
+
+# Setting up a package to expose a web service
+
+In order to expose a web service using select, you will need to create
+an object that will be loaded at the time when the package is loaded.
+Unlike with a database, the purpose of this object is pretty much purely
+for dispatch. We just need `select` and it's friends to know which select method
+to call
+
+The first step is to create an object. Creating an object is simple
+enough:
+
+```{r WebServiceObject}
+setClass("uniprot", representation(name="character"),
+         prototype(name="uniprot"))
+```
+
+Once you have a class defined, all you need is to make an instance of
+this class. Making an instance is easy enough:
+
+```{r makeInstanceWebServiceObj}
+    uniprot <- new("uniprot")
+```
+
+But of course it's a little more complicated because one of these
+objects will need to be spawned up whenever our package loads. This is
+acclomplished by calling the `.onLoad` function in the zzz.R file. The following
+code will create an object, and then assign it to the package namespace
+as the package loads.
+
+```{r onLoad2,eval=FALSE}
+.onLoad <- function(libname, pkgname)
+{
+    ns <- asNamespace(pkgname)
+    uniprot <- new("uniprot")
+    assign("uniprot", uniprot, envir=ns)
+    namespaceExport(ns, "uniprot")
+}
+```
+
+# Creating package accessors for a web service
+
+At this point you have all that you need to know in order to implement `keytype`, `columns`, `keys`
+and `select`, and for your package. In this section we will explore how you could
+implement some of these if you were making a package that exposed
+uniprot.
+
+## Example: creating `keytypes` and `columns` methods
+
+The `keytype` and `columns` methods are always the 1st ones you should implement. They are
+the easiest, and their existence is required to be able to use `keys` or `select`. In
+this simple case we only have one value that can be used as a keytype,
+and that is a UNIPROT ID.
+
+```{r keytypeUniprot}
+setMethod("keytypes", "uniprot",function(x){return("UNIPROT")})
+uniprot <- new("uniprot")
+keytypes(uniprot)
+```
+
+So what about columns? Well it's not a whole lot more complicated in
+this case since we are limited to things that we can return from the web
+service. Since this is just an example, lets limit it to the following
+fields: "ID", "SEQUENCE", "ORGANISM". 
+
+```{r  keytypeUniprot2}
+setMethod("columns", "uniprot", 
+          function(x){return(c("ID", "SEQUENCE", "ORGANISM"))})
+columns(uniprot)
+```
+
+Also, notice how `keytypes` and `columns` for both and I am using all capital letters. This is a
+style adopted throughout the project.
+
+## Example 2: creating a `select` method
+
+At this point we have enough to be able to make a select method.
+
+::: Ext
+**Exercise 2**. *Using what you have learned above, and the helper
+function from earlier, define a select method. This select method will
+have a default `keytype` of "UNIPROT".*
+:::
+
+**Solution:**
+
+```{r webServiceSelect}
+.select <- function(x, keys, columns){
+    colsTranslate <- c(id='ID', sequence='SEQUENCE', organism='ORGANISM')
+    columns <- names(colsTranslate)[colsTranslate %in% columns]
+    getUniprotGoodies(query=keys, columns=columns)
+}
+setMethod("select", "uniprot", 
+    function(x, keys, columns, keytype)
+{
+    .select(keys=keys, columns=columns)
+})
+```
+
+```{r webServiceSelect2, eval=FALSE}
+select(uniprot, keys=c("P13368","P20806"), columns=c("ID","ORGANISM"))
+```
+
+# Retrieving data from a database resource
+
+If your package is retrieving data from a database, then there are some
+additional skills you will need to be able to interface with this
+database from $R$. This section will introduce you to those skills.
+
+## Getting a connection
+
+If all you know is the name of the SQLite database, then to get a DB
+connection you need to do something like this:
+
+```{r classicConn,results='hide'}
+drv <- SQLite()
+library("org.Hs.eg.db")
+con_hs <- dbConnect(drv, dbname=org.Hs.eg_dbfile())
+con_hs
+```
+
+In cases where the connection is created on package load, we can do
+something like below:
+
+```{r ourConn2, eval=FALSE}
+org.Hs.eg.db$conn
+## or better we can use a helper function to wrap this:
+AnnotationDbi::dbconn(org.Hs.eg.db)
+## or we can just call the provided convenience function 
+## from when this package loads:
+org.Hs.eg_dbconn()
+```
+
+## Getting data out
+
+Now we just need to get our data out of the DB. There are several useful
+functions for doing this. Most of these come from the `r Biocpkg('RSQLite')` or 
+`r Biocpkg('DBI')` packages. For
+the sake of simplicity, I will only discuss those that are immediately
+useful for exploring and extracting data from a database in this
+vignette. One pair of useful methods are the `dbListTables` and `dbListFields` which are useful for
+exploring the schema of a database.
+
+```{r dbListTables}
+head(dbListTables(con_hs))
+dbListFields(con_hs, "alias")
+```
+
+For actually executing SQL to retrieve data, you probably
+want to use something like `dbGetQuery`. The only caveat is that this will actually
+require you to know a little SQL. 
+
+```{r dbGetQuery}
+dbGetQuery(con_hs, "SELECT * FROM metadata")
+```
+
+## Some basic SQL
+
+The good news is that SQL is pretty easy to learn. Especially if you are
+primarily interested in just retrieving data from an existing database.
+Here is a quick run-down to get you started on writing simple SELECT
+statements. Consider a table that looks like this:
+
+  ----------- -----
+   Table sna  
+      foo      bar
+       1       baz
+       2       boo
+  ----------- -----
+
+This statement:
+
+        SELECT bar FROM sna;
+
+Tells SQL to get the "bar" field from the "foo" table. If we wanted
+the other field called "sna" in addition to "bar", we could have
+written it like this:
+
+        SELECT foo, bar FROM sna;
+
+Or even this (* is a wildcard character here)
+
+        SELECT * FROM sna;
+
+Now lets suppose that we wanted to filter the results. We could also
+have said something like this:
+
+        SELECT * FROM sna WHERE bar='boo';
+
+That query will only retrieve records from foo that match the criteria
+for bar. But there are two other things to notice. First notice that a
+single = was used for testing equality. Second notice that I used single
+quotes to demarcate the string. I could have also used double quotes,
+but when working in this will prove to be less convenient as the whole
+SQL statement itself will frequently have to be wrapped as a string.
+
+What if we wanted to be more general? Then you can use LIKE. Like this:
+
+        SELECT * FROM sna WHERE bar LIKE 'boo\%';
+
+That query will only return records where bar starts with "boo", (the
+% character is acting as another kind of wildcard in this context).
+
+You will often find that you need to get things from two or more
+different tables at once. Or, you may even find that you need to combine
+the results from two different queries. Sometimes these two queries may
+even come from the same table. In any of these cases, you want to do a
+join. The simplest and most common kind of join is an inner join. Lets
+suppose that we have two tables:
+
+  ----------- ----- -- -- ---------- ----
+   Table sna               Table fu  
+      foo      bar           foo      bo
+       1       baz            1       hi
+       2       boo            2       ca
+  ----------- ----- -- -- ---------- ----
+
+And we want to join them where the records match in their corresponding
+"foo" columns. We can do this query to join them:
+
+        SELECT * FROM sna,fu WHERE sna.foo=fu.foo;
+
+Something else we can do is tidy this up by using aliases like so:
+
+        SELECT * FROM sna AS s,fu AS f WHERE s.foo=f.foo;
+
+This last trick is not very useful in this particular example since the
+query ended up being longer than we started with, but is still great for
+other cases where queries can become really long.
+
+## Exploring the SQLite database from $R$
+
+Now that we know both some SQL and also about some of the methods in `r Biocpkg('DBI')` and `r Biocpkg('RSQLite')`
+we can begin to explore the underlying database from $R$. How should we go
+about this? Well the 1st thing we always want to know are what tables
+are present. We already know how to learn this: 
+
+```{r dbListTables2}
+head(dbListTables(con_hs)) 
+```
+
+And we also know that once we have a table
+we are curious about, we can then look up it's fields using `dbListFields`
+
+```{r dbListFields2}
+dbListFields(con_hs, "chromosomes")
+```
+
+And once we know something about which fields are present in a table, we can
+compose a SQL query. perhaps the most straightforward query is just to
+get all the results from a given table. We know that the SQL for that
+should look like:
+
+        SELECT * FROM chromosomes;
+
+So we can now call a query like that from $R$ by using `dbGetQuery`:
+
+```{r dbGetQuery2}
+head(dbGetQuery(con_hs, "SELECT * FROM chromosomes"))
+```
+
+::: Ext
+**Exercise 3**. *Now use what you have learned to explore the `r Biocpkg('org.Hs.eg.db')` database.
+Now find the table for chromosome locations in the `r Biocpkg('org.Hs.eg.db')` database and extract
+it into $R$. How many chromosomes are present in this table? Write a SQL
+query that will retrieve chromosome locations from this table that are
+in chromosome 1.*
+:::
+
+**Solution:**
+
+```{r Anopheles, eval=FALSE}
+head(dbGetQuery(con_hs, "SELECT * FROM chromosome_locations"))
+## Then only retrieve human records
+## Query: SELECT * FROM Anopheles_gambiae WHERE species='HOMSA'
+head(dbGetQuery(con_hs, "SELECT * FROM chromosome_locations WHERE seqname='1'"))
+dbDisconnect(con_hs)
+```
+
+# Setting up a package to expose a SQLite database object
+
+For the sake of simplicity, lets look at an existing example of this in
+the `r Biocpkg('org.Hs.eg.db')` package. This package contains a .sqlite database inside of the
+extdata directory. There are a couple of important details though about
+databases like these. The 1st is that we recommend that the database
+have the same name as the package, but end with the extension .sqlite.
+The second detail is that we recommend that the metadata table contain
+some important fields. This is the metadata from the current `r Biocpkg('org.Hs.eg.db')` package.
+
+```{r getMetadata, echo=FALSE}
+library(org.Hs.eg.db)
+org.Hs.eg_dbInfo()
+```
+
+As you can see there are a number of very useful fields stored in the
+metadata table and if you list the equivalent table for other packages
+you will find even more useful information than you find here. But the
+most important fields here are actually the ones called "package" and
+"Db type". Those fields specify both the name of the package with the
+expected class definition, and also the name of the object that this
+database is expected to be represented by in the R session respectively.
+If you fail to include this information in your metadata table, then `loadDb`
+will not know what to do with the database when it is called. In this
+case, the class definition has been stored in the `r Biocpkg('org.Hs.eg.db')` package, but it could
+live anywhere you need it too. By specifying the metadata field, you
+enable to `loadDb` find it.
+
+Once you have set up the metadata you will need to create a class for
+your package that extends the class. In the case of the `r Biocpkg('org.Hs.eg.db')`
+package, the class is defined to be a `OrgDb` class.
+
+Finally the call `.onLoad` for your package will have to contain code that will
+call the `loadDb` method. This is what it currently looks like in the `r Biocpkg('org.Hs.eg.db')`package.
+
+When the code above is run (at load time) the name of the package (AKA
+"pkgname", which is a parameter that will be passed into `.onLoad`) is then
+used to derive the name for the object. Then that name, is used by `onLoad` to
+create an object. This object is then assigned to the namespace for this
+package so that it will be loaded for the user.
+
+# Creating package accessors for databases
+
+At this point, all that remains is to create the means for accessing the
+data in the database. This should prove a lot less difficult than it may
+initially sound. For the new interface, only the four methods that were
+described earlier are really required: `columns`, `keytypes`, `keys` and `select`.
+
+In order to do this you need to know a small amount of SQL and a few
+tricks for accessing the database from $R$. The point of providing these 4
+accessors is to give users of these packages a more unified experience
+when retrieving data from the database. But other kinds of accessors
+(such as those provided for the `TxDb` objects) may also be warranted.
+
+## Examples: creating a `columns` and `keytypes` method
+
+Now lets suppose that we want to define a method for our object. And
+lets also suppose that we want is for it to tell us about the actual
+organisms for which we can extract identifiers. How could we do that?
+
+```{r columns, eval=FALSE}
+.cols <- function(x)
+{
+    con <- AnnotationDbi::dbconn(x)
+    list <- dbListTables(con)
+    ## drop unwanted tables
+    unwanted <- c("map_counts","map_metadata","metadata")
+    list <- list[!list %in% unwanted]
+    # use on.exit to disconnect
+    # on.exit(dbDisconnect(con))
+    ## Then just to format things in the usual way
+    toupper(list)
+}
+
+## Then make this into a method
+setMethod("columns", "OrgDb", .cols(x))
+## Then we can call it
+columns(org.Hs.eg.db)
+```
+
+Notice again how I formatted the output to all uppercase characters?
+This is just done to make the interface look consistent with what has
+been done before for the other `select` interfaces. But doing this means that we
+will have to do a tiny bit of extra work when we implement out other
+methods.
+
+::: Ext
+**Exercise 4**. *Now use what you have learned to define a method for `keytypes` on `r Biocpkg('org.Hs.eg.db')`. The keytypes method should return the same results as columns (in this
+case). What if you needed to translate back to the lowercase table
+names? Also write an quick helper function to do that.*
+:::
+
+**Solution:**
+
+```{r keytypes, eval=FALSE}
+setMethod("keytypes", "OrgDb", function(x) .cols(x))
+## Then we can call it
+keytypes(org.Hs.eg.db)
+
+## refactor of .cols
+.getLCcolnames <- function(x)
+{
+    con <- AnnotationDbi::dbconn(x)
+    list <- dbListTables(con)
+    ## drop unwanted tables
+    unwanted <- c("map_counts","map_metadata","metadata")
+    # use on.exit to disconnect
+    # on.exit(dbDisconnect(con))
+    list[!list %in% unwanted]
+}
+.cols <- function(x)
+{
+    list <- .getLCcolnames(x)
+    ## Then just to format things in the usual way
+    toupper(list)
+}
+## Test:
+columns(org.Hs.eg.db)
+
+## new helper function:
+.getTableNames <- function(x)
+{
+    LC <- .getLCcolnames(x)
+    UC <- .cols(x)
+    names(UC) <- LC
+    UC
+}
+.getTableNames(org.Hs.eg.db)
+```
+
+## Example: creating a `keys` method
+
+::: Ext
+**Exercise 5**. *Now define a method for `keys` on the example `r Biocpkg('org.Hs.eg.db')`. This function
+can be a helper function to make it easy to extract column values after
+filtering the rows. The keys method should return the keys from a given
+organism based on the appropriate keytype. For example, if a table has
+rows that correspond to both human and non-human IDs, it will be
+necessary to filter out the human rows from the result.*
+:::
+
+**Solution:**
+
+```{r keys, eval=FALSE}
+.keys <- function(x, keytype)
+{
+    ## translate keytype back to table name
+    tabNames <- .getTableNames(x)
+    lckeytype <- names(tabNames[tabNames %in% keytype])
+    ## get a connection
+    con <- AnnotationDbi::dbconn(x)
+    sql <- paste("SELECT _id FROM", lckeytype, "WHERE species != 'HOMSA'")
+    res <- dbGetQuery(con, sql)
+    res <- as.vector(t(res))
+    dbDisconnect(con)
+    res
+}
+
+setMethod("keys", "ExampleDbClass", .keys)
+## Then we would call it
+keys(example.db, "TRICHOPLAX_ADHAERENS")
+```
+
+# Creating a database resource from available data
+
+Sometimes you may have a lot of data that you want to organize into a
+database. Or you may have another existing database that you wish to
+convert into a SQLite database. This section will deal with some simple
+things you can do to create and import a SQLite database of your own.
+
+## Making a new connection
+
+Then lets make a new database. Notice that we specify the database name
+with \"dbname\" This allows it to be written to disc instead of just
+memory.
+
+```{r makeNewDb}
+drv <- dbDriver("SQLite")
+dbname <- file.path(tempdir(), "myNewDb.sqlite")
+con <- dbConnect(drv, dbname=dbname)
+```
+
+Imagine that we want to reate a database and then put a table in it
+called genePheno to store the genes mutated and a phenotypes associated
+with each. Plan for genePheno to hold the following gene IDs and
+phenotypes (as a toy example):
+
+```{r exampleFrame}
+data = data.frame(id=c(1,2,9),
+                  string=c("Blue",
+                           "Red",
+                           "Green"),
+                  stringsAsFactors=FALSE)
+```
+
+Making the table is very simple, and just involves a create table
+statement.
+
+        CREATE Table genePheno (id INTEGER, string TEXT);
+
+The SQL create table statement just indicates what the table is to be
+called, as well as the different fields that will be present and the
+type of data each field is expected to contain.
+
+```{r exercise2}
+dbGetQuery(con, "CREATE Table genePheno (id INTEGER, string TEXT)")
+```
+
+But putting the data into the database is a little bit more delicate. We
+want to take control over which columns we want to insert from our `data.frame`.
+Fortunately, the RSQLite package provides these facilities for us.
+
+```{r LabelledPreparedQueries}
+names(data) <- c("id","string")
+sql <- "INSERT INTO genePheno VALUES ($id, $string)"
+dbBegin(con)
+res <- dbSendQuery(con,sql)
+dbBind(res, data)
+dbFetch(res)
+dbClearResult(res)
+dbCommit(con)
+```
+
+Please notice that we want to use strings instead of factors in our
+`data.frame`. If you insert the data as factors, you may not be happy with
+what ends up in the DB.
+
+## Attaching other database resources
+
+In SQLite it is possible to attach another database to your session and
+then query across both resources as if they were the same DB.
+
+The SQL what we want looks quite simple:
+
+        ATTACH "TxDb.Hsapiens.UCSC.hg19.knownGene.sqlite" AS db;
+
+So in $R$ we need to do something similar to this:
+
+```{r ATTACH}
+db <- system.file("extdata", "TxDb.Hsapiens.UCSC.hg19.knownGene.sqlite", 
+                  package="TxDb.Hsapiens.UCSC.hg19.knownGene")
+dbGetQuery(con, sprintf("ATTACH '%s' AS db",db))
+```
+
+Here we have attached a DB from one of the packages that this vignette
+required you to have installed, but we could have attached any SQLite
+database that we provided a path to.
+
+Once we have attached the database, we can join to it's tables as if
+they were in our own database. All that is required is a prefix, and
+some knowledge about how to do joins in SQL. In the end the SQL to take
+advantage of the attached database looks like this:
+
+        SELECT * FROM db.gene AS dbg, genePheno AS gp
+        WHERE dbg.gene_id=gp.id;
+
+Then in $R$: 
+```{r ATTACHJoin}
+  sql <- "SELECT * FROM db.gene AS dbg, 
+          genePheno AS gp WHERE dbg.gene_id=gp.id"
+  res <- dbGetQuery(con, sql)
+  res
+```
+
+The version number of $R$ and packages loaded for generating the vignette
+were:
+
+```{r SessionInfo, echo=FALSE}
+sessionInfo()
+```

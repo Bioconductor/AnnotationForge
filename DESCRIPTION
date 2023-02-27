@@ -9,15 +9,23 @@ BugReports: https://github.com/Bioconductor/AnnotationForge/issues
 Version: 1.41.0
 License: Artistic-2.0
 Encoding: UTF-8
-Author: Marc Carlson, Hervé Pagès
-Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
+Author@R: c(
+    person("Marc",  "Carlson", role = "aut"),
+    person("Hervé", "Pagès", role = "aut"),
+    person("Paul", "Villafuerte, role = "ctb",
+        comment = "Converted 'SQLForge' and 'MakingNewAnnotationPackages' vignettes from Sweave to RMarkdown / HTML."
+    ),
+    person("Bioconductor Package Maintainer",
+        role = "cre",
+        email = "maintainer@bioconductor.org"
+    ))
 Depends: R (>= 2.7.0), methods, utils, BiocGenerics (>= 0.15.10),
         Biobase (>= 1.17.0), AnnotationDbi (>= 1.33.14)
 Imports: DBI, RSQLite, XML, S4Vectors, RCurl
 Suggests: biomaRt, httr, GenomeInfoDb (>= 1.17.1), Biostrings, affy,
         hgu95av2.db, human.db0, org.Hs.eg.db,
         Homo.sapiens, GO.db, markdown,
-        BiocStyle, knitr, BiocManager, BiocFileCache
+        BiocStyle, knitr, BiocManager, BiocFileCache, DBI
 VignetteBuilder: knitr
 BuildKeepEmpty: TRUE
 Collate: makeAnnDbPkg.R sqlForge_utils.R sqlForge_baseMapBuilder.R
