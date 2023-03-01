@@ -34,4 +34,4 @@ Collate: makeAnnDbPkg.R sqlForge_utils.R sqlForge_baseMapBuilder.R
         sqlForge_seqnames.R makeProbePackage.R
         makeOrgPackage.R makeChipPackageFromDataFrames.R
         makeOrgPackageFromNCBI.R NCBI_getters.R makeInparanoidDbs.R
-        test_AnnotationForge_package.R
+        test_AnnotationForge_package.R 
