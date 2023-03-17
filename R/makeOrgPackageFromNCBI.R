@@ -1333,7 +1333,7 @@ prepareDataFromNCBI <-
 
     ## If we have ensembl gene ids as data, then lets include it too
     ## TODO: pass the release info in to here)
-    if (tax_id %in% names(available.ensembl.datasets())) {
+    if (tax_id %in% names(available.ensembl.datasets(tax_id))) {
         if (verbose)
             message("processing ensembl gene id data")
         ensDat <- .getEnsemblData(taxId=tax_id)
@@ -1481,9 +1481,11 @@ getFastaSpeciesDirs <-
     }
     res <-unlist(lapply(coreDirs, .getDirOnly))
     specNames <- available.FastaEnsemblSpecies(res)
-    taxIds <- unlist(lapply(specNames,
-                            GenomeInfoDb:::lookup_tax_id_by_organism))
-    names(res) <- taxIds
+    taxdb <- GenomeInfoDb::loadTaxonomyDb()
+    organisms <- trimws(paste(taxdb[["genus"]], taxdb[["species"]]))
+    idx <- match(specNames, organisms)
+    res <- res[!is.na(idx)]
+    names(res) <- as.integer(taxdb[["tax_id"]][idx[!is.na(idx)]])
     res
 }
 
@@ -1511,6 +1513,8 @@ available.FastaEnsemblSpecies <-
 g.species <-
     function(str)
 {
+    if (str %in% c("Canis familiaris", "Canis lupus familiaris"))
+        return("clfamiliaris")
     strVec <- unlist(strsplit(str, split=' '))
     firstLetter <- tolower(substr(strVec[1],start=1,stop=1))
     theLast <- strVec[length(strVec)]
@@ -1521,7 +1525,7 @@ g.species <-
 .ensemblMapsToEntrezId <-
     function(taxId, datSets)
 {
-    message("TaxID: ",taxId) 
+    message("TaxID: ",taxId)
     Sys.sleep(5)
     loadNamespace("biomaRt")
     datSet <- datSets[names(datSets) %in% taxId]
@@ -1536,34 +1540,52 @@ g.species <-
 ensemblDatasets <- new.env(hash=TRUE, parent=emptyenv())
 ## populate the above with: available.ensembl.datasets()
 
-## I want to get the availble datasets for all the available fasta species.
+## I want to get the availble datasets for all the requested fasta species.
 available.ensembl.datasets <-
-    function()
+    function(taxId=NULL)
 {
-    ## if the package wide vector is not empty, return it now.
-    if (!exists('ensDatSets', envir=ensemblDatasets)) {
+  ## if the package wide vector is not empty, return it now.
+    if (exists('ensDatSets', envir=ensemblDatasets)) {
+        datSets <- get('ensDatSets', envir=ensemblDatasets)
+        if (!is.null(taxId)) {
+            taxId <- setdiff(taxId, names(datSets))
+        }
+    } else {
+        datSets <- NULL
+    }
+    if (is.null(datSets) || is.null(taxId) || length(taxId)>0) {
         loadNamespace("biomaRt")
         fastaSpecs <- available.FastaEnsemblSpecies()
+        if (is.null(taxId)) {
+            taxId <- setdiff(names(fastaSpecs), names(datSets))
+        }
         g.specs <- unlist(lapply(fastaSpecs, g.species))
         ftpStrs <- paste0(g.specs, "_gene_ensembl")
         names(ftpStrs) <- names(g.specs)
         ## then get listing of the dataSets
         ens <- biomaRt::useEnsembl('ensembl')
-        datSets <- biomaRt::listDatasets(ens)$dataset
+        availableDatSets <- biomaRt::listDatasets(ens)$dataset
         ## so which of the datSets are also in the FTP site?
         ## (when initially tested these two groups were perfectly synced)
-        datSets <- ftpStrs[ftpStrs %in% datSets]
-        ## Friendly message
-        message(wmsg("Please be patient while we work out which organisms can
-                      be annotated with ensembl IDs. "))
-        ## Remove dataSets that don't map to EntrezIds:
-        legitTaxIdxs <- unlist(lapply(names(datSets), .ensemblMapsToEntrezId,
-                                      datSets=datSets))
-        datSets <- datSets[legitTaxIdxs]
-        assign("ensDatSets", datSets,
-               envir=ensemblDatasets)
+        availableDatSets <- ftpStrs[ftpStrs %in% availableDatSets]
+        neededDatSets <- availableDatSets[names(availableDatSets) %in% taxId]
+        if (length(neededDatSets)>0) {
+            if (length(neededDatSets)>4) {
+                ## Friendly message
+                message(wmsg("Please be patient while we work out which organisms can
+                              be annotated with ensembl IDs. "))
+            }
+            ## Remove dataSets that don't map to EntrezIds:
+            legitTaxIdxs <- unlist(lapply(names(neededDatSets), .ensemblMapsToEntrezId,
+                                          datSets=neededDatSets))
+            neededDatSets <- neededDatSets[legitTaxIdxs]
+            datSets <- c(datSets, neededDatSets)
+
+            assign("ensDatSets", datSets,
+                   envir=ensemblDatasets)
+        }
     }
-    get('ensDatSets', envir=ensemblDatasets)
+    datSets
 }
 
 ## ## now get those from the ensembl marts
@@ -1571,7 +1593,7 @@ available.ensembl.datasets <-
     function(taxId, release=80)
 {
     loadNamespace("biomaRt")
-    datSets <- available.ensembl.datasets()
+    datSets <- available.ensembl.datasets(taxId)
     datSet <- datSets[names(datSets) %in% taxId]
     ens <- biomaRt::useEnsembl('ensembl', datSet)
     res <- biomaRt::getBM(
