@@ -1196,7 +1196,7 @@ splitBy <-
 
 ## Create list of data frames from the NCBI data
 prepareDataFromNCBI <-
-    function(tax_id, NCBIFilesDir, outputDir, rebuildCache, verbose)
+    function(tax_id, NCBIFilesDir, outputDir, rebuildCache, verbose, ensemblVersion)
 {
     ## Files that need to be processed
     files <- .primaryFiles()
@@ -1332,11 +1332,10 @@ prepareDataFromNCBI <-
                     newCols=c("GID","GO","EVIDENCE"))
 
     ## If we have ensembl gene ids as data, then lets include it too
-    ## TODO: pass the release info in to here)
-    if (tax_id %in% names(available.ensembl.datasets(tax_id))) {
+    if (tax_id %in% names(available.ensembl.datasets(tax_id, release=ensemblVersion))) {
         if (verbose)
             message("processing ensembl gene id data")
-        ensDat <- .getEnsemblData(taxId=tax_id)
+        ensDat <- .getEnsemblData(taxId=tax_id, release=ensemblVersion)
         data <- .rename(data,
                         ensDat,
                         newName='ensembl',
@@ -1365,7 +1364,7 @@ prepareDataFromNCBI <-
 ## For non-traditional packages, i.e., those that appear only in AnnotationHub
 NEW_makeOrgPackageFromNCBI <-
     function(version, maintainer, author, outputDir, tax_id, genus, species,
-             NCBIFilesDir, databaseOnly, rebuildCache, verbose)
+             NCBIFilesDir, databaseOnly, rebuildCache, verbose, ensemblVersion)
 {
     if (rebuildCache)
         message("If files are not cached locally this may take ",
@@ -1408,7 +1407,7 @@ NEW_makeOrgPackageFromNCBI <-
     if (verbose)
         message("preparing data from NCBI ...")
     data <- prepareDataFromNCBI(tax_id, NCBIFilesDir, outputDir,
-                                rebuildCache, verbose)
+                                rebuildCache, verbose, ensemblVersion=ensemblVersion)
     dbName <- .generateOrgDbName(genus,species)
     dbfile <- paste0(dbName, ".sqlite")
 
@@ -1440,7 +1439,7 @@ NEW_makeOrgPackageFromNCBI <-
 makeOrgPackageFromNCBI <-
     function(version, maintainer, author, outputDir=getwd(), tax_id,
              genus=NULL, species=NULL, NCBIFilesDir=getwd(), databaseOnly=FALSE,
-             useDeprecatedStyle=FALSE, rebuildCache=TRUE, verbose=TRUE)
+             useDeprecatedStyle=FALSE, rebuildCache=TRUE, verbose=TRUE, ensemblVersion=NULL)
 {
     if (useDeprecatedStyle==TRUE) {
         dbname <- OLD_makeOrgPackageFromNCBI(version,maintainer,author,
@@ -1452,7 +1451,8 @@ makeOrgPackageFromNCBI <-
                                              outputDir,tax_id,genus,species,
                                              NCBIFilesDir,databaseOnly,
                                              rebuildCache=rebuildCache,
-                                             verbose=verbose)
+                                             verbose=verbose,
+                                             ensemblVersion=ensemblVersion)
     }
     ## return handle to the db name
     dbname
@@ -1466,8 +1466,12 @@ makeOrgPackageFromNCBI <-
 ## lets make a helper to troll the ftp site and get ensembl to entrez
 ## gene ID data.  The names will be tax ids...
 getFastaSpeciesDirs <-
-    function(release=80)
+    function(release=NULL)
 {
+    if (is.null(release)) {
+      ensVersions <- biomaRt::listEnsemblArchives()
+      release <- as.integer(ensVersions$version[ensVersions$current_release=="*"])
+    }
     baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-", release, "/mysql/")
     loadNamespace("RCurl")
     curlHand <- RCurl::getCurlHandle()
@@ -1480,7 +1484,7 @@ getFastaSpeciesDirs <-
         dir[length(dir)]
     }
     res <-unlist(lapply(coreDirs, .getDirOnly))
-    specNames <- available.FastaEnsemblSpecies(res)
+    specNames <- available.FastaEnsemblSpecies(res, release=release)
     taxdb <- GenomeInfoDb::loadTaxonomyDb()
     organisms <- trimws(paste(taxdb[["genus"]], taxdb[["species"]]))
     idx <- match(specNames, organisms)
@@ -1492,10 +1496,10 @@ getFastaSpeciesDirs <-
 ## Helper for getting precise genus and species available via
 ## FTP. (and their Tax IDs)
 available.FastaEnsemblSpecies <-
-    function(speciesDirs=NULL)
+    function(speciesDirs=NULL, release=NULL)
 {
     if (is.null(speciesDirs)) {
-        speciesDirs <- getFastaSpeciesDirs()
+        speciesDirs <- getFastaSpeciesDirs(release=release)
     }
     species <- sub('_core_\\d+_\\d+','',speciesDirs)
     genSpec <- gsub('_', ' ', species)
@@ -1523,13 +1527,13 @@ g.species <-
 
 ## helper to make sure that we *have* entrez gene IDs to map to at ensembl!
 .ensemblMapsToEntrezId <-
-    function(taxId, datSets)
+    function(taxId, datSets, release=NULL)
 {
     message("TaxID: ",taxId)
     Sys.sleep(5)
     loadNamespace("biomaRt")
     datSet <- datSets[names(datSets) %in% taxId]
-    ens <- biomaRt::useEnsembl('ensembl', datSet)
+    ens <- biomaRt::useEnsembl('ensembl', datSet, version=release)
     at <- biomaRt::listAttributes(ens)
     any(grepl('entrezgene',at$name))
 }
@@ -1542,7 +1546,7 @@ ensemblDatasets <- new.env(hash=TRUE, parent=emptyenv())
 
 ## I want to get the availble datasets for all the requested fasta species.
 available.ensembl.datasets <-
-    function(taxId=NULL)
+    function(taxId=NULL, release=NULL)
 {
   ## if the package wide vector is not empty, return it now.
     if (exists('ensDatSets', envir=ensemblDatasets)) {
@@ -1555,7 +1559,7 @@ available.ensembl.datasets <-
     }
     if (is.null(datSets) || is.null(taxId) || length(taxId)>0) {
         loadNamespace("biomaRt")
-        fastaSpecs <- available.FastaEnsemblSpecies()
+        fastaSpecs <- available.FastaEnsemblSpecies(release=release)
         if (is.null(taxId)) {
             taxId <- setdiff(names(fastaSpecs), names(datSets))
         }
@@ -1563,7 +1567,7 @@ available.ensembl.datasets <-
         ftpStrs <- paste0(g.specs, "_gene_ensembl")
         names(ftpStrs) <- names(g.specs)
         ## then get listing of the dataSets
-        ens <- biomaRt::useEnsembl('ensembl')
+        ens <- biomaRt::useEnsembl('ensembl', version=release)
         availableDatSets <- biomaRt::listDatasets(ens)$dataset
         ## so which of the datSets are also in the FTP site?
         ## (when initially tested these two groups were perfectly synced)
@@ -1577,7 +1581,7 @@ available.ensembl.datasets <-
             }
             ## Remove dataSets that don't map to EntrezIds:
             legitTaxIdxs <- unlist(lapply(names(neededDatSets), .ensemblMapsToEntrezId,
-                                          datSets=neededDatSets))
+                                          datSets=neededDatSets, release=release))
             neededDatSets <- neededDatSets[legitTaxIdxs]
             datSets <- c(datSets, neededDatSets)
 
@@ -1590,17 +1594,18 @@ available.ensembl.datasets <-
 
 ## ## now get those from the ensembl marts
 .getEnsemblData <-
-    function(taxId, release=80)
+    function(taxId, release=NULL)
 {
     loadNamespace("biomaRt")
-    datSets <- available.ensembl.datasets(taxId)
+    datSets <- available.ensembl.datasets(taxId, release=release)
     datSet <- datSets[names(datSets) %in% taxId]
-    ens <- biomaRt::useEnsembl('ensembl', datSet)
+    ens <- biomaRt::useEnsembl('ensembl', datSet, version=release)
+    colName <- if (as.integer(release)>=97) "entrezgene_id" else "entrezgene"
     res <- biomaRt::getBM(
-        attributes=c("entrezgene_id","ensembl_gene_id"),
+        attributes=c(colName,"ensembl_gene_id"),
         mart=ens)
-    res <- res[!is.na(res$entrezgene),]
     colnames(res) <- c("gene_id","ensembl")
+    res <- res[!is.na(res$gene_id),]
     res[['gene_id']] <- as.character(res[['gene_id']])
     res[['ensembl']] <- as.character(res[['ensembl']])
     unique(res)
