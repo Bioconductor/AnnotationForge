@@ -1600,7 +1600,7 @@ available.ensembl.datasets <-
     datSets <- available.ensembl.datasets(taxId, release=release)
     datSet <- datSets[names(datSets) %in% taxId]
     ens <- biomaRt::useEnsembl('ensembl', datSet, version=release)
-    colName <- if (as.integer(release)>=97) "entrezgene_id" else "entrezgene"
+    colName <- if (is.null(release) || as.integer(release)>=97) "entrezgene_id" else "entrezgene"
     res <- biomaRt::getBM(
         attributes=c(colName,"ensembl_gene_id"),
         mart=ens)
