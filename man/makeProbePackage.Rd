@@ -22,8 +22,8 @@ makeProbePackage(arraytype,
     an example.}
   \item{maintainer}{Character. Name and email address of the maintainer.}
   \item{version}{Character. Version number for the package.}
-  \item{species}{Character. Species name in the format Genus\_species
-    (e.g., Homo\_sapiens)}
+  \item{species}{Character. Species name in the format Genus_species
+    (e.g., Homo_sapiens)}
   \item{pkgname}{Character. Name of the package. If missing, a name is
     created from \code{arraytype}.}
   \item{outdir}{Character. Path where the package is to be written.}

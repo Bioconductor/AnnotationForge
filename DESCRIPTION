@@ -6,12 +6,12 @@ Description: Provides code for generating Annotation packages and
 biocViews: Annotation, Infrastructure
 URL: https://bioconductor.org/packages/AnnotationForge
 BugReports: https://github.com/Bioconductor/AnnotationForge/issues
-Version: 1.42.0
+Version: 1.42.1
 License: Artistic-2.0
 Encoding: UTF-8
 Author: Marc Carlson, Hervé Pagès
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
-Depends: R (>= 2.7.0), methods, utils, BiocGenerics (>= 0.15.10),
+Depends: R (>= 3.5.0), methods, utils, BiocGenerics (>= 0.15.10),
         Biobase (>= 1.17.0), AnnotationDbi (>= 1.33.14)
 Imports: DBI, RSQLite, XML, S4Vectors, RCurl
 Suggests: biomaRt, httr, GenomeInfoDb (>= 1.17.1), Biostrings, affy,
