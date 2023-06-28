@@ -24,7 +24,8 @@
     databaseOnly=FALSE,
     useDeprecatedStyle=FALSE,
     rebuildCache=TRUE,
-    verbose=TRUE)
+    verbose=TRUE,
+    ensemblVersion=NULL)
 }
 
 \arguments{
@@ -66,6 +67,9 @@
     from local files in \code{outputDir}. Used internally and for testing.}
   \item{verbose}{
     When TRUE, status messages are printed.
+  }
+  \item{ensemblVersion}{
+    Ensmbl version to use. When NULL, uses the current version.
   }
 }
 

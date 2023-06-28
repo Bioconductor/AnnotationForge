@@ -1,3 +1,17 @@
+CHANGES IN VERSION 1.41.0
+-------------------------
+
+MODIFICATIONS
+
+    o  1.41.5 Add RUnit to Suggest
+    o  1.41.3 Update viableID.rda for upcoming release
+    o  1.41.2 Use dbExecute() instead of dbGetQuery() or dbSendQuery() to avoid warnings
+
+ENHANCEMENT
+
+    o  1.41.4 Knoknok Optimizations and allow specification of the desired Ensembl release
+    o  1.41.1 James MacDonald Fixed makeOrgPackageFromNCBI to use existing downloaded files
+
 CHANGES IN VERSION 1.39.0
 -------------------------
 

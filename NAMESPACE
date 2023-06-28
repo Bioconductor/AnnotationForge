@@ -1,5 +1,7 @@
 import(methods)
-import(utils)
+importFrom(utils, available.packages, download.file, installed.packages,
+                  packageDescription, read.csv, read.delim, read.table,
+                  str, untar, unzip, write.table)
 import(Biobase)
 import(DBI)
 import(RSQLite)
