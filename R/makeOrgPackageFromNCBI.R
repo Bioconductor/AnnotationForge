@@ -170,9 +170,10 @@
 .downloadAndSaveToTemp <-
     function(url, tmp)
 {
-    loadNamespace("RCurl")
-    if (!RCurl::url.exists(url))
-        stop("URL '", url, "' does not exist")
+
+    if(httr::http_error(url))
+        stop("URL '", url, "' does not exist")    
+
 ##    binRes <- RCurl::getBinaryURL(url)
 ##    writeBin(binRes, con=tmp)
     ## RCurl on Windows has TLS problems
@@ -1463,35 +1464,54 @@ makeOrgPackageFromNCBI <-
 ## Code for adding Ensembl IDs for those species supported by ensembl
 ## with GTF files.
 
+## use the Ensembl Rest API to get the current Ensembl version
+getCurrentEnsemblRelease <- function() {
+    
+    res <- httr::GET("https://rest.ensembl.org/info/data/", httr::accept_json())
+    version <- as.integer(unlist(httr::content(res)))
+    
+    return(version)
+}
+
+## list files in Ensembl FTP TSV directory
+## this is used to identify if there is an ensembl<->entrez mapping file
+listFilesInEnsemblFTP <- function(species, release, dir) {
+    
+    loadNamespace("curl")
+    
+    ftp_dir <- sprintf("ftp://ftp.ensembl.org/pub/release-%s/%s/%s/", release, dir, species)
+    
+    list_files <- curl::new_handle()
+    curl::handle_setopt(list_files, ftp_use_epsv = TRUE, dirlistonly = TRUE)
+    con <- curl::curl(url = ftp_dir, open = "r", handle = list_files)
+    files <- readLines(con)
+    close(con)
+    
+    return(files)
+    
+}
+
 ## lets make a helper to troll the ftp site and get ensembl to entrez
 ## gene ID data.  The names will be tax ids...
 getFastaSpeciesDirs <-
     function(release=NULL)
-{
-    if (is.null(release)) {
-      ensVersions <- biomaRt::listEnsemblArchives()
-      release <- as.integer(ensVersions$version[ensVersions$current_release=="*"])
+    {
+        if (is.null(release)) {
+            release <- getCurrentEnsemblRelease()
+        }
+
+        listing <- listFilesInEnsemblFTP(release = release, species = "", dir = "mysql")
+        res <- grep(pattern = paste0("_core_", release, "_"), listing, value = TRUE)
+        
+        specNames <- available.FastaEnsemblSpecies(res, release=release)
+        taxdb <- GenomeInfoDb::loadTaxonomyDb()
+        organisms <- trimws(paste(taxdb[["genus"]], taxdb[["species"]]))
+        idx <- match(specNames, organisms)
+        res <- res[!is.na(idx)]
+        names(res) <- as.integer(taxdb[["tax_id"]][idx[!is.na(idx)]])
+        res
     }
-    baseUrl <- paste0("ftp://ftp.ensembl.org/pub/release-", release, "/mysql/")
-    loadNamespace("RCurl")
-    curlHand <- RCurl::getCurlHandle()
-    listing <- RCurl::getURL(url=baseUrl, followlocation=TRUE, curl=curlHand)
-    listing<- strsplit(listing, "\r?\n")[[1]]
-    cores <- listing[grepl(paste0("_core_", release, "_"), listing)]
-    coreDirs <- cores[!grepl('\\.', cores) & !grepl('\\:$', cores)]
-    .getDirOnly <- function(item) {
-        dir <- unlist(strsplit(item, ' '))
-        dir[length(dir)]
-    }
-    res <-unlist(lapply(coreDirs, .getDirOnly))
-    specNames <- available.FastaEnsemblSpecies(res, release=release)
-    taxdb <- GenomeInfoDb::loadTaxonomyDb()
-    organisms <- trimws(paste(taxdb[["genus"]], taxdb[["species"]]))
-    idx <- match(specNames, organisms)
-    res <- res[!is.na(idx)]
-    names(res) <- as.integer(taxdb[["tax_id"]][idx[!is.na(idx)]])
-    res
-}
+
 
 ## Helper for getting precise genus and species available via
 ## FTP. (and their Tax IDs)
@@ -1527,20 +1547,20 @@ g.species <-
 
 ## helper to make sure that we *have* entrez gene IDs to map to at ensembl!
 .ensemblMapsToEntrezId <-
-    function(taxId, datSets, release=NULL)
+    function(taxId, species, release=NULL)
 {
-    message("TaxID: ",taxId)
-    Sys.sleep(5)
-    loadNamespace("biomaRt")
-    datSet <- datSets[names(datSets) %in% taxId]
-    ens <- biomaRt::useEnsembl('ensembl', datSet, version=release)
-    at <- biomaRt::listAttributes(ens)
-    any(grepl('entrezgene',at$name))
+    message("TaxID: ", taxId)
+
+    files <- listFilesInEnsemblFTP(species = species, release = release, dir = 'tsv')
+    
+    any(grepl('entrez.tsv.gz$', files))
 }
 
 ## the available.ensembl.datasets function takes 20 seconds to make a small
 ## vector.  So stash the results here for faster reuse/access on
 ## subsequent calls
+## ## TODO: this caching mechanism may not be necessary anymore with the move away from biomaRt
+## ## Nonetheless it still works so doesn't need to be removed - MLSmith 2024-04-08
 ensemblDatasets <- new.env(hash=TRUE, parent=emptyenv())
 ## populate the above with: available.ensembl.datasets()
 
@@ -1558,21 +1578,19 @@ available.ensembl.datasets <-
         datSets <- NULL
     }
     if (is.null(datSets) || is.null(taxId) || length(taxId)>0) {
-        loadNamespace("biomaRt")
+        
+        if (is.null(release)) {
+            release <- getCurrentEnsemblRelease()
+        }
+        
         fastaSpecs <- available.FastaEnsemblSpecies(release=release)
+        fasta_specs <- tolower(gsub(x = fastaSpecs, pattern = " ", replacement = "_"))
         if (is.null(taxId)) {
             taxId <- setdiff(names(fastaSpecs), names(datSets))
         }
         g.specs <- unlist(lapply(fastaSpecs, g.species))
-        ftpStrs <- paste0(g.specs, "_gene_ensembl")
-        names(ftpStrs) <- names(g.specs)
-        ## then get listing of the dataSets
-        ens <- biomaRt::useEnsembl('ensembl', version=release)
-        availableDatSets <- biomaRt::listDatasets(ens)$dataset
-        ## so which of the datSets are also in the FTP site?
-        ## (when initially tested these two groups were perfectly synced)
-        availableDatSets <- ftpStrs[ftpStrs %in% availableDatSets]
-        neededDatSets <- availableDatSets[names(availableDatSets) %in% taxId]
+        names(fasta_specs) <- names(g.specs)
+        neededDatSets <- fasta_specs[names(fasta_specs) %in% taxId]
         if (length(neededDatSets)>0) {
             if (length(neededDatSets)>4) {
                 ## Friendly message
@@ -1580,8 +1598,9 @@ available.ensembl.datasets <-
                               be annotated with ensembl IDs. "))
             }
             ## Remove dataSets that don't map to EntrezIds:
-            legitTaxIdxs <- unlist(lapply(names(neededDatSets), .ensemblMapsToEntrezId,
-                                          datSets=neededDatSets, release=release))
+            legitTaxIdxs <- mapply(.ensemblMapsToEntrezId, 
+                                   names(neededDatSets), neededDatSets, 
+                                   MoreArgs = list(release = release))
             neededDatSets <- neededDatSets[legitTaxIdxs]
             datSets <- c(datSets, neededDatSets)
 
@@ -1596,17 +1615,30 @@ available.ensembl.datasets <-
 .getEnsemblData <-
     function(taxId, release=NULL)
 {
-    loadNamespace("biomaRt")
+    if (is.null(release)) {
+        release <- getCurrentEnsemblRelease()
+    }
+        
     datSets <- available.ensembl.datasets(taxId, release=release)
     datSet <- datSets[names(datSets) %in% taxId]
-    ens <- biomaRt::useEnsembl('ensembl', datSet, version=release)
-    colName <- if (is.null(release) || as.integer(release)>=97) "entrezgene_id" else "entrezgene"
-    res <- biomaRt::getBM(
-        attributes=c(colName,"ensembl_gene_id"),
-        mart=ens)
-    colnames(res) <- c("gene_id","ensembl")
-    res <- res[!is.na(res$gene_id),]
-    res[['gene_id']] <- as.character(res[['gene_id']])
-    res[['ensembl']] <- as.character(res[['ensembl']])
-    unique(res)
+    if(length(datSet) == 0) {
+        ## TODO: Is this a sensible return value?  Should it be an error?
+        stop('No Ensembl dataset found matching the taxId: ', taxId)
+    } else {
+        ## list the files in the species level TSV folder.  There should always be a entrez mapping
+        ## file as we checked for it earlier with available.ensembl.datasets()
+        ## Find it and construct a URL with that file name.
+        files <- listFilesInEnsemblFTP(species = datSet, release = release, dir = 'tsv')
+        entrez_map_file <- grep(files, pattern = 'entrez.tsv.gz$', value = TRUE)
+        url <- sprintf('ftp://ftp.ensembl.org/pub/release-%s/tsv/%s/%s', release, datSet, entrez_map_file)
+        
+        ## download the mapping file, extract the relevant columns, rename, and return unique rows
+        dest_file <- tempfile()
+        download.file(url, destfile = dest_file, mode = "wb")
+        res <- read.delim(dest_file)[,c('xref', 'gene_stable_id')]
+        colnames(res) <- c("gene_id","ensembl")
+        res <- res[!is.na(res$gene_id),]
+        unique(res)
+    }
+
 }

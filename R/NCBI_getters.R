@@ -149,7 +149,9 @@ getGeneStuff <- function(entrezGenes, dir = "files"){
   url <- paste(baseUrl,"db=gene&id=",xsep,"&retmode=xml", sep="")
 
   ## NOW we have to parse the available XML
-  EGSet <- xmlParse(getURL(url, followlocation=TRUE))
+  ## Use the 'as = "parse"' argument below to return an xml2 object directly
+  httr_res <- httr::content(httr::GET(url, httr::accept("text/xml")), as = "text")
+  EGSet <- xmlParse(httr_res)
 
   ## Here we will save the files out to a dir
   miniDocs <- lapply(getNodeSet(EGSet, "//Entrezgene"), xmlDoc)
@@ -369,7 +371,8 @@ getEntrezGenesFromTaxId <- function(taxId){
   url1 <- paste("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gene&term=txid",taxId,"%5Borgn%5D+AND+alive%5Bprop%5D&usehistory=y", sep="")
    
   ## NOW we have to parse the available XML
-  XML <- xmlParse(getURL(url1, followlocation=TRUE))
+  httr_res <- httr::content(httr::GET(url, httr::accept("text/xml")), as = "text")
+  XML <- xmlParse(httr_res)
   ## Some tags can only occur once per gene
   ## TODO: wire up the xpath for this
   webEnv <- unlist(xpathApply(XML, "//WebEnv", xmlValue))

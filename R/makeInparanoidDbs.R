@@ -10,7 +10,6 @@
 .getSubDirs <- function(dir)
 {
     ## now get the dir
-    loadNamespace("RCurl")
     loadNamespace("XML")
     ## So I need to make a handler that collects the parts I want:
     getLinks = function() {

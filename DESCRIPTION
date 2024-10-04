@@ -6,7 +6,7 @@ Description: Provides code for generating Annotation packages and
 biocViews: Annotation, Infrastructure
 URL: https://bioconductor.org/packages/AnnotationForge
 BugReports: https://github.com/Bioconductor/AnnotationForge/issues
-Version: 1.47.2
+Version: 1.47.3
 License: Artistic-2.0
 Encoding: UTF-8
 Authors@R: c(
@@ -14,16 +14,19 @@ Authors@R: c(
         person("Hervé", "Pagès", role = "aut"),
         person("Madelyn", "Carlson", role = "ctb",
                 comment = "'Creating probe packages' vignette translation from Sweave to Rmarkdown / HTML"),
+        person(c("Mike", "L."), "Smith", role = "ctb",
+                comment = c(ORCID = "0000-0002-7800-3848")
+              ),
         person("Bioconductor Package Maintainer", role = "cre",
                 email = "maintainer@bioconductor.org")
         )
 Depends: R (>= 3.5.0), methods, utils, BiocGenerics (>= 0.15.10),
         Biobase (>= 1.17.0), AnnotationDbi (>= 1.33.14)
-Imports: DBI, RSQLite, XML, S4Vectors, RCurl
-Suggests: biomaRt, httr, GenomeInfoDb (>= 1.17.1), Biostrings, affy,
+Imports: DBI, RSQLite, XML, S4Vectors, httr
+Suggests: GenomeInfoDb (>= 1.17.1), Biostrings, affy,
         hgu95av2.db, human.db0, org.Hs.eg.db,
         Homo.sapiens, GO.db, rmarkdown,
-        BiocStyle, knitr, BiocManager, BiocFileCache, RUnit
+        BiocStyle, knitr, BiocManager, BiocFileCache, RUnit, curl
 VignetteBuilder: knitr
 BuildKeepEmpty: TRUE
 Collate: makeAnnDbPkg.R sqlForge_utils.R sqlForge_baseMapBuilder.R
