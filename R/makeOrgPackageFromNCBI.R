@@ -319,9 +319,9 @@
     ## download
     if (rebuildCache) {
         if(names(file) == "gene2unigene"){
-            url <- paste0("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/ARCHIVE/", names(file))
+            url <- paste0("https://ftp.ncbi.nlm.nih.gov/gene/DATA/ARCHIVE/", names(file))
         }else{
-            url <- paste0("ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/", names(file))
+            url <- paste0("https://ftp.ncbi.nlm.nih.gov/gene/DATA/", names(file))
         }
         ## if DB table is not fresh OR if table is not populated
         if (!.isNCBICurrentWith(NCBIcon, tableName) ||
